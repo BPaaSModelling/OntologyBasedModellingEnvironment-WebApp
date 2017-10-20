@@ -3,7 +3,7 @@ import {NgModule } from '@angular/core';
 import {HttpModule, JsonpModule} from '@angular/http';
 import {AppComponent } from './app.component';
 import {ModellingEnvironmentComponent } from './modelling-environment/modelling-environment.component';
-import {PaletteComponent } from './palette/palette.component';
+import {PaletteAreaComponent } from './palette-area/palette-area.component';
 import {ModellingAreaComponent } from './modelling-area/modelling-area.component';
 import {RouterModule, Routes} from '@angular/router';
 import {ModellerService} from './modeller.service';
@@ -17,7 +17,7 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     ModellingEnvironmentComponent,
-    PaletteComponent,
+    PaletteAreaComponent,
     ModellingAreaComponent
   ],
   imports: [
