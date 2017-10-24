@@ -7,7 +7,7 @@ import {PaletteAreaComponent } from './palette-area/palette-area.component';
 import {ModellingAreaComponent } from './modelling-area/modelling-area.component';
 import {RouterModule, Routes} from '@angular/router';
 import {ModellerService} from './modeller.service';
-import {FlexLayoutModule} from "@angular/flex-layout";
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent}
