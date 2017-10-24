@@ -6,11 +6,12 @@ import 'rxjs/add/operator/map';
 import 'rxjs/operator/delay';
 import 'rxjs/operator/mergeMap';
 import 'rxjs/operator/switchMap';
+import {MetamodelElementModel} from "./_models/MetamodelElement.model";
 
 @Injectable()
 export class ModellerService {
   private options: RequestOptions;
-
+  elements: MetamodelElementModel[];
 
   constructor(private http: Http, private jsonp: Jsonp) {
     const headers = new Headers({ 'Content-Type': 'application/json'});

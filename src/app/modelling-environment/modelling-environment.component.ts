@@ -9,7 +9,7 @@ import {ModellerService} from "../modeller.service";
 export class ModellingEnvironmentComponent implements OnInit {
 
   constructor(private modellerService: ModellerService) {
-    this.modellerService.queryPaletteElements();
+    //this.modellerService.queryPaletteElements();
   }
 
   ngOnInit() {

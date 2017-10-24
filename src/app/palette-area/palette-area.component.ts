@@ -12,4 +12,8 @@ export class PaletteAreaComponent implements OnInit {
   ngOnInit() {
   }
 
+  private addNewShape(): void {
+    console.log("hello");
+  }
+
 }
