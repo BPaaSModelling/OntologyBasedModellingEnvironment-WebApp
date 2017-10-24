@@ -29,31 +29,20 @@ export class ModellingAreaComponent implements OnInit {
     this.canvas = new fabric.Canvas('canvas',{
 
     });
-    this.boundBox = new fabric.Rect({
-      width: 500,
-      height: 500,
-      fill: 'transparent',
-      stroke: '#666',
-      strokeDashArray: [5, 5]
-    });
-
-    this.shape = new fabric.Rect({
-      width: 200,
-      height: 200,
-      fill: 'red'
-    });
-
-    this.canvas.add(this.boundBox);
-    this.canvas.add(this.shape);
-
   }
+
   ngOnChanges(changes: SimpleChanges) {
     this.printNewElement(changes.new_element.currentValue);
   }
 
   printNewElement(element: MetamodelElementModel): void {
     if (element !== undefined) {
-      console.log(element.id);
+      this.shape = new fabric.Rect({
+        width: 200,
+        height: 200,
+        fill: 'red'
+      });
+      this.canvas.add(this.shape);
     }
 
   }
