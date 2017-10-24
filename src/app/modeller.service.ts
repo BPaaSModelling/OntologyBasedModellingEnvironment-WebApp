@@ -11,7 +11,6 @@ import {MetamodelElementModel} from "./_models/MetamodelElement.model";
 @Injectable()
 export class ModellerService {
   private options: RequestOptions;
-  elements: MetamodelElementModel[];
 
   constructor(private http: Http, private jsonp: Jsonp) {
     const headers = new Headers({ 'Content-Type': 'application/json'});

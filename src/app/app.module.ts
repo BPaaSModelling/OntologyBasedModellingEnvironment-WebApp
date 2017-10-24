@@ -19,7 +19,7 @@ const appRoutes: Routes = [
     AppComponent,
     ModellingEnvironmentComponent,
     PaletteAreaComponent,
-    ModellingAreaComponent
+    ModellingAreaComponent,
   ],
   imports: [
     BrowserModule,

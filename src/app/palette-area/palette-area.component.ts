@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {MetamodelElementModel} from "../_models/MetamodelElement.model";
+
 
 @Component({
   selector: 'app-palette-area',
@@ -6,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./palette-area.component.css']
 })
 export class PaletteAreaComponent implements OnInit {
+  @Output()  sendElementFromPalette = new EventEmitter();
 
   constructor() { }
 
@@ -13,7 +16,8 @@ export class PaletteAreaComponent implements OnInit {
   }
 
   private addNewShape(): void {
-    console.log("hello");
+    let a: MetamodelElementModel = new MetamodelElementModel();
+    this.sendElementFromPalette.emit(a);
   }
 
 }

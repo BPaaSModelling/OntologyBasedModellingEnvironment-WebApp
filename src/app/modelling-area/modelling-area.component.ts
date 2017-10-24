@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, SimpleChanges} from '@angular/core';
 import 'fabric';
+import {MetamodelElementModel} from "../_models/MetamodelElement.model";
 
 declare let fabric;
 
@@ -7,10 +8,15 @@ declare let fabric;
 @Component({
   selector: 'app-modelling-area',
   templateUrl: './modelling-area.component.html',
-  styleUrls: ['./modelling-area.component.css']
+  styleUrls: ['./modelling-area.component.css'],
+  inputs: ['data_elements'],
+  outputs: ['dataChange'],
 })
 export class ModellingAreaComponent implements OnInit {
 
+  @Input() new_element: MetamodelElementModel;
+  data_elements: MetamodelElementModel[];
+  dataChange: EventEmitter<MetamodelElementModel[]> = new EventEmitter();
   private canvas;
   private boundBox;
   private shape;
@@ -41,5 +47,14 @@ export class ModellingAreaComponent implements OnInit {
     this.canvas.add(this.shape);
 
   }
+  ngOnChanges(changes: SimpleChanges) {
+    this.printNewElement(changes.new_element.currentValue);
+  }
 
+  printNewElement(element: MetamodelElementModel): void {
+    if (element !== undefined) {
+      console.log(element.id);
+    }
+
+  }
 }
