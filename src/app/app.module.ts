@@ -8,6 +8,9 @@ import {ModellingAreaComponent } from './modelling-area/modelling-area.component
 import {RouterModule, Routes} from '@angular/router';
 import {ModellerService} from './modeller.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import {
+  MatListModule, MatButtonModule, MatToolbarModule} from '@angular/material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent}
@@ -26,7 +29,11 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     HttpModule,
     JsonpModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatListModule,
+    MatButtonModule,
+    MatToolbarModule,
+    BrowserAnimationsModule,
   ],
   providers: [ModellerService],
   bootstrap: [AppComponent]

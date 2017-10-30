@@ -5,10 +5,9 @@
 .palette-area{
   background-color: #ffffff;
   border: 1px solid #888888;
-  width: 350px;
+  width: 300px;
 }
 .modelling-area{
-  background-color: #eeeeee;
   border-right: 1px solid #333333;
   min-height: 100%;
   width: 100%;

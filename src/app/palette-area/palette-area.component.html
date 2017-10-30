@@ -1,3 +1,13 @@
-<p>
-  <button class="btn1" (click)="addNewShape()">Add new shape</button>
-</p>
+
+
+<div *ngFor="let category of (mService.paletteCategorie$ | async)">
+  <div class="category">{{category.label}}
+    <ul class="element" *ngFor="let element of (mService.paletteElement$ | async)">
+      <li class="secondLevelElement" *ngIf="element.paletteCategory == category.id"><a><img class="thumbnail" src="../assets/images/{{element.thumbnailURL}}" /> {{element.label}}</a>
+        <ul>
+          <li class="secondLevelElement" *ngFor="let child of (element.childElements)" (click)="addNewShape(child)"><a><img class="thumbnail" src="../assets/images/{{child.thumbnailURL}}" />{{child.label}}</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
