@@ -16,6 +16,7 @@ export class PaletteAreaComponent implements OnInit {
   constructor(private mService: ModellerService) {
     this.mService.queryPaletteCategories();
     this.mService.queryPaletteElements();
+    this.count = 0;
   }
 
   ngOnInit() {

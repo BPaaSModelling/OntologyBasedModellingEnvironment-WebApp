@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, SimpleChanges, HostListener} from '@angular/core';
 import 'fabric';
 import {MetamodelElementModel} from "../_models/MetamodelElement.model";
 import {PaletteElementModel} from "../_models/PaletteElement.model";
@@ -17,6 +17,7 @@ export class ModellingAreaComponent implements OnInit {
   private canvas;
   private boundBox;
   private shape;
+  private key;
 
   constructor() {
   }
@@ -35,9 +36,17 @@ export class ModellingAreaComponent implements OnInit {
     console.log(changes.new_element.currentValue);
   }
 
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    this.key = event.key;
+    if (this.key === 'Backspace' || this.key === 'Delete') {
+      this.deleteElement();
+    }
+  }
+
   printNewElement(element: PaletteElementModel): void {
     if (element !== undefined) {
-      fabric.Image.fromURL('../assets/images/'+element.imageURL, (img) =>{
+      fabric.Image.fromURL('../assets/images/' + element.imageURL, (img) =>{
         let oImg = img.set({
           left: 0,
           top: 0,
@@ -45,6 +54,12 @@ export class ModellingAreaComponent implements OnInit {
         this.canvas.add(oImg).renderAll();
         });
       }
+    }
+
+    deleteElement(): void {
+    if (this.canvas.getActiveObject() !== undefined) {
+      this.canvas.getActiveObject().remove();
+    }
     }
 
   printNewElement2(element: PaletteElementModel): void {
