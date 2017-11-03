@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MetamodelElementModel} from "../_models/MetamodelElement.model";
 import {ModellerService} from "../modeller.service";
+import {PaletteElementModel} from "../_models/PaletteElement.model";
 
 
 @Component({
@@ -11,6 +12,7 @@ import {ModellerService} from "../modeller.service";
 export class PaletteAreaComponent implements OnInit {
   @Output()  sendElementFromPalette = new EventEmitter();
   private count: number;
+  private list: PaletteElementModel[];
   constructor(private mService: ModellerService) {
     this.mService.queryPaletteCategories();
     this.mService.queryPaletteElements();

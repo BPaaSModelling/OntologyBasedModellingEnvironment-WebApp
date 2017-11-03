@@ -30,16 +30,23 @@ export class ModellingAreaComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.printNewElement2(changes.new_element.currentValue);
+    //TODO to change with ngDoCheck
+    this.printNewElement(changes.new_element.currentValue);
+    console.log(changes.new_element.currentValue);
   }
 
   printNewElement(element: PaletteElementModel): void {
     if (element !== undefined) {
-      this.shape = fabric.Image.fromURL('../assets/' + element.imageURL, function (oImg) {
-      });
+      fabric.Image.fromURL('../assets/images/'+element.imageURL, (img) =>{
+        let oImg = img.set({
+          left: 0,
+          top: 0,
+          angle: 0}).scale(1);
+        this.canvas.add(oImg).renderAll();
+        });
+      }
     }
-    this.canvas.backgroundColor = '#171799';
-  }
+
   printNewElement2(element: PaletteElementModel): void {
     if (element !== undefined) {
       this.shape = new fabric.Rect({

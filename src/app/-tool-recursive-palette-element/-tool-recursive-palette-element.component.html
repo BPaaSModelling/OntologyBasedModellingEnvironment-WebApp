@@ -1,0 +1,5 @@
+<ul *ngFor="let subchild of child.childElements ">
+  <li *ngIf="child.childElements.length > 0 " class="NthLevelElement"><a><img class="thumbnail" src="../assets/images/{{child.thumbnailURL}}" /> {{child.label}}</a>
+    <app--tool-recursive-palette-element [child]="subchild"></app--tool-recursive-palette-element>
+  </li>
+</ul>
