@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MetamodelElementModel} from "../_models/MetamodelElement.model";
 import {ModellerService} from "../modeller.service";
 import {PaletteElementModel} from "../_models/PaletteElement.model";
+import {ToolRecursivePaletteElementComponent} from "../-tool-recursive-palette-element/-tool-recursive-palette-element.component";
 
 
 @Component({

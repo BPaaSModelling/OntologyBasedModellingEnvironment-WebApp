@@ -1,0 +1,39 @@
+.thumbnail{  height: 45px;  }
+
+ul > li{
+  background: darkgray;
+  padding: 5px;
+  margin: 0px;
+  border: 1px double #000;
+  border-radius: 5px;
+  color: white;
+  font-size: small;
+  position: relative;
+}
+
+ul {
+  padding: 1px;
+  padding-right: 0px;
+  margin: 0px;
+  width: auto;
+  list-style: none;
+  list-style-type: none;
+}
+
+.NthLevelElement:hover {
+  color: black;
+  background: lightgoldenrodyellow;
+}
+
+.NthLevelElement > app--tool-recursive-palette-element {
+  display: none;
+}
+
+.NthLevelElement:hover app--tool-recursive-palette-element{
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  z-index: 1;
+}
+
