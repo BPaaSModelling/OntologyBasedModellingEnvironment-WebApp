@@ -14,6 +14,7 @@ export class ModellerService {
   private options: RequestOptions;
   paletteCategorie$: Observable<PaletteCategoryModel> = Observable.of(null);
   paletteElement$: Observable<PaletteElementModel> = Observable.of(null);
+  paletteElements: PaletteElementModel[];
 
   constructor(private http: Http, private jsonp: Jsonp) {
     const headers = new Headers({ 'Content-Type': 'application/json'});
@@ -26,6 +27,7 @@ export class ModellerService {
         data => {
           console.log('PaletteElements received: ' + JSON.stringify(data));
           this.paletteElement$ = Observable.of(data);
+          this.paletteElements = data;
     }, error => console.log('Could not query PaletteElements'));
   }
 

@@ -13,7 +13,6 @@ import {ToolRecursivePaletteElementComponent} from "../-tool-recursive-palette-e
 export class PaletteAreaComponent implements OnInit {
   @Output()  sendElementFromPalette = new EventEmitter();
   private count: number;
-  private list: PaletteElementModel[];
   constructor(private mService: ModellerService) {
     this.mService.queryPaletteCategories();
     this.mService.queryPaletteElements();
@@ -24,10 +23,9 @@ export class PaletteAreaComponent implements OnInit {
   }
 
   private addNewShape(a: MetamodelElementModel): void {
-
-    a.id = 'id' + this.count;
+    let b: MetamodelElementModel = Object.assign({}, a);
+    b.id = 'id' + this.count;
     this.count++;
-    this.sendElementFromPalette.emit(a);
-  }
-
+    this.sendElementFromPalette.emit(b);
+      }
 }

@@ -2,9 +2,9 @@
 <div class="category"*ngFor="let category of (mService.paletteCategorie$ | async)">
   <p class="category-title">{{category.label}}</p>
   <nav class="element-container">
-    <ul class="element" *ngFor="let element of (mService.paletteElement$ | async)">
-      <li class="paletteElement" *ngIf="element.paletteCategory == category.id" ><a><img (click)="addNewShape(element)" class="thumbnail" src="../assets/images/{{element.thumbnailURL}}" /></a>
-        <app--tool-recursive-palette-element [child]="element"></app--tool-recursive-palette-element>
+    <ul class="element" *ngFor="let element of mService.paletteElements">
+      <li class="paletteElement" *ngIf="(element.paletteCategory == category.id)"><a (click)="addNewShape(element)"><img class="thumbnail"  src="../assets/images/{{element.thumbnailURL}}" /></a>
+        <app--tool-recursive-palette-element (sendElementFromRecursiveElement)="addNewShape($event)" [child]="element"></app--tool-recursive-palette-element>
       </li>
     </ul>
   </nav>
