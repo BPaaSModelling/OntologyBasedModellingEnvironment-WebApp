@@ -23,7 +23,6 @@
   text-align: center;
   margin-top: 0px;
   margin-bottom: 0px;
-  vertical-align: middle;
   cursor: pointer;
 }
 a {
@@ -60,6 +59,8 @@ li {
   position: absolute;
   background: lightgoldenrodyellow;
   border-radius: 6px;
+  background-image: url(../../assets/images/background-highlight.png);
+  background-repeat: repeat-x;
 }
 
 .paletteElement > ul {
@@ -88,4 +89,10 @@ app--tool-recursive-palette-element{
 app--tool-recursive-palette-element:hover {
   opacity: 1.0;
   filter: alpha(opacity=100);
+}
+
+.category-title {
+  background-image: url(../../assets/images/background-categories.png);
+  background-repeat: repeat-x;
+
 }
