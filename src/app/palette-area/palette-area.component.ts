@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MetamodelElementModel} from "../_models/MetamodelElement.model";
 import {ModellerService} from "../modeller.service";
 import {PaletteElementModel} from "../_models/PaletteElement.model";
+import {ToolRecursivePaletteElementComponent} from "../-tool-recursive-palette-element/-tool-recursive-palette-element.component";
 
 
 @Component({
@@ -12,7 +13,6 @@ import {PaletteElementModel} from "../_models/PaletteElement.model";
 export class PaletteAreaComponent implements OnInit {
   @Output()  sendElementFromPalette = new EventEmitter();
   private count: number;
-  private list: PaletteElementModel[];
   constructor(private mService: ModellerService) {
     this.mService.queryPaletteCategories();
     this.mService.queryPaletteElements();
@@ -23,10 +23,9 @@ export class PaletteAreaComponent implements OnInit {
   }
 
   private addNewShape(a: MetamodelElementModel): void {
-
-    a.id = 'id' + this.count;
+    let b: MetamodelElementModel = Object.assign({}, a);
+    b.id = 'id' + this.count;
     this.count++;
-    this.sendElementFromPalette.emit(a);
-  }
-
+    this.sendElementFromPalette.emit(b);
+      }
 }
