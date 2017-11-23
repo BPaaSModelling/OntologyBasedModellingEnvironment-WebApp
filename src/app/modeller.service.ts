@@ -25,7 +25,7 @@ export class ModellerService {
     this.http.get(EndpointSettings.getPaletteElementsEndpoint())
       .map(response => response.json()).subscribe(
         data => {
-          console.log('PaletteElements received: ' + JSON.stringify(data));
+          //console.log('PaletteElements received: ' + JSON.stringify(data));
           this.paletteElement$ = Observable.of(data);
           this.paletteElements = data;
     }, error => console.log('Could not query PaletteElements'));
@@ -35,7 +35,7 @@ export class ModellerService {
     this.http.get(EndpointSettings.getPaletteCategoriesEndpoint())
       .map(response => response.json()).subscribe(
       data => {
-        console.log('PaletteCategories received: ' + JSON.stringify(data));
+        //console.log('PaletteCategories received: ' + JSON.stringify(data));
         this.paletteCategorie$ = Observable.of(data);
       }, error => console.log('Could not query PaletteElements'));
   }

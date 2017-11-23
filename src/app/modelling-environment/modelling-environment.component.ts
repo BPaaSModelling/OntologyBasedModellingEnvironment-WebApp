@@ -26,3 +26,5 @@ export class ModellingEnvironmentComponent implements OnInit {
   }
 
 }
+
+// https://github.com/shlomiassaf/ngx-modialog

@@ -8,13 +8,14 @@ import {ModellingAreaComponent } from './modelling-area/modelling-area.component
 import {RouterModule, Routes} from '@angular/router';
 import {ModellerService} from './modeller.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {
-  MatListModule, MatButtonModule, MatToolbarModule} from '@angular/material';
+import {MatListModule, MatButtonModule, MatToolbarModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { ToolRecursivePaletteElementComponent } from './-tool-recursive-palette-element/-tool-recursive-palette-element.component';
+import {ToolRecursivePaletteElementComponent} from './-tool-recursive-palette-element/-tool-recursive-palette-element.component';
+import {ContextMenuModule} from 'ngx-contextmenu';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 const appRoutes: Routes = [
-  { path: 'modeller', component: ModellingEnvironmentComponent}
+  { path: 'modeller', component: ModellingEnvironmentComponent},
 ];
 
 
@@ -36,6 +37,8 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatToolbarModule,
     BrowserAnimationsModule,
+    ContextMenuModule,
+    NgbModule,
   ],
   providers: [ModellerService],
   bootstrap: [AppComponent]
