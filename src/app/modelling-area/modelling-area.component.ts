@@ -6,7 +6,6 @@ import {VariablesSettings} from "../_settings/variables.settings";
 import {isNullOrUndefined} from "util";
 import {UUID} from 'angular2-uuid';
 import { Overlay } from 'ngx-modialog';
-import {ModellerService} from "../modeller.service";
 declare let fabric;
 
 
@@ -25,7 +24,7 @@ export class ModellingAreaComponent implements OnInit {
   private linkMode: boolean;
   private linkConnector: any;
 
-  constructor(public mService: ModellerService) {
+  constructor() {
   }
 
   ngOnInit() {
@@ -34,14 +33,10 @@ export class ModellingAreaComponent implements OnInit {
     this.canvas.setHeight(document.getElementById('container').offsetHeight);
     this.canvas.setWidth(document.getElementById('container').offsetWidth);
 
-
     //this.canvas.addEventListener(self, 'dblclick',this.canvas.getActiveObject());
     fabric.util.addListener(this.canvas.upperCanvasEl, 'dblclick', (event) => {
       console.log("double click captured");
       if (this.canvas.getActiveObject().get('type') === 'group' && this.canvas.getActiveObject()._objects.length == 2) {
-        //********
-        //  START LABELING
-        //********
         let element;
         let label;
         let items;
@@ -122,7 +117,6 @@ export class ModellingAreaComponent implements OnInit {
       let items;
       fabric.Image.fromURL('../assets/images/' + element.imageURL, (img) => {
         oImg = img.set({
-          uuid: element.uuid,
           id: element.id,
           left: 0,
           top: 0,
@@ -142,9 +136,6 @@ export class ModellingAreaComponent implements OnInit {
         //this.canvas.add(label).renderAll();
         //this.canvas.add(oImg).renderAll();
         this.canvas.add(group).renderAll();
-
-        element.tempLabel = label.text;
-        this.mService.createElementInOntology(element);
         });
 
       }
