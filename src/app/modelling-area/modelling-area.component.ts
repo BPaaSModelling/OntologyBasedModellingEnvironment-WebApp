@@ -6,6 +6,7 @@ import {VariablesSettings} from "../_settings/variables.settings";
 import {isNullOrUndefined} from "util";
 import {UUID} from 'angular2-uuid';
 import { Overlay } from 'ngx-modialog';
+import {ModellerService} from "../modeller.service";
 declare let fabric;
 
 
@@ -24,7 +25,7 @@ export class ModellingAreaComponent implements OnInit {
   private linkMode: boolean;
   private linkConnector: any;
 
-  constructor() {
+  constructor(public mService: ModellerService) {
   }
 
   ngOnInit() {
@@ -83,6 +84,7 @@ export class ModellingAreaComponent implements OnInit {
             }
             let new_group = new fabric.Group([element, element.label]);
             this.canvas.add(new_group).renderAll();
+            this.mService.editLabel(element.uuid);
           }
         }
         });
@@ -136,6 +138,9 @@ export class ModellingAreaComponent implements OnInit {
         //this.canvas.add(label).renderAll();
         //this.canvas.add(oImg).renderAll();
         this.canvas.add(group).renderAll();
+
+        element.tempLabel = label.text;
+        this.mService.createElementInOntology(element);
         });
 
       }

@@ -11,11 +11,11 @@ import {UUID} from 'angular2-uuid';
   styleUrls: ['./palette-area.component.css']
 })
 export class PaletteAreaComponent implements OnInit {
-  @Output()  sendElementFromPalette = new EventEmitter();
+  @Output() sendElementFromPalette = new EventEmitter();
 
   public items = [
-   // { name: 'John', otherProperty: 'Foo' },
-   // { name: 'Joe', otherProperty: 'Bar' }
+    // { name: 'John', otherProperty: 'Foo' },
+    // { name: 'Joe', otherProperty: 'Bar' }
   ];
   @ViewChild(ContextMenuComponent) public basicMenu: ContextMenuComponent;
 
@@ -28,11 +28,12 @@ export class PaletteAreaComponent implements OnInit {
   ngOnInit() {
   }
 
-  private addNewShape(a: MetamodelElementModel): void {
+  private addNewShape(a: PaletteElementModel): void {
     //Here i give to the paletteElement a new ID, so that when this is received by the modeller, it recognize it as a new Element to create
-    let uuid = UUID.UUID();
-    let b: MetamodelElementModel = Object.assign({}, a);
-    b.id = 'id' + uuid;
+    const uuid = UUID.UUID();
+    const b: PaletteElementModel = Object.assign({}, a);
+    //b.id = a.id;
+    b.uuid = uuid;
     this.sendElementFromPalette.emit(b);
-      }
+  }
 }
