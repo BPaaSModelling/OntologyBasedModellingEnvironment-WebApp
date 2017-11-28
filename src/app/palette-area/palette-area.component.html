@@ -5,7 +5,7 @@
   <nav class="element-container">
     <ng-container *ngFor="let element of mService.paletteElements">
     <ul class="element" *ngIf="(element.paletteCategory == category.id)">
-      <li class="paletteElement"><a (click)="addNewShape(element)"><img class="thumbnail"  src="../assets/images/{{element.thumbnailURL}}" /></a>
+      <li class="paletteElement" ><a [contextMenu]="rightClickMenu" [contextMenuSubject]="element" (click)="addNewShape(element)"><img class="thumbnail"  src="../assets/images/{{element.thumbnailURL}}" /></a>
         <app--tool-recursive-palette-element (sendElementFromRecursiveElement)="addNewShape($event)" [child]="element"></app--tool-recursive-palette-element>
       </li>
     </ul>
@@ -14,3 +14,25 @@
 </div>
 
 
+ <context-menu>
+   <ng-template let-element contextMenuItem (execute)="showMessage('Hi, ' + $event.item.name)">
+     Extend {{element.label}}
+   </ng-template>
+   <ng-template contextMenuItem [subMenu]="saySubMenu">
+     Edit
+   </ng-template>
+   <context-menu #saySubMenu>
+     <ng-template contextMenuItem (execute)="showMessage('Hi, ' + $event.item.name)">
+       Add new Attribute / Property
+     </ng-template>
+     <ng-template let-element contextMenuItem (execute)="showMessage('Hola, ' + $event.item.name)">
+       Edit {{element.label}}
+     </ng-template>
+   </context-menu>
+   <ng-template let-element contextMenuItem (execute)="removeFromPalette($event)">
+     Hide
+   </ng-template>
+   <ng-template let-element contextMenuItem (execute)="removeFromPalette($event)">
+     Delete
+   </ng-template>
+ </context-menu>

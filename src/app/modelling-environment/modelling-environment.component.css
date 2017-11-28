@@ -16,5 +16,15 @@
   width: 97%;
 }
 
+.fullWindow{
+  position: fixed;
+  top: 0;
+
+  width: 80%;
+  background-color: white;
+  margin:0 auto;
+  align: center;
+}
+
 
 

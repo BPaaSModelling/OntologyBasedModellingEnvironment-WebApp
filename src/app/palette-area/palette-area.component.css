@@ -94,5 +94,32 @@ app--tool-recursive-palette-element:hover {
 .category-title {
   background-image: url(../../assets/images/background-categories.png);
   background-repeat: repeat-x;
+}
+
+/deep/ .ngx-contextmenu .dropdown-menu {
+  border: solid 1px grey;
+  background-color: white;
+  padding: 0;
+  min-width: 180px;
+  border-radius: 4px;
+}
+/deep/ .ngx-contextmenu li {
+  display: block;
+}
+/deep/ .ngx-contextmenu li:first-child {
+  border-top:none;
+}
+/deep/ .ngx-contextmenu a {
+  color:black;
+  display: block;
+  padding: 0.3em 0.3em;
+  text-decoration: none;
+}
+/deep/ .ngx-contextmenu a:hover {
+  color:black;
+  background-color:lightgrey;
+  border-radius: 4px;
+}
+.ng-template {
 
 }

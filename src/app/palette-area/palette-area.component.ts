@@ -1,9 +1,10 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {MetamodelElementModel} from '../_models/MetamodelElement.model';
 import {ModellerService} from '../modeller.service';
 import {PaletteElementModel} from '../_models/PaletteElement.model';
 import {ContextMenuComponent} from 'ngx-contextmenu';
 import {UUID} from 'angular2-uuid';
+import { ContextMenuService } from 'ngx-contextmenu';
 
 @Component({
   selector: 'app-palette-area',
@@ -11,14 +12,13 @@ import {UUID} from 'angular2-uuid';
   styleUrls: ['./palette-area.component.css']
 })
 export class PaletteAreaComponent implements OnInit {
+
+  @ViewChild(ContextMenuComponent) public rightClickMenu: ContextMenuComponent;
+  // Optional
+  @Input() contextMenu: ContextMenuComponent;
+  @Input() contextMenuSubject: PaletteElementModel;
+
   @Output() sendElementFromPalette = new EventEmitter();
-
-  public items = [
-    // { name: 'John', otherProperty: 'Foo' },
-    // { name: 'Joe', otherProperty: 'Bar' }
-  ];
-  @ViewChild(ContextMenuComponent) public basicMenu: ContextMenuComponent;
-
   constructor(private mService: ModellerService) {
     this.mService.queryPaletteCategories();
     this.mService.queryPaletteElements();
@@ -26,6 +26,7 @@ export class PaletteAreaComponent implements OnInit {
   }
 
   ngOnInit() {
+
   }
 
   private addNewShape(a: PaletteElementModel): void {
@@ -33,7 +34,19 @@ export class PaletteAreaComponent implements OnInit {
     const uuid = UUID.UUID();
     const b: PaletteElementModel = Object.assign({}, a);
     //b.id = a.id;
-    b.uuid = uuid;
+    b.tempUuid = uuid;
     this.sendElementFromPalette.emit(b);
   }
+
+  removeFromPalette($event: any){
+    console.log('clicked ', $event);
+    console.log($event);
+    if (confirm('Do you want to remove ' + $event.item.label + ' from palette?')) {
+      // Save it!
+    } else {
+      // Do nothing!
+    }
+  };
+
+
 }

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, SimpleChanges, HostListener} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, SimpleChanges, HostListener, Output} from '@angular/core';
 import 'fabric';
 import {MetamodelElementModel} from "../_models/MetamodelElement.model";
 import {PaletteElementModel} from "../_models/PaletteElement.model";
@@ -18,6 +18,7 @@ declare let fabric;
 export class ModellingAreaComponent implements OnInit {
 
   @Input() new_element: PaletteElementModel;
+  @Output() showPropElement = new EventEmitter();
   canvas: any;
   private boundBox;
   private shape;
@@ -106,7 +107,7 @@ export class ModellingAreaComponent implements OnInit {
       this.deleteElement();
     }
     if (this.key === 'Enter' && this.canvas.getActiveObject().type === 'group'){
-      this.openPropertyWindow();
+      this.openPropertyWindow(this.canvas.getActiveObject());
     }
   }
 
@@ -119,19 +120,22 @@ export class ModellingAreaComponent implements OnInit {
       let items;
       fabric.Image.fromURL('../assets/images/' + element.imageURL, (img) => {
         oImg = img.set({
-          id: element.id,
+          elementUuid: element.tempUuid,
+          elementType: element.id,
+          isAnElement: true,
           left: 0,
           top: 0,
           angle: 0}).scale(1);
 
         label = new fabric.Textbox("New " + element.label + " text text", {
           id: UUID.UUID(),
+          modellingElement: true,
           top: oImg.top + 5,
           left: oImg.left + 5,
           fontSize: 12,
           width: oImg.width - 10 ,
           textAlign: 'center',
-          modellingElement: true,
+
         });
         oImg.set({label: label});
         group = new fabric.Group([oImg, oImg.label]);
@@ -146,7 +150,7 @@ export class ModellingAreaComponent implements OnInit {
       }
 } //https://stackoverflow.com/questions/24449481/fabric-js-grouped-itext-not-editable
 
-    deleteElement(): void {
+  deleteElement(): void {
     if (this.canvas.getActiveObject() !== undefined) {
       this.canvas.getActiveObject().remove();
     }
@@ -156,12 +160,26 @@ export class ModellingAreaComponent implements OnInit {
     }
     }
 
-  openPropertyWindow() {
-   console.log("ciao");
-
+  openPropertyWindow(element) {
+    this.showPropElement.emit(this.getElementFromGroup(element));
   }
 
-    degroupObjects(object){
+  getElementFromGroup(group){
+    let items;
+    let modElement;
+    if (group.get('type') === 'group' ){
+      items = group._objects;
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].get('isAnElement') === true) {
+          modElement = items[i];
+          //console.log('found modElement: ' + modElement.elementType + ", " + modElement.elementUuid + ", " + modElement.label.text )
+        }
+      }
+    }
+    return modElement;
+  }
+
+  degroupObjects(object){
     console.log(object);
     }
 }

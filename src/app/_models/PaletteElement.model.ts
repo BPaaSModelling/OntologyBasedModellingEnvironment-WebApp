@@ -1,6 +1,6 @@
 export class PaletteElementModel {
   id: string;
-  uuid: string;
+  type: string;
   label: string;
   imageURL: string;
   thumbnailURL: string;
@@ -12,6 +12,6 @@ export class PaletteElementModel {
   textLabelSizeX2: number;
   textLabelSizeY2: number;
   childElements: PaletteElementModel[];
-  tempLabel;
-
+  tempLabel: string;
+  tempUuid: string;
 }
