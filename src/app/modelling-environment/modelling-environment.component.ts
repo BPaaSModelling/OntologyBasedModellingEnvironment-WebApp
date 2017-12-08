@@ -2,8 +2,12 @@ import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import {ModellerService} from "../modeller.service";
 import {MetamodelElementModel} from "../_models/MetamodelElement.model";
 import {PaletteElementModel} from "../_models/PaletteElement.model";
-import {PropertyWindowComponent} from "../property-window/property-window.component";
+import {ModalInstancePropertiesComponent,} from "../modal-instance-properties/modal-instance-properties.component";
 import {MatDialog} from "@angular/material";
+import {ModalPaletteElementPropertiesComponent} from "../modal-palette-element-properties/modal-palette-element-properties.component";
+import {ModalExtendPaletteElementComponent} from "../modal-extend-palette-element/modal-extend-palette-element.component";
+import {VariablesSettings} from "../_settings/variables.settings";
+import {ModalConnectorElementPropertiesComponent} from "../modal-connector-element-properties/modal-connector-element-properties.component";
 
 @Component({
   selector: 'app-modelling-environment',
@@ -30,15 +34,48 @@ export class ModellingEnvironmentComponent implements OnInit {
     this.new_element = new_element;
   }
 
-  togglePropertyWindow(element: Object){
+  toggleInstancePropertiesModal(element: Object){
     console.log("ricevuto elemento " + element);
 
-      let dialogRef = this.dialog.open(PropertyWindowComponent, {
-        height:'500px',
+      let dialogRef = this.dialog.open(ModalInstancePropertiesComponent, {
+        height:'80%',
+        width: '800px',
         disableClose: true,
       });
 
   }
+  togglePaletteElementPropertiesModal(element: PaletteElementModel){
+    //console.log(element)
+    console.log(element.paletteCategory);
+    console.log(VariablesSettings.paletteCategoryConnectorsURI);
+    if (element.paletteCategory === VariablesSettings.paletteCategoryConnectorsURI) {
+      //Here i call another modal for defining connectors
+      let dialogRef = this.dialog.open(ModalConnectorElementPropertiesComponent, {
+        data: { paletteElement: element},
+        height:'80%',
+        width: '800px',
+        disableClose: true,
+      });
+    } else {
+      let dialogRef = this.dialog.open(ModalPaletteElementPropertiesComponent, {
+        data: { paletteElement: element},
+        height:'80%',
+        width: '800px',
+        disableClose: true,
+      });
+    }
+
+  }
+
+toggleExtendPaletteElementModal(element: PaletteElementModel){
+  //console.log(element)
+  let dialogRef = this.dialog.open(ModalExtendPaletteElementComponent, {
+    data: { paletteElement: element},
+    height:'80%',
+    width: '800px',
+    disableClose: true,
+  });
+}
 }
 
 // https://github.com/shlomiassaf/ngx-modialog

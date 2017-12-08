@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PropertyWindowComponent } from './property-window.component';
+import { PropertyWindowComponent } from './modal-instance-properties.component';
 
 describe('PropertyWindowComponent', () => {
   let component: PropertyWindowComponent;

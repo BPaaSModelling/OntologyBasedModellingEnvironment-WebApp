@@ -18,7 +18,7 @@ declare let fabric;
 export class ModellingAreaComponent implements OnInit {
 
   @Input() new_element: PaletteElementModel;
-  @Output() showPropElement = new EventEmitter();
+  @Output() showElementPropertyModal = new EventEmitter();
   canvas: any;
   private boundBox;
   private shape;
@@ -107,7 +107,7 @@ export class ModellingAreaComponent implements OnInit {
       this.deleteElement();
     }
     if (this.key === 'Enter' && this.canvas.getActiveObject().type === 'group'){
-      this.openPropertyWindow(this.canvas.getActiveObject());
+      this.openInstancePropertyModal(this.canvas.getActiveObject());
     }
   }
 
@@ -118,18 +118,17 @@ export class ModellingAreaComponent implements OnInit {
       let oImg;
       let group;
       let items;
-      fabric.Image.fromURL('../assets/images/' + element.imageURL, (img) => {
+      oImg = fabric.Image.fromURL('../assets/images/' + element.imageURL, (img) => {
         oImg = img.set({
-          elementUuid: element.tempUuid,
-          elementType: element.id,
+          uuid: element.tempUuid,
+          classType: element.id,
           isAnElement: true,
           left: 0,
           top: 0,
           angle: 0}).scale(1);
 
-        label = new fabric.Textbox("New " + element.label + " text text", {
+        label = new fabric.Textbox("New " + element.label, {
           id: UUID.UUID(),
-          modellingElement: true,
           top: oImg.top + 5,
           left: oImg.left + 5,
           fontSize: 12,
@@ -137,14 +136,16 @@ export class ModellingAreaComponent implements OnInit {
           textAlign: 'center',
 
         });
-        oImg.set({label: label});
-        group = new fabric.Group([oImg, oImg.label]);
-        //this.canvas.add(label).renderAll();
-        //this.canvas.add(oImg).renderAll();
-        this.canvas.add(group).renderAll();
 
-        element.tempLabel = label.text;
-        this.mService.createElementInOntology(element);
+        oImg.set({label: label,
+          textLabel: label.text});
+
+        group = new fabric.Group([oImg, oImg.label]);
+
+        this.canvas.add(group).renderAll();
+        console.log(oImg)
+        this.mService.createElementInOntology(oImg.toObject());
+
         });
 
       }
@@ -160,8 +161,8 @@ export class ModellingAreaComponent implements OnInit {
     }
     }
 
-  openPropertyWindow(element) {
-    this.showPropElement.emit(this.getElementFromGroup(element));
+  openInstancePropertyModal(element) {
+    this.showElementPropertyModal.emit(this.getElementFromGroup(element));
   }
 
   getElementFromGroup(group){

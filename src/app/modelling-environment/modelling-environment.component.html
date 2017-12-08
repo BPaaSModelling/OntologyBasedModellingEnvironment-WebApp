@@ -6,15 +6,26 @@
 <!-- Include Bootstrap CSS CDN link
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet"> -->
 <div class="flex-container"  fxLayout="row">
+
     <div class="palette-area">
-      <app-palette-area (sendElementFromPalette)="sendElementToCanvas($event)"></app-palette-area>
+      <app-palette-area
+        (sendElementFromPalette)="sendElementToCanvas($event)"
+        (showPaletteElementPropertyModal)="togglePaletteElementPropertiesModal($event)"
+        (showExtendPaletteElementModal)="toggleExtendPaletteElementModal($event)">
+
+      </app-palette-area>
    </div>
+
     <div class="modelling-area">
-      <app-modelling-area [new_element] = "new_element" (showPropElement)="togglePropertyWindow($event)"></app-modelling-area>
+      <app-modelling-area [new_element] = "new_element"
+                          (showElementPropertyModal)="toggleInstancePropertiesModal($event)">
+
+      </app-modelling-area>
     </div>
+
 </div>
 
-<!--<div class="fullWindow" ng-cloak><app-property-window [showMe]="showProp"></app-property-window></div> -->
+<!--<div class="fullWindow" ng-cloak><app-modal-instance-properties [showMe]="showProp"></app-modal-instance-properties></div> -->
 
 
 

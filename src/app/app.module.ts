@@ -8,13 +8,21 @@ import {ModellingAreaComponent } from './modelling-area/modelling-area.component
 import {RouterModule, Routes} from '@angular/router';
 import {ModellerService} from './modeller.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {MatListModule, MatButtonModule, MatToolbarModule, MatDialogModule, MatTabsModule } from '@angular/material';
+import {
+  MatListModule, MatButtonModule, MatToolbarModule, MatDialogModule, MatTabsModule, MatCardModule,
+  MatSelectModule, MatOptionModule, MatInputModule, MatFormFieldModule, MatCheckboxModule, MatExpansionModule
+} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToolRecursivePaletteElementComponent} from './-tool-recursive-palette-element/-tool-recursive-palette-element.component';
 import {ContextMenuModule} from 'ngx-contextmenu';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { PropertyWindowComponent } from './property-window/property-window.component';
-//import {ShContextMenuModule} from 'ng2-right-click-menu';
+import {ModalInstancePropertiesComponent} from './modal-instance-properties/modal-instance-properties.component';
+import {ModalPaletteElementPropertiesComponent} from './modal-palette-element-properties/modal-palette-element-properties.component';
+import { ModalExtendPaletteElementComponent } from './modal-extend-palette-element/modal-extend-palette-element.component';
+import {ModalConnectorElementPropertiesComponent} from './modal-connector-element-properties/modal-connector-element-properties.component';
+import { ModalInsertPropertyComponent } from './modal-insert-property/modal-insert-property.component';
+import { ModalConnectorManageCombinationsComponent } from './modal-connector-manage-combinations/modal-connector-manage-combinations.component';
+
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
@@ -27,25 +35,43 @@ const appRoutes: Routes = [
     PaletteAreaComponent,
     ModellingAreaComponent,
     ToolRecursivePaletteElementComponent,
-    PropertyWindowComponent,
+    ModalInstancePropertiesComponent,
+    ModalPaletteElementPropertiesComponent,
+    ModalExtendPaletteElementComponent,
+    ModalConnectorElementPropertiesComponent,
+    ModalInsertPropertyComponent,
+    ModalConnectorManageCombinationsComponent
   ],
   entryComponents: [
-    PropertyWindowComponent
+    ModalInstancePropertiesComponent,
+    ModalPaletteElementPropertiesComponent,
+    ModalExtendPaletteElementComponent,
+    ModalConnectorElementPropertiesComponent,
+    ModalInsertPropertyComponent
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     HttpModule,
     JsonpModule,
+    NgbModule,
     FlexLayoutModule,
+    ContextMenuModule,
+    BrowserAnimationsModule,
     MatListModule,
     MatButtonModule,
     MatToolbarModule,
     MatDialogModule,
     MatTabsModule,
-    BrowserAnimationsModule,
-    ContextMenuModule,
-    NgbModule,
+    MatCardModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatOptionModule,
+    MatOptionModule,
+    MatCheckboxModule,
+    MatExpansionModule,
+
 //    ShContextMenuModule,
   ],
   providers: [ModellerService],

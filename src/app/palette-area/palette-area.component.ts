@@ -13,12 +13,16 @@ import { ContextMenuService } from 'ngx-contextmenu';
 })
 export class PaletteAreaComponent implements OnInit {
 
-  @ViewChild(ContextMenuComponent) public rightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent) public elementRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent) public paletteRightClickMenu: ContextMenuComponent;
   // Optional
   @Input() contextMenu: ContextMenuComponent;
   @Input() contextMenuSubject: PaletteElementModel;
 
+
   @Output() sendElementFromPalette = new EventEmitter();
+  @Output() showPaletteElementPropertyModal = new EventEmitter();
+  @Output() showExtendPaletteElementModal = new EventEmitter();
   constructor(private mService: ModellerService) {
     this.mService.queryPaletteCategories();
     this.mService.queryPaletteElements();
@@ -48,5 +52,12 @@ export class PaletteAreaComponent implements OnInit {
     }
   };
 
+  openPaletteElementPropertiesModal(element: PaletteElementModel){
+    this.showPaletteElementPropertyModal.emit(element);
+  }
+
+  openExtendPaletteElementModal(element: PaletteElementModel){
+    this.showExtendPaletteElementModal.emit(element);
+  }
 
 }

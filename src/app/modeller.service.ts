@@ -40,9 +40,11 @@ export class ModellerService {
       }, error => console.log('Could not query PaletteElements'));
   }
 
-  createElementInOntology(element: Object): string {
+  createElementInOntology(oImg): string {
+    console.log(JSON.stringify(oImg));
     let result = '';
-    this.http.post(EndpointSettings.getCreateElementEndpoint(), JSON.stringify(element))
+
+    this.http.post(EndpointSettings.getCreateElementEndpoint(), JSON.stringify(oImg))
       .map(response => response.json()).subscribe(
       data => {
         result = 'OK';
