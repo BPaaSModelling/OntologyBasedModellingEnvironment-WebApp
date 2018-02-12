@@ -1,17 +1,23 @@
 export class PaletteElementModel {
   id: string;
-  type: string;
   label: string;
+  paletteCategory: string;
+  parentElement: string;
+  hiddenFromPalette: boolean;
+  childElements: PaletteElementModel[];
+  representedLanguageClass: string;
+  shape: string;
+  backgroundColor: string;
+  height: string;
+  width: string;
+  labelPosition: string;
+  iconURL: string;
+  iconPosition: string;
+  usesImages: string;
   imageURL: string;
   thumbnailURL: string;
-  showedInPalette: boolean;
-  paletteCategory: string;
-  representedClass: string;
-  representedClassLabel: string;
-  parentElement: string;
-  textLabelSizeX2: number;
-  textLabelSizeY2: number;
-  childElements: PaletteElementModel[];
-  tempLabel: string;
-  tempUuid: string;
+
+  tempLabel;
+  tempUuid;
+
 }

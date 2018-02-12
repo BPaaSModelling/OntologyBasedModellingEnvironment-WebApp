@@ -27,10 +27,10 @@ export class PaletteAreaComponent implements OnInit {
     this.mService.queryPaletteCategories();
     this.mService.queryPaletteElements();
 
+
   }
 
   ngOnInit() {
-
   }
 
   private addNewShape(a: PaletteElementModel): void {

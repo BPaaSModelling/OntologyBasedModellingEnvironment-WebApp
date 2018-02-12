@@ -21,7 +21,6 @@ export class ToolRecursivePaletteElementComponent implements OnInit {
   }
 
   ngOnInit() {
-
   }
 
   private addNewShape(a: MetamodelElementModel): void {

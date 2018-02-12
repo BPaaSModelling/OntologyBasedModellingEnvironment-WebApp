@@ -2,12 +2,12 @@
   <mat-toolbar>
     <div class="mat-toolbar-tools">
      <!-- <h2>Extend {{data.paletteElement.label}}</h2>-->
-      <h2>Extend User Task</h2>
+      <h2>Create a new Modeling Element</h2>
     </div>
   </mat-toolbar>
   <mat-dialog-content style="max-width:800px;max-height:810px; ">
 
-        <h2 class="mat-display-2">Create a new Modeling Element</h2>
+        <h2 class="mat-display-2">Extend {{data.paletteElement.label}}</h2>
         <mat-card>
           <form class="form">
 
@@ -16,17 +16,8 @@
             </mat-form-field>
 
            <mat-form-field class="full-width">
-              <mat-select placeholder="Is mapped to Domain Ontology Concept">
-                <mat-option value="Activity Task">Activity Task</mat-option>
-                <mat-option value="Business Rule Task">Business Rule Task</mat-option>
-                <mat-option value="Discretionary Task">Discretionary Task</mat-option>
-                <mat-option value="Confirm Transfer">Confirm Transfer</mat-option>
-                <mat-option value="Exclusive Gateway">Exclusive Gateway</mat-option>
-                <mat-option value="Finalize KoGu">Finalize KoGu</mat-option>
-                <mat-option value="Make Disposition Of Case">Make Disposition Of Case</mat-option>
-                <mat-option value="Send Task">Send Task</mat-option>
-                <mat-option value="User Task">User Task</mat-option>
-                <mat-option value="do:PrepareKoGu">do:PrepareKoGu</mat-option>
+              <mat-select placeholder="Is mapped to Domain Ontology Concept" >
+                <mat-option *ngFor="let class of (mService.domainClasse$ | async)" [value]="class.id">{{class.label}}</mat-option>
               </mat-select>
             </mat-form-field>
 
@@ -34,25 +25,14 @@
             <mat-checkbox ng-model="rootElement">Palette root element</mat-checkbox>
 
             <mat-form-field class="full-width">
-              <mat-select disabled="false" placeholder="Select the parent element">
+              <mat-select  placeholder="Select the parent element">
                 <mat-option value="Activity Task">Activity Task</mat-option>
-                <mat-option value="Business Rule Task">Business Rule Task</mat-option>
-                <mat-option value="Call Activity">Call Activity</mat-option>
-                <mat-option value="Confirm Transfer">Confirm Transfer</mat-option>
-                <mat-option value="Exclusive Gateway">Exclusive Gateway</mat-option>
-                <mat-option value="Finalize KoGu">Finalize KoGu</mat-option>
-                <mat-option value="Make Disposition Of Case">Make Disposition Of Case</mat-option>
-                <mat-option value="Send Task">Send Task</mat-option>
-                <mat-option value="User Task">User Task</mat-option>
               </mat-select>
             </mat-form-field>
 
             <mat-form-field class="full-width">
               <mat-select placeholder="Category">
-                <mat-option value="Activities">Activities</mat-option>
-                <mat-option value="Data">Data</mat-option>
-                <mat-option value="Events">Events</mat-option>
-                <mat-option value="Gateways">Gateways</mat-option>
+                <mat-option *ngFor="let category of (mService.paletteCategorie$ | async)" [value]="category.id">{{category.label}}</mat-option>
               </mat-select>
             </mat-form-field>
 
