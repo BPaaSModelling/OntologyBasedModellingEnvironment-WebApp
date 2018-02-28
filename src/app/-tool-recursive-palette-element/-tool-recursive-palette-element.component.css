@@ -15,7 +15,6 @@ ul > li{
 ul > li:hover{
   background: lightgoldenrodyellow;
   background-image: url(../../assets/images/background-highlight.png);
-  background-repeat: repeat-x;
 }
 
 ul {

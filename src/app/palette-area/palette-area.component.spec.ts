@@ -10,7 +10,7 @@ describe('PaletteAreaComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ PaletteAreaComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

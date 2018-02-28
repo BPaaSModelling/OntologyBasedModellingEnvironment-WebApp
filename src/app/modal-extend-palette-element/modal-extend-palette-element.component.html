@@ -1,0 +1,114 @@
+<form>
+  <mat-toolbar>
+    <div class="mat-toolbar-tools">
+     <!-- <h2>Extend {{data.paletteElement.label}}</h2>-->
+      <h2>Create a new Modeling Element</h2>
+    </div>
+  </mat-toolbar>
+  <mat-dialog-content style="max-width:800px;max-height:810px; ">
+
+        <h2 class="mat-display-2">Extend {{data.paletteElement.label}}</h2>
+        <mat-card>
+          <form class="form">
+
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Label">
+            </mat-form-field>
+
+           <mat-form-field class="full-width">
+              <mat-select placeholder="Is mapped to Domain Ontology Concept" >
+                <mat-option *ngFor="let class of (mService.domainClasse$ | async)" [value]="class.id">{{class.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+
+            <mat-checkbox ng-model="rootElement">Palette root element</mat-checkbox>
+
+            <mat-form-field class="full-width">
+              <mat-select  placeholder="Select the parent element">
+                <mat-option value="Activity Task">Activity Task</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <mat-select placeholder="Category">
+                <mat-option *ngFor="let category of (mService.paletteCategorie$ | async)" [value]="category.id">{{category.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input type="url" matInput placeholder="Palette Image URL">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input type="url" matInput placeholder="Canvas Image URL">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input type="number" matInput placeholder="Min height of Canvas Image (in px)">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input type="number" matInput placeholder="Min width of Canvas Image (in px)">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <mat-select placeholder="Label position">
+                <mat-option value="Inside">Inside</mat-option>
+                <mat-option value="Outside - Up">Outside - Up</mat-option>
+                <mat-option value="Outside - Down">Outside - Down</mat-option>
+                <mat-option value="Hide">Hide</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <br />
+            <!--<mat-accordion>
+              Default properties:
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>Property1</mat-panel-title>
+                  <mat-panel-description>DataObject</mat-panel-description>
+                </mat-expansion-panel-header>
+                <label>Range: Activity Task</label>
+                <mat-form-field style="margin-left:50px;">
+                  <input matInput placeholder="Default value">
+                </mat-form-field>
+
+              </mat-expansion-panel>
+
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>Property2</mat-panel-title>
+                  <mat-panel-description>Datatype</mat-panel-description>
+                </mat-expansion-panel-header>
+                <label>Range: Integer</label>
+                <mat-form-field style="margin-left:50px;">
+                  <input matInput placeholder="Default value">
+                </mat-form-field>
+
+              </mat-expansion-panel>
+
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>Property3</mat-panel-title>
+                  <mat-panel-description>Datatype</mat-panel-description>
+                </mat-expansion-panel-header>
+                <label>Range: String</label>
+                <mat-form-field style="margin-left:50px;">
+                  <input matInput placeholder="Default value">
+                </mat-form-field>
+
+              </mat-expansion-panel>
+
+            </mat-accordion> -->
+          </form>
+        </mat-card>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions layout="row">
+    <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus>Cancel</button>
+    <button mat-raised-button color="primary" ng-click="answer('useful')" style="margin-right:20px;" >Ok</button>
+  </mat-dialog-actions>
+</form>
+
+<!-- https://github.com/angular/material2/issues/5269 -->

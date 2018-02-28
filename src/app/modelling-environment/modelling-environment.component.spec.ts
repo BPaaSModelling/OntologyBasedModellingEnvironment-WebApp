@@ -10,7 +10,7 @@ describe('ModellingEnvironmentComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ModellingEnvironmentComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

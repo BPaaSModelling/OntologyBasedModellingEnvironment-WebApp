@@ -1,17 +1,49 @@
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
 
-<div class="category"*ngFor="let category of (mService.paletteCategorie$ | async)">
+<div class="category" [contextMenu]="paletteRightClickMenu" *ngFor="let category of (mService.paletteCategorie$ | async)">
   <p class="category-title">{{category.label}}</p>
   <nav class="element-container">
     <ng-container *ngFor="let element of mService.paletteElements">
-    <ul class="element" *ngIf="(element.paletteCategory == category.id)">
-      <li class="paletteElement" ><a (click)="addNewShape(element)"><img class="thumbnail"  src="../assets/images/{{element.thumbnailURL}}" /></a>
-        <app--tool-recursive-palette-element (sendElementFromRecursiveElement)="addNewShape($event)" [child]="element"></app--tool-recursive-palette-element>
-      </li>
-    </ul>
+      <ul class="element" *ngIf="(element.paletteCategory == category.id)">
+        <li class="paletteElement" ><a [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element" (click)="addNewShape(element)"><img class="thumbnail"  src="../assets/images/{{element.thumbnailURL}}" /></a>
+          <app--tool-recursive-palette-element (sendElementFromRecursiveElement)="addNewShape($event)" [child]="element"></app--tool-recursive-palette-element>
+        </li>
+      </ul>
     </ng-container>
   </nav>
 </div>
 
 
+<context-menu #elementRightClickMenu>
+  <ng-template let-element contextMenuItem (execute)="openExtendPaletteElementModal($event.item)">
+    Extend {{element.label}}
+  </ng-template>
+  <ng-template contextMenuItem [subMenu]="saySubMenu">
+    Edit
+  </ng-template>
+  <context-menu #saySubMenu>
+    <ng-template contextMenuItem (execute)="something">
+      Add new Attribute / Property
+    </ng-template>
+    <ng-template let-element contextMenuItem (execute)="openPaletteElementPropertiesModal($event.item)">
+      Edit {{element.label}}
+    </ng-template>
+  </context-menu>
+  <ng-template let-element contextMenuItem (execute)="removeFromPalette($event)">
+    Hide
+  </ng-template>
+  <ng-template let-element contextMenuItem (execute)="something">
+    Delete
+  </ng-template>
+</context-menu>
 
 
+<context-menu #paletteRightClickMenu>
+  <ng-template contextMenuItem (execute)="something">
+    Add new element to the Palette
+  </ng-template>
+  <ng-template contextMenuItem (execute)="something">
+    Manage Elements
+  </ng-template>
+
+</context-menu>

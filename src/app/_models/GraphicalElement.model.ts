@@ -1,4 +1,4 @@
-export class MetamodelElementModel {
+export class GraphicalElementModel {
   uuid: string;
   label: string;
   classType: string;
