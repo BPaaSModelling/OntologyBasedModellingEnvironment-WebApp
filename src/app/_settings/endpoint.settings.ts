@@ -5,7 +5,7 @@ export class EndpointSettings {
   private static PALETTECATEGORIES          : string = '/ModEnv/getPaletteCategories';
   private static CREATEELEMENT              : string = '/ModEnv/createPalletteElement';
   private static CREATEINSTANCE              : string = '/ModEnv/createCanvasInstance';
-  private static GETDOMAINCLASSES           : string = '/ModEnv/getDomainClasses';
+  private static GETDOMAINCLASSES           : string = '/ModEnv/getDomainOntologyClasses';
 
   public static getPaletteElementsEndpoint(): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.PALETTEELEMENTS;

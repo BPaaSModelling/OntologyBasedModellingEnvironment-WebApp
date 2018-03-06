@@ -12,12 +12,12 @@
           <form class="form">
 
             <mat-form-field class="full-width">
-              <input matInput placeholder="Label">
+              <input matInput placeholder="Label" name="input_label" [(ngModel)]="currentPaletteElement.label" [value]="currentPaletteElement.label">
             </mat-form-field>
 
            <mat-form-field class="full-width">
-              <mat-select placeholder="Is mapped to Domain Ontology Concept" >
-                <mat-option *ngFor="let class of (mService.domainClasse$ | async)" [value]="class.id">{{class.label}}</mat-option>
+              <mat-select placeholder="Is mapped to Domain Ontology Concept" name="input_domainOntology" [(ngModel)]="currentPaletteElement.representedLanguageClass" >
+                <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id">{{class.label}}</mat-option>
               </mat-select>
             </mat-form-field>
 
@@ -32,7 +32,7 @@
 
             <mat-form-field class="full-width">
               <mat-select placeholder="Category">
-                <mat-option *ngFor="let category of (mService.paletteCategorie$ | async)" [value]="category.id">{{category.label}}</mat-option>
+                <mat-option *ngFor="let category of mService.paletteCategories" [value]="category.id">{{category.label}}</mat-option>
               </mat-select>
             </mat-form-field>
 

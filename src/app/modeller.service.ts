@@ -14,9 +14,11 @@ import {QueryAnswerModel} from "./_models/QueryAnswer.model";
 export class ModellerService {
   private options: RequestOptions;
   public paletteCategorie$: Observable<PaletteCategoryModel[]> = Observable.of([]);
+  public paletteCategories: PaletteCategoryModel[] = []
   public paletteElement$: Observable<PaletteElementModel[]> = Observable.of([]);
   public paletteElements: PaletteElementModel[] = [];
   public domainClasse$: Observable<QueryAnswerModel[]> = Observable.of([]);
+  public domainClasses: QueryAnswerModel[] = [];
   constructor(private http: Http, private jsonp: Jsonp) {
     const headers = new Headers({ 'Content-Type': 'application/json'});
     this.options = new RequestOptions({headers: headers });
@@ -39,6 +41,7 @@ export class ModellerService {
       data => {
         //console.log('PaletteCategories received: ' + JSON.stringify(data));
         this.paletteCategorie$ = Observable.of(data);
+        this.paletteCategories = data;
       }, error => console.log('Could not query PaletteElements'));
   }
 
@@ -71,7 +74,7 @@ export class ModellerService {
       .subscribe(data => {
         //console.log('PaletteElements received: ' + JSON.stringify(data));
         this.domainClasse$ = Observable.of(data);
-
+        this.domainClasses = data;
       }, error => console.log('Could not query Domain Classes'));
 
   }

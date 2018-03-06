@@ -68,7 +68,7 @@ export class PaletteAreaComponent implements OnInit {
 
     console.log('stringified element:' + JSON.stringify(ele));
     this.mService.createElementInOntology(JSON.stringify(ele));
-    //this.showExtendPaletteElementModal.emit(element);
+    this.showExtendPaletteElementModal.emit(element);
   }
 
 }
