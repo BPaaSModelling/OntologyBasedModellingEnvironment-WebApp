@@ -43,10 +43,11 @@ export class ModellerService {
   }
 
   createElementInOntology(oImg): string {
-    console.log(JSON.stringify(oImg));
+    //console.log(JSON.stringify(oImg));
+    console.log(oImg);
     let result = '';
 
-    this.http.post(EndpointSettings.getCreateElementEndpoint(), JSON.stringify(oImg))
+    this.http.post(EndpointSettings.getCreateElementEndpoint(), oImg)
       .map(response => response.json()).subscribe(
       data => {
         result = 'OK';

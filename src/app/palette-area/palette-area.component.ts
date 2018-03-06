@@ -57,7 +57,18 @@ export class PaletteAreaComponent implements OnInit {
   }
 
   openExtendPaletteElementModal(element: PaletteElementModel){
-    this.showExtendPaletteElementModal.emit(element);
+    const ele = new PaletteElementModel();
+    ele.id = '';
+    ele.uuid = 'lo:SubReceiveActivity';
+    ele.label = 'Subtask Receive Activity';
+    ele.hiddenFromPalette = false;
+    ele.parentElement = 'http://fhnw.ch/modelingEnvironment/LanguageOntology#ReceiveTask';
+    ele.paletteCategory = 'lo:Category_Activities';
+    ele.representedLanguageClass = 'bpmn:ReceiveActivity';
+
+    console.log('stringified element:' + JSON.stringify(ele));
+    this.mService.createElementInOntology(JSON.stringify(ele));
+    //this.showExtendPaletteElementModal.emit(element);
   }
 
 }

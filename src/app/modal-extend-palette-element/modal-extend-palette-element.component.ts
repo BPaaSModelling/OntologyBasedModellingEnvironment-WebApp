@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {QueryAnswerModel} from "../_models/QueryAnswer.model";
 import {ModellerService} from "../modeller.service";
 
@@ -10,14 +10,25 @@ import {ModellerService} from "../modeller.service";
 })
 export class ModalExtendPaletteElementComponent implements OnInit {
 
- constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+ /*constructor(@Inject(MAT_DIALOG_DATA) public data: any,
   public mService: ModellerService) {
 
-  }
+  }*/
+
+  constructor(
+    public dialogRef: MatDialogRef<ModalExtendPaletteElementComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService) { }
+
 
   ngOnInit() {
     this.mService.queryDomainClasses();
     this.mService.queryPaletteCategories();
+  }
+
+  answer(val) {
+   console.log('val: ' + val);
+   console.log(this.data);
+   this.dialogRef.close();
   }
 
 }

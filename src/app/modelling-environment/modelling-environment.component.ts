@@ -63,6 +63,8 @@ export class ModellingEnvironmentComponent implements OnInit {
         width: '800px',
         disableClose: true,
       });
+
+
     }
 
   }
@@ -73,7 +75,12 @@ export class ModellingEnvironmentComponent implements OnInit {
       data: { paletteElement: element},
       height:'80%',
       width: '800px',
-      disableClose: true,
+      disableClose: false,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+alert(result);
     });
   }
 }

@@ -25,8 +25,8 @@
             <mat-checkbox ng-model="rootElement">Palette root element</mat-checkbox>
 
             <mat-form-field class="full-width">
-              <mat-select  placeholder="Select the parent element">
-                <mat-option value="Activity Task">Activity Task</mat-option>
+              <mat-select  placeholder="Parent element">
+                <mat-option [value]="data.paletteElement.label">{{data.paletteElement.label}}</mat-option>
               </mat-select>
             </mat-form-field>
 
@@ -105,10 +105,11 @@
 
   </mat-dialog-content>
 
-  <mat-dialog-actions layout="row">
-    <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus>Cancel</button>
-    <button mat-raised-button color="primary" ng-click="answer('useful')" style="margin-right:20px;" >Ok</button>
-  </mat-dialog-actions>
+
 </form>
+<mat-dialog-actions layout="row">
+  <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus>Cancel</button>
+  <button mat-raised-button color="primary" (click)="answer('hi')" style="margin-right:20px;" >Ok</button>
+</mat-dialog-actions>
 
 <!-- https://github.com/angular/material2/issues/5269 -->

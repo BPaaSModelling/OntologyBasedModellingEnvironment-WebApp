@@ -3,7 +3,8 @@ export class EndpointSettings {
   private static ENDPOINT                   : string = 'http://localhost:8080';
   private static PALETTEELEMENTS            : string = '/ModEnv/getPaletteElements';
   private static PALETTECATEGORIES          : string = '/ModEnv/getPaletteCategories';
-  private static CREATEELEMENT              : string = '/ModEnv/createElement';
+  private static CREATEELEMENT              : string = '/ModEnv/createPalletteElement';
+  private static CREATEINSTANCE              : string = '/ModEnv/createCanvasInstance';
   private static GETDOMAINCLASSES           : string = '/ModEnv/getDomainClasses';
 
   public static getPaletteElementsEndpoint(): string {
@@ -16,6 +17,10 @@ export class EndpointSettings {
 
   public static getCreateElementEndpoint(): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.CREATEELEMENT;
+  }
+
+  public static getCreateInstanceEndpoint(): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.CREATEINSTANCE;
   }
 
   public static getDomainClassesEndpoint(): string {
