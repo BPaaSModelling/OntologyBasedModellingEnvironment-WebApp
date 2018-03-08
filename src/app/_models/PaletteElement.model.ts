@@ -14,7 +14,7 @@ export class PaletteElementModel {
   labelPosition: string;
   iconURL: string;
   iconPosition: string;
-  usesImages: string;
+  usesImages: boolean;
   imageURL: string;
   thumbnailURL: string;
 

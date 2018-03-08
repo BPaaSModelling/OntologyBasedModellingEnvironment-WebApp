@@ -22,7 +22,7 @@ public currentPaletteElement: PaletteElementModel;
   constructor(
     public dialogRef: MatDialogRef<ModalExtendPaletteElementComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService) {
-    this.currentPaletteElement = this.data.paletteElement;
+    this.currentPaletteElement = new PaletteElementModel();
   }
 
 
@@ -32,12 +32,28 @@ public currentPaletteElement: PaletteElementModel;
   }
 
   answer(val) {
+
+    const ele = this.currentPaletteElement;
+    ele.id = '';
+    ele.uuid = 'lo:' + (this.currentPaletteElement.label).replace(new RegExp(' ', 'g'), '');
+    console.log('uuid:' + ele.uuid);
+    ele.label = this.currentPaletteElement.label;
+    ele.hiddenFromPalette = false;
+    ele.usesImages = false;
+    ele.parentElement = 'http://fhnw.ch/modelingEnvironment/LanguageOntology#' + (this.data.paletteElement.label).replace(new RegExp(' ', 'g'), '');
+    console.log('parent:' + ele.parentElement);
+    ele.paletteCategory = 'lo:Category_Activities';
+    ele.representedLanguageClass = 'bpmn:' + (this.currentPaletteElement.label).replace(new RegExp(' ', 'g'), ''); /*important property to display in the pallette*/
+
+    console.log('stringified element:' + JSON.stringify(ele));
+    this.mService.createElementInOntology(JSON.stringify(ele));
+
     //HERE I GET THE VALUES FROM THE GUI
-    console.log('label val:' + this.currentPaletteElement.label);
-    console.log('domain ontology val: ' + this.currentPaletteElement.representedLanguageClass);
+    //console.log('label val:' + this.currentPaletteElement.label);
+    //console.log('domain ontology val: ' + this.currentPaletteElement.representedLanguageClass);
     //THEN I SUPPOSE TO CALL THE SERVICE AND INSERT THE currentPaletteElement IN THE ONTOLOGY
-   console.log('val: ' + val);
-   console.log(this.data);
+   //console.log('val: ' + val);
+   //console.log(this.data);
    this.dialogRef.close();
   }
 
