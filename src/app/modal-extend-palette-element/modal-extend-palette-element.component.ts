@@ -35,14 +35,15 @@ public currentPaletteElement: PaletteElementModel;
 
     const ele = this.currentPaletteElement;
     ele.id = '';
-    ele.uuid = 'lo:' + (this.currentPaletteElement.label).replace(new RegExp(' ', 'g'), '');
+    ele.uuid = (this.currentPaletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
     console.log('uuid:' + ele.uuid);
     ele.label = this.currentPaletteElement.label;
     ele.hiddenFromPalette = false;
     ele.usesImages = false;
-    ele.parentElement = 'http://fhnw.ch/modelingEnvironment/LanguageOntology#' + (this.data.paletteElement.label).replace(new RegExp(' ', 'g'), '');
+    ele.parentElement = (this.data.paletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
     console.log('parent:' + ele.parentElement);
-    ele.paletteCategory = 'lo:Category_Activities';
+    ele.paletteCategory = this.currentPaletteElement.paletteCategory; // 'lo:Category_Activities';
+    console.log('category: ' + this.currentPaletteElement.paletteCategory);
     ele.representedLanguageClass = 'bpmn:' + (this.currentPaletteElement.label).replace(new RegExp(' ', 'g'), ''); /*important property to display in the pallette*/
 
     console.log('stringified element:' + JSON.stringify(ele));

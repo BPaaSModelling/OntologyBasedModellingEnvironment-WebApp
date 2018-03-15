@@ -31,7 +31,7 @@
             </mat-form-field>
 
             <mat-form-field class="full-width">
-              <mat-select placeholder="Category">
+              <mat-select [(ngModel)]="currentPaletteElement.paletteCategory" placeholder="Category" name="category.label">
                 <mat-option *ngFor="let category of mService.paletteCategories" [value]="category.id">{{category.label}}</mat-option>
               </mat-select>
             </mat-form-field>
