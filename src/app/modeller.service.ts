@@ -19,6 +19,7 @@ export class ModellerService {
   public paletteElements: PaletteElementModel[] = [];
   public domainClasse$: Observable<QueryAnswerModel[]> = Observable.of([]);
   public domainClasses: QueryAnswerModel[] = [];
+
   constructor(private http: Http, private jsonp: Jsonp) {
     const headers = new Headers({ 'Content-Type': 'application/json'});
     this.options = new RequestOptions({headers: headers });
@@ -45,21 +46,17 @@ export class ModellerService {
       }, error => console.log('Could not query PaletteElements'));
   }
 
-  createElementInOntology(oImg): string {
+  createElementInOntology(oImg): Boolean {
     //console.log(JSON.stringify(oImg));
+    let querySuccess: Boolean = false;
     console.log(oImg);
-    let result = '';
-
     this.http.post(EndpointSettings.getCreateElementEndpoint(), oImg)
       .map(response => response.json()).subscribe(
       data => {
-        result = 'OK';
-
-      }, error =>
-        result = 'ERROR'
+       querySuccess = (data == 'true');
+      }
     );
-
-    return result;
+  return querySuccess;
   }
 
   editLabel(element: Object): void {

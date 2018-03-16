@@ -47,15 +47,20 @@ public currentPaletteElement: PaletteElementModel;
     ele.representedLanguageClass = 'bpmn:' + (this.currentPaletteElement.label).replace(new RegExp(' ', 'g'), ''); /*important property to display in the pallette*/
 
     console.log('stringified element:' + JSON.stringify(ele));
-    this.mService.createElementInOntology(JSON.stringify(ele));
 
+
+    const isSuccess: Boolean = this.mService.createElementInOntology(JSON.stringify(ele));
+
+    console.log("Here is the result of the query: " + isSuccess);
     //HERE I GET THE VALUES FROM THE GUI
     //console.log('label val:' + this.currentPaletteElement.label);
     //console.log('domain ontology val: ' + this.currentPaletteElement.representedLanguageClass);
     //THEN I SUPPOSE TO CALL THE SERVICE AND INSERT THE currentPaletteElement IN THE ONTOLOGY
    //console.log('val: ' + val);
    //console.log(this.data);
-   this.dialogRef.close();
+   if (isSuccess){
+     this.dialogRef.close();
+   }
   }
 
 
