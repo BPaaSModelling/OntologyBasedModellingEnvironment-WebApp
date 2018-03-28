@@ -3,6 +3,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {QueryAnswerModel} from "../_models/QueryAnswer.model";
 import {ModellerService} from "../modeller.service";
 import {PaletteElementModel} from "../_models/PaletteElement.model";
+import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
+import {MatDialog} from "@angular/material";
 
 @Component({
   selector: 'app-modal-extend-palette-element',
@@ -18,11 +20,13 @@ export class ModalExtendPaletteElementComponent implements OnInit {
 
 private ontologyClasses: QueryAnswerModel[] = [];
 public currentPaletteElement: PaletteElementModel;
+public domainElement: QueryAnswerModel;
 
   constructor(
     public dialogRef: MatDialogRef<ModalExtendPaletteElementComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService, public dialog: MatDialog) {
     this.currentPaletteElement = new PaletteElementModel();
+    this.domainElement = new QueryAnswerModel();
   }
 
 
@@ -31,7 +35,11 @@ public currentPaletteElement: PaletteElementModel;
     this.mService.queryPaletteCategories();
   }
 
-  answer(val) {
+  onCloseCancel() {
+    this.dialogRef.close('Cancel');
+  }
+
+  createElementInOntology() {
 
     const ele = this.currentPaletteElement;
     ele.id = '';
@@ -58,11 +66,25 @@ public currentPaletteElement: PaletteElementModel;
     //THEN I SUPPOSE TO CALL THE SERVICE AND INSERT THE currentPaletteElement IN THE ONTOLOGY
    //console.log('val: ' + val);
    //console.log(this.data);
-   if (isSuccess){
+   if (isSuccess) {
      this.dialogRef.close();
    }
   }
 
+  mapToDomainOntology() {
+    this.dialogRef.close('Cancel');
+    let dialog = this.dialog.open(ModalCreateDomainElementsComponent, {
+      height:'80%',
+      width: '800px',
+      data: 'This text is passed into the dialog!',
+      disableClose: false,
+    });
+    dialog.afterClosed().subscribe(result => {
+      console.log(`Dialog closed: ${result}`);
+      //this.dialogResult = result;
+    });
 
+
+  }
 
 }

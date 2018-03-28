@@ -21,6 +21,7 @@ import {ModalConnectorElementPropertiesComponent} from './modal-connector-elemen
 import { ModalInsertPropertyComponent } from './modal-insert-property/modal-insert-property.component';
 import { ModalConnectorManageCombinationsComponent } from './modal-connector-manage-combinations/modal-connector-manage-combinations.component';
 import {FormsModule} from "@angular/forms";
+import { ModalCreateDomainElementsComponent } from './modal-create-domain-elements/modal-create-domain-elements.component';
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
@@ -39,7 +40,8 @@ const appRoutes: Routes = [
     ModalExtendPaletteElementComponent,
     ModalConnectorElementPropertiesComponent,
     ModalInsertPropertyComponent,
-    ModalConnectorManageCombinationsComponent
+    ModalConnectorManageCombinationsComponent,
+    ModalCreateDomainElementsComponent
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,

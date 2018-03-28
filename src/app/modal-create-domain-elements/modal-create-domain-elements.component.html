@@ -1,0 +1,26 @@
+<form>
+  <mat-toolbar>
+    <div class="mat-toolbar-tools">
+      <!-- <h2>Extend {{data.paletteElement.label}}</h2>-->
+      <h2>Create Domain Ontology Element</h2>
+    </div>
+  </mat-toolbar>
+  <mat-dialog-content style="max-width:800px;max-height:810px; ">
+    <mat-card>
+      <form class="form">
+
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Label" name="input_label" >
+        </mat-form-field>
+
+
+        <mat-checkbox ng-model="rootElement">Palette root element</mat-checkbox>
+
+
+
+        <br />
+      </form>
+    </mat-card>
+
+  </mat-dialog-content>
+</form>
