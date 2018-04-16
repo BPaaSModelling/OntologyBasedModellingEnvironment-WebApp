@@ -23,21 +23,6 @@
               </mat-select>
             </mat-form-field>
 
-            <button md-raised-button color="primary" (click)="mapToDomainOntology()">New Domain Ontology Element</button>
-            </div>
-
-            <div layout="row">
-              <mat-form-field class="full-width">
-                <mat-select placeholder="Parent Class" name="input_domainOntology" [(ngModel)]="domainElement.parentElement" >
-                  <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id">{{class.label}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-            <mat-form-field class="full-width">
-              <input matInput placeholder="New Domain Element" name="input_label" [(ngModel)]="domainElement.label">
-            </mat-form-field>
-
-              <button md-raised-button color="primary">Create New Domain Ontology Element</button>
             </div>
 
             <div layout="row">

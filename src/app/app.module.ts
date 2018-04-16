@@ -20,7 +20,7 @@ import { ModalExtendPaletteElementComponent } from './modal-extend-palette-eleme
 import {ModalConnectorElementPropertiesComponent} from './modal-connector-element-properties/modal-connector-element-properties.component';
 import { ModalInsertPropertyComponent } from './modal-insert-property/modal-insert-property.component';
 import { ModalConnectorManageCombinationsComponent } from './modal-connector-manage-combinations/modal-connector-manage-combinations.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ModalCreateDomainElementsComponent } from './modal-create-domain-elements/modal-create-domain-elements.component';
 
 const appRoutes: Routes = [
@@ -48,7 +48,8 @@ const appRoutes: Routes = [
     ModalPaletteElementPropertiesComponent,
     ModalExtendPaletteElementComponent,
     ModalConnectorElementPropertiesComponent,
-    ModalInsertPropertyComponent
+    ModalInsertPropertyComponent,
+    ModalCreateDomainElementsComponent
   ],
   imports: [
     BrowserModule,
@@ -73,6 +74,7 @@ const appRoutes: Routes = [
     MatCheckboxModule,
     MatExpansionModule,
     FormsModule,
+    ReactiveFormsModule
   ],
   providers: [ModellerService],
   bootstrap: [AppComponent]

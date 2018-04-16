@@ -59,6 +59,19 @@ export class ModellerService {
   return querySuccess;
   }
 
+  createDomainElementInOntology(oImg): Boolean {
+    //console.log(JSON.stringify(oImg));
+    let querySuccess: Boolean = false;
+    console.log(oImg);
+    this.http.post(EndpointSettings.getCreateDomainElementEndpoint(), oImg)
+      .map(response => response.json()).subscribe(
+      data => {
+        querySuccess = (data == 'true');
+      }
+    );
+    return querySuccess;
+  }
+
   editLabel(element: Object): void {
 
   }

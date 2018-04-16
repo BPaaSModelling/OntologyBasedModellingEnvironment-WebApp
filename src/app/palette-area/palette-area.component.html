@@ -42,6 +42,9 @@
   <ng-template contextMenuItem (execute)="something">
     Add new element to the Palette
   </ng-template>
+  <ng-template let-element contextMenuItem (execute)="openCreateDomainElementModal($event.item)">
+    Create new Domain Ontology Element
+  </ng-template>
   <ng-template contextMenuItem (execute)="something">
     Manage Elements
   </ng-template>
