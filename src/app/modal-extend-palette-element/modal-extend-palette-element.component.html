@@ -18,10 +18,11 @@
 
 
            <mat-form-field class="full-width">
-              <mat-select placeholder="Map to Domain Ontology Concept" name="input_domainOntology" [(ngModel)]="currentPaletteElement.representedLanguageClass" >
-                <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id">{{class.label}}</mat-option>
+              <mat-select placeholder="Map to Domain Ontology Concept" name="input_domainOntology" [(ngModel)]="currentPaletteElement.representedDomainClass" >
+                <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id" >{{class.label}}</mat-option>
               </mat-select>
             </mat-form-field>
+              <button mat-raised-button color="primary" (click)="openCreateDomainElementModalFromExtend(data.paletteElement)">Create New</button>
 
             </div>
 

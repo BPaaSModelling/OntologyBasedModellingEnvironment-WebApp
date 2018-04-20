@@ -11,7 +11,7 @@
 
 
         <div layout="row">
-          <mat-checkbox name="rootElement">Root element</mat-checkbox>
+          <mat-checkbox name="rootElement" [(ngModel)]="domainElement.isRoot">Root element</mat-checkbox>
 
         <mat-form-field class="full-width">
           <mat-select placeholder="Parent Class" name="input_domainOntology" [(ngModel)]="domainElement.parentElement" >

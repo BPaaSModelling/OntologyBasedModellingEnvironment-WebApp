@@ -7,6 +7,7 @@ export class PaletteElementModel {
   hiddenFromPalette: boolean;
   childElements: PaletteElementModel[];
   representedLanguageClass: string;
+  representedDomainClass: string;
   shape: string;
   backgroundColor: string;
   height: string;

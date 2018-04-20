@@ -1,6 +1,6 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, Output, EventEmitter} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {QueryAnswerModel} from "../_models/QueryAnswer.model";
+import {DomainElementModel} from "../_models/DomainElement.model";
 import {ModellerService} from "../modeller.service";
 import {PaletteElementModel} from "../_models/PaletteElement.model";
 import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
@@ -18,15 +18,15 @@ export class ModalExtendPaletteElementComponent implements OnInit {
 
   }*/
 
-private ontologyClasses: QueryAnswerModel[] = [];
+private ontologyClasses: DomainElementModel[] = [];
 public currentPaletteElement: PaletteElementModel;
-public domainElement: QueryAnswerModel;
-
+public domainElement: DomainElementModel;
+@Output() showCreateDomainElementModalFromExtend = new EventEmitter();
   constructor(
     public dialogRef: MatDialogRef<ModalExtendPaletteElementComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService, public dialog: MatDialog) {
     this.currentPaletteElement = new PaletteElementModel();
-    this.domainElement = new QueryAnswerModel();
+    this.domainElement = new DomainElementModel();
   }
 
 
@@ -83,8 +83,24 @@ public domainElement: QueryAnswerModel;
       console.log(`Dialog closed: ${result}`);
       //this.dialogResult = result;
     });
+  }
 
+  openCreateDomainElementModalFromExtend(element: PaletteElementModel) {
 
+    const dialogRef = this.dialog.open(ModalCreateDomainElementsComponent, {
+      data: {paletteElement: element },
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    const sub = dialogRef.componentInstance.newDomainElementAdded.subscribe(() => {
+      this.mService.queryDomainClasses();
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
   }
 
 }

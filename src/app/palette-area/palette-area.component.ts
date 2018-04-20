@@ -5,6 +5,9 @@ import {PaletteElementModel} from '../_models/PaletteElement.model';
 import {ContextMenuComponent} from 'ngx-contextmenu';
 import {UUID} from 'angular2-uuid';
 import { ContextMenuService } from 'ngx-contextmenu';
+import {ModalExtendPaletteElementComponent} from "../modal-extend-palette-element/modal-extend-palette-element.component";
+import {MatDialog} from "@angular/material";
+import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
 
 @Component({
   selector: 'app-palette-area',
@@ -24,7 +27,7 @@ export class PaletteAreaComponent implements OnInit {
   @Output() showPaletteElementPropertyModal = new EventEmitter();
   @Output() showExtendPaletteElementModal = new EventEmitter();
   @Output() showCreateDomainElementModal = new EventEmitter();
-  constructor(private mService: ModellerService) {
+  constructor(private mService: ModellerService, public dialog: MatDialog) {
     this.mService.queryPaletteCategories();
     this.mService.queryPaletteElements();
 
@@ -51,7 +54,7 @@ export class PaletteAreaComponent implements OnInit {
     } else {
       // Do nothing!
     }
-  };
+  }
 
   openPaletteElementPropertiesModal(element: PaletteElementModel){
     this.showPaletteElementPropertyModal.emit(element);
@@ -64,5 +67,32 @@ export class PaletteAreaComponent implements OnInit {
   openCreateDomainElementModal(element: PaletteElementModel) {
     this.showCreateDomainElementModal.emit(element);
 }
+
+  toggleExtendPaletteElementModal(element: PaletteElementModel){
+    //console.log(element)
+    let dialogRef = this.dialog.open(ModalExtendPaletteElementComponent, {
+      data: { paletteElement: element},
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }
+
+  toggleCreateDomainElementModalFromExtend(element: PaletteElementModel) {
+    let dialogRef = this.dialog.open(ModalCreateDomainElementsComponent, {
+      data: {paletteElement: element },
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }
 
 }

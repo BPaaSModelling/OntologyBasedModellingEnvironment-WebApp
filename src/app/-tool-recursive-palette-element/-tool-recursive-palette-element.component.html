@@ -1,5 +1,5 @@
 <ul *ngFor="let sbchild of child.childElements ">
-  <li *ngIf="sbchild.parentElement == child.id" class="NthLevelElement"><a [contextMenu]="rightClickMenu" [contextMenuSubject]="sbchild" (click)="addNewShape(sbchild)"><img  class="thumbnail" src="../assets/images/{{sbchild.thumbnailURL}}" />{{sbchild.label}}</a>
+  <li *ngIf="sbchild.parentElement == child.id" class="NthLevelElement"><a [contextMenu]="elementRightClickMenu" [contextMenuSubject]="sbchild" (click)="addNewShape(sbchild)"><img  class="thumbnail" src="../assets/images/{{sbchild.thumbnailURL}}" />{{sbchild.label}}</a>
     <app--tool-recursive-palette-element (sendElementFromRecursiveElement)="addNewShape($event)" [child]="sbchild"></app--tool-recursive-palette-element>
   </li>
 </ul>
@@ -21,5 +21,28 @@
   </context-menu>
   <ng-template let-element contextMenuItem (execute)="showMessage('Hi, ' + $event.item.name)">
     Remove from palette
+  </ng-template>
+</context-menu>
+
+<context-menu #elementRightClickMenu>
+  <ng-template let-element contextMenuItem (execute)="openExtendPaletteElementModal($event.item)">
+    Extend {{element.label}}
+  </ng-template>
+  <ng-template contextMenuItem [subMenu]="saySubMenu">
+    Edit
+  </ng-template>
+  <context-menu #saySubMenu>
+    <ng-template contextMenuItem (execute)="something">
+      Add new Attribute / Property
+    </ng-template>
+    <ng-template let-element contextMenuItem (execute)="openExtendPaletteElementModal($event.item)"> <!-- openPaletteElementPropertiesModal -->
+      Edit {{element.label}}
+    </ng-template>
+  </context-menu>
+  <ng-template let-element contextMenuItem (execute)="removeFromPalette($event)">
+    Hide
+  </ng-template>
+  <ng-template let-element contextMenuItem (execute)="something">
+    Delete
   </ng-template>
 </context-menu>
