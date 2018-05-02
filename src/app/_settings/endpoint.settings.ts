@@ -4,9 +4,10 @@ export class EndpointSettings {
   private static PALETTEELEMENTS            : string = '/ModEnv/getPaletteElements';
   private static PALETTECATEGORIES          : string = '/ModEnv/getPaletteCategories';
   private static CREATEELEMENT              : string = '/ModEnv/createPalletteElement';
-  private static CREATEINSTANCE              : string = '/ModEnv/createCanvasInstance';
+  private static CREATEINSTANCE             : string = '/ModEnv/createCanvasInstance';
   private static CREATEDOMAINELEMENT        : string = '/ModEnv/createDomainElement';
   private static GETDOMAINCLASSES           : string = '/ModEnv/getDomainOntologyClasses';
+  private static CREATEDATATYPEPROPERTY     : string = '/ModEnv/createDatatypeProperty';
 
   public static getPaletteElementsEndpoint(): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.PALETTEELEMENTS;
@@ -30,5 +31,9 @@ export class EndpointSettings {
 
   public static getDomainClassesEndpoint(): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.GETDOMAINCLASSES;
+  }
+
+  public static getCreateDatatypePropertyEndpoint(): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.CREATEDATATYPEPROPERTY;
   }
 }

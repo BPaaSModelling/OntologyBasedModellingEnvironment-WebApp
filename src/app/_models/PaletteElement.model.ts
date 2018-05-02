@@ -8,6 +8,9 @@ export class PaletteElementModel {
   childElements: PaletteElementModel[];
   representedLanguageClass: string;
   representedDomainClass: string;
+  datatypePropertyId: string;
+  datatypePropertyLabel: string;
+  datatypePropertyValue: string;
   shape: string;
   backgroundColor: string;
   height: string;

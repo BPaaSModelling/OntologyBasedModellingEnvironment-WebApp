@@ -76,7 +76,7 @@
       <mat-tab label="Class Properties">
         <h2 class="mat-display-2">Class Properties</h2>
         <mat-dialog-actions layout="row">
-          <button mat-raised-button color="accent">Insert new property</button>
+          <button mat-raised-button color="accent" (click)="openInsertNewProperty(data.paletteElement)">Insert new property</button>
           <button mat-raised-button color="accent">Manage connection combinations</button>
         </mat-dialog-actions>
         <mat-card>
@@ -118,7 +118,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions layout="row">
-    <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus>Cancel</button>
+    <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
     <button mat-raised-button color="primary" ng-click="answer('useful')" style="margin-right:20px;" >Ok</button>
   </mat-dialog-actions>
 </form>

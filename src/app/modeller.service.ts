@@ -72,6 +72,19 @@ export class ModellerService {
     return querySuccess;
   }
 
+  createNewDatatypeProperty(oImg): Boolean {
+    //console.log(JSON.stringify(oImg));
+    let querySuccess: Boolean = false;
+    console.log(oImg);
+    this.http.post(EndpointSettings.getCreateDatatypePropertyEndpoint(), oImg)
+      .map(response => response.json()).subscribe(
+      data => {
+        querySuccess = (data === 'true');
+      }
+    );
+    return querySuccess;
+  }
+
   editLabel(element: Object): void {
 
   }
