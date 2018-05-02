@@ -104,8 +104,12 @@ export class ModellingAreaComponent implements OnInit {
       );
 
     myDiagram.nodeTemplate =
-      $(go.Node, "Spot",
-        { locationSpot: go.Spot.Center },
+      $(go.Node, "Vertical", //this resizes the entire shape
+        {
+          locationSpot: go.Spot.Center,
+          resizable: true,
+          resizeObjectName: "SHAPE"
+        },
         new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
         { selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate },
         new go.Binding("angle").makeTwoWay(),
@@ -115,12 +119,14 @@ export class ModellingAreaComponent implements OnInit {
           new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
           $(go.Shape, "RoundedRectangle",  // default figure
             {
+              name: "SHAPE",
               portId: "", // the default port: if no spot on link data, use closest side
               fromLinkable: true, toLinkable: true, cursor: "pointer",
               fill: "#c9dcf5",  // default color
+              width: 100, height: 70,
               strokeWidth: 2
             },
-            new go.Binding("figure"),
+            new go.Binding("figure","key"),
             new go.Binding("fill")),
           $(go.TextBlock,
             {
@@ -134,6 +140,7 @@ export class ModellingAreaComponent implements OnInit {
         )
   );
 
+    //myDiagram.model.nodeDataArray = go.Shape.getFigureGenerators().toArray();
     model = new go.GraphLinksModel();
 
 
@@ -173,7 +180,7 @@ export class ModellingAreaComponent implements OnInit {
         //var fromNode = adornment.adornedPart;
         //var fromData = fromNode.data;
         // create a new "State" data object, positioned off to the right of the adorned Node
-        var toData = {text: element.label, figure: element.shape, fill: element.backgroundColor}; //{ text: "Start", figure: "Circle", fill: "#00AD5F" }
+        var toData = {text: element.label, key: element.shape, fill: element.backgroundColor}; //{ text: "Start", figure: "Circle", fill: "#00AD5F" }
 
         // add the new node data to the model
         var model = diagram.model;
