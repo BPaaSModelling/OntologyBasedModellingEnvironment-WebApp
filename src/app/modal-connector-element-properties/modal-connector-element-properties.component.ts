@@ -20,7 +20,7 @@ export class ModalConnectorElementPropertiesComponent implements OnInit {
   ngOnInit() {
   }
 
-  openInsertNewProperty(element: PaletteElementModel) {
+  /*openInsertNewProperty(element: PaletteElementModel) {
     const dialogRef = this.dialog.open(ModalInsertPropertyComponent, {
       data: {paletteElement: element },
       height:'80%',
@@ -28,9 +28,9 @@ export class ModalConnectorElementPropertiesComponent implements OnInit {
       disableClose: false,
     });
 
-    /*const sub = dialogRef.componentInstance.newPropertyAdded.subscribe(() => {
-      this.mService.queryDomainClasses();
-    });*/
+    //const sub = dialogRef.componentInstance.newPropertyAdded.subscribe(() => {
+     // this.mService.queryDomainClasses();
+    //});
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed : ' + result);
@@ -39,6 +39,6 @@ export class ModalConnectorElementPropertiesComponent implements OnInit {
 
   onCloseCancel() {
     this.dialogRef.close('Cancel');
-  }
+  }*/
 
 }

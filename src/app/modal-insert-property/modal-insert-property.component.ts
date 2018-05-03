@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit, Output, EventEmitter} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {ModellerService} from "../modeller.service";
-import {PaletteElementModel} from "../_models/PaletteElement.model";
+import {DatatypePropertyModel} from "../_models/DatatypeProperty.model";
 
 @Component({
   selector: 'app-modal-insert-property',
@@ -11,13 +11,13 @@ import {PaletteElementModel} from "../_models/PaletteElement.model";
 export class ModalInsertPropertyComponent implements OnInit {
 step = 0;
   @Output() newPropertyAdded = new EventEmitter();
-  public paletteElement: PaletteElementModel;
+  public datatypeProperty: DatatypePropertyModel;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public mService: ModellerService,
               public dialogRef: MatDialogRef<ModalInsertPropertyComponent>) { }
 
   ngOnInit() {
-    this.paletteElement = new PaletteElementModel();
+    this.datatypeProperty = new DatatypePropertyModel();
   }
 
   setStep(index: number) {
@@ -37,8 +37,9 @@ step = 0;
   }
 
   insertNewProperty() {
-    this.paletteElement.datatypePropertyId = (this.paletteElement.datatypePropertyLabel).replace(new RegExp(' ', 'g'), '_');
-    this.paletteElement.representedLanguageClass = this.data.paletteElement.representedLanguageClass;
-    this.mService.createNewDatatypeProperty(JSON.stringify(this.paletteElement));
+    this.datatypeProperty.id = (this.datatypeProperty.label).replace(new RegExp(' ', 'g'), '_');
+    this.datatypeProperty.domainName = this.data.paletteElement.representedLanguageClass;
+    this.mService.createNewDatatypeProperty(JSON.stringify(this.datatypeProperty));
+    this.newPropertyAdded.emit(this.datatypeProperty);
   }
 }

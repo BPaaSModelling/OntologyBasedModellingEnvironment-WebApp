@@ -28,6 +28,7 @@ export class PaletteAreaComponent implements OnInit {
   @Output() showExtendPaletteElementModal = new EventEmitter();
   @Output() showCreateDomainElementModal = new EventEmitter();
   @Output() showConnectorElementPropertyModal = new EventEmitter();
+  @Output() showActivityElementPropertyModal = new EventEmitter();
   constructor(private mService: ModellerService, public dialog: MatDialog) {
     this.mService.queryPaletteCategories();
     this.mService.queryPaletteElements();
@@ -71,6 +72,10 @@ export class PaletteAreaComponent implements OnInit {
 
   openConnectorElementProperty(element: PaletteElementModel) {
     this.showConnectorElementPropertyModal.emit(element);
+  }
+
+  openActivityElementProperty(element: PaletteElementModel) {
+    this.showActivityElementPropertyModal.emit(element);
   }
 
   toggleExtendPaletteElementModal(element: PaletteElementModel){

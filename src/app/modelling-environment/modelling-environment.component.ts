@@ -98,8 +98,8 @@ export class ModellingEnvironmentComponent implements OnInit {
     });
   }
 
-  toggleConnectorElementPropertyModal(element: PaletteElementModel) {
-    let dialogRef = this.dialog.open(ModalConnectorElementPropertiesComponent, {
+  toggleActivityElementPropertyModal(element: PaletteElementModel) {
+    let dialogRef = this.dialog.open(ModalPaletteElementPropertiesComponent, {
       data: {paletteElement: element },
       height:'80%',
       width: '800px',

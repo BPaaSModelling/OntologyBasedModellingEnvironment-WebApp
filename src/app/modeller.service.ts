@@ -9,16 +9,19 @@ import 'rxjs/operator/switchMap';
 import {PaletteCategoryModel} from "./_models/PaletteCategory.model";
 import {PaletteElementModel} from "./_models/PaletteElement.model";
 import {QueryAnswerModel} from "./_models/QueryAnswer.model";
+import {DatatypePropertyModel} from "./_models/DatatypeProperty.model";
 
 @Injectable()
 export class ModellerService {
   private options: RequestOptions;
   public paletteCategorie$: Observable<PaletteCategoryModel[]> = Observable.of([]);
-  public paletteCategories: PaletteCategoryModel[] = []
+  public paletteCategories: PaletteCategoryModel[] = [];
   public paletteElement$: Observable<PaletteElementModel[]> = Observable.of([]);
   public paletteElements: PaletteElementModel[] = [];
   public domainClasse$: Observable<QueryAnswerModel[]> = Observable.of([]);
   public domainClasses: QueryAnswerModel[] = [];
+  public datatypeProperties$: Observable<DatatypePropertyModel[]> = Observable.of([]);
+  public datatypeProperties: DatatypePropertyModel[] = [];
 
   constructor(private http: Http, private jsonp: Jsonp) {
     const headers = new Headers({ 'Content-Type': 'application/json'});
@@ -100,6 +103,16 @@ export class ModellerService {
         this.domainClasses = data;
       }, error => console.log('Could not query Domain Classes'));
 
+  }
+
+  queryDatatypeProperties(domainName): void {
+    this.http.get(EndpointSettings.getDatatypePropertyEndpoint(domainName))
+      .map(response => response.json()).subscribe(
+      data => {
+        //console.log('PaletteCategories received: ' + JSON.stringify(data));
+        this.datatypeProperties$ = Observable.of(data);
+        this.datatypeProperties = data;
+      }, error => console.log('Could not query DatatypeProperties'));
   }
 
 }
