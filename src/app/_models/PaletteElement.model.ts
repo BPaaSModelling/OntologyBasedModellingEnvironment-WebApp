@@ -13,8 +13,8 @@ export class PaletteElementModel {
   datatypePropertyValue: string;
   shape: string;
   backgroundColor: string;
-  height: string;
-  width: string;
+  height: number;
+  width: number;
   labelPosition: string;
   iconURL: string;
   iconPosition: string;

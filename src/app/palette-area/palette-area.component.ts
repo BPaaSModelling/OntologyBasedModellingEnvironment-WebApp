@@ -32,7 +32,7 @@ export class PaletteAreaComponent implements OnInit {
   constructor(private mService: ModellerService, public dialog: MatDialog) {
     this.mService.queryPaletteCategories();
     this.mService.queryPaletteElements();
-
+console.log(this.mService.paletteElements);
 
   }
 

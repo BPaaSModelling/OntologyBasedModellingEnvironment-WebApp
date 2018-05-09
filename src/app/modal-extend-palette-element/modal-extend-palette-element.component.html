@@ -27,31 +27,54 @@
             </div>
 
             <div layout="row">
+
             <mat-checkbox ng-model="rootElement">Palette root element</mat-checkbox>
 
-            <mat-form-field class="full-width">
-              <mat-select  placeholder="Parent element">
+
+              <!--<label>Parent Element: {{data.paletteElement.label}}</label>-->
+            <!--<mat-form-field class="full-width">
+              <<mat-select  placeholder="Parent element">
                 <mat-option [value]="data.paletteElement.label">{{data.paletteElement.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>-->
+
+            <mat-form-field class="full-width">
+              <mat-select disabled="true" [(ngModel)]="data.paletteElement.paletteCategory" placeholder="Category" name="category.label">
+                <mat-option *ngFor="let category of mService.paletteCategories" [value]="category.id">{{category.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            </div>
+
+            <div layout="row">
+            <mat-form-field class="full-width">
+              <!--<input type="url" matInput placeholder="Palette Image URL">-->
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Activities') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label">
+                <mat-option *ngFor="let image of activityImageList" [value]="image.thumbnailName">
+                  <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                  {{image.label}}</mat-option>
+              </mat-select>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Events') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label">
+                <mat-option *ngFor="let image of eventImageList" [value]="image.thumbnailName">
+                  <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                  {{image.label}}</mat-option>
               </mat-select>
             </mat-form-field>
 
             <mat-form-field class="full-width">
-              <mat-select [(ngModel)]="currentPaletteElement.paletteCategory" placeholder="Category" name="category.label">
-                <mat-option *ngFor="let category of mService.paletteCategories" [value]="category.id">{{category.label}}</mat-option>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Activities') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label">
+              <mat-option *ngFor="let image of activityImageList" [value]="image.imageName">
+                <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                {{image.label}}</mat-option>
+              </mat-select>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Events') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label">
+                <mat-option *ngFor="let image of eventImageList" [value]="image.imageName">
+                  <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                  {{image.label}}</mat-option>
               </mat-select>
             </mat-form-field>
             </div>
 <!--
-            <div layout="row">
-            <mat-form-field class="full-width">
-              <input type="url" matInput placeholder="Palette Image URL">
-            </mat-form-field>
-
-            <mat-form-field class="full-width">
-              <input type="url" matInput placeholder="Canvas Image URL">
-            </mat-form-field>
-            </div>
-
             <div layout="row">
             <mat-form-field class="full-width">
               <input type="number" matInput placeholder="Min height of Canvas Image (in px)">

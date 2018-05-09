@@ -114,20 +114,30 @@ export class ModellingAreaComponent implements OnInit {
         { selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate },
         new go.Binding("angle").makeTwoWay(),
         // the main object is a Panel that surrounds a TextBlock with a Shape
+
         $(go.Panel, "Auto",
           { name: "PANEL" },
           new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
-          $(go.Shape, "RoundedRectangle",  // default figure
+          $(go.Shape, "Rectangle",  // default figure
             {
               name: "SHAPE",
               portId: "", // the default port: if no spot on link data, use closest side
               fromLinkable: true, toLinkable: true, cursor: "pointer",
-              fill: "#c9dcf5",  // default color
-              width: 100, height: 70,
-              strokeWidth: 2
+              fill: "#000000",  // default color
+              width: 110, height: 80,
+              strokeWidth: 0
             },
-            new go.Binding("figure","key"),
+            //new go.Binding("figure","key"),
             new go.Binding("fill")),
+          $(go.Picture,
+            {
+              //name: 'Picture',
+              source: "/assets/images/Collapsed_Subprocess.png",
+              //fromLinkable: true, toLinkable: true, cursor: "pointer",
+              desiredSize: new go.Size(100, 70)
+            },
+            new go.Binding("source"),
+            new go.Binding("desiredSize")),
           $(go.TextBlock,
             {
               font: "bold 11pt Helvetica, Arial, sans-serif",
@@ -140,6 +150,9 @@ export class ModellingAreaComponent implements OnInit {
         )
   );
 
+    /*myDiagram.add($(go.Part, "Vertical",
+      $(go.Picture, "/assets/images/Collapsed_Subprocess.png")
+    ));*/
     //myDiagram.model.nodeDataArray = go.Shape.getFigureGenerators().toArray();
     model = new go.GraphLinksModel();
 
@@ -168,7 +181,8 @@ export class ModellingAreaComponent implements OnInit {
       else {
         const elementId = element.uuid;
         const nodeId = '#' + elementId;
-        console.log('icon url is: ' + element.imageURL);
+        console.log('icon url is: ' + "assets/images/" + element.imageURL);
+        var imageURL = "assets/images/" + element.imageURL;
 
         console.log('shape: ' + element.shape + ' label: ' + element.label + 'bg color: ' + element.backgroundColor);
 
@@ -180,7 +194,7 @@ export class ModellingAreaComponent implements OnInit {
         //var fromNode = adornment.adornedPart;
         //var fromData = fromNode.data;
         // create a new "State" data object, positioned off to the right of the adorned Node
-        var toData = {text: element.label, key: element.shape, fill: element.backgroundColor}; //{ text: "Start", figure: "Circle", fill: "#00AD5F" }
+        var toData = {text: element.label, key: element.shape, fill: "#0000", source: imageURL, desiredSize: new go.Size(element.width, element.height)}; //{ text: "Start", figure: "Circle", fill: "#00AD5F" }
 
         // add the new node data to the model
         var model = diagram.model;
