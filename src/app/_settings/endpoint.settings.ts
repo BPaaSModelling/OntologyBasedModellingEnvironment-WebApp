@@ -9,6 +9,7 @@ export class EndpointSettings {
   private static GETDOMAINCLASSES           : string = '/ModEnv/getDomainOntologyClasses';
   private static CREATEDATATYPEPROPERTY     : string = '/ModEnv/createDatatypeProperty';
   private static GETDATATYPEPROPERTIES      : string = '/ModEnv/getDatatypeProperties';
+  private static DELETEPALETTEELEMENT       : string = '/ModEnv/deletePaletteElement';
 
   public static getPaletteElementsEndpoint(): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.PALETTEELEMENTS;
@@ -39,7 +40,10 @@ export class EndpointSettings {
   }
 
   public static getDatatypePropertyEndpoint(domainName): string {
-    console.log('domainName in endpoint.setting.ts: ' + domainName);
     return EndpointSettings.ENDPOINT + EndpointSettings.GETDATATYPEPROPERTIES + '/' + domainName;
+  }
+
+  public static getDeletePaletteElementEndpoint(): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.DELETEPALETTEELEMENT;
   }
 }

@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angula
 import {PaletteElementModel} from "../_models/PaletteElement.model";
 import {GraphicalElementModel} from "../_models/GraphicalElement.model";
 import {ContextMenuComponent} from 'ngx-contextmenu';
+import {ModellerService} from '../modeller.service';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class ToolRecursivePaletteElementComponent implements OnInit {
   @Output() showPaletteElementPropertyModal1 = new EventEmitter();
   @Output() showExtendPaletteElementModal1 = new EventEmitter();
   @Output() showCreateDomainElementModal1 = new EventEmitter();
-constructor() {
+constructor(private mService: ModellerService) {
 
   }
 
@@ -35,13 +36,17 @@ constructor() {
     this.sendElementFromRecursiveElement.emit(b);
   }
 
-  removeFromPalette($event: any){
-    console.log('clicked ', $event);
-    console.log($event);
-    if (confirm('Do you want to remove ' + $event.item.label + ' from palette?')) {
-      // Save it!
+  removeFromPalette(element: PaletteElementModel) {
+    console.log('clicked ', element);
+    console.log(element.label + ' ' + element.childElements);
+    if(element.childElements.length > 0) {
+      alert(element.label + ' has child elements, cannot be deleted');
     } else {
-      // Do nothing!
+      if (confirm('Do you want to remove ' + element.label + ' from palette?')) {
+        this.mService.deletePaletteElement(JSON.stringify(element));
+      } else {
+        // Do nothing!
+      }
     }
   }
 

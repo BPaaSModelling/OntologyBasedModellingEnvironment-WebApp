@@ -48,10 +48,9 @@ console.log(this.mService.paletteElements);
     this.sendElementFromPalette.emit(b);
   }
 
-  removeFromPalette($event: any){
-    console.log('clicked ', $event);
-    console.log($event);
-    if (confirm('Do you want to remove ' + $event.item.label + ' from palette?')) {
+  removeFromPalette(element: PaletteElementModel) {
+    console.log('clicked ', element);
+    if (confirm('Do you want to remove ' + element.label + ' from palette?')) {
       // Save it!
     } else {
       // Do nothing!

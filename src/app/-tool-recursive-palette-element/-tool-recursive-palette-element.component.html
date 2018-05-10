@@ -39,10 +39,10 @@
       Edit {{element.label}}
     </ng-template>
   </context-menu>
-  <ng-template let-element contextMenuItem (execute)="removeFromPalette($event)">
+  <ng-template let-element contextMenuItem (execute)="something">
     Hide
   </ng-template>
-  <ng-template let-element contextMenuItem (execute)="something">
+  <ng-template let-element contextMenuItem (execute)="removeFromPalette($event.item)">
     Delete
   </ng-template>
 </context-menu>
