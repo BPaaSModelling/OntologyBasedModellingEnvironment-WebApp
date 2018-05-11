@@ -59,6 +59,16 @@
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Gateways') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label">
+                <mat-option *ngFor="let image of gatewayImageList" [value]="image.imageName">
+                  <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                  {{image.label}}</mat-option>
+              </mat-select>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Data') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label">
+                <mat-option *ngFor="let image of dataObjectImageList" [value]="image.imageName">
+                  <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                  {{image.label}}</mat-option>
+              </mat-select>
             </mat-form-field>
 
             <mat-form-field class="full-width">
@@ -69,6 +79,16 @@
               </mat-select>
               <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Events') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label">
                 <mat-option *ngFor="let image of eventImageList" [value]="image.imageName">
+                  <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                  {{image.label}}</mat-option>
+              </mat-select>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Gateways') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label">
+                <mat-option *ngFor="let image of gatewayImageList" [value]="image.imageName">
+                  <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                  {{image.label}}</mat-option>
+              </mat-select>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Data') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label">
+                <mat-option *ngFor="let image of dataObjectImageList" [value]="image.imageName">
                   <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>

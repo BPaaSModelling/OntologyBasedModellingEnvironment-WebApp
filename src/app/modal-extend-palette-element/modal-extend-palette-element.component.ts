@@ -63,7 +63,21 @@ public dataObjectImageList: any;
       {"imageURL":"assets/images/BPMN-CMMN/Message_Intermediate.png", "imageName":"Message_Intermediate.png", "label":"Message Intermediate", "thumbnailURL":"/assets/images/BPMN-CMMN/Message_Intermediate.png", "thumbnailName" : "Message_Intermediate.png"},
       {"imageURL":"assets/images/BPMN-CMMN/Message_Start.png", "imageName":"Message_Start.png", "label":"Message Start", "thumbnailURL":"/assets/images/BPMN-CMMN/Message_Start.png", "thumbnailName" : "Message_Start.png"},
       {"imageURL":"assets/images/BPMN-CMMN/Timer_Start.png", "imageName":"Timer_Start.png", "label":"Timer Start", "thumbnailURL":"/assets/images/BPMN-CMMN/Timer_Start.png", "thumbnailName" : "Timer_Start.png"},
-      {"imageURL":"assets/images/BPMN-CMMN/Timer_Intermediate.png", "imageName":"Timer_Intermediate.png", "label":"Timer Start", "thumbnailURL":"/assets/images/BPMN-CMMN/Timer_Intermediate.png", "thumbnailName" : "Timer_Intermediate.png"}
+      {"imageURL":"assets/images/BPMN-CMMN/Timer_Intermediate.png", "imageName":"Timer_Intermediate.png", "label":"Timer Intermediate", "thumbnailURL":"/assets/images/BPMN-CMMN/Timer_Intermediate.png", "thumbnailName" : "Timer_Intermediate.png"}
+    ];
+
+    this.gatewayImageList = [
+      {"imageURL":"assets/images/BPMN-CMMN/Simple_Gateway.png", "imageName":"Simple_Gateway.png", "label":"Simple Gateway", "thumbnailURL":"/assets/images/BPMN-CMMN/Simple_Gateway.png", "thumbnailName" : "Simple_Gateway.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/EventBased_Gateway.png", "imageName":"EventBased_Gateway.png", "label":"Event Based Gateway", "thumbnailURL":"/assets/images/BPMN-CMMN/EventBased_Gateway.png", "thumbnailName" : "EventBased_Gateway.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Exclusive_Gateway.png", "imageName":"Exclusive_Gateway.png", "label":"Exclusive Gateway", "thumbnailURL":"/assets/images/BPMN-CMMN/Exclusive_Gateway.png", "thumbnailName" : "Exclusive_Gateway.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Parallel_Gateway.png", "imageName":"Parallel_Gateway.png", "label":"Parallel Gateway", "thumbnailURL":"/assets/images/BPMN-CMMN/Parallel_Gateway.png", "thumbnailName" : "Parallel_Gateway.png"}
+    ];
+
+    this.dataObjectImageList = [
+      {"imageURL":"assets/images/BPMN-CMMN/DataObject.png", "imageName":"DataObject.png", "label":"Data Object", "thumbnailURL":"/assets/images/BPMN-CMMN/DataObject.png", "thumbnailName" : "DataObject.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/DataOutput.png", "imageName":"DataOutput.png", "label":"Data Output", "thumbnailURL":"/assets/images/BPMN-CMMN/DataOutput.png", "thumbnailName" : "DataOutput.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/DataInput.png", "imageName":"DataInput.png", "label":"Data Input", "thumbnailURL":"/assets/images/BPMN-CMMN/DataInput.png", "thumbnailName" : "DataInput.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/DataStore.png", "imageName":"DataStore.png", "label":"Data Store", "thumbnailURL":"/assets/images/BPMN-CMMN/DataStore.png", "thumbnailName" : "DataStore.png"}
     ];
   }
 

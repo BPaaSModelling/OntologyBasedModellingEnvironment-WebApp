@@ -25,7 +25,7 @@
   </ng-template>
   <context-menu #saySubMenu>
     <ng-template contextMenuItem (execute)="openActivityElementProperty($event.item)">
-      Add new Attribute / Property
+      Add new Attribute
     </ng-template>
     <ng-template let-element contextMenuItem (execute)="openExtendPaletteElementModal($event.item)"> <!-- openPaletteElementPropertiesModal -->
       Edit {{element.label}}
