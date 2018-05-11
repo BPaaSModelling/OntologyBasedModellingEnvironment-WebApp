@@ -3,6 +3,9 @@ import {PaletteElementModel} from "../_models/PaletteElement.model";
 import {GraphicalElementModel} from "../_models/GraphicalElement.model";
 import {ContextMenuComponent} from 'ngx-contextmenu';
 import {ModellerService} from '../modeller.service';
+import {ModalExtendPaletteElementComponent} from "../modal-extend-palette-element/modal-extend-palette-element.component";
+import {ModalPaletteElementPropertiesComponent} from "../modal-palette-element-properties/modal-palette-element-properties.component";
+import {MatDialog} from "@angular/material";
 
 
 @Component({
@@ -23,7 +26,8 @@ export class ToolRecursivePaletteElementComponent implements OnInit {
   @Output() showPaletteElementPropertyModal1 = new EventEmitter();
   @Output() showExtendPaletteElementModal1 = new EventEmitter();
   @Output() showCreateDomainElementModal1 = new EventEmitter();
-constructor(private mService: ModellerService) {
+  @Output() showActivityElementPropertyModal1 = new EventEmitter();
+constructor(private mService: ModellerService, public dialog: MatDialog) {
 
   }
 
@@ -50,12 +54,56 @@ constructor(private mService: ModellerService) {
     }
   }
 
+  toggleExtendPaletteElementModal(element: PaletteElementModel){
+    //console.log(element)
+    let dialogRef = this.dialog.open(ModalExtendPaletteElementComponent, {
+      data: { paletteElement: element},
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }
+
+  /*toggleCreateDomainElementModalFromExtend(element: PaletteElementModel) {
+    let dialogRef = this.dialog.open(ModalCreateDomainElementsComponent, {
+      data: {paletteElement: element },
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }*/
+
+  toggleActivityElementPropertyModal(element: PaletteElementModel) {
+    let dialogRef = this.dialog.open(ModalPaletteElementPropertiesComponent, {
+      data: {paletteElement: element },
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }
+
   openPaletteElementPropertiesModal(element: PaletteElementModel){
     this.showPaletteElementPropertyModal1.emit(element);
   }
 
   openExtendPaletteElementModal(element: PaletteElementModel){
     this.showExtendPaletteElementModal1.emit(element);
+  }
+
+  openActivityElementProperty(element: PaletteElementModel) {
+    this.showActivityElementPropertyModal1.emit(element);
   }
 
   openCreateDomainElementModal(element: PaletteElementModel) {

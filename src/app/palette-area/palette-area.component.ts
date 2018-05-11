@@ -8,6 +8,7 @@ import { ContextMenuService } from 'ngx-contextmenu';
 import {ModalExtendPaletteElementComponent} from "../modal-extend-palette-element/modal-extend-palette-element.component";
 import {MatDialog} from "@angular/material";
 import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
+import {ModalPaletteElementPropertiesComponent} from "../modal-palette-element-properties/modal-palette-element-properties.component";
 
 @Component({
   selector: 'app-palette-area',
@@ -32,7 +33,10 @@ export class PaletteAreaComponent implements OnInit {
   constructor(private mService: ModellerService, public dialog: MatDialog) {
     this.mService.queryPaletteCategories();
     this.mService.queryPaletteElements();
+    console.log('Palette elements:');
 console.log(this.mService.paletteElements);
+console.log('Palette categories');
+console.log(this.mService.paletteCategories);
 
   }
 
@@ -93,6 +97,19 @@ console.log(this.mService.paletteElements);
 
   toggleCreateDomainElementModalFromExtend(element: PaletteElementModel) {
     let dialogRef = this.dialog.open(ModalCreateDomainElementsComponent, {
+      data: {paletteElement: element },
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }
+
+  toggleActivityElementPropertyModal(element: PaletteElementModel) {
+    let dialogRef = this.dialog.open(ModalPaletteElementPropertiesComponent, {
       data: {paletteElement: element },
       height:'80%',
       width: '800px',

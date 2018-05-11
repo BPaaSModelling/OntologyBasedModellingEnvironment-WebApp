@@ -39,31 +39,31 @@ public dataObjectImageList: any;
     this.mService.queryPaletteCategories();
     console.log(this.data.paletteElement.paletteCategory);
     this.activityImageList = [
-      {"imageURL":"assets/images/AdHoc_Subprocess.png", "imageName":"AdHoc_Subprocess.png", "label":"AdHoc Subprocess", "thumbnailURL":"/assets/images/Thumbnail_AdHoc_Subprocess.png", "thumbnailName" : "Thumbnail_AdHoc_Subprocess.png"},
-      {"imageURL":"assets/images/Business_Rule_Task.png", "imageName":"Business_Rule_Task.png", "label":"Business Rule Task", "thumbnailURL":"/assets/images/Thumbnail_Business_Rule_Task.png", "thumbnailName" : "Thumbnail_Business_Rule_Task.png"},
-      {"imageURL":"assets/images/Call_Activity.png", "imageName":"Call_Activity.png", "label":"Call Activity", "thumbnailURL":"/assets/images/Thumbnail_Call_Activity.png", "thumbnailName" : "Thumbnail_Call_Activity.png"},
-      {"imageURL":"assets/images/Collapsed_Subprocess.png", "imageName":"Collapsed_Subprocess.png", "label":"Collapsed Subprocess", "thumbnailURL":"/assets/images/Thumbnail_Collapsed_Subprocess.png", "thumbnailName" : "Thumbnail_Collapsed_Subprocess.png"},
-      {"imageURL":"assets/images/Discretionary_Task.png", "imageName":"Discretionary_Task.png", "label":"Discretionary Task", "thumbnailURL":"/assets/images/Thumbnail_Discretionary_Task.png", "thumbnailName" : "Thumbnail_Discretionary_Task.png"},
-      {"imageURL":"assets/images/KoGu.png", "imageName":"KoGu.png", "label":"KoGu", "thumbnailURL":"/assets/images/Thumbnail_KoGu.png", "thumbnailName" : "Thumbnail_KoGu.png"},
-      {"imageURL":"assets/images/KoGu_Stroke.png", "imageName":"KoGu_Stroke.png", "label":"KoGu Stroke", "thumbnailURL":"/assets/images/Thumbnail_KoGu_Stroke.png", "thumbnailName" : "Thumbnail_KoGu_Stroke.png"},
-      {"imageURL":"assets/images/Message_Task.png", "imageName":"Message_Task.png", "label":"Message Task", "thumbnailURL":"/assets/images/Thumbnail_Message_Task.png", "thumbnailName" : "Thumbnail_Message_Task.png"},
-      {"imageURL":"assets/images/Receive_Task.png", "imageName":"Receive_Task.png", "label":"Receive Task", "thumbnailURL":"/assets/images/Thumbnail_Receive_Task.png", "thumbnailName" : "Thumbnail_Receive_Task.png"},
-      {"imageURL":"assets/images/Send_Task.png", "imageName":"Send_Task.png", "label":"Send Task", "thumbnailURL":"/assets/images/Thumbnail_Send_Task.png", "thumbnailName" : "Thumbnail_Send_Task.png"},
-      {"imageURL":"assets/images/Service_Task.png", "imageName":"Service_Task.png", "label":"Service Task", "thumbnailURL":"/assets/images/Thumbnail_Service_Task.png", "thumbnailName" : "Thumbnail_Service_Task.png"},
-      {"imageURL":"assets/images/Subprocess.png", "imageName":"Subprocess.png", "label":"Subprocess", "thumbnailURL":"/assets/images/Thumbnail_Subprocess.png", "thumbnailName" : "Thumbnail_Subprocess.png"},
-      {"imageURL":"assets/images/Task.png", "imageName":"Task.png", "label":"Task", "thumbnailURL":"/assets/images/Thumbnail_Task.png", "thumbnailName" : "Thumbnail_Task.png"},
-      {"imageURL":"assets/images/User_Task.png", "imageName":"User_Task.png", "label":"User Task", "thumbnailURL":"/assets/images/Thumbnail_User_Task.png", "thumbnailName" : "Thumbnail_User_Task.png"}
+      {"imageURL":"assets/images/BPMN-CMMN/AdHoc_Subprocess.png", "imageName":"AdHoc_Subprocess.png", "label":"AdHoc Subprocess", "thumbnailURL":"assets/images/BPMN-CMMN/Thumbnail_AdHoc_Subprocess.png", "thumbnailName" : "Thumbnail_AdHoc_Subprocess.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Business_Rule_Task.png", "imageName":"Business_Rule_Task.png", "label":"Business Rule Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Business_Rule_Task.png", "thumbnailName" : "Thumbnail_Business_Rule_Task.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Call_Activity.png", "imageName":"Call_Activity.png", "label":"Call Activity", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Call_Activity.png", "thumbnailName" : "Thumbnail_Call_Activity.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Collapsed_Subprocess.png", "imageName":"Collapsed_Subprocess.png", "label":"Collapsed Subprocess", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Collapsed_Subprocess.png", "thumbnailName" : "Thumbnail_Collapsed_Subprocess.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Discretionary_Task.png", "imageName":"Discretionary_Task.png", "label":"Discretionary Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Discretionary_Task.png", "thumbnailName" : "Thumbnail_Discretionary_Task.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/KoGu.png", "imageName":"KoGu.png", "label":"KoGu", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_KoGu.png", "thumbnailName" : "Thumbnail_KoGu.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/KoGu_Stroke.png", "imageName":"KoGu_Stroke.png", "label":"KoGu Stroke", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_KoGu_Stroke.png", "thumbnailName" : "Thumbnail_KoGu_Stroke.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Message_Task.png", "imageName":"Message_Task.png", "label":"Message Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Message_Task.png", "thumbnailName" : "Thumbnail_Message_Task.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Receive_Task.png", "imageName":"Receive_Task.png", "label":"Receive Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Receive_Task.png", "thumbnailName" : "Thumbnail_Receive_Task.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Send_Task.png", "imageName":"Send_Task.png", "label":"Send Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Send_Task.png", "thumbnailName" : "Thumbnail_Send_Task.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Service_Task.png", "imageName":"Service_Task.png", "label":"Service Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Service_Task.png", "thumbnailName" : "Thumbnail_Service_Task.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Subprocess.png", "imageName":"Subprocess.png", "label":"Subprocess", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Subprocess.png", "thumbnailName" : "Thumbnail_Subprocess.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Task.png", "imageName":"Task.png", "label":"Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Task.png", "thumbnailName" : "Thumbnail_Task.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/User_Task.png", "imageName":"User_Task.png", "label":"User Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_User_Task.png", "thumbnailName" : "Thumbnail_User_Task.png"}
     ];
 
     this.eventImageList = [
-      {"imageURL":"assets/images/Simple_End.png", "imageName":"Simple_End.png", "label":"Simple End", "thumbnailURL":"/assets/images/Simple_End.png", "thumbnailName" : "Simple_End.png"},
-      {"imageURL":"assets/images/Simple_Intermediate.png", "imageName":"Simple_Intermediate.png", "label":"Simple Intermediate", "thumbnailURL":"/assets/images/Simple_Intermediate.png", "thumbnailName" : "Simple_Intermediate.png"},
-      {"imageURL":"assets/images/Simple_Start.png", "imageName":"Simple_Start.png", "label":"Simple Start", "thumbnailURL":"/assets/images/Simple_Start.png", "thumbnailName" : "Simple_Start.png"},
-      {"imageURL":"assets/images/Message_End.png", "imageName":"Message_End.png", "label":"Message End", "thumbnailURL":"/assets/images/Message_End.png", "thumbnailName" : "Message_End.png"},
-      {"imageURL":"assets/images/Message_Intermediate.png", "imageName":"Message_Intermediate.png", "label":"Message Intermediate", "thumbnailURL":"/assets/images/Message_Intermediate.png", "thumbnailName" : "Message_Intermediate.png"},
-      {"imageURL":"assets/images/Message_Start.png", "imageName":"Message_Start.png", "label":"Message Start", "thumbnailURL":"/assets/images/Message_Start.png", "thumbnailName" : "Message_Start.png"},
-      {"imageURL":"assets/images/Timer_Start.png", "imageName":"Timer_Start.png", "label":"Timer Start", "thumbnailURL":"/assets/images/Timer_Start.png", "thumbnailName" : "Timer_Start.png"},
-      {"imageURL":"assets/images/Timer_Intermediate.png", "imageName":"Timer_Intermediate.png", "label":"Timer Start", "thumbnailURL":"/assets/images/Timer_Intermediate.png", "thumbnailName" : "Timer_Intermediate.png"}
+      {"imageURL":"assets/images/BPMN-CMMN/Simple_End.png", "imageName":"Simple_End.png", "label":"Simple End", "thumbnailURL":"/assets/images/BPMN-CMMN/Simple_End.png", "thumbnailName" : "Simple_End.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Simple_Intermediate.png", "imageName":"Simple_Intermediate.png", "label":"Simple Intermediate", "thumbnailURL":"/assets/images/BPMN-CMMN/Simple_Intermediate.png", "thumbnailName" : "Simple_Intermediate.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Simple_Start.png", "imageName":"Simple_Start.png", "label":"Simple Start", "thumbnailURL":"/assets/images/BPMN-CMMN/Simple_Start.png", "thumbnailName" : "Simple_Start.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Message_End.png", "imageName":"Message_End.png", "label":"Message End", "thumbnailURL":"/assets/images/BPMN-CMMN/Message_End.png", "thumbnailName" : "Message_End.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Message_Intermediate.png", "imageName":"Message_Intermediate.png", "label":"Message Intermediate", "thumbnailURL":"/assets/images/BPMN-CMMN/Message_Intermediate.png", "thumbnailName" : "Message_Intermediate.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Message_Start.png", "imageName":"Message_Start.png", "label":"Message Start", "thumbnailURL":"/assets/images/BPMN-CMMN/Message_Start.png", "thumbnailName" : "Message_Start.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Timer_Start.png", "imageName":"Timer_Start.png", "label":"Timer Start", "thumbnailURL":"/assets/images/BPMN-CMMN/Timer_Start.png", "thumbnailName" : "Timer_Start.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Timer_Intermediate.png", "imageName":"Timer_Intermediate.png", "label":"Timer Start", "thumbnailURL":"/assets/images/BPMN-CMMN/Timer_Intermediate.png", "thumbnailName" : "Timer_Intermediate.png"}
     ];
   }
 
@@ -92,19 +92,19 @@ public dataObjectImageList: any;
       ele.width = 100;
       ele.height = 70;
       if (this.currentPaletteElement.thumbnailURL === null) {
-        ele.thumbnailURL = '/assets/images/Thumbnail_Task.png';
+        ele.thumbnailURL = '/assets/images/BPMN-CMMN/Thumbnail_Task.png';
       }
     } else if (ele.paletteCategory.search('Category_Events') !== -1) {
       ele.width = 70;
       ele.height = 70;
       if (this.currentPaletteElement.thumbnailURL === null) {
-        ele.thumbnailURL = '/assets/images/Simple_Start.png';
+        ele.thumbnailURL = '/assets/images/BPMN-CMMN/Simple_Start.png';
       }
     } else if (ele.paletteCategory.search('Category_Gateways') !== -1) {
       ele.width = 70;
       ele.height = 100;
       if (this.currentPaletteElement.thumbnailURL === null) {
-        ele.thumbnailURL = '/assets/images/Simple_Gateway.png';
+        ele.thumbnailURL = '/assets/images/BPMN-CMMN/Simple_Gateway.png';
       }
     } else if (ele.paletteCategory.search('Category_Data') !== -1) {
       ele.width = 70;
@@ -123,9 +123,9 @@ public dataObjectImageList: any;
     //THEN I SUPPOSE TO CALL THE SERVICE AND INSERT THE currentPaletteElement IN THE ONTOLOGY
    //console.log('val: ' + val);
    //console.log(this.data);
-   if (isSuccess) {
+   //if (isSuccess) {
      this.dialogRef.close();
-   }
+   //}
   }
 
   mapToDomainOntology() {

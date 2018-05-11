@@ -1,6 +1,8 @@
 <ul *ngFor="let sbchild of child.childElements ">
-  <li *ngIf="sbchild.parentElement == child.id" class="NthLevelElement"><a [contextMenu]="elementRightClickMenu" [contextMenuSubject]="sbchild" (click)="addNewShape(sbchild)"><img  class="thumbnail" src="../assets/images/{{sbchild.thumbnailURL}}" />{{sbchild.label}}</a>
-    <app--tool-recursive-palette-element (sendElementFromRecursiveElement)="addNewShape($event)" [child]="sbchild"></app--tool-recursive-palette-element>
+  <li *ngIf="sbchild.parentElement == child.id" class="NthLevelElement"><a [contextMenu]="elementRightClickMenu" [contextMenuSubject]="sbchild" (click)="addNewShape(sbchild)"><img  class="thumbnail" src="../assets/images/BPMN-CMMN/{{sbchild.thumbnailURL}}" />{{sbchild.label}}</a>
+    <app--tool-recursive-palette-element (showActivityElementPropertyModal1)="toggleActivityElementPropertyModal($event)"
+                                         (showExtendPaletteElementModal1)="toggleExtendPaletteElementModal($event)"
+                                         (sendElementFromRecursiveElement)="addNewShape($event)" [child]="sbchild"></app--tool-recursive-palette-element>
   </li>
 </ul>
 
@@ -32,7 +34,7 @@
     Edit
   </ng-template>
   <context-menu #saySubMenu>
-    <ng-template contextMenuItem (execute)="something">
+    <ng-template contextMenuItem (execute)="openActivityElementProperty($event.item)">
       Add new Attribute / Property
     </ng-template>
     <ng-template let-element contextMenuItem (execute)="openExtendPaletteElementModal($event.item)"> <!-- openPaletteElementPropertiesModal -->

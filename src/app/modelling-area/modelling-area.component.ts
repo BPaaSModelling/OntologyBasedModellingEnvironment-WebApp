@@ -132,7 +132,7 @@ export class ModellingAreaComponent implements OnInit {
           $(go.Picture,
             {
               //name: 'Picture',
-              source: "/assets/images/Collapsed_Subprocess.png",
+              source: "/assets/images/BPMN-CMMN/Collapsed_Subprocess.png",
               //fromLinkable: true, toLinkable: true, cursor: "pointer",
               desiredSize: new go.Size(100, 70)
             },
@@ -181,8 +181,8 @@ export class ModellingAreaComponent implements OnInit {
       else {
         const elementId = element.uuid;
         const nodeId = '#' + elementId;
-        console.log('icon url is: ' + "assets/images/" + element.imageURL);
-        var imageURL = "assets/images/" + element.imageURL;
+        console.log('icon url is: ' + "assets/images/BPMN-CMMN/" + element.imageURL);
+        var imageURL = "assets/images/BPMN-CMMN/" + element.imageURL;
 
         console.log('shape: ' + element.shape + ' label: ' + element.label + 'bg color: ' + element.backgroundColor);
 

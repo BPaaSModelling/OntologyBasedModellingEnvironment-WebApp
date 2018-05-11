@@ -34,6 +34,7 @@ export class ModalPaletteElementPropertiesComponent implements OnInit {
 
     const sub = dialogRef.componentInstance.newPropertyAdded.subscribe(() => {
       this.mService.queryDatatypeProperties(this.domainName);
+      this.dialogRef.close('Cancel');
     });
 
     dialogRef.afterClosed().subscribe(result => {

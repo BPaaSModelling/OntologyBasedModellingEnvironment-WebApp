@@ -40,6 +40,7 @@ export class ModalCreateDomainElementsComponent implements OnInit {
 
     this.mService.createDomainElementInOntology(JSON.stringify(this.domainElement));
     this.newDomainElementAdded.emit(this.domainElement);
+    this.dialogRef.close('Cancel');
   }
 
   onCloseCancel() {

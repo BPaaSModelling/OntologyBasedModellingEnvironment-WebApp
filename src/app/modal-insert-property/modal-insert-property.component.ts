@@ -41,5 +41,6 @@ step = 0;
     this.datatypeProperty.domainName = this.data.paletteElement.representedLanguageClass;
     this.mService.createNewDatatypeProperty(JSON.stringify(this.datatypeProperty));
     this.newPropertyAdded.emit(this.datatypeProperty);
+    this.dialogRef.close('Cancel');
   }
 }
