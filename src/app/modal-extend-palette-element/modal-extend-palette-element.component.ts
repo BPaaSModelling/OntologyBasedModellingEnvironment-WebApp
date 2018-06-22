@@ -93,7 +93,7 @@ public groupImageList: any;
   }
 
   createElementInOntology() {
-
+  console.log('Measuring time:' + Date.now());
     const ele = this.currentPaletteElement;
     ele.id = '';
     ele.uuid = (this.currentPaletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
