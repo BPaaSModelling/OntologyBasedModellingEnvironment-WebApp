@@ -108,7 +108,7 @@ export class ModellingAreaComponent implements OnInit {
         {
           locationSpot: go.Spot.Center,
           resizable: true,
-          resizeObjectName: "SHAPE"
+          resizeObjectName: "SHAPE" // Changing this to Picture resizes the images, however links are a problem
         },
         new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
         { selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate },
@@ -129,12 +129,15 @@ export class ModellingAreaComponent implements OnInit {
             },
             //new go.Binding("figure","key"),
             new go.Binding("fill")),
+            new go.Binding("width"),
+            new go.Binding("height"),
           $(go.Picture,
             {
               //name: 'Picture',
               source: "/assets/images/BPMN-CMMN/Collapsed_Subprocess.png",
               //fromLinkable: true, toLinkable: true, cursor: "pointer",
               desiredSize: new go.Size(100, 70)
+              //imageStretch: go.GraphObject.Fill
             },
             new go.Binding("source"),
             new go.Binding("desiredSize")),
@@ -190,11 +193,13 @@ export class ModellingAreaComponent implements OnInit {
         var diagram = myDiagram;
         diagram.startTransaction("Add State");
 
-        // get the node data for which the user clicked the button
-        //var fromNode = adornment.adornedPart;
-        //var fromData = fromNode.data;
-        // create a new "State" data object, positioned off to the right of the adorned Node
-        var toData = {text: element.label, key: element.shape, fill: "#0000", source: imageURL, desiredSize: new go.Size(element.width, element.height)}; //{ text: "Start", figure: "Circle", fill: "#00AD5F" }
+        console.log('Palette category: ' + element.paletteCategory);
+        console.log('Image url: ' + element.imageURL);
+        var toData = {};
+        if (element.paletteCategory === VariablesSettings.paletteCategoryGroupsURI)
+           toData = {text: element.label, key: element.shape, fill: "#0000", source: imageURL, desiredSize: new go.Size(800, 560)}; //{ text: "Start", figure: "Circle", fill: "#00AD5F" }
+        else
+           toData = {text: element.label, key: element.shape, fill: "#0000", source: imageURL, desiredSize: new go.Size(element.width, element.height)}; //{ text: "Start", figure: "Circle", fill: "#00AD5F" }
 
         // add the new node data to the model
         var model = diagram.model;

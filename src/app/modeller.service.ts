@@ -35,7 +35,7 @@ export class ModellerService {
         //console.log('PaletteElements received: ' + JSON.stringify(data));
         this.paletteElement$ = Observable.of(data);
         this.paletteElements = data;
-
+console.log(this.paletteElements);
       }, error => console.log('Could not query PaletteElements'));
   }
 

@@ -25,6 +25,7 @@ public activityImageList: any;
 public eventImageList: any;
 public gatewayImageList: any;
 public dataObjectImageList: any;
+public groupImageList: any;
 @Output() showCreateDomainElementModalFromExtend = new EventEmitter();
   constructor(
     public dialogRef: MatDialogRef<ModalExtendPaletteElementComponent>,
@@ -78,6 +79,12 @@ public dataObjectImageList: any;
       {"imageURL":"assets/images/BPMN-CMMN/DataOutput.png", "imageName":"DataOutput.png", "label":"Data Output", "thumbnailURL":"/assets/images/BPMN-CMMN/DataOutput.png", "thumbnailName" : "DataOutput.png"},
       {"imageURL":"assets/images/BPMN-CMMN/DataInput.png", "imageName":"DataInput.png", "label":"Data Input", "thumbnailURL":"/assets/images/BPMN-CMMN/DataInput.png", "thumbnailName" : "DataInput.png"},
       {"imageURL":"assets/images/BPMN-CMMN/DataStore.png", "imageName":"DataStore.png", "label":"Data Store", "thumbnailURL":"/assets/images/BPMN-CMMN/DataStore.png", "thumbnailName" : "DataStore.png"}
+    ];
+
+    this.groupImageList = [
+      {"imageURL":"assets/images/BPMN-CMMN/Group.jpg", "imageName":"Group.jpg", "label":"Group Large", "thumbnailURL":"/assets/images/BPMN-CMMN/Group.jpg", "thumbnailName" : "Group.jpg"},
+      {"imageURL":"assets/images/BPMN-CMMN/Group4Process.bmp", "imageName":"Group4Process.bmp", "label":"Group of Processes", "thumbnailURL":"/assets/images/BPMN-CMMN/Group4Process.bmp", "thumbnailName" : "Group4Process.bmp"},
+      {"imageURL":"assets/images/BPMN-CMMN/GroupOfAvtivities.png", "imageName":"GroupOfAvtivities.png", "label":"Group of Activities", "thumbnailURL":"/assets/images/BPMN-CMMN/GroupOfAvtivities.png", "thumbnailName" : "GroupOfAvtivities.png"}
     ];
   }
 
