@@ -72,7 +72,7 @@ export class ModellingAreaComponent implements OnInit {
     myDiagram =
       $(go.Diagram, "myDiagramDiv",
         {
-          initialContentAlignment: go.Spot.Center,
+          initialContentAlignment: go.Spot.Left,
           "undoManager.isEnabled": true, // enable Ctrl-Z to undo and Ctrl-Y to redo
           allowDrop: true,
           "draggingTool.dragsLink": true,
@@ -104,11 +104,12 @@ export class ModellingAreaComponent implements OnInit {
       );
 
     myDiagram.nodeTemplate =
-      $(go.Node, "Vertical", //this resizes the entire shape
+      $(go.Node, "Auto", //this resizes the entire shape
         {
-          locationSpot: go.Spot.Center,
+          name: "Node",
+          locationSpot: go.Spot.Left,
           resizable: true,
-          resizeObjectName: "SHAPE" // Changing this to Picture resizes the images, however links are a problem
+          resizeObjectName: "PANEL" // Changing this to Picture resizes the images, however links are a problem
         },
         new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
         { selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate },
@@ -116,15 +117,19 @@ export class ModellingAreaComponent implements OnInit {
         // the main object is a Panel that surrounds a TextBlock with a Shape
 
         $(go.Panel, "Auto",
-          { name: "PANEL" },
+          {
+            name: "PANEL",
+            angle:0
+          },
           new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
+          new go.Binding("angle"),
           $(go.Shape, "Rectangle",  // default figure
             {
               name: "SHAPE",
               portId: "", // the default port: if no spot on link data, use closest side
               fromLinkable: true, toLinkable: true, cursor: "pointer",
               fill: "#000000",  // default color
-              width: 110, height: 80,
+              //width: 835, height: 575,
               strokeWidth: 0
             },
             //new go.Binding("figure","key"),
@@ -133,30 +138,30 @@ export class ModellingAreaComponent implements OnInit {
             new go.Binding("height"),
           $(go.Picture,
             {
-              //name: 'Picture',
+              name: 'Picture',
               source: "/assets/images/BPMN-CMMN/Collapsed_Subprocess.png",
-              //fromLinkable: true, toLinkable: true, cursor: "pointer",
-              desiredSize: new go.Size(100, 70)
-              //imageStretch: go.GraphObject.Fill
+              margin: 5,
+              stretch: go.GraphObject.Fill //stretch image to fill whole area of shape
+              //imageStretch: go.GraphObject.Fill //do not distort the image
             },
             new go.Binding("source"),
             new go.Binding("desiredSize")),
           $(go.TextBlock,
             {
-              font: "bold 11pt Helvetica, Arial, sans-serif",
+              font: "11pt Helvetica, Arial, sans-serif",
               margin: 8,
-              maxSize: new go.Size(160, NaN),
+              maxSize: new go.Size(200, NaN),
               wrap: go.TextBlock.WrapFit,
-              editable: true
+              editable: true,
+              alignment: go.Spot.Center
             },
-            new go.Binding("text").makeTwoWay())
+            new go.Binding("text").makeTwoWay(),
+            new go.Binding("alignment")
+          )
         )
   );
 
-    /*myDiagram.add($(go.Part, "Vertical",
-      $(go.Picture, "/assets/images/Collapsed_Subprocess.png")
-    ));*/
-    //myDiagram.model.nodeDataArray = go.Shape.getFigureGenerators().toArray();
+
     model = new go.GraphLinksModel();
 
 
@@ -194,23 +199,22 @@ export class ModellingAreaComponent implements OnInit {
         diagram.startTransaction("Add State");
 
         console.log('Palette category: ' + element.paletteCategory);
-        console.log('Image url: ' + element.imageURL);
+
         var toData = {};
-        if (element.paletteCategory === VariablesSettings.paletteCategoryGroupsURI)
-           toData = {text: element.label, key: element.shape, fill: "#0000", source: imageURL, desiredSize: new go.Size(800, 560)}; //{ text: "Start", figure: "Circle", fill: "#00AD5F" }
+        if (element.paletteCategory === VariablesSettings.paletteCatogorySwimlanesURI) {
+          console.log('inside swimlane');
+          toData = {
+            text: element.label, key: element.shape, fill: "#0000",
+            source: imageURL, size: new go.Size(element.width, element.height),
+            width: element.width, height: element.height, angle: 0, alignment: go.Spot.Left
+          };
+        }
         else
-           toData = {text: element.label, key: element.shape, fill: "#0000", source: imageURL, desiredSize: new go.Size(element.width, element.height)}; //{ text: "Start", figure: "Circle", fill: "#00AD5F" }
+           toData = {text: element.label, key: element.shape, fill: "#0000", source: imageURL, size: new go.Size(element.width, element.height), width: element.width, height: element.height};
 
         // add the new node data to the model
         var model = diagram.model;
         model.addNodeData(toData);
-
-        // create a link data from the old node data to the new node data
-        /*var linkdata = {
-          from: model.getKeyForNodeData(fromData),  // or just: fromData.id
-          to: model.getKeyForNodeData(toData),
-          text: "transition"
-      }*/
 
         var newnode = diagram.findNodeForData(toData);
         diagram.select(newnode);
