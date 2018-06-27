@@ -53,8 +53,9 @@ public groupImageList: any;
       {"imageURL":"assets/images/BPMN-CMMN/Service_Task.png", "imageName":"Service_Task.png", "label":"Service Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Service_Task.png", "thumbnailName" : "Thumbnail_Service_Task.png"},
       {"imageURL":"assets/images/BPMN-CMMN/Subprocess.png", "imageName":"Subprocess.png", "label":"Subprocess", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Subprocess.png", "thumbnailName" : "Thumbnail_Subprocess.png"},
       {"imageURL":"assets/images/BPMN-CMMN/Task.png", "imageName":"Task.png", "label":"Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Task.png", "thumbnailName" : "Thumbnail_Task.png"},
-      {"imageURL":"assets/images/BPMN-CMMN/User_Task.png", "imageName":"User_Task.png", "label":"User Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_User_Task.png", "thumbnailName" : "Thumbnail_User_Task.png"}
-    ];
+      {"imageURL":"assets/images/BPMN-CMMN/User_Task.png", "imageName":"User_Task.png", "label":"User Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_User_Task.png", "thumbnailName" : "Thumbnail_User_Task.png"},
+      {"imageURL":"assets/images/BPMN-CMMN/Manual_Task.png", "imageName":"Manual_Task.png", "label":"Manual Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Manual_Task.png", "thumbnailName" : "Thumbnail_Manual_Task.png"}
+      ];
 
     this.eventImageList = [
       {"imageURL":"assets/images/BPMN-CMMN/Simple_End.png", "imageName":"Simple_End.png", "label":"Simple End", "thumbnailURL":"/assets/images/BPMN-CMMN/Simple_End.png", "thumbnailName" : "Simple_End.png"},
