@@ -7,6 +7,7 @@ export class EndpointSettings {
   private static CREATEINSTANCE             : string = '/ModEnv/createCanvasInstance';
   private static CREATEDOMAINELEMENT        : string = '/ModEnv/createDomainElement';
   private static GETDOMAINCLASSES           : string = '/ModEnv/getDomainOntologyClasses';
+  private static GETMODELINGLANGUAGELASSES  : string = '/ModEnv/getModelingLanguageOntologyElements';
   private static CREATEDATATYPEPROPERTY     : string = '/ModEnv/createDatatypeProperty';
   private static GETDATATYPEPROPERTIES      : string = '/ModEnv/getDatatypeProperties';
   private static DELETEPALETTEELEMENT       : string = '/ModEnv/deletePaletteElement';
@@ -33,6 +34,10 @@ export class EndpointSettings {
 
   public static getDomainClassesEndpoint(): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.GETDOMAINCLASSES;
+  }
+
+  public static getModelingElementClassesEndpoint(): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.GETMODELINGLANGUAGELASSES;
   }
 
   public static getCreateDatatypePropertyEndpoint(): string {

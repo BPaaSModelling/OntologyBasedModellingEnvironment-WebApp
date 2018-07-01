@@ -37,6 +37,7 @@ public groupImageList: any;
 
   ngOnInit() {
     this.mService.queryDomainClasses();
+    this.mService.queryModelingElementClasses();
     this.mService.queryPaletteCategories();
     console.log(this.data.paletteElement.paletteCategory);
     this.activityImageList = [

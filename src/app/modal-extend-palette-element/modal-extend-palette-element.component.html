@@ -16,9 +16,14 @@
               <input matInput placeholder="Label" name="input_label" [(ngModel)]="currentPaletteElement.label" [value]="currentPaletteElement.label" required>
             </mat-form-field>
 
+              <mat-form-field class="full-width">
+                <mat-select placeholder="New/Existing Element" name="input_modelingLanguageOntology" multiple [(ngModel)]="currentPaletteElement.representedLanguageClass" >
+                  <mat-option *ngFor="let class of mService.modelingLanguageClasses" [value]="class.id" >{{class.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
 
            <mat-form-field class="full-width">
-              <mat-select placeholder="Map to Domain Ontology Concept" name="input_domainOntology" multiple [(ngModel)]="currentPaletteElement.representedDomainClass" >
+              <mat-select placeholder="Semantic Domain Element" name="input_domainOntology" multiple [(ngModel)]="currentPaletteElement.representedDomainClass" >
                 <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id" >{{class.label}}</mat-option>
               </mat-select>
             </mat-form-field>

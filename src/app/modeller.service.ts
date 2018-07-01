@@ -20,6 +20,8 @@ export class ModellerService {
   public paletteElements: PaletteElementModel[] = [];
   public domainClasse$: Observable<QueryAnswerModel[]> = Observable.of([]);
   public domainClasses: QueryAnswerModel[] = [];
+  public modelingLanguageClasse$: Observable<QueryAnswerModel[]> = Observable.of([]);
+  public modelingLanguageClasses: QueryAnswerModel[] = [];
   public datatypeProperties$: Observable<DatatypePropertyModel[]> = Observable.of([]);
   public datatypeProperties: DatatypePropertyModel[] = [];
 
@@ -116,6 +118,16 @@ console.log(this.paletteElements);
         this.domainClasses = data;
       }, error => console.log('Could not query Domain Classes'));
 
+  }
+
+  queryModelingElementClasses(): void {
+    this.http.get(EndpointSettings.getModelingElementClassesEndpoint())
+      .map(response => response.json())
+      .subscribe(data => {
+        //console.log('PaletteElements received: ' + JSON.stringify(data));
+        this.modelingLanguageClasse$ = Observable.of(data);
+        this.modelingLanguageClasses = data;
+      }, error => console.log('Could not query Modeling Language Classes'));
   }
 
   queryDatatypeProperties(domainName): void {
