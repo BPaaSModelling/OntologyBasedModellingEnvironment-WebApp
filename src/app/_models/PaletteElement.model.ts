@@ -7,7 +7,7 @@ export class PaletteElementModel {
   hiddenFromPalette: boolean;
   childElements: PaletteElementModel[];
   representedLanguageClass: string;
-  representedDomainClass: string;
+  representedDomainClass: string[];
   datatypePropertyId: string;
   datatypePropertyLabel: string;
   datatypePropertyValue: string;
