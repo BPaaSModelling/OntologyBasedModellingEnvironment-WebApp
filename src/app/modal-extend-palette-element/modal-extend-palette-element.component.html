@@ -17,7 +17,7 @@
             </mat-form-field>
 
               <mat-form-field class="full-width">
-                <mat-select placeholder="New/Existing Element" name="input_modelingLanguageOntology" multiple [(ngModel)]="currentPaletteElement.representedLanguageClass" >
+                <mat-select placeholder="Existing Element" name="input_modelingLanguageOntology" multiple [(ngModel)]="currentPaletteElement.representedLanguageClass" >
                   <mat-option *ngFor="let class of mService.modelingLanguageClasses" [value]="class.id" >{{class.label}}</mat-option>
                 </mat-select>
               </mat-form-field>
