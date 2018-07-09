@@ -183,4 +183,10 @@ public groupImageList: any;
     });
   }
 
+  addSubClassesForLanguage(element: PaletteElementModel) {
+    console.log('Selected subclasses : ');
+    console.log(element);
+    this.mService.createLanguageSubclasses(JSON.stringify(element));
+  }
+
 }

@@ -61,7 +61,7 @@ console.log(this.mService.paletteCategories);
     }
   }
 
-  openPaletteElementPropertiesModal(element: PaletteElementModel){
+  openPaletteElementPropertiesModal(element: PaletteElementModel) {
     this.showPaletteElementPropertyModal.emit(element);
   }
 
@@ -81,7 +81,7 @@ console.log(this.mService.paletteCategories);
     this.showActivityElementPropertyModal.emit(element);
   }
 
-  toggleExtendPaletteElementModal(element: PaletteElementModel){
+  toggleExtendPaletteElementModal(element: PaletteElementModel) {
     //console.log(element)
     let dialogRef = this.dialog.open(ModalExtendPaletteElementComponent, {
       data: { paletteElement: element},
@@ -119,6 +119,12 @@ console.log(this.mService.paletteCategories);
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed : ' + result);
     });
+  }
+
+  hideFromPalette(element: PaletteElementModel) {
+    console.log('Hiding element : ' + element.label);
+    element.uuid = (element.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
+    this.mService.hidePaletteElement(JSON.stringify(element));
   }
 
 }

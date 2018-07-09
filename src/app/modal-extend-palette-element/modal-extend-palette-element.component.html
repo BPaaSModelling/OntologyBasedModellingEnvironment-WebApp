@@ -2,33 +2,34 @@
   <mat-toolbar>
     <div class="mat-toolbar-tools">
      <!-- <h2>Extend {{data.paletteElement.label}}</h2>-->
-      <h2>Create a new Modeling Element</h2>
+      <h2>Extend {{data.paletteElement.label}}</h2>
     </div>
   </mat-toolbar>
   <mat-dialog-content style="max-width:800px;max-height:810px; ">
-
-        <h2 class="mat-display-2">Extend {{data.paletteElement.label}}</h2>
+    <mat-tab-group mat-dynamic-height mat-border-bottom>
+      <mat-tab label="New Modelling Element">
+        <h3 class="mat-display-1">Create new sub-class of {{data.paletteElement.label}}</h3>
         <mat-card>
           <form class="form">
 
             <div layout="row">
-            <mat-form-field class="full-width">
-              <input matInput placeholder="Label" name="input_label" [(ngModel)]="currentPaletteElement.label" [value]="currentPaletteElement.label" required>
-            </mat-form-field>
-
               <mat-form-field class="full-width">
-                <mat-select placeholder="Existing Element" name="input_modelingLanguageOntology" multiple [(ngModel)]="currentPaletteElement.representedLanguageClass" >
-                  <mat-option *ngFor="let class of mService.modelingLanguageClasses" [value]="class.id" >{{class.label}}</mat-option>
-                </mat-select>
+                <input matInput placeholder="Parent Element" name="input_parent" [(ngModel)]="data.paletteElement.label" [value]="data.paletteElement.label" disabled>
               </mat-form-field>
 
-           <mat-form-field class="full-width">
-              <mat-select placeholder="Semantic Domain Element" name="input_domainOntology" multiple [(ngModel)]="currentPaletteElement.representedDomainClass" >
-                <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id" >{{class.label}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-              <button mat-raised-button color="primary" (click)="openCreateDomainElementModalFromExtend(data.paletteElement)">Create New</button>
+             <mat-form-field class="full-width">
+                <input matInput placeholder="Child Element" name="input_child" [(ngModel)]="currentPaletteElement.label" [value]="currentPaletteElement.label" required>
+             </mat-form-field>
 
+            </div>
+
+            <div layout="row">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Semantic Domain Element" name="input_domainOntology" multiple [(ngModel)]="currentPaletteElement.representedDomainClass" >
+                  <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id" >{{class.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-raised-button color="primary" (click)="openCreateDomainElementModalFromExtend(data.paletteElement)">Create New Domain Element</button>
             </div>
 
             <div layout="row">
@@ -108,6 +109,12 @@
                   {{image.label}}</mat-option>
               </mat-select>
             </mat-form-field>
+
+            </div>
+            <br/>
+            <div layout="row">
+              <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
+              <button mat-raised-button color="primary" (click)="createElementInOntology()" style="margin-right:20px;" >Create New Modeling Element</button>
             </div>
 <!--
             <div layout="row">
@@ -169,16 +176,52 @@
               </mat-expansion-panel>
 
             </mat-accordion> -->
+
           </form>
         </mat-card>
+      </mat-tab>
+      <mat-tab label="Map Existing Elements">
+        <h3 class="mat-display-1">Add existing sub-classes to {{data.paletteElement.label}}</h3>
+        <mat-card>
+          <form class="form">
 
+            <div layout="row">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Parent Element" name="input_label" [(ngModel)]="data.paletteElement.label" [value]="data.paletteElement.label" disabled>
+              </mat-form-field>
+
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Existing Element" name="input_modelingLanguageOntology" multiple [(ngModel)]="data.paletteElement.languageSubclasses" >
+                  <mat-option *ngFor="let class of mService.modelingLanguageClasses" [value]="class.id" >{{class.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+            </div>
+
+            <div layout="row">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Semantic Domain Element" name="input_domainOntology1" multiple [(ngModel)]="data.paletteElement.representedDomainClass" >
+                  <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id" >{{class.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-raised-button color="primary" (click)="openCreateDomainElementModalFromExtend(data.paletteElement)">Create New Domain Element</button>
+            </div>
+
+            <br />
+            <div layout="row">
+            <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
+            <button mat-raised-button color="primary" (click)="addSubClassesForLanguage(data.paletteElement)">Integrate</button>
+            </div>
+          </form>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
   </mat-dialog-content>
 
 
 </form>
 <mat-dialog-actions layout="row">
-  <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="createElementInOntology()" style="margin-right:20px;" >Ok</button>
+
 </mat-dialog-actions>
 
 <!-- https://github.com/angular/material2/issues/5269 -->

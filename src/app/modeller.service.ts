@@ -77,6 +77,19 @@ console.log(this.paletteElements);
     return querySuccess;
   }
 
+  hidePaletteElement(oImg): Boolean {
+    //console.log(JSON.stringify(oImg));
+    let querySuccess: Boolean = false;
+    console.log(oImg);
+    this.http.post(EndpointSettings.getHidePaletteElementEndpoint(), oImg)
+      .map(response => response.json()).subscribe(
+      data => {
+        querySuccess = (data == 'true');
+      }
+    );
+    return querySuccess;
+  }
+
   createDomainElementInOntology(oImg): Boolean {
     //console.log(JSON.stringify(oImg));
     let querySuccess: Boolean = false;
@@ -105,6 +118,19 @@ console.log(this.paletteElements);
 
   editLabel(element: Object): void {
 
+  }
+
+  createLanguageSubclasses(oImg): Boolean {
+    //console.log(JSON.stringify(oImg));
+    let querySuccess: Boolean = false;
+    console.log(oImg);
+    this.http.post(EndpointSettings.getCreateLanguageSubclassesEndpoint(), oImg)
+      .map(response => response.json()).subscribe(
+      data => {
+        querySuccess = (data == 'true');
+      }
+    );
+    return querySuccess;
   }
 
   queryDomainClasses(): void {

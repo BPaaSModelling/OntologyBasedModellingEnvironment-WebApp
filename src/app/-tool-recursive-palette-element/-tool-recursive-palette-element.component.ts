@@ -109,4 +109,10 @@ constructor(private mService: ModellerService, public dialog: MatDialog) {
   openCreateDomainElementModal(element: PaletteElementModel) {
     this.showCreateDomainElementModal1.emit(element);
   }
+
+  hideFromPalette(element: PaletteElementModel) {
+    console.log('Hiding element : ' + element.label);
+    element.uuid = (element.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
+    this.mService.hidePaletteElement(JSON.stringify(element));
+  }
 }

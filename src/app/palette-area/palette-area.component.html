@@ -4,7 +4,7 @@
   <p class="category-title">{{category.label}}</p>
   <nav class="element-container">
     <ng-container *ngFor="let element of mService.paletteElements">
-      <ul class="element" *ngIf="(element.paletteCategory == category.id)">
+      <ul class="element" *ngIf="(element.paletteCategory == category.id && element.hiddenFromPalette == false)">
         <li class="paletteElement" ><a [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element" (click)="addNewShape(element)"><img class="thumbnail"  src="../assets/images/BPMN-CMMN/{{element.thumbnailURL}}" /></a>
           <app--tool-recursive-palette-element (showActivityElementPropertyModal1)="toggleActivityElementPropertyModal($event)"
                                                (showExtendPaletteElementModal1)="toggleExtendPaletteElementModal($event)"
@@ -31,7 +31,7 @@
       Edit {{element.label}}
     </ng-template>
   </context-menu>
-  <ng-template let-element contextMenuItem (execute)="something">
+  <ng-template let-element contextMenuItem (execute)="hideFromPalette($event.item)">
     Hide
   </ng-template>
   <!--<ng-template let-element contextMenuItem (execute)="removeFromPalette($event.item)">
