@@ -24,6 +24,8 @@ export class ModellerService {
   public modelingLanguageClasses: QueryAnswerModel[] = [];
   public datatypeProperties$: Observable<DatatypePropertyModel[]> = Observable.of([]);
   public datatypeProperties: DatatypePropertyModel[] = [];
+  public namespacePrefixe$: Observable<string[]> = Observable.of([]);
+  public namespacePrefixes: string[] = [];
 
   constructor(private http: Http, private jsonp: Jsonp) {
     const headers = new Headers({ 'Content-Type': 'application/json'});
@@ -166,4 +168,13 @@ console.log(this.paletteElements);
       }, error => console.log('Could not query DatatypeProperties'));
   }
 
+  queryNamespacePrefixes(): void {
+    this.http.get(EndpointSettings.getGetAllNamespacePrefixesEndpoint())
+      .map(response => response.json()).subscribe(
+      data => {
+        //console.log('PaletteCategories received: ' + JSON.stringify(data));
+        this.namespacePrefixe$ = Observable.of(data);
+        this.namespacePrefixes = data;
+      }, error => console.log('Could not query Namespace prefixes'));
+  }
 }

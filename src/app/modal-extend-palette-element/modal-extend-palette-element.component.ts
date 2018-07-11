@@ -26,6 +26,7 @@ public eventImageList: any;
 public gatewayImageList: any;
 public dataObjectImageList: any;
 public groupImageList: any;
+public namespaceMap: any;
 @Output() showCreateDomainElementModalFromExtend = new EventEmitter();
   constructor(
     public dialogRef: MatDialogRef<ModalExtendPaletteElementComponent>,
@@ -39,6 +40,7 @@ public groupImageList: any;
     this.mService.queryDomainClasses();
     this.mService.queryModelingElementClasses();
     this.mService.queryPaletteCategories();
+    this.mService.queryNamespacePrefixes();
     console.log(this.data.paletteElement.paletteCategory);
     this.activityImageList = [
       {"imageURL":"assets/images/BPMN-CMMN/AdHoc_Subprocess.png", "imageName":"AdHoc_Subprocess.png", "label":"AdHoc Subprocess", "thumbnailURL":"assets/images/BPMN-CMMN/Thumbnail_AdHoc_Subprocess.png", "thumbnailName" : "Thumbnail_AdHoc_Subprocess.png"},
@@ -104,10 +106,11 @@ public groupImageList: any;
     ele.hiddenFromPalette = false;
     ele.usesImages = false;
     ele.parentElement = (this.data.paletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
+    ele.parentLanguageClass = this.data.paletteElement.representedLanguageClass;
     console.log('parent:' + ele.parentElement);
     ele.paletteCategory = this.data.paletteElement.paletteCategory; // 'lo:Category_Activities';
     console.log('category: ' + this.currentPaletteElement.paletteCategory);
-    ele.representedLanguageClass = 'bpmn:' + (this.currentPaletteElement.label).replace(new RegExp(' ', 'g'), ''); /*important property to display in the pallette*/
+    ele.representedLanguageClass = ele.languagePrefix + (this.currentPaletteElement.label).replace(new RegExp(' ', 'g'), ''); /*important property to display in the pallette*/
 
     console.log('Thumbnail not selected: ' + this.currentPaletteElement.thumbnailURL);
     // Set width and height of the image as per category
@@ -186,6 +189,8 @@ public groupImageList: any;
   addSubClassesForLanguage(element: PaletteElementModel) {
     console.log('Selected subclasses : ');
     console.log(element);
+    element.uuid = (this.data.paletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
+    element.parentElement = (this.data.paletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
     this.mService.createLanguageSubclasses(JSON.stringify(element));
   }
 

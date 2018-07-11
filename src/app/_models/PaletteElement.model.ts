@@ -4,11 +4,13 @@ export class PaletteElementModel {
   label: string;
   paletteCategory: string;
   parentElement: string;
+  parentLanguageClass: string;
   hiddenFromPalette: boolean;
   childElements: PaletteElementModel[];
   representedLanguageClass: string;
   representedDomainClass: string[];
   languageSubclasses: string[];
+  languagePrefix: string;
   datatypePropertyId: string;
   datatypePropertyLabel: string;
   datatypePropertyValue: string;

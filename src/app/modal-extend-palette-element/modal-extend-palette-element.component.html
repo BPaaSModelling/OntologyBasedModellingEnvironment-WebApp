@@ -17,6 +17,12 @@
                 <input matInput placeholder="Parent Element" name="input_parent" [(ngModel)]="data.paletteElement.label" [value]="data.paletteElement.label" disabled>
               </mat-form-field>
 
+              <mat-form-field class="full-width">
+                <mat-select [(ngModel)]="currentPaletteElement.languagePrefix" placeholder="Prefix" name="prefix">
+                  <mat-option *ngFor="let prefix of mService.namespacePrefixes" [value]="prefix">{{prefix}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
              <mat-form-field class="full-width">
                 <input matInput placeholder="Child Element" name="input_child" [(ngModel)]="currentPaletteElement.label" [value]="currentPaletteElement.label" required>
              </mat-form-field>
@@ -180,7 +186,7 @@
           </form>
         </mat-card>
       </mat-tab>
-      <mat-tab label="Map Existing Elements">
+      <mat-tab label="Integrate with Existing Elements">
         <h3 class="mat-display-1">Add existing sub-classes to {{data.paletteElement.label}}</h3>
         <mat-card>
           <form class="form">
@@ -196,15 +202,6 @@
                 </mat-select>
               </mat-form-field>
 
-            </div>
-
-            <div layout="row">
-              <mat-form-field class="full-width">
-                <mat-select placeholder="Semantic Domain Element" name="input_domainOntology1" multiple [(ngModel)]="data.paletteElement.representedDomainClass" >
-                  <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id" >{{class.label}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <button mat-raised-button color="primary" (click)="openCreateDomainElementModalFromExtend(data.paletteElement)">Create New Domain Element</button>
             </div>
 
             <br />
