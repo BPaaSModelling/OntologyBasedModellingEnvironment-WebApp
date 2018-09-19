@@ -9,6 +9,7 @@ import {ModalExtendPaletteElementComponent} from "../modal-extend-palette-elemen
 import {VariablesSettings} from "../_settings/variables.settings";
 import {ModalConnectorElementPropertiesComponent} from "../modal-connector-element-properties/modal-connector-element-properties.component";
 import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
+import {ModalEditPaletteElementComponent} from "../modal-edit-palette-element/modal-edit-palette-element.component";
 
 
 @Component({
@@ -74,6 +75,19 @@ export class ModellingEnvironmentComponent implements OnInit {
   toggleExtendPaletteElementModal(element: PaletteElementModel){
     //console.log(element)
     let dialogRef = this.dialog.open(ModalExtendPaletteElementComponent, {
+      data: { paletteElement: element},
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }
+
+  toggleEditPaletteElementModal(element: PaletteElementModel){
+    let dialogRef = this.dialog.open(ModalEditPaletteElementComponent, {
       data: { paletteElement: element},
       height:'80%',
       width: '800px',

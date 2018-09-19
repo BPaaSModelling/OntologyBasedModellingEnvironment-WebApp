@@ -22,6 +22,8 @@ import { ModalInsertPropertyComponent } from './modal-insert-property/modal-inse
 import { ModalConnectorManageCombinationsComponent } from './modal-connector-manage-combinations/modal-connector-manage-combinations.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ModalCreateDomainElementsComponent } from './modal-create-domain-elements/modal-create-domain-elements.component';
+import { ModalEditPaletteElementComponent } from './modal-edit-palette-element/modal-edit-palette-element.component';
+import { ModalEditPropertiesComponent } from './modal-edit-properties/modal-edit-properties.component';
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
@@ -41,7 +43,9 @@ const appRoutes: Routes = [
     ModalConnectorElementPropertiesComponent,
     ModalInsertPropertyComponent,
     ModalConnectorManageCombinationsComponent,
-    ModalCreateDomainElementsComponent
+    ModalCreateDomainElementsComponent,
+    ModalEditPaletteElementComponent,
+    ModalEditPropertiesComponent
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -49,7 +53,9 @@ const appRoutes: Routes = [
     ModalExtendPaletteElementComponent,
     ModalConnectorElementPropertiesComponent,
     ModalInsertPropertyComponent,
-    ModalCreateDomainElementsComponent
+    ModalCreateDomainElementsComponent,
+    ModalEditPaletteElementComponent,
+    ModalEditPropertiesComponent
   ],
   imports: [
     BrowserModule,

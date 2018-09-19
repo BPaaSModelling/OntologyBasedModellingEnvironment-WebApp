@@ -118,8 +118,46 @@ console.log(this.paletteElements);
     return querySuccess;
   }
 
-  editLabel(element: Object): void {
+  editElement(element: Object, modifiedElement: Object): Boolean {
+    let querySuccess: Boolean = false;
+    let params = new URLSearchParams();
+    params.append('element', JSON.stringify(element));
+    params.append('modifiedElement', JSON.stringify(modifiedElement)); //passing multiple parameters in POST
+    console.log(element);
+    this.http.post(EndpointSettings.getModifyElementEndpoint(), params)
+      .map(response => response.json()).subscribe(
+      data => {
+        querySuccess = (data === 'true');
+      }
+    );
+    return querySuccess;
+  }
 
+  editDatatypeProperty(property: Object, editedProperty: Object): Boolean {
+    let querySuccess: Boolean = false;
+    console.log(property);
+    let params = new URLSearchParams();
+    params.append('property', JSON.stringify(property));
+    params.append('editedProperty', JSON.stringify(editedProperty)); //passing multiple parameters in POST
+    this.http.post(EndpointSettings.getEditDatatypePropertyEndpoint(), params)
+      .map(response => response.json()).subscribe(
+      data => {
+        querySuccess = (data === 'true');
+      }
+    );
+    return querySuccess;
+  }
+
+  deleteDatatypeProperty(property: Object): Boolean {
+    let querySuccess: Boolean = false;
+    console.log(property);
+    this.http.post(EndpointSettings.getDeleteDatatypePropertyEndpoint(), JSON.stringify(property))
+      .map(response => response.json()).subscribe(
+      data => {
+        querySuccess = (data === 'true');
+      }
+    );
+    return querySuccess;
   }
 
   createLanguageSubclasses(oImg): Boolean {
@@ -129,7 +167,7 @@ console.log(this.paletteElements);
     this.http.post(EndpointSettings.getCreateLanguageSubclassesEndpoint(), oImg)
       .map(response => response.json()).subscribe(
       data => {
-        querySuccess = (data == 'true');
+        querySuccess = (data === 'true');
       }
     );
     return querySuccess;

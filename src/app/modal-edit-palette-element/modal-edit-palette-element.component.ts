@@ -1,53 +1,49 @@
-import {Component, Inject, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, Inject, OnInit, Output, EventEmitter } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from "@angular/material";
-import {DomainElementModel} from "../_models/DomainElement.model";
-import {ModellerService} from "../modeller.service";
 import {PaletteElementModel} from "../_models/PaletteElement.model";
+import {ModellerService} from "../modeller.service";
 import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
 import {ModalInsertPropertyComponent} from "../modal-insert-property/modal-insert-property.component";
+import {ModalEditPropertiesComponent} from "../modal-edit-properties/modal-edit-properties.component";
+import {DatatypePropertyModel} from "../_models/DatatypeProperty.model";
 
 @Component({
-  selector: 'app-modal-extend-palette-element',
-  templateUrl: './modal-extend-palette-element.component.html',
-  styleUrls: ['./modal-extend-palette-element.component.css']
+  selector: 'app-modal-edit-palette-element',
+  templateUrl: './modal-edit-palette-element.component.html',
+  styleUrls: ['./modal-edit-palette-element.component.css']
 })
-export class ModalExtendPaletteElementComponent implements OnInit {
+export class ModalEditPaletteElementComponent implements OnInit {
 
- /*constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-  public mService: ModellerService) {
+  public currentPaletteElement: PaletteElementModel;
+  public activityImageList: any;
+  public eventImageList: any;
+  public gatewayImageList: any;
+  public dataObjectImageList: any;
+  public groupImageList: any;
+  private domainName: string;
 
-  }*/
-
-private ontologyClasses: DomainElementModel[] = [];
-public currentPaletteElement: PaletteElementModel;
-public domainElement: DomainElementModel;
-public activityImageList: any;
-public eventImageList: any;
-public gatewayImageList: any;
-public dataObjectImageList: any;
-public groupImageList: any;
-public namespaceMap: any;
-private domainName: string;
-
-@Output() showCreateDomainElementModalFromExtend = new EventEmitter();
-  constructor(
-    public dialogRef: MatDialogRef<ModalExtendPaletteElementComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService, public dialog: MatDialog) {
+  constructor(public dialogRef: MatDialogRef<ModalEditPaletteElementComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService, public dialog: MatDialog) {
     this.currentPaletteElement = new PaletteElementModel();
-    this.domainElement = new DomainElementModel();
+    //this.domainElement = new DomainElementModel();
+    const domainNameArr = [] = this.data.paletteElement.representedLanguageClass.split('#');
+    this.domainName = 'bpmn:' + domainNameArr[1];
   }
-
 
   ngOnInit() {
     this.mService.queryDomainClasses();
     this.mService.queryModelingElementClasses();
     this.mService.queryPaletteCategories();
     this.mService.queryNamespacePrefixes();
-
-    const domainNameArr = [] = this.data.paletteElement.representedLanguageClass.split('#');
-    this.domainName = 'bpmn:' + domainNameArr[1];
-
+    this.mService.queryDatatypeProperties(this.domainName);
     console.log(this.data.paletteElement.paletteCategory);
+
+    this.currentPaletteElement.label = this.data.paletteElement.label;
+    this.currentPaletteElement.thumbnailURL = this.data.paletteElement.thumbnailURL;
+    console.log('this.data.paletteElement.thumbnailURL ' +this.data.paletteElement.thumbnailURL);
+    console.log('this.data.paletteElement.imageURL ' +this.data.paletteElement.imageURL);
+    this.currentPaletteElement.imageURL = this.data.paletteElement.imageURL;
+
     this.activityImageList = [
       {"imageURL":"assets/images/BPMN-CMMN/AdHoc_Subprocess.png", "imageName":"AdHoc_Subprocess.png", "label":"AdHoc Subprocess", "thumbnailURL":"assets/images/BPMN-CMMN/Thumbnail_AdHoc_Subprocess.png", "thumbnailName" : "Thumbnail_AdHoc_Subprocess.png"},
       {"imageURL":"assets/images/BPMN-CMMN/Business_Rule_Task.png", "imageName":"Business_Rule_Task.png", "label":"Business Rule Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Business_Rule_Task.png", "thumbnailName" : "Thumbnail_Business_Rule_Task.png"},
@@ -64,7 +60,7 @@ private domainName: string;
       {"imageURL":"assets/images/BPMN-CMMN/Task.png", "imageName":"Task.png", "label":"Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Task.png", "thumbnailName" : "Thumbnail_Task.png"},
       {"imageURL":"assets/images/BPMN-CMMN/User_Task.png", "imageName":"User_Task.png", "label":"User Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_User_Task.png", "thumbnailName" : "Thumbnail_User_Task.png"},
       {"imageURL":"assets/images/BPMN-CMMN/Manual_Task.png", "imageName":"Manual_Task.png", "label":"Manual Task", "thumbnailURL":"/assets/images/BPMN-CMMN/Thumbnail_Manual_Task.png", "thumbnailName" : "Thumbnail_Manual_Task.png"}
-      ];
+    ];
 
     this.eventImageList = [
       {"imageURL":"assets/images/BPMN-CMMN/Simple_End.png", "imageName":"Simple_End.png", "label":"Simple End", "thumbnailURL":"/assets/images/BPMN-CMMN/Simple_End.png", "thumbnailName" : "Simple_End.png"},
@@ -102,79 +98,7 @@ private domainName: string;
     this.dialogRef.close('Cancel');
   }
 
-  createElementInOntology() {
-
-    const ele = this.currentPaletteElement;
-    ele.id = '';
-    ele.uuid = (this.currentPaletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
-    console.log('uuid:' + ele.uuid);
-    ele.label = this.currentPaletteElement.label;
-    ele.hiddenFromPalette = false;
-    ele.usesImages = false;
-    ele.parentElement = (this.data.paletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
-    ele.parentLanguageClass = this.data.paletteElement.representedLanguageClass;
-    console.log('parent:' + ele.parentElement);
-    ele.paletteCategory = this.data.paletteElement.paletteCategory; // 'lo:Category_Activities';
-    console.log('category: ' + this.currentPaletteElement.paletteCategory);
-    ele.representedLanguageClass = ele.languagePrefix + (this.currentPaletteElement.label).replace(new RegExp(' ', 'g'), ''); /*important property to display in the pallette*/
-
-    console.log('Thumbnail not selected: ' + this.currentPaletteElement.thumbnailURL);
-    // Set width and height of the image as per category
-    if (ele.paletteCategory.search('Category_Activities') !== -1) {
-      ele.width = 100;
-      ele.height = 70;
-      if (this.currentPaletteElement.thumbnailURL === null) {
-        ele.thumbnailURL = '/assets/images/BPMN-CMMN/Thumbnail_Task.png';
-      }
-    } else if (ele.paletteCategory.search('Category_Events') !== -1) {
-      ele.width = 70;
-      ele.height = 70;
-      if (this.currentPaletteElement.thumbnailURL === null) {
-        ele.thumbnailURL = '/assets/images/BPMN-CMMN/Simple_Start.png';
-      }
-    } else if (ele.paletteCategory.search('Category_Gateways') !== -1) {
-      ele.width = 70;
-      ele.height = 100;
-      if (this.currentPaletteElement.thumbnailURL === null) {
-        ele.thumbnailURL = '/assets/images/BPMN-CMMN/Simple_Gateway.png';
-      }
-    } else if (ele.paletteCategory.search('Category_Data') !== -1) {
-      ele.width = 70;
-      ele.height = 100;
-    }
-
-    console.log('stringified element:' + JSON.stringify(ele));
-
-
-    const isSuccess: Boolean = this.mService.createElementInOntology(JSON.stringify(ele));
-
-    console.log("Here is the result of the query: " + isSuccess);
-    //HERE I GET THE VALUES FROM THE GUI
-    //console.log('label val:' + this.currentPaletteElement.label);
-    //console.log('domain ontology val: ' + this.currentPaletteElement.representedLanguageClass);
-    //THEN I SUPPOSE TO CALL THE SERVICE AND INSERT THE currentPaletteElement IN THE ONTOLOGY
-   //console.log('val: ' + val);
-   //console.log(this.data);
-   //if (isSuccess) {
-     this.dialogRef.close();
-   //}
-  }
-
-  mapToDomainOntology() {
-    this.dialogRef.close('Cancel');
-    let dialog = this.dialog.open(ModalCreateDomainElementsComponent, {
-      height:'80%',
-      width: '800px',
-      data: 'This text is passed into the dialog!',
-      disableClose: false,
-    });
-    dialog.afterClosed().subscribe(result => {
-      console.log(`Dialog closed: ${result}`);
-      //this.dialogResult = result;
-    });
-  }
-
-  openCreateDomainElementModalFromExtend(element: PaletteElementModel) {
+  openCreateDomainElementModalFromEdit(element: PaletteElementModel) {
 
     const dialogRef = this.dialog.open(ModalCreateDomainElementsComponent, {
       data: {paletteElement: element },
@@ -192,14 +116,6 @@ private domainName: string;
     });
   }
 
-  addSubClassesForLanguage(element: PaletteElementModel) {
-    console.log('Selected subclasses : ');
-    console.log(element);
-    element.uuid = (this.data.paletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
-    element.parentElement = (this.data.paletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
-    this.mService.createLanguageSubclasses(JSON.stringify(element));
-  }
-
   openInsertNewProperty(element: PaletteElementModel) {
     const dialogRef = this.dialog.open(ModalInsertPropertyComponent, {
       data: {paletteElement: element },
@@ -212,4 +128,40 @@ private domainName: string;
       this.mService.queryDatatypeProperties(this.domainName);
       this.dialogRef.close('Cancel');
     });
-}}
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }
+
+  editElementInOntology() {
+    const ele = this.currentPaletteElement;
+    console.log('Edited label: '+ele.label);
+    console.log('Edited image: '+ele.imageURL);
+    console.log('Edited thumbnail: '+ele.thumbnailURL);
+    this.mService.editElement(this.data.paletteElement, ele);
+    this.dialogRef.close();
+  }
+
+  modifyProperty(element: PaletteElementModel, property: DatatypePropertyModel) {
+    const dialogRef1 = this.dialog.open(ModalEditPropertiesComponent, {
+      data: {paletteElement: element, datatypeProperty: property },
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    const sub = dialogRef1.componentInstance.propertyEdited.subscribe(() => {
+      this.mService.queryDatatypeProperties(this.domainName);
+      dialogRef1.close('Cancel');
+    });
+
+    dialogRef1.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }
+
+  deleteProperty(property: DatatypePropertyModel) {
+    this.mService.deleteDatatypeProperty(property);
+  }
+}

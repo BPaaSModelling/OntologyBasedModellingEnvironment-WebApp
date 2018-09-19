@@ -61,27 +61,27 @@
             <div layout="row">
             <mat-form-field class="full-width">
               <!--<input type="url" matInput placeholder="Palette Image URL">-->
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Activities') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label">
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Activities') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label" required>
                 <mat-option *ngFor="let image of activityImageList" [value]="image.thumbnailName">
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Events') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label">
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Events') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label" required>
                 <mat-option *ngFor="let image of eventImageList" [value]="image.thumbnailName">
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Gateways') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label">
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Gateways') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
                 <mat-option *ngFor="let image of gatewayImageList" [value]="image.imageName">
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Data') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label">
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Data') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
                 <mat-option *ngFor="let image of dataObjectImageList" [value]="image.imageName">
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Groups') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label">
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Groups') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label" required>
                 <mat-option *ngFor="let image of groupImageList" [value]="image.thumbnailName">
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
@@ -89,27 +89,27 @@
             </mat-form-field>
 
             <mat-form-field class="full-width">
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Activities') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label">
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Activities') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
               <mat-option *ngFor="let image of activityImageList" [value]="image.imageName">
                 <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
                 {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Events') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label">
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Events') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
                 <mat-option *ngFor="let image of eventImageList" [value]="image.imageName">
                   <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Gateways') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label">
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Gateways') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
                 <mat-option *ngFor="let image of gatewayImageList" [value]="image.imageName">
                   <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Data') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label">
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Data') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
                 <mat-option *ngFor="let image of dataObjectImageList" [value]="image.imageName">
                   <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Groups') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label">
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Groups') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
                 <mat-option *ngFor="let image of groupImageList" [value]="image.imageName">
                   <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
@@ -212,6 +212,101 @@
           </form>
         </mat-card>
       </mat-tab>
+
+      <mat-tab label="Attributes">
+        <h2 class="mat-display-2">Edit Attributes</h2>
+        <mat-dialog-actions layout="row">
+          <button mat-raised-button color="accent" (click)="openInsertNewProperty(data.paletteElement)">Insert new Attribute</button>
+        </mat-dialog-actions>
+        <mat-card>
+          <mat-accordion *ngFor="let element of mService.datatypeProperties">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{element.label}}</mat-panel-title>
+                <mat-panel-description>{{element.range}}</mat-panel-description>
+              </mat-expansion-panel-header>
+              <br />
+              <!--<mat-action-row>
+                <button mat-raised-button>Modify</button>
+                <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
+              </mat-action-row> -->
+            </mat-expansion-panel>
+
+            <!--<mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Last name</mat-panel-title>
+                <mat-panel-description>DataType</mat-panel-description>
+              </mat-expansion-panel-header>
+              <label><b>Range</b>: <i>String</i></label>
+              <mat-action-row>
+                <button mat-raised-button>Modify</button>
+                <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
+              </mat-action-row>
+            </mat-expansion-panel>
+
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>Date of birth</mat-panel-title>
+                  <mat-panel-description>DataType</mat-panel-description>
+                </mat-expansion-panel-header>
+                <label><b>Range</b>: <i>Date</i></label>
+                <mat-action-row>
+                  <button mat-raised-button>Modify</button>
+                  <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
+                </mat-action-row>
+              </mat-expansion-panel>-->
+
+          </mat-accordion>
+        </mat-card>
+      </mat-tab>
+
+      <mat-tab label="Relations">
+        <h2 class="mat-display-2">Edit Relations</h2>
+        <mat-dialog-actions layout="row">
+          <button mat-raised-button color="accent" (click)="openInsertNewRelation(data.paletteElement)">Insert new Relation</button>
+        </mat-dialog-actions>
+        <mat-card>
+          <mat-accordion *ngFor="let element of mService.datatypeProperties">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{element.label}}</mat-panel-title>
+                <mat-panel-description>{{element.range}}</mat-panel-description>
+              </mat-expansion-panel-header>
+              <br />
+              <!--<mat-action-row>
+                <button mat-raised-button>Modify</button>
+                <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
+              </mat-action-row> -->
+            </mat-expansion-panel>
+
+            <!--<mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Last name</mat-panel-title>
+                <mat-panel-description>DataType</mat-panel-description>
+              </mat-expansion-panel-header>
+              <label><b>Range</b>: <i>String</i></label>
+              <mat-action-row>
+                <button mat-raised-button>Modify</button>
+                <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
+              </mat-action-row>
+            </mat-expansion-panel>
+
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>Date of birth</mat-panel-title>
+                  <mat-panel-description>DataType</mat-panel-description>
+                </mat-expansion-panel-header>
+                <label><b>Range</b>: <i>Date</i></label>
+                <mat-action-row>
+                  <button mat-raised-button>Modify</button>
+                  <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
+                </mat-action-row>
+              </mat-expansion-panel>-->
+
+          </mat-accordion>
+        </mat-card>
+      </mat-tab>
+
     </mat-tab-group>
   </mat-dialog-content>
 

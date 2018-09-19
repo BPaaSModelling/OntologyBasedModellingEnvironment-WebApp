@@ -1,0 +1,213 @@
+<form>
+  <mat-toolbar>
+    <div class="mat-toolbar-tools">
+      <!-- <h2>Extend {{data.paletteElement.label}}</h2>-->
+      <h2>Edit</h2>
+    </div>
+  </mat-toolbar>
+  <mat-dialog-content style="max-width:800px;max-height:810px; ">
+    <mat-tab-group mat-dynamic-height mat-border-bottom>
+      <mat-tab label={{data.paletteElement.label}}>
+        <h3 class="mat-display-1">Edit {{data.paletteElement.label}}</h3>
+        <mat-card>
+          <form class="form">
+
+            <div layout="row">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Prefix" name="input_prefix" [(ngModel)]="data.paletteElement.languagePrefix" [value]="data.paletteElement.languagePrefix" disabled>
+              </mat-form-field>
+
+
+              <mat-form-field class="full-width">
+                <input matInput placeholder="New Label" name="input_label" [(ngModel)]="currentPaletteElement.label" [value]="currentPaletteElement.label" required>
+              </mat-form-field>
+
+            </div>
+
+            <div layout="row">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Semantic Domain Element" name="input_domainOntology" multiple [(ngModel)]="data.paletteElement.representedDomainClass" >
+                  <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id" >{{class.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-raised-button color="primary" (click)="openCreateDomainElementModalFromEdit(data.paletteElement)">Create New Domain Element</button>
+            </div>
+
+            <div layout="row">
+              <mat-form-field class="full-width">
+                <!--<input type="url" matInput placeholder="Palette Image URL">-->
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Activities') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label" required>
+                  <mat-option *ngFor="let image of activityImageList" [value]="image.thumbnailName">
+                    <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Events') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label" required>
+                  <mat-option *ngFor="let image of eventImageList" [value]="image.thumbnailName">
+                    <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Gateways') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Canvas Image (thumbnail)" name="image.label" required>
+                  <mat-option *ngFor="let image of gatewayImageList" [value]="image.thumbnailName">
+                    <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Data') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Canvas Image (thumbnail)" name="image.label" required>
+                  <mat-option *ngFor="let image of dataObjectImageList" [value]="image.thumbnailName">
+                    <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Groups') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label" required>
+                  <mat-option *ngFor="let image of groupImageList" [value]="image.thumbnailName">
+                    <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="full-width">
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Activities') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+                  <mat-option *ngFor="let image of activityImageList" [value]="image.imageName">
+                    <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Events') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+                  <mat-option *ngFor="let image of eventImageList" [value]="image.imageName">
+                    <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Gateways') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+                  <mat-option *ngFor="let image of gatewayImageList" [value]="image.imageName">
+                    <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Data') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+                  <mat-option *ngFor="let image of dataObjectImageList" [value]="image.imageName">
+                    <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Groups') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+                  <mat-option *ngFor="let image of groupImageList" [value]="image.imageName">
+                    <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+            </div>
+            <br/>
+            <div layout="row">
+              <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
+              <button mat-raised-button color="primary" (click)="editElementInOntology()" style="margin-right:20px;" >Edit</button>
+            </div>
+
+            <br />
+
+          </form>
+        </mat-card>
+      </mat-tab>
+      <mat-tab label="Attributes">
+        <h2 class="mat-display-2">Edit Attributes</h2>
+        <mat-dialog-actions layout="row">
+          <button mat-raised-button color="accent" (click)="openInsertNewProperty(data.paletteElement)">Insert new Attribute</button>
+        </mat-dialog-actions>
+        <mat-card>
+          <mat-accordion *ngFor="let element of mService.datatypeProperties">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{element.label}}</mat-panel-title>
+                <mat-panel-description><b>Range</b>: <i>{{element.range}}</i></mat-panel-description>
+              </mat-expansion-panel-header>
+              <<mat-action-row>
+                <button mat-raised-button (click)="modifyProperty(data.paletteElement, element)">Modify</button>
+                <button mat-raised-button color="warn" style="margin-right:20px;" (click)="deleteProperty(element)">Delete</button>
+              </mat-action-row>
+            </mat-expansion-panel>
+
+            <!--<mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Last name</mat-panel-title>
+                <mat-panel-description>DataType</mat-panel-description>
+              </mat-expansion-panel-header>
+              <label><b>Range</b>: <i>String</i></label>
+              <mat-action-row>
+                <button mat-raised-button>Modify</button>
+                <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
+              </mat-action-row>
+            </mat-expansion-panel>
+
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>Date of birth</mat-panel-title>
+                  <mat-panel-description>DataType</mat-panel-description>
+                </mat-expansion-panel-header>
+                <label><b>Range</b>: <i>Date</i></label>
+                <mat-action-row>
+                  <button mat-raised-button>Modify</button>
+                  <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
+                </mat-action-row>
+              </mat-expansion-panel> -->
+
+          </mat-accordion>
+          <div layout="row">
+            <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
+          </div>
+        </mat-card>
+      </mat-tab>
+
+      <mat-tab label="Relations">
+        <h2 class="mat-display-2">Edit Relations</h2>
+        <mat-dialog-actions layout="row">
+          <button mat-raised-button color="accent" (click)="openInsertNewRelation(data.paletteElement)">Insert new Relation</button>
+        </mat-dialog-actions>
+        <mat-card>
+          <mat-accordion *ngFor="let element of mService.datatypeProperties">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{element.label}}</mat-panel-title>
+                <mat-panel-description>{{element.range}}</mat-panel-description>
+              </mat-expansion-panel-header>
+              <br />
+              <!--<mat-action-row>
+                <button mat-raised-button>Modify</button>
+                <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
+              </mat-action-row> -->
+            </mat-expansion-panel>
+
+            <!--<mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Last name</mat-panel-title>
+                <mat-panel-description>DataType</mat-panel-description>
+              </mat-expansion-panel-header>
+              <label><b>Range</b>: <i>String</i></label>
+              <mat-action-row>
+                <button mat-raised-button>Modify</button>
+                <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
+              </mat-action-row>
+            </mat-expansion-panel>
+
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>Date of birth</mat-panel-title>
+                  <mat-panel-description>DataType</mat-panel-description>
+                </mat-expansion-panel-header>
+                <label><b>Range</b>: <i>Date</i></label>
+                <mat-action-row>
+                  <button mat-raised-button>Modify</button>
+                  <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
+                </mat-action-row>
+              </mat-expansion-panel>-->
+
+          </mat-accordion>
+          <div layout="row">
+            <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
+          </div>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-dialog-content>
+
+
+</form>
+<mat-dialog-actions layout="row">
+
+</mat-dialog-actions>
+
+<!-- https://github.com/angular/material2/issues/5269 -->
