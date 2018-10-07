@@ -145,7 +145,7 @@ public namespaceMap: any;
     console.log('stringified element:' + JSON.stringify(ele));
 
 
-    //const isSuccess: Boolean = this.mService.createElementInOntology(JSON.stringify(ele)); -- UNCOMMENT THIS!
+    const isSuccess: Boolean = this.mService.createElementInOntology(JSON.stringify(ele));
 
     this.newElementCreated.emit(ele);
 
