@@ -8,6 +8,7 @@
         <li class="paletteElement" ><a [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element" (click)="addNewShape(element)"><img class="thumbnail"  src="../assets/images/BPMN-CMMN/{{element.thumbnailURL}}" /></a>
           <app--tool-recursive-palette-element (showActivityElementPropertyModal1)="toggleActivityElementPropertyModal($event)"
                                                (showExtendPaletteElementModal1)="toggleExtendPaletteElementModal($event)"
+                                               (showEditPaletteElementModal1)="toggleEditPaletteElementModal($event)"
                                                (sendElementFromRecursiveElement)="addNewShape($event)" [child]="element"></app--tool-recursive-palette-element>
         </li>
       </ul>
@@ -20,17 +21,20 @@
   <ng-template let-element contextMenuItem (execute)="openExtendPaletteElementModal($event.item)">
     Extend {{element.label}}
   </ng-template>
-  <ng-template contextMenuItem [subMenu]="saySubMenu">
+  <ng-template let-element contextMenuItem (execute)="openEditPaletteElementModal($event.item)">
+    Edit {{element.label}}
+  </ng-template>
+  <!-- <ng-template contextMenuItem [subMenu]="saySubMenu">
     Edit
   </ng-template>
   <context-menu #saySubMenu>
     <ng-template contextMenuItem (execute)="openActivityElementProperty($event.item)">
       Add new Attribute
     </ng-template>
-    <ng-template let-element contextMenuItem (execute)="openEditPaletteElementModal($event.item)"> <!-- openPaletteElementPropertiesModal -->
+    <ng-template let-element contextMenuItem (execute)="openEditPaletteElementModal($event.item)">
       Edit {{element.label}}
     </ng-template>
-  </context-menu>
+  </context-menu> -->
   <ng-template let-element contextMenuItem (execute)="hideFromPalette($event.item)">
     Hide
   </ng-template>

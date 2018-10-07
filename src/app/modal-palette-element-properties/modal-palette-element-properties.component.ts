@@ -1,7 +1,7 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
 import {PaletteElementModel} from "../_models/PaletteElement.model";
-import {ModalInsertPropertyComponent} from "../modal-insert-property/modal-insert-property.component";
+import {ModalInsertPropertyComponent} from "../modal-insert-datatype-property/modal-insert-datatype-property.component";
 import {ModellerService} from "../modeller.service";
 
 
@@ -37,9 +37,9 @@ export class ModalPaletteElementPropertiesComponent implements OnInit {
       this.dialogRef.close('Cancel');
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    /*dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed : ' + result);
-    });
+    });*/
   }
 
   onCloseCancel() {

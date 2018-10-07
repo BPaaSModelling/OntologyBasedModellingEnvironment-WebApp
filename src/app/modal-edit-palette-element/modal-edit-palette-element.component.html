@@ -103,7 +103,7 @@
           </form>
         </mat-card>
       </mat-tab>
-      <mat-tab label="Attributes">
+      <mat-tab label="Attributes" (click)="loadProperties()">
         <h2 class="mat-display-2">Edit Attributes</h2>
         <mat-dialog-actions layout="row">
           <button mat-raised-button color="accent" (click)="openInsertNewProperty(data.paletteElement)">Insert new Attribute</button>

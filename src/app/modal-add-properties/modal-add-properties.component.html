@@ -1,0 +1,69 @@
+<form>
+  <mat-toolbar>
+    <div class="mat-toolbar-tools">
+      <!-- <h2>Extend {{data.paletteElement.label}}</h2>-->
+      <h2>Add Properties for {{data.paletteElement.label}}</h2>
+    </div>
+  </mat-toolbar>
+  <mat-dialog-content style="max-width:800px;max-height:810px; ">
+    <mat-tab-group mat-dynamic-height mat-border-bottom>
+      <mat-tab label="Attributes">
+        <h2 class="mat-display-2">Add Attributes</h2>
+        <mat-dialog-actions layout="row">
+          <button mat-raised-button color="accent" (click)="openInsertNewProperty(data.paletteElement)">Insert new Attribute</button>
+        </mat-dialog-actions>
+        <mat-card>
+          <mat-accordion *ngFor="let element of mService.datatypeProperties">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{element.label}}</mat-panel-title>
+                <mat-panel-description><b>Range</b>: <i>{{element.range}}</i></mat-panel-description>
+              </mat-expansion-panel-header>
+              <<mat-action-row>
+              <button mat-raised-button (click)="hhh()">Modify</button>
+              <button mat-raised-button color="warn" style="margin-right:20px;" (click)="dff()">Delete</button>
+            </mat-action-row>
+            </mat-expansion-panel>
+
+          </mat-accordion>
+          <div layout="row">
+            <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
+          </div>
+        </mat-card>
+      </mat-tab>
+
+      <mat-tab label="Relations">
+        <h2 class="mat-display-2">Add Relations</h2>
+        <mat-dialog-actions layout="row">
+          <button mat-raised-button color="accent" (click)="fff()">Insert new Relation</button>
+        </mat-dialog-actions>
+        <mat-card>
+          <mat-accordion *ngFor="let element of mService.datatypeProperties">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{element.label}}</mat-panel-title>
+                <mat-panel-description>{{element.range}}</mat-panel-description>
+              </mat-expansion-panel-header>
+              <br />
+              <!--<mat-action-row>
+                <button mat-raised-button>Modify</button>
+                <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
+              </mat-action-row> -->
+            </mat-expansion-panel>
+
+          </mat-accordion>
+          <div layout="row">
+            <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
+          </div>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-dialog-content>
+
+
+</form>
+<mat-dialog-actions layout="row">
+
+</mat-dialog-actions>
+
+<!-- https://github.com/angular/material2/issues/5269 -->

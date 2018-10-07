@@ -81,6 +81,10 @@ export class ModellingEnvironmentComponent implements OnInit {
       disableClose: false,
     });
 
+    const sub = dialogRef.componentInstance.newElementCreated.subscribe(() => {
+      this.modellerService.queryPaletteElements();
+    });
+
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed : ' + result);
     });

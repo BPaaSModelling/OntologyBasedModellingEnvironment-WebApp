@@ -9,6 +9,7 @@ import {ModalExtendPaletteElementComponent} from "../modal-extend-palette-elemen
 import {MatDialog} from "@angular/material";
 import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
 import {ModalPaletteElementPropertiesComponent} from "../modal-palette-element-properties/modal-palette-element-properties.component";
+import {ModalEditPaletteElementComponent} from "../modal-edit-palette-element/modal-edit-palette-element.component";
 
 @Component({
   selector: 'app-palette-area',
@@ -89,6 +90,23 @@ console.log(this.mService.paletteCategories);
   toggleExtendPaletteElementModal(element: PaletteElementModel) {
     //console.log(element)
     let dialogRef = this.dialog.open(ModalExtendPaletteElementComponent, {
+      data: { paletteElement: element},
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    const sub = dialogRef.componentInstance.newElementCreated.subscribe(() => {
+      this.mService.queryPaletteElements();
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }
+
+  toggleEditPaletteElementModal(element: PaletteElementModel){
+    let dialogRef = this.dialog.open(ModalEditPaletteElementComponent, {
       data: { paletteElement: element},
       height:'80%',
       width: '800px',

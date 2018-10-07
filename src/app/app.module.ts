@@ -18,12 +18,14 @@ import {ModalInstancePropertiesComponent} from './modal-instance-properties/moda
 import {ModalPaletteElementPropertiesComponent} from './modal-palette-element-properties/modal-palette-element-properties.component';
 import { ModalExtendPaletteElementComponent } from './modal-extend-palette-element/modal-extend-palette-element.component';
 import {ModalConnectorElementPropertiesComponent} from './modal-connector-element-properties/modal-connector-element-properties.component';
-import { ModalInsertPropertyComponent } from './modal-insert-property/modal-insert-property.component';
+import { ModalInsertPropertyComponent } from './modal-insert-datatype-property/modal-insert-datatype-property.component';
 import { ModalConnectorManageCombinationsComponent } from './modal-connector-manage-combinations/modal-connector-manage-combinations.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ModalCreateDomainElementsComponent } from './modal-create-domain-elements/modal-create-domain-elements.component';
 import { ModalEditPaletteElementComponent } from './modal-edit-palette-element/modal-edit-palette-element.component';
-import { ModalEditPropertiesComponent } from './modal-edit-properties/modal-edit-properties.component';
+import { ModalEditPropertiesComponent } from './modal-edit-datatype-property/modal-edit-datatype-property.component';
+import { ModalAddPropertiesComponent } from './modal-add-properties/modal-add-properties.component';
+import { ModalInsertObjectPropertyComponent } from './modal-insert-object-property/modal-insert-object-property.component';
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
@@ -45,7 +47,9 @@ const appRoutes: Routes = [
     ModalConnectorManageCombinationsComponent,
     ModalCreateDomainElementsComponent,
     ModalEditPaletteElementComponent,
-    ModalEditPropertiesComponent
+    ModalEditPropertiesComponent,
+    ModalAddPropertiesComponent,
+    ModalInsertObjectPropertyComponent
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -55,6 +59,7 @@ const appRoutes: Routes = [
     ModalInsertPropertyComponent,
     ModalCreateDomainElementsComponent,
     ModalEditPaletteElementComponent,
+    ModalAddPropertiesComponent,
     ModalEditPropertiesComponent
   ],
   imports: [

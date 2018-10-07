@@ -4,9 +4,9 @@ import {ModellerService} from "../modeller.service";
 import {DatatypePropertyModel} from "../_models/DatatypeProperty.model";
 
 @Component({
-  selector: 'app-modal-insert-property',
-  templateUrl: './modal-insert-property.component.html',
-  styleUrls: ['./modal-insert-property.component.css']
+  selector: 'app-modal-insert-datatype-property',
+  templateUrl: './modal-insert-datatype-property.component.html',
+  styleUrls: ['./modal-insert-datatype-property.component.css']
 })
 export class ModalInsertPropertyComponent implements OnInit {
 step = 0;

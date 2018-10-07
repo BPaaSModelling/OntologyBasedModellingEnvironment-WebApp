@@ -14,6 +14,7 @@ export class EndpointSettings {
   private static HIDEPALETTEELEMENT         : string = '/ModEnv/hidePaletteElement';
   private static CREATELANGUAGESUBCLASSES   : string = '/ModEnv/createModelingLanguageSubclasses';
   private static GETALLNAMESPACEPREFIXES    : string = '/ModEnv/getAllNamespacePrefixes';
+  private static GETNAMESPACEMAP            : string = '/ModEnv/getNamespaceMap';
   private static MODIFYELEMENT              : string = '/ModEnv/modifyElement';
   private static EDITDATATYPEPROPERTY       : string = '/ModEnv/editDatatypeProperty';
   private static DELETEDATATYPEPROPERTY     : string = '/ModEnv/deleteDatatypeProperty';
@@ -68,6 +69,10 @@ export class EndpointSettings {
 
   public static getGetAllNamespacePrefixesEndpoint(): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.GETALLNAMESPACEPREFIXES;
+  }
+
+  public static getNamespaceMapEndpoint(): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.GETNAMESPACEMAP;
   }
 
   public static getModifyElementEndpoint(): string {

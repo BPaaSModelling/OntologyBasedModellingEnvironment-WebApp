@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalInsertPropertyComponent } from './modal-insert-property.component';
+import { ModalInsertPropertyComponent } from './modal-insert-datatype-property.component';
 
 describe('ModalInsertPropertyComponent', () => {
   let component: ModalInsertPropertyComponent;

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalEditPropertiesComponent } from './modal-edit-properties.component';
+import { ModalEditPropertiesComponent } from './modal-edit-datatype-property.component';
 
 describe('ModalEditPropertiesComponent', () => {
   let component: ModalEditPropertiesComponent;

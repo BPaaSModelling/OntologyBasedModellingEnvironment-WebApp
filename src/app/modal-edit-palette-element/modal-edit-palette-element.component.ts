@@ -3,8 +3,8 @@ import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from "@angular/material";
 import {PaletteElementModel} from "../_models/PaletteElement.model";
 import {ModellerService} from "../modeller.service";
 import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
-import {ModalInsertPropertyComponent} from "../modal-insert-property/modal-insert-property.component";
-import {ModalEditPropertiesComponent} from "../modal-edit-properties/modal-edit-properties.component";
+import {ModalInsertPropertyComponent} from "../modal-insert-datatype-property/modal-insert-datatype-property.component";
+import {ModalEditPropertiesComponent} from "../modal-edit-datatype-property/modal-edit-datatype-property.component";
 import {DatatypePropertyModel} from "../_models/DatatypeProperty.model";
 
 @Component({
@@ -21,22 +21,22 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public dataObjectImageList: any;
   public groupImageList: any;
   private domainName: string;
+  private domainNameArr = [];
 
   constructor(public dialogRef: MatDialogRef<ModalEditPaletteElementComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService, public dialog: MatDialog) {
     this.currentPaletteElement = new PaletteElementModel();
     //this.domainElement = new DomainElementModel();
-    const domainNameArr = [] = this.data.paletteElement.representedLanguageClass.split('#');
-    this.domainName = 'bpmn:' + domainNameArr[1];
+    this.domainNameArr = this.data.paletteElement.representedLanguageClass.split('#');
+    this.domainName = this.domainNameArr[0] + "#"; //!!!Fix this - should be in format bmm:BMMTask (prefix case-sensitive)
   }
 
   ngOnInit() {
+    this.mService.queryNamespaceMap();
     this.mService.queryDomainClasses();
     this.mService.queryModelingElementClasses();
     this.mService.queryPaletteCategories();
     this.mService.queryNamespacePrefixes();
-    this.mService.queryDatatypeProperties(this.domainName);
-    console.log(this.data.paletteElement.paletteCategory);
 
     this.currentPaletteElement.label = this.data.paletteElement.label;
     this.currentPaletteElement.thumbnailURL = this.data.paletteElement.thumbnailURL;
@@ -125,7 +125,10 @@ export class ModalEditPaletteElementComponent implements OnInit {
     });
 
     const sub = dialogRef.componentInstance.newPropertyAdded.subscribe(() => {
-      this.mService.queryDatatypeProperties(this.domainName);
+      const prefix = this.mService.namespaceMap.get(this.domainName);
+      const domainStr = prefix + ":" + this.domainNameArr[1];
+      console.log('domainStr ' + domainStr);
+      this.mService.queryDatatypeProperties(domainStr);
       this.dialogRef.close('Cancel');
     });
 
@@ -143,6 +146,15 @@ export class ModalEditPaletteElementComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  loadProperties() {
+    console.log('domainName: ' + this.domainName);
+    console.log(this.mService.namespaceMap);
+    const prefix = this.mService.namespaceMap.get(this.domainName);
+    console.log('domainName ' + prefix);
+    const domainStr = prefix + ":" + this.domainNameArr[1];
+    this.mService.queryDatatypeProperties(domainStr);
+  }
+
   modifyProperty(element: PaletteElementModel, property: DatatypePropertyModel) {
     const dialogRef1 = this.dialog.open(ModalEditPropertiesComponent, {
       data: {paletteElement: element, datatypeProperty: property },
@@ -152,7 +164,9 @@ export class ModalEditPaletteElementComponent implements OnInit {
     });
 
     const sub = dialogRef1.componentInstance.propertyEdited.subscribe(() => {
-      this.mService.queryDatatypeProperties(this.domainName);
+      const prefix = this.mService.namespaceMap.get(this.domainName);
+      const domainStr = prefix + ":" + this.domainNameArr[1];
+      this.mService.queryDatatypeProperties(domainStr);
       dialogRef1.close('Cancel');
     });
 

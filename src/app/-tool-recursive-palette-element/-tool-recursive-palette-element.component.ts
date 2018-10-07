@@ -6,6 +6,7 @@ import {ModellerService} from '../modeller.service';
 import {ModalExtendPaletteElementComponent} from "../modal-extend-palette-element/modal-extend-palette-element.component";
 import {ModalPaletteElementPropertiesComponent} from "../modal-palette-element-properties/modal-palette-element-properties.component";
 import {MatDialog} from "@angular/material";
+import {ModalEditPaletteElementComponent} from "../modal-edit-palette-element/modal-edit-palette-element.component";
 
 
 @Component({
@@ -27,6 +28,7 @@ export class ToolRecursivePaletteElementComponent implements OnInit {
   @Output() showExtendPaletteElementModal1 = new EventEmitter();
   @Output() showCreateDomainElementModal1 = new EventEmitter();
   @Output() showActivityElementPropertyModal1 = new EventEmitter();
+  @Output() showEditPaletteElementModal1 = new EventEmitter();
 constructor(private mService: ModellerService, public dialog: MatDialog) {
 
   }
@@ -57,6 +59,19 @@ constructor(private mService: ModellerService, public dialog: MatDialog) {
   toggleExtendPaletteElementModal(element: PaletteElementModel){
     //console.log(element)
     let dialogRef = this.dialog.open(ModalExtendPaletteElementComponent, {
+      data: { paletteElement: element},
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }
+
+  toggleEditPaletteElementModal(element: PaletteElementModel){
+    let dialogRef = this.dialog.open(ModalEditPaletteElementComponent, {
       data: { paletteElement: element},
       height:'80%',
       width: '800px',
@@ -108,6 +123,10 @@ constructor(private mService: ModellerService, public dialog: MatDialog) {
 
   openCreateDomainElementModal(element: PaletteElementModel) {
     this.showCreateDomainElementModal1.emit(element);
+  }
+
+  openEditPaletteElementModal(element: PaletteElementModel){
+    this.showEditPaletteElementModal1.emit(element);
   }
 
   hideFromPalette(element: PaletteElementModel) {

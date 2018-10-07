@@ -4,7 +4,7 @@ import {DomainElementModel} from "../_models/DomainElement.model";
 import {ModellerService} from "../modeller.service";
 import {PaletteElementModel} from "../_models/PaletteElement.model";
 import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
-import {ModalInsertPropertyComponent} from "../modal-insert-property/modal-insert-property.component";
+import {ModalAddPropertiesComponent} from "../modal-add-properties/modal-add-properties.component";
 
 @Component({
   selector: 'app-modal-extend-palette-element',
@@ -20,21 +20,20 @@ export class ModalExtendPaletteElementComponent implements OnInit {
 
 private ontologyClasses: DomainElementModel[] = [];
 public currentPaletteElement: PaletteElementModel;
-public domainElement: DomainElementModel;
 public activityImageList: any;
 public eventImageList: any;
 public gatewayImageList: any;
 public dataObjectImageList: any;
 public groupImageList: any;
 public namespaceMap: any;
-private domainName: string;
+
 
 @Output() showCreateDomainElementModalFromExtend = new EventEmitter();
+@Output() newElementCreated = new EventEmitter();
   constructor(
     public dialogRef: MatDialogRef<ModalExtendPaletteElementComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService, public dialog: MatDialog) {
     this.currentPaletteElement = new PaletteElementModel();
-    this.domainElement = new DomainElementModel();
   }
 
 
@@ -45,7 +44,7 @@ private domainName: string;
     this.mService.queryNamespacePrefixes();
 
     const domainNameArr = [] = this.data.paletteElement.representedLanguageClass.split('#');
-    this.domainName = 'bpmn:' + domainNameArr[1];
+
 
     console.log(this.data.paletteElement.paletteCategory);
     this.activityImageList = [
@@ -146,9 +145,11 @@ private domainName: string;
     console.log('stringified element:' + JSON.stringify(ele));
 
 
-    const isSuccess: Boolean = this.mService.createElementInOntology(JSON.stringify(ele));
+    //const isSuccess: Boolean = this.mService.createElementInOntology(JSON.stringify(ele)); -- UNCOMMENT THIS!
 
-    console.log("Here is the result of the query: " + isSuccess);
+    this.newElementCreated.emit(ele);
+
+    //console.log("Here is the result of the query: " + isSuccess);
     //HERE I GET THE VALUES FROM THE GUI
     //console.log('label val:' + this.currentPaletteElement.label);
     //console.log('domain ontology val: ' + this.currentPaletteElement.representedLanguageClass);
@@ -157,6 +158,19 @@ private domainName: string;
    //console.log(this.data);
    //if (isSuccess) {
      this.dialogRef.close();
+
+    const dialogRef = this.dialog.open(ModalAddPropertiesComponent, {
+      data: {paletteElement: ele },
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    const sub = dialogRef.componentInstance.propertiesAdded.subscribe(() => {
+      //this.mService.queryDatatypeProperties(this.domainName);
+      this.dialogRef.close('Cancel');
+    });
+
    //}
   }
 
@@ -200,16 +214,4 @@ private domainName: string;
     this.mService.createLanguageSubclasses(JSON.stringify(element));
   }
 
-  openInsertNewProperty(element: PaletteElementModel) {
-    const dialogRef = this.dialog.open(ModalInsertPropertyComponent, {
-      data: {paletteElement: element },
-      height:'80%',
-      width: '800px',
-      disableClose: false,
-    });
-
-    const sub = dialogRef.componentInstance.newPropertyAdded.subscribe(() => {
-      this.mService.queryDatatypeProperties(this.domainName);
-      this.dialogRef.close('Cancel');
-    });
-}}
+}

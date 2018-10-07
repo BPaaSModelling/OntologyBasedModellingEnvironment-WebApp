@@ -4,9 +4,9 @@ import {ModellerService} from "../modeller.service";
 import {DatatypePropertyModel} from "../_models/DatatypeProperty.model";
 
 @Component({
-  selector: 'app-modal-edit-properties',
-  templateUrl: './modal-edit-properties.component.html',
-  styleUrls: ['./modal-edit-properties.component.css']
+  selector: 'app-modal-edit-datatype-property',
+  templateUrl: './modal-edit-datatype-property.component.html',
+  styleUrls: ['./modal-edit-datatype-property.component.css']
 })
 export class ModalEditPropertiesComponent implements OnInit {
   step = 0;
