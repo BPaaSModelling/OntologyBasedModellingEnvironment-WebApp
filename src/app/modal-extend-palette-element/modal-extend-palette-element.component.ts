@@ -145,9 +145,16 @@ public namespaceMap: any;
     console.log('stringified element:' + JSON.stringify(ele));
 
 
-    const isSuccess: Boolean = this.mService.createElementInOntology(JSON.stringify(ele));
+    this.mService.createElementInOntology(JSON.stringify(ele)).subscribe(
+      (response) => {
+        this.newElementCreated.emit(ele);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
 
-    this.newElementCreated.emit(ele);
+
 
     //console.log("Here is the result of the query: " + isSuccess);
     //HERE I GET THE VALUES FROM THE GUI

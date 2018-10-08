@@ -55,17 +55,13 @@ console.log(this.paletteElements);
       }, error => console.log('Could not query PaletteElements'));
   }
 
-  createElementInOntology(oImg): Boolean {
+  createElementInOntology(oImg) {
     //console.log(JSON.stringify(oImg));
     let querySuccess: Boolean = false;
+    let returnStr: string;
     console.log(oImg);
-    this.http.post(EndpointSettings.getCreateElementEndpoint(), oImg)
-      .map(response => response.json()).subscribe(
-      data => {
-       querySuccess = (data == 'true');
-      }
-    );
-  return querySuccess;
+    return this.http.post(EndpointSettings.getCreateElementEndpoint(), oImg)
+      .map(response => response.json());
   }
 
   deletePaletteElement(oImg): Boolean {
