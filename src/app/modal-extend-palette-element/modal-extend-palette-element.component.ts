@@ -145,40 +145,28 @@ public namespaceMap: any;
     console.log('stringified element:' + JSON.stringify(ele));
 
 
-    this.mService.createElementInOntology(JSON.stringify(ele)).subscribe(
+    this.mService.createElementInOntology(JSON.stringify(ele)).subscribe( // this is a synchronous call to the webservice
       (response) => {
         this.newElementCreated.emit(ele);
+        this.dialogRef.close();
+
+        const dialogRef1 = this.dialog.open(ModalAddPropertiesComponent, {
+          data: {paletteElement: ele },
+          height:'80%',
+          width: '800px',
+          disableClose: false,
+        });
+
+        const sub = dialogRef1.componentInstance.propertiesAdded.subscribe(() => {
+          //this.mService.queryDatatypeProperties(this.domainName);
+          dialogRef1.close('Cancel');
+        });
       },
       (err) => {
         console.log(err);
       }
     );
 
-
-
-    //console.log("Here is the result of the query: " + isSuccess);
-    //HERE I GET THE VALUES FROM THE GUI
-    //console.log('label val:' + this.currentPaletteElement.label);
-    //console.log('domain ontology val: ' + this.currentPaletteElement.representedLanguageClass);
-    //THEN I SUPPOSE TO CALL THE SERVICE AND INSERT THE currentPaletteElement IN THE ONTOLOGY
-   //console.log('val: ' + val);
-   //console.log(this.data);
-   //if (isSuccess) {
-     this.dialogRef.close();
-
-    const dialogRef = this.dialog.open(ModalAddPropertiesComponent, {
-      data: {paletteElement: ele },
-      height:'80%',
-      width: '800px',
-      disableClose: false,
-    });
-
-    const sub = dialogRef.componentInstance.propertiesAdded.subscribe(() => {
-      //this.mService.queryDatatypeProperties(this.domainName);
-      this.dialogRef.close('Cancel');
-    });
-
-   //}
   }
 
   mapToDomainOntology() {
@@ -218,7 +206,12 @@ public namespaceMap: any;
     console.log(element);
     element.uuid = (this.data.paletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
     element.parentElement = (this.data.paletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
-    this.mService.createLanguageSubclasses(JSON.stringify(element));
+    this.mService.createLanguageSubclasses(JSON.stringify(element)).subscribe( // synchronous call to webservice
+      (response) => {
+        this.mService.queryPaletteElements();
+        this.dialogRef.close('Cancel');
+      }
+    );
   }
 
 }
