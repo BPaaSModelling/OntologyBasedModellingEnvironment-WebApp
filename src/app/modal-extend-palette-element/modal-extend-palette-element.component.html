@@ -197,7 +197,7 @@
               </mat-form-field>
 
               <mat-form-field class="full-width">
-                <mat-select placeholder="Existing Element" name="input_modelingLanguageOntology" multiple [(ngModel)]="data.paletteElement.languageSubclasses" >
+                <mat-select placeholder="Existing Element" name="input_modelingLanguageOntology" multiple [(ngModel)]="data.paletteElement.languageSubclasses" required>
                   <mat-option *ngFor="let class of mService.modelingLanguageClasses" [value]="class.id" >{{class.label}}</mat-option>
                 </mat-select>
               </mat-form-field>

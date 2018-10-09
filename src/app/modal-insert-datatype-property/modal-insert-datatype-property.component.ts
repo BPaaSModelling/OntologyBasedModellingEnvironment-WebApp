@@ -39,8 +39,11 @@ step = 0;
   insertNewProperty() {
     this.datatypeProperty.id = (this.datatypeProperty.label).replace(new RegExp(' ', 'g'), '_');
     this.datatypeProperty.domainName = this.data.paletteElement.representedLanguageClass;
-    this.mService.createNewDatatypeProperty(JSON.stringify(this.datatypeProperty));
-    this.newPropertyAdded.emit(this.datatypeProperty);
-    this.dialogRef.close('Cancel');
+    this.mService.createNewDatatypeProperty(JSON.stringify(this.datatypeProperty)).subscribe(
+      (response) => {
+        this.newPropertyAdded.emit(this.datatypeProperty);
+        this.dialogRef.close('Cancel');
+      }
+    );
   }
 }

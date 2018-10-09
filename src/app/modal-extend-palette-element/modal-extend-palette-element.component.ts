@@ -25,7 +25,6 @@ public eventImageList: any;
 public gatewayImageList: any;
 public dataObjectImageList: any;
 public groupImageList: any;
-public namespaceMap: any;
 
 
 @Output() showCreateDomainElementModalFromExtend = new EventEmitter();
@@ -42,8 +41,6 @@ public namespaceMap: any;
     this.mService.queryModelingElementClasses();
     this.mService.queryPaletteCategories();
     this.mService.queryNamespacePrefixes();
-
-    const domainNameArr = [] = this.data.paletteElement.representedLanguageClass.split('#');
 
 
     console.log(this.data.paletteElement.paletteCategory);
@@ -158,7 +155,6 @@ public namespaceMap: any;
         });
 
         const sub = dialogRef1.componentInstance.propertiesAdded.subscribe(() => {
-          //this.mService.queryDatatypeProperties(this.domainName);
           dialogRef1.close('Cancel');
         });
       },

@@ -12,6 +12,8 @@ import {ModellerService} from "../modeller.service";
 })
 export class ModalPaletteElementPropertiesComponent implements OnInit {
   private domainName: string;
+  private namespaceMap: Map<string, string>;
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog,
               public dialogRef: MatDialogRef<ModalPaletteElementPropertiesComponent>,
               public mService: ModellerService) {
@@ -20,19 +22,27 @@ export class ModalPaletteElementPropertiesComponent implements OnInit {
   ngOnInit() {
     console.log(this.data.paletteElement);
     const domainNameArr = [] = this.data.paletteElement.representedLanguageClass.split('#');
-    this.domainName = 'bpmn:' + domainNameArr[1];
+    const domainStr = domainNameArr[0] + "#";
+    this.mService.queryNamespaceMap().subscribe(
+      (data) => {
+        this.namespaceMap = data;
+        const prefix = this.namespaceMap.get(domainStr);
+        this.domainName = prefix + domainNameArr[1];
+      }
+    );
+
     this.mService.queryDatatypeProperties(this.domainName);
   }
 
   openInsertNewProperty(element: PaletteElementModel) {
-    const dialogRef = this.dialog.open(ModalInsertPropertyComponent, {
+    const dialogRef1 = this.dialog.open(ModalInsertPropertyComponent, {
       data: {paletteElement: element },
       height:'80%',
       width: '800px',
       disableClose: false,
     });
 
-    const sub = dialogRef.componentInstance.newPropertyAdded.subscribe(() => {
+    const sub = dialogRef1.componentInstance.newPropertyAdded.subscribe(() => {
       this.mService.queryDatatypeProperties(this.domainName);
       this.dialogRef.close('Cancel');
     });

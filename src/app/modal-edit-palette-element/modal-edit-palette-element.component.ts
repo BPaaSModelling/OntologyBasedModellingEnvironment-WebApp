@@ -20,19 +20,38 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public gatewayImageList: any;
   public dataObjectImageList: any;
   public groupImageList: any;
-  private domainName: string;
-  private domainNameArr = [];
+  public domainName: string;
+  //public domainNameArr = [];
+  public namespaceMap: Map<string, string>;
+  public datatypeProperties: DatatypePropertyModel[] = [];
 
   constructor(public dialogRef: MatDialogRef<ModalEditPaletteElementComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService, public dialog: MatDialog) {
     this.currentPaletteElement = new PaletteElementModel();
+    this.namespaceMap = new Map<string, string>();
     //this.domainElement = new DomainElementModel();
-    this.domainNameArr = this.data.paletteElement.representedLanguageClass.split('#');
-    this.domainName = this.domainNameArr[0] + "#"; //!!!Fix this - should be in format bmm:BMMTask (prefix case-sensitive)
+
   }
 
   ngOnInit() {
-    this.mService.queryNamespaceMap();
+    const domainNameArr = this.data.paletteElement.representedLanguageClass.split('#');
+    const domainStr = domainNameArr[0]; //!!!Fix this - should be in format bmm:BMMTask (prefix case-sensitive)
+    /*this.mService.queryNamespaceMap().subscribe(
+      (data) => {
+      this.namespaceMap = data;
+      this.namespaceMap.set('bmm','hello');
+      console.log(data);*/
+      const arr = domainStr.split("/");
+      const prefix = arr[arr.length - 1];
+      this.domainName = prefix + ':' + domainNameArr[1];
+      this.mService.queryDatatypeProperties(this.domainName).subscribe(
+        (response) => {
+          this.datatypeProperties = response;
+          console.log("Loading datatype properties");
+        }
+      );
+      //}
+    //);
     this.mService.queryDomainClasses();
     this.mService.queryModelingElementClasses();
     this.mService.queryPaletteCategories();
@@ -117,22 +136,26 @@ export class ModalEditPaletteElementComponent implements OnInit {
   }
 
   openInsertNewProperty(element: PaletteElementModel) {
-    const dialogRef = this.dialog.open(ModalInsertPropertyComponent, {
+    const dialogRef1 = this.dialog.open(ModalInsertPropertyComponent, {
       data: {paletteElement: element },
       height:'80%',
       width: '800px',
       disableClose: false,
     });
 
-    const sub = dialogRef.componentInstance.newPropertyAdded.subscribe(() => {
-      const prefix = this.mService.namespaceMap.get(this.domainName);
+    const sub = dialogRef1.componentInstance.newPropertyAdded.subscribe(() => {
+      /*const prefix = this.namespaceMap.get(this.domainName);
       const domainStr = prefix + ":" + this.domainNameArr[1];
-      console.log('domainStr ' + domainStr);
-      this.mService.queryDatatypeProperties(domainStr);
-      this.dialogRef.close('Cancel');
+      console.log('domainStr ' + domainStr);*/
+      this.mService.queryDatatypeProperties(this.domainName).subscribe(
+        (response) => {
+          this.datatypeProperties = response;
+          dialogRef1.close('Cancel');
+        }
+      );
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef1.afterClosed().subscribe(result => {
       console.log('The dialog was closed : ' + result);
     });
   }
@@ -142,18 +165,21 @@ export class ModalEditPaletteElementComponent implements OnInit {
     console.log('Edited label: '+ele.label);
     console.log('Edited image: '+ele.imageURL);
     console.log('Edited thumbnail: '+ele.thumbnailURL);
-    this.mService.editElement(this.data.paletteElement, ele);
-    this.dialogRef.close();
+    this.mService.editElement(this.data.paletteElement, ele).subscribe(
+      (response) => {
+        this.dialogRef.close();
+      }
+    );
   }
 
-  loadProperties() {
+  /*loadProperties() {
     console.log('domainName: ' + this.domainName);
-    console.log(this.mService.namespaceMap);
-    const prefix = this.mService.namespaceMap.get(this.domainName);
+    console.log(this.namespaceMap);
+    const prefix = this.namespaceMap.get(this.domainName);
     console.log('domainName ' + prefix);
     const domainStr = prefix + ":" + this.domainNameArr[1];
     this.mService.queryDatatypeProperties(domainStr);
-  }
+  }*/
 
   modifyProperty(element: PaletteElementModel, property: DatatypePropertyModel) {
     const dialogRef1 = this.dialog.open(ModalEditPropertiesComponent, {
@@ -164,10 +190,15 @@ export class ModalEditPaletteElementComponent implements OnInit {
     });
 
     const sub = dialogRef1.componentInstance.propertyEdited.subscribe(() => {
-      const prefix = this.mService.namespaceMap.get(this.domainName);
-      const domainStr = prefix + ":" + this.domainNameArr[1];
-      this.mService.queryDatatypeProperties(domainStr);
-      dialogRef1.close('Cancel');
+      //const prefix = this.namespaceMap.get(this.domainName);
+      //const domainStr = prefix + ":" + this.domainNameArr[1];
+      this.mService.queryDatatypeProperties(this.domainName).subscribe(
+        (response) => {
+          this.datatypeProperties = response;
+          dialogRef1.close('Cancel');
+        }
+      );
+
     });
 
     dialogRef1.afterClosed().subscribe(result => {
@@ -176,6 +207,10 @@ export class ModalEditPaletteElementComponent implements OnInit {
   }
 
   deleteProperty(property: DatatypePropertyModel) {
-    this.mService.deleteDatatypeProperty(property);
+    this.mService.deleteDatatypeProperty(property).subscribe(
+      (response) => {
+        this.datatypeProperties = response;
+      }
+    );
   }
 }

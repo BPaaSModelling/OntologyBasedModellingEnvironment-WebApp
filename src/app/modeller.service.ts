@@ -23,11 +23,9 @@ export class ModellerService {
   public modelingLanguageClasse$: Observable<QueryAnswerModel[]> = Observable.of([]);
   public modelingLanguageClasses: QueryAnswerModel[] = [];
   public datatypeProperties$: Observable<DatatypePropertyModel[]> = Observable.of([]);
-  public datatypeProperties: DatatypePropertyModel[] = [];
   public namespacePrefixe$: Observable<string[]> = Observable.of([]);
   public namespacePrefixes: string[] = [];
   public namespaceMap$: Observable<Map<string, string>> = Observable.of({});
-  public namespaceMap: Map<string, string>;
 
   constructor(private http: Http, private jsonp: Jsonp) {
     const headers = new Headers({ 'Content-Type': 'application/json'});
@@ -103,32 +101,32 @@ console.log(this.paletteElements);
     return querySuccess;
   }
 
-  createNewDatatypeProperty(oImg): Boolean {
+  createNewDatatypeProperty(oImg) {
     //console.log(JSON.stringify(oImg));
     let querySuccess: Boolean = false;
     console.log(oImg);
-    this.http.post(EndpointSettings.getCreateDatatypePropertyEndpoint(), oImg)
-      .map(response => response.json()).subscribe(
+    return this.http.post(EndpointSettings.getCreateDatatypePropertyEndpoint(), oImg)
+      .map(response => response.json());/*.subscribe(
       data => {
         querySuccess = (data === 'true');
       }
     );
-    return querySuccess;
+    return querySuccess;*/
   }
 
-  editElement(element: Object, modifiedElement: Object): Boolean {
+  editElement(element: Object, modifiedElement: Object) {
     let querySuccess: Boolean = false;
     let params = new URLSearchParams();
     params.append('element', JSON.stringify(element));
     params.append('modifiedElement', JSON.stringify(modifiedElement)); //passing multiple parameters in POST
     console.log(element);
-    this.http.post(EndpointSettings.getModifyElementEndpoint(), params)
-      .map(response => response.json()).subscribe(
+    return this.http.post(EndpointSettings.getModifyElementEndpoint(), params)
+      .map(response => response.json());/*.subscribe(
       data => {
         querySuccess = (data === 'true');
       }
     );
-    return querySuccess;
+    return querySuccess;*/
   }
 
   editDatatypeProperty(property: Object, editedProperty: Object): Boolean {
@@ -146,16 +144,16 @@ console.log(this.paletteElements);
     return querySuccess;
   }
 
-  deleteDatatypeProperty(property: Object): Boolean {
+  deleteDatatypeProperty(property: Object) {
     let querySuccess: Boolean = false;
     console.log(property);
-    this.http.post(EndpointSettings.getDeleteDatatypePropertyEndpoint(), JSON.stringify(property))
-      .map(response => response.json()).subscribe(
+    return this.http.post(EndpointSettings.getDeleteDatatypePropertyEndpoint(), JSON.stringify(property))
+      .map(response => response.json());/*.subscribe(
       data => {
         querySuccess = (data === 'true');
       }
     );
-    return querySuccess;
+    return querySuccess;*/
   }
 
   createLanguageSubclasses(oImg) {
@@ -189,14 +187,14 @@ console.log(this.paletteElements);
       }, error => console.log('Could not query Modeling Language Classes'));
   }
 
-  queryDatatypeProperties(domainName): void {
-    this.http.get(EndpointSettings.getDatatypePropertyEndpoint(domainName))
-      .map(response => response.json()).subscribe(
+  queryDatatypeProperties(domainName) {
+    return this.http.get(EndpointSettings.getDatatypePropertyEndpoint(domainName))
+      .map(response => response.json());/*.subscribe(
       data => {
         //console.log('PaletteCategories received: ' + JSON.stringify(data));
         this.datatypeProperties$ = Observable.of(data);
         this.datatypeProperties = data;
-      }, error => console.log('Could not query DatatypeProperties'));
+      }, error => console.log('Could not query DatatypeProperties'));*/
   }
 
   queryNamespacePrefixes(): void {
@@ -209,14 +207,8 @@ console.log(this.paletteElements);
       }, error => console.log('Could not query Namespace prefixes'));
   }
 
-  queryNamespaceMap(): void {
-    this.http.get(EndpointSettings.getNamespaceMapEndpoint())
-      .map(response => response.json()).subscribe(
-      data => {
-        //console.log('PaletteCategories received: ' + JSON.stringify(data));
-        this.namespaceMap$ = Observable.of(data);
-        this.namespaceMap = data;
-        console.log(this.namespaceMap);
-      }, error => console.log('Could not query Namespace prefixes'));
+  queryNamespaceMap():Observable <Map<string, string>> {
+    return this.http.get(EndpointSettings.getNamespaceMapEndpoint())
+      .map(response => response.json());
   }
 }

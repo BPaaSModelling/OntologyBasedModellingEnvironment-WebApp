@@ -16,7 +16,9 @@ export class ModalAddPropertiesComponent implements OnInit {
   @Output() propertiesAdded = new EventEmitter();
 
   public domainElement: DomainElementModel;
-  private domainName: string;
+  public domainName: string;
+  private namespaceMap: Map<string, string>;
+  public datatypeProperties: DatatypePropertyModel[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<ModalAddPropertiesComponent>,
@@ -26,6 +28,24 @@ export class ModalAddPropertiesComponent implements OnInit {
   }
 
   ngOnInit() {
+    /*console.log(this.domainName.indexOf('#'));
+    if (this.domainName.indexOf('#') !== -1) {
+      const domainNameArr = [] = this.data.paletteElement.representedLanguageClass.split('#');
+      const domainStr = domainNameArr[0] + '#';
+      this.mService.queryNamespaceMap().subscribe(
+        (response) => {
+          this.namespaceMap = response;
+          console.log(this.namespaceMap);
+          const prefix = this.namespaceMap.get(domainStr);
+          this.domainName = prefix + domainNameArr[1];
+        }
+      );
+    }*/
+    this.mService.queryDatatypeProperties(this.domainName).subscribe(
+      (response) => {
+        this.datatypeProperties = response;
+      }
+    );
   }
 
   onCloseCancel() {
@@ -33,15 +53,19 @@ export class ModalAddPropertiesComponent implements OnInit {
   }
 
   openInsertNewProperty(element: PaletteElementModel) {
-    const dialogRef = this.dialog.open(ModalInsertPropertyComponent, {
-      data: {paletteElement: element },
+    const dialogRef1 = this.dialog.open(ModalInsertPropertyComponent, {
+      data: {paletteElement: this.data.paletteElement },
       height:'80%',
       width: '800px',
       disableClose: false,
     });
 
-    const sub = dialogRef.componentInstance.newPropertyAdded.subscribe(() => {
-      this.mService.queryDatatypeProperties(this.domainName);
+    const sub = dialogRef1.componentInstance.newPropertyAdded.subscribe(() => {
+      this.mService.queryDatatypeProperties(this.domainName).subscribe(
+        (response) => {
+          this.datatypeProperties = response;
+        }
+      );
       //this.dialogRef.close('Cancel');
     });
   }

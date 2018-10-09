@@ -103,13 +103,13 @@
           </form>
         </mat-card>
       </mat-tab>
-      <mat-tab label="Attributes" (click)="loadProperties()">
+      <mat-tab label="Attributes">
         <h2 class="mat-display-2">Edit Attributes</h2>
         <mat-dialog-actions layout="row">
           <button mat-raised-button color="accent" (click)="openInsertNewProperty(data.paletteElement)">Insert new Attribute</button>
         </mat-dialog-actions>
         <mat-card>
-          <mat-accordion *ngFor="let element of mService.datatypeProperties">
+          <mat-accordion *ngFor="let element of datatypeProperties">
             <mat-expansion-panel>
               <mat-expansion-panel-header>
                 <mat-panel-title>{{element.label}}</mat-panel-title>
