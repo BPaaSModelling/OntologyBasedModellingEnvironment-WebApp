@@ -5,6 +5,7 @@ import {DatatypePropertyModel} from "../_models/DatatypeProperty.model";
 import {PaletteElementModel} from "../_models/PaletteElement.model";
 import {DomainElementModel} from "../_models/DomainElement.model";
 import {ModalInsertPropertyComponent} from "../modal-insert-datatype-property/modal-insert-datatype-property.component";
+import {ModalInsertObjectPropertyComponent} from "../modal-insert-object-property/modal-insert-object-property.component";
 
 @Component({
   selector: 'app-modal-add-properties',
@@ -67,6 +68,28 @@ export class ModalAddPropertiesComponent implements OnInit {
         }
       );
       //this.dialogRef.close('Cancel');
+    });
+  }
+
+  openInsertNewRelation(element: PaletteElementModel) {
+    const dialogRef1 = this.dialog.open(ModalInsertObjectPropertyComponent, {
+      data: {paletteElement: element },
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    const sub = dialogRef1.componentInstance.newRelationAdded.subscribe(() => {
+      /*this.mService.queryDatatypeProperties(this.domainName).subscribe(
+        (response) => {
+          this.datatypeProperties = response;
+          dialogRef1.close('Cancel');
+        }
+      );*/
+    });
+
+    dialogRef1.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
     });
   }
 

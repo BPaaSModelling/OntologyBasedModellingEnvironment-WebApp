@@ -18,6 +18,7 @@ export class EndpointSettings {
   private static MODIFYELEMENT              : string = '/ModEnv/modifyElement';
   private static EDITDATATYPEPROPERTY       : string = '/ModEnv/editDatatypeProperty';
   private static DELETEDATATYPEPROPERTY     : string = '/ModEnv/deleteDatatypeProperty';
+  private static GETDOMAINCONCEPTS          : string = '/ModEnv/getDomainConcepts';
 
   public static getPaletteElementsEndpoint(): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.PALETTEELEMENTS;
@@ -85,5 +86,9 @@ export class EndpointSettings {
 
   public static getDeleteDatatypePropertyEndpoint(): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.DELETEDATATYPEPROPERTY;
+  }
+
+  public static getDomainConceptsEndpoint(): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.GETDOMAINCONCEPTS;
   }
 }

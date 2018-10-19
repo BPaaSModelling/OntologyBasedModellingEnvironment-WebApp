@@ -18,5 +18,17 @@
   z-index: 1;
 }
 
-
+.header-pane {
+  background-color: #dddddd;
+  border-width: 4px;
+  border-style: ridge;
+  width: 99%;
+  height: 90px;
+  display: flex;
+  flex-flow: row wrap;
+  /* This aligns items to the end line on main-axis */
+  justify-content: flex-end;
+  display: inline-block;
+  z-index: 2;
+}
 

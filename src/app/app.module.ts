@@ -26,6 +26,7 @@ import { ModalEditPaletteElementComponent } from './modal-edit-palette-element/m
 import { ModalEditPropertiesComponent } from './modal-edit-datatype-property/modal-edit-datatype-property.component';
 import { ModalAddPropertiesComponent } from './modal-add-properties/modal-add-properties.component';
 import { ModalInsertObjectPropertyComponent } from './modal-insert-object-property/modal-insert-object-property.component';
+import { HeaderPaneComponent } from './header-pane/header-pane.component';
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
@@ -37,6 +38,7 @@ const appRoutes: Routes = [
     AppComponent,
     ModellingEnvironmentComponent,
     PaletteAreaComponent,
+    HeaderPaneComponent,
     ModellingAreaComponent,
     ToolRecursivePaletteElementComponent,
     ModalInstancePropertiesComponent,
@@ -49,7 +51,8 @@ const appRoutes: Routes = [
     ModalEditPaletteElementComponent,
     ModalEditPropertiesComponent,
     ModalAddPropertiesComponent,
-    ModalInsertObjectPropertyComponent
+    ModalInsertObjectPropertyComponent,
+    HeaderPaneComponent
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -60,7 +63,8 @@ const appRoutes: Routes = [
     ModalCreateDomainElementsComponent,
     ModalEditPaletteElementComponent,
     ModalAddPropertiesComponent,
-    ModalEditPropertiesComponent
+    ModalEditPropertiesComponent,
+    ModalInsertObjectPropertyComponent
   ],
   imports: [
     BrowserModule,
