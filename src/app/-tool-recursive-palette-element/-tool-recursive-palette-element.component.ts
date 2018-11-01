@@ -49,7 +49,11 @@ constructor(private mService: ModellerService, public dialog: MatDialog) {
       alert(element.label + ' has child elements, cannot be deleted');
     } else {
       if (confirm('Do you want to remove ' + element.label + ' from palette?')) {
-        this.mService.deletePaletteElement(JSON.stringify(element));
+        this.mService.deletePaletteElement(JSON.stringify(element)).subscribe(
+          response => {
+            this.mService.queryPaletteElements();
+          }
+        );
       } else {
         // Do nothing!
       }

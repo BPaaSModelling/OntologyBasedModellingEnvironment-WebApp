@@ -62,17 +62,17 @@ console.log(this.paletteElements);
       .map(response => response.json());
   }
 
-  deletePaletteElement(oImg): Boolean {
+  deletePaletteElement(oImg) {
     //console.log(JSON.stringify(oImg));
     let querySuccess: Boolean = false;
     console.log(oImg);
-    this.http.post(EndpointSettings.getDeletePaletteElementEndpoint(), oImg)
-      .map(response => response.json()).subscribe(
+    return this.http.post(EndpointSettings.getDeletePaletteElementEndpoint(), oImg)
+      .map(response => response.json());/*.subscribe(
       data => {
         querySuccess = (data == 'true');
       }
     );
-    return querySuccess;
+    return querySuccess;*/
   }
 
   hidePaletteElement(oImg): Boolean {
@@ -211,4 +211,9 @@ console.log(this.paletteElements);
     return this.http.get(EndpointSettings.getNamespaceMapEndpoint())
       .map(response => response.json());
   }
+
+  /*queryDomainConcepts() {
+    return this.http.get(EndpointSettings.getDomainConceptsEndpoint())
+      .map(response => response.json());
+  }*/
 }
