@@ -41,12 +41,13 @@ export class ModalInsertObjectPropertyComponent implements OnInit {
 
   insertNewProperty() {
     this.objectProperty.id = (this.objectProperty.label).replace(new RegExp(' ', 'g'), '_');
-    /*this.mService.createNewObjectProperty(JSON.stringify(this.objectProperty)).subscribe(
+    this.objectProperty.domainName = this.data.paletteElement.representedLanguageClass;
+    this.mService.createNewObjectProperty(JSON.stringify(this.objectProperty)).subscribe(
       (response) => {
         this.newRelationAdded.emit(this.objectProperty);
         this.dialogRef.close('Cancel');
       }
-    );*/
+    );
   }
 
 }

@@ -6,6 +6,7 @@ import {ModalCreateDomainElementsComponent} from "../modal-create-domain-element
 import {ModalInsertPropertyComponent} from "../modal-insert-datatype-property/modal-insert-datatype-property.component";
 import {ModalEditPropertiesComponent} from "../modal-edit-datatype-property/modal-edit-datatype-property.component";
 import {DatatypePropertyModel} from "../_models/DatatypeProperty.model";
+import {ObjectPropertyModel} from "../_models/ObjectProperty.model";
 import {ModalInsertObjectPropertyComponent} from "../modal-insert-object-property/modal-insert-object-property.component";
 
 @Component({
@@ -25,6 +26,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
   //public domainNameArr = [];
   public namespaceMap: Map<string, string>;
   public datatypeProperties: DatatypePropertyModel[] = [];
+  public objectProperties: ObjectPropertyModel[] = [];
 
   constructor(public dialogRef: MatDialogRef<ModalEditPaletteElementComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService, public dialog: MatDialog) {
@@ -49,6 +51,12 @@ export class ModalEditPaletteElementComponent implements OnInit {
         (response) => {
           this.datatypeProperties = response;
           console.log("Loading datatype properties");
+        }
+      );
+      this.mService.queryObjectProperties(this.domainName).subscribe(
+        (response) => {
+          this.objectProperties = response;
+          console.log("Loading object properties");
         }
       );
       //}
@@ -210,7 +218,12 @@ export class ModalEditPaletteElementComponent implements OnInit {
   deleteProperty(property: DatatypePropertyModel) {
     this.mService.deleteDatatypeProperty(property).subscribe(
       (response) => {
-        this.datatypeProperties = response;
+        this.mService.queryDatatypeProperties(this.domainName).subscribe(
+          (response1) => {
+            this.datatypeProperties = response1;
+          }
+        );
+
       }
     );
   }
@@ -225,16 +238,54 @@ export class ModalEditPaletteElementComponent implements OnInit {
     });
 
     const sub = dialogRef1.componentInstance.newRelationAdded.subscribe(() => {
-      /*this.mService.queryDatatypeProperties(this.domainName).subscribe(
+      this.mService.queryObjectProperties(this.domainName).subscribe(
         (response) => {
-          this.datatypeProperties = response;
+          this.objectProperties = response;
           dialogRef1.close('Cancel');
         }
-      );*/
+      );
     });
 
     dialogRef1.afterClosed().subscribe(result => {
       console.log('The dialog was closed : ' + result);
     });
+  }
+
+  /*modifyObjectProperty(element: PaletteElementModel, property: ObjectPropertyModel) {
+    const dialogRef1 = this.dialog.open(ModalEditObjectPropertiesComponent, {
+      data: {paletteElement: element, objectProperty: property },
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    const sub = dialogRef1.componentInstance.objectPropertyEdited.subscribe(() => {
+      //const prefix = this.namespaceMap.get(this.domainName);
+      //const domainStr = prefix + ":" + this.domainNameArr[1];
+      this.mService.queryObjectProperties(this.domainName).subscribe(
+        (response) => {
+          this.objectProperties = response;
+          dialogRef1.close('Cancel');
+        }
+      );
+
+    });
+
+    dialogRef1.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }*/
+
+  deleteObjectProperty(property: ObjectPropertyModel) {
+    this.mService.deleteObjectProperty(property).subscribe(
+      (response) => {
+        this.mService.queryObjectProperties(this.domainName).subscribe(
+          (response1) => {
+            this.objectProperties = response1;
+          }
+        );
+
+      }
+    );
   }
 }

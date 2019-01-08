@@ -158,17 +158,16 @@
           <button mat-raised-button color="accent" (click)="openInsertNewRelation(data.paletteElement)">Insert new Relation</button>
         </mat-dialog-actions>
         <mat-card>
-          <mat-accordion *ngFor="let element of mService.datatypeProperties">
+          <mat-accordion *ngFor="let element of objectProperties">
             <mat-expansion-panel>
               <mat-expansion-panel-header>
                 <mat-panel-title>{{element.label}}</mat-panel-title>
-                <mat-panel-description>{{element.range}}</mat-panel-description>
+                <mat-panel-description><b>Range</b>: <i>{{element.range}}</i></mat-panel-description>
               </mat-expansion-panel-header>
-              <br />
-              <!--<mat-action-row>
-                <button mat-raised-button>Modify</button>
-                <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
-              </mat-action-row> -->
+              <<mat-action-row>
+              <button mat-raised-button (click)="modifyObjectProperty(data.paletteElement, element)">Modify</button>
+              <button mat-raised-button color="warn" style="margin-right:20px;" (click)="deleteObjectProperty(element)">Delete</button>
+            </mat-action-row>
             </mat-expansion-panel>
 
             <!--<mat-expansion-panel>

@@ -9,7 +9,9 @@ export class EndpointSettings {
   private static GETDOMAINCLASSES           : string = '/ModEnv/getDomainOntologyClasses';
   private static GETMODELINGLANGUAGELASSES  : string = '/ModEnv/getModelingLanguageOntologyElements';
   private static CREATEDATATYPEPROPERTY     : string = '/ModEnv/createDatatypeProperty';
+  private static CREATEOBJECTPROPERTY       : string = '/ModEnv/createObjectProperty';
   private static GETDATATYPEPROPERTIES      : string = '/ModEnv/getDatatypeProperties';
+  private static GETOBJECTPROPERTIES      : string = '/ModEnv/getObjectProperties';
   private static DELETEPALETTEELEMENT       : string = '/ModEnv/deletePaletteElement';
   private static HIDEPALETTEELEMENT         : string = '/ModEnv/hidePaletteElement';
   private static CREATELANGUAGESUBCLASSES   : string = '/ModEnv/createModelingLanguageSubclasses';
@@ -18,6 +20,8 @@ export class EndpointSettings {
   private static MODIFYELEMENT              : string = '/ModEnv/modifyElement';
   private static EDITDATATYPEPROPERTY       : string = '/ModEnv/editDatatypeProperty';
   private static DELETEDATATYPEPROPERTY     : string = '/ModEnv/deleteDatatypeProperty';
+  private static DELETEOBJECTPROPERTY     : string = '/ModEnv/deleteObjectProperty';
+
   private static GETDOMAINCONCEPTS          : string = '/ModEnv/getDomainConcepts';
 
   public static getPaletteElementsEndpoint(): string {
@@ -52,8 +56,16 @@ export class EndpointSettings {
     return EndpointSettings.ENDPOINT + EndpointSettings.CREATEDATATYPEPROPERTY;
   }
 
+  public static getCreateObjectPropertyEndpoint(): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.CREATEOBJECTPROPERTY;
+  }
+
   public static getDatatypePropertyEndpoint(domainName): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.GETDATATYPEPROPERTIES + '/' + domainName;
+  }
+
+  public static getObjectPropertyEndpoint(domainName): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.GETOBJECTPROPERTIES + '/' + domainName;
   }
 
   public static getDeletePaletteElementEndpoint(): string {
@@ -86,6 +98,10 @@ export class EndpointSettings {
 
   public static getDeleteDatatypePropertyEndpoint(): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.DELETEDATATYPEPROPERTY;
+  }
+
+  public static getDeleteObjectPropertyEndpoint(): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.DELETEOBJECTPROPERTY;
   }
 
   public static getDomainConceptsEndpoint(): string {

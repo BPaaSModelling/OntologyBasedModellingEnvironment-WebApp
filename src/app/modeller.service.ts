@@ -114,6 +114,13 @@ console.log(this.paletteElements);
     return querySuccess;*/
   }
 
+  createNewObjectProperty(oImg) {
+    let querySuccess: Boolean = false;
+    console.log(oImg);
+    return this.http.post(EndpointSettings.getCreateObjectPropertyEndpoint(), oImg)
+      .map(response => response.json());
+  }
+
   editElement(element: Object, modifiedElement: Object) {
     let querySuccess: Boolean = false;
     let params = new URLSearchParams();
@@ -156,6 +163,13 @@ console.log(this.paletteElements);
     return querySuccess;*/
   }
 
+  deleteObjectProperty(property: Object) {
+    let querySuccess: Boolean = false;
+    console.log(property);
+    return this.http.post(EndpointSettings.getDeleteObjectPropertyEndpoint(), JSON.stringify(property))
+      .map(response => response.json());
+  }
+
   createLanguageSubclasses(oImg) {
     //console.log(JSON.stringify(oImg));
     let querySuccess: Boolean = false;
@@ -195,6 +209,11 @@ console.log(this.paletteElements);
         this.datatypeProperties$ = Observable.of(data);
         this.datatypeProperties = data;
       }, error => console.log('Could not query DatatypeProperties'));*/
+  }
+
+  queryObjectProperties(domainName) {
+    return this.http.get(EndpointSettings.getObjectPropertyEndpoint(domainName))
+      .map(response => response.json());
   }
 
   queryNamespacePrefixes(): void {
