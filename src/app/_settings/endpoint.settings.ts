@@ -19,6 +19,7 @@ export class EndpointSettings {
   private static GETNAMESPACEMAP            : string = '/ModEnv/getNamespaceMap';
   private static MODIFYELEMENT              : string = '/ModEnv/modifyElement';
   private static EDITDATATYPEPROPERTY       : string = '/ModEnv/editDatatypeProperty';
+  private static EDITOBJECTPROPERTY       : string = '/ModEnv/editObjectProperty';
   private static DELETEDATATYPEPROPERTY     : string = '/ModEnv/deleteDatatypeProperty';
   private static DELETEOBJECTPROPERTY     : string = '/ModEnv/deleteObjectProperty';
 
@@ -94,6 +95,10 @@ export class EndpointSettings {
 
   public static getEditDatatypePropertyEndpoint(): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.EDITDATATYPEPROPERTY;
+  }
+
+  public static getEditObjectPropertyEndpoint(): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.EDITOBJECTPROPERTY;
   }
 
   public static getDeleteDatatypePropertyEndpoint(): string {

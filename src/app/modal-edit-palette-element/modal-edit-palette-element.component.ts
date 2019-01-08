@@ -5,6 +5,7 @@ import {ModellerService} from "../modeller.service";
 import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
 import {ModalInsertPropertyComponent} from "../modal-insert-datatype-property/modal-insert-datatype-property.component";
 import {ModalEditPropertiesComponent} from "../modal-edit-datatype-property/modal-edit-datatype-property.component";
+import {ModalEditObjectPropertyComponent} from "../modal-edit-object-property/modal-edit-object-property.component";
 import {DatatypePropertyModel} from "../_models/DatatypeProperty.model";
 import {ObjectPropertyModel} from "../_models/ObjectProperty.model";
 import {ModalInsertObjectPropertyComponent} from "../modal-insert-object-property/modal-insert-object-property.component";
@@ -251,8 +252,8 @@ export class ModalEditPaletteElementComponent implements OnInit {
     });
   }
 
-  /*modifyObjectProperty(element: PaletteElementModel, property: ObjectPropertyModel) {
-    const dialogRef1 = this.dialog.open(ModalEditObjectPropertiesComponent, {
+  modifyObjectProperty(element: PaletteElementModel, property: ObjectPropertyModel) {
+    const dialogRef1 = this.dialog.open(ModalEditObjectPropertyComponent, {
       data: {paletteElement: element, objectProperty: property },
       height:'80%',
       width: '800px',
@@ -274,7 +275,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
     dialogRef1.afterClosed().subscribe(result => {
       console.log('The dialog was closed : ' + result);
     });
-  }*/
+  }
 
   deleteObjectProperty(property: ObjectPropertyModel) {
     this.mService.deleteObjectProperty(property).subscribe(

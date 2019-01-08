@@ -20,8 +20,8 @@
                 <mat-panel-description><b>Range</b>: <i>{{element.range}}</i></mat-panel-description>
               </mat-expansion-panel-header>
               <<mat-action-row>
-              <button mat-raised-button (click)="hhh()">Modify</button>
-              <button mat-raised-button color="warn" style="margin-right:20px;" (click)="dff()">Delete</button>
+              <button mat-raised-button (click)="modifyProperty(data.paletteElement, element)">Modify</button>
+              <button mat-raised-button color="warn" style="margin-right:20px;" (click)="deleteProperty(element)">Delete</button>
             </mat-action-row>
             </mat-expansion-panel>
 
@@ -38,7 +38,19 @@
           <button mat-raised-button color="accent" (click)="openInsertNewRelation(element)">Insert new Relation</button>
         </mat-dialog-actions>
         <mat-card>
+          <mat-accordion *ngFor="let element of objectProperties">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{element.label}}</mat-panel-title>
+                <mat-panel-description><b>Range</b>: <i>{{element.range}}</i></mat-panel-description>
+              </mat-expansion-panel-header>
+              <<mat-action-row>
+              <button mat-raised-button (click)="modifyObjectProperty(data.paletteElement, element)">Modify</button>
+              <button mat-raised-button color="warn" style="margin-right:20px;" (click)="deleteObjectProperty(element)">Delete</button>
+            </mat-action-row>
+            </mat-expansion-panel>
 
+          </mat-accordion>
           <div layout="row">
             <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
           </div>

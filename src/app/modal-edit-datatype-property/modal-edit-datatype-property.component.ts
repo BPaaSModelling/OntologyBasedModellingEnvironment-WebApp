@@ -42,11 +42,13 @@ export class ModalEditPropertiesComponent implements OnInit {
   }
 
   editProperty() {
-    this.mService.editDatatypeProperty(this.datatypeProperty, this.editedProperty);
-    console.log(this.datatypeProperty);
-    console.log(this.editedProperty);
-    this.propertyEdited.emit(this.editedProperty);
-    //this.dialogRef.close('Cancel');
+    this.mService.editDatatypeProperty(this.datatypeProperty, this.editedProperty).subscribe(
+      (response) => {
+        console.log(this.datatypeProperty);
+        console.log(this.editedProperty);
+        this.propertyEdited.emit(this.editedProperty);
+      }
+    );
   }
 
 }

@@ -67,7 +67,8 @@ console.log(this.paletteElements);
     let querySuccess: Boolean = false;
     console.log(oImg);
     return this.http.post(EndpointSettings.getDeletePaletteElementEndpoint(), oImg)
-      .map(response => response.json());/*.subscribe(
+      .map(response => response.json()); //Do not subscribe here, subscribe where the method is called to make the call synchronous
+    /*.subscribe(
       data => {
         querySuccess = (data == 'true');
       }
@@ -106,12 +107,7 @@ console.log(this.paletteElements);
     let querySuccess: Boolean = false;
     console.log(oImg);
     return this.http.post(EndpointSettings.getCreateDatatypePropertyEndpoint(), oImg)
-      .map(response => response.json());/*.subscribe(
-      data => {
-        querySuccess = (data === 'true');
-      }
-    );
-    return querySuccess;*/
+      .map(response => response.json());
   }
 
   createNewObjectProperty(oImg) {
@@ -128,39 +124,34 @@ console.log(this.paletteElements);
     params.append('modifiedElement', JSON.stringify(modifiedElement)); //passing multiple parameters in POST
     console.log(element);
     return this.http.post(EndpointSettings.getModifyElementEndpoint(), params)
-      .map(response => response.json());/*.subscribe(
-      data => {
-        querySuccess = (data === 'true');
-      }
-    );
-    return querySuccess;*/
+      .map(response => response.json());
   }
 
-  editDatatypeProperty(property: Object, editedProperty: Object): Boolean {
+  editDatatypeProperty(property: Object, editedProperty: Object) {
     let querySuccess: Boolean = false;
     console.log(property);
     let params = new URLSearchParams();
     params.append('property', JSON.stringify(property));
     params.append('editedProperty', JSON.stringify(editedProperty)); //passing multiple parameters in POST
-    this.http.post(EndpointSettings.getEditDatatypePropertyEndpoint(), params)
-      .map(response => response.json()).subscribe(
-      data => {
-        querySuccess = (data === 'true');
-      }
-    );
-    return querySuccess;
+    return this.http.post(EndpointSettings.getEditDatatypePropertyEndpoint(), params)
+      .map(response => response.json());
+  }
+
+  editObjectProperty(property: Object, editedProperty: Object) {
+    let querySuccess: Boolean = false;
+    console.log(property);
+    let params = new URLSearchParams();
+    params.append('property', JSON.stringify(property));
+    params.append('editedProperty', JSON.stringify(editedProperty)); //passing multiple parameters in POST
+    return this.http.post(EndpointSettings.getEditObjectPropertyEndpoint(), params)
+      .map(response => response.json());
   }
 
   deleteDatatypeProperty(property: Object) {
     let querySuccess: Boolean = false;
     console.log(property);
     return this.http.post(EndpointSettings.getDeleteDatatypePropertyEndpoint(), JSON.stringify(property))
-      .map(response => response.json());/*.subscribe(
-      data => {
-        querySuccess = (data === 'true');
-      }
-    );
-    return querySuccess;*/
+      .map(response => response.json());
   }
 
   deleteObjectProperty(property: Object) {
@@ -203,12 +194,7 @@ console.log(this.paletteElements);
 
   queryDatatypeProperties(domainName) {
     return this.http.get(EndpointSettings.getDatatypePropertyEndpoint(domainName))
-      .map(response => response.json());/*.subscribe(
-      data => {
-        //console.log('PaletteCategories received: ' + JSON.stringify(data));
-        this.datatypeProperties$ = Observable.of(data);
-        this.datatypeProperties = data;
-      }, error => console.log('Could not query DatatypeProperties'));*/
+      .map(response => response.json());
   }
 
   queryObjectProperties(domainName) {
