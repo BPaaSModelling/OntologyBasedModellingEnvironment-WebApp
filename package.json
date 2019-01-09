@@ -34,6 +34,7 @@
     "ng2-right-click-menu": "0.0.16",
     "ngx-contextmenu": "^2.0.0-beta.7",
     "ngx-modialog": "^4.0.0-beta.3",
+    "ngx-select-dropdown": "^1.0.1",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"
   },

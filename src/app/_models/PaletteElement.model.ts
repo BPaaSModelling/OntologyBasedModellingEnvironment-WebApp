@@ -1,3 +1,5 @@
+import {DomainElementModel} from "./DomainElement.model";
+
 export class PaletteElementModel {
   id: string;
   uuid: string;
@@ -8,7 +10,7 @@ export class PaletteElementModel {
   hiddenFromPalette: boolean;
   childElements: PaletteElementModel[];
   representedLanguageClass: string;
-  representedDomainClass: string[];
+  representedDomainClass: DomainElementModel[];
   languageSubclasses: string[];
   languagePrefix: string;
   datatypePropertyId: string;

@@ -30,11 +30,14 @@
             </div>
 
             <div layout="row">
-              <mat-form-field class="full-width">
+              <!--<mat-form-field class="full-width">
                 <mat-select placeholder="Semantic Domain Element" name="input_domainOntology" multiple [(ngModel)]="currentPaletteElement.representedDomainClass" >
                   <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id" >{{class.label}}</mat-option>
-                </mat-select>
-              </mat-form-field>
+                </mat-select>-->
+                <ngx-select-dropdown name="test_select" (change)="selectionChanged($event)" [multiple]="true" [(ngModel)]="currentPaletteElement.representedDomainClass" [config]="config" [options]="mService.domainClasses">
+
+                </ngx-select-dropdown>
+              <!--</mat-form-field>-->
               <button mat-raised-button color="primary" (click)="openCreateDomainElementModalFromExtend(data.paletteElement)">Create New Domain Element</button>
             </div>
 
