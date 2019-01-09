@@ -17,6 +17,7 @@ export class ModalCreateDomainElementsComponent implements OnInit {
   checked = false;
   disabled = false;
   @Output() newDomainElementAdded = new EventEmitter();
+  public config: any;
 
   constructor(
     public dialogRef: MatDialogRef<ModalCreateDomainElementsComponent>,
@@ -26,6 +27,17 @@ export class ModalCreateDomainElementsComponent implements OnInit {
   ngOnInit() {
     this.mService.queryDomainClasses();
     this.domainElement = new DomainElementModel();
+
+    this.config = {
+      displayKey: 'label',
+      search: true,
+      height: 'auto',
+      placeholder: 'Select',
+      limitTo: 15,
+      moreText: 'more',
+      noResultsFound: 'No results found!',
+      searchPlaceholder: 'Search'
+    };
   }
 
   createDomainElementInOntology() {
@@ -47,4 +59,7 @@ export class ModalCreateDomainElementsComponent implements OnInit {
     this.dialogRef.close('Cancel');
   }
 
+  selectionChanged($event: any) {
+    console.log('Selection changed');
+  }
 }

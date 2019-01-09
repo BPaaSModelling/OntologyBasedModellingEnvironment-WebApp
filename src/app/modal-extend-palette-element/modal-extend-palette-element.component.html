@@ -199,11 +199,14 @@
                 <input matInput placeholder="Parent Element" name="input_label" [(ngModel)]="data.paletteElement.label" [value]="data.paletteElement.label" disabled>
               </mat-form-field>
 
-              <mat-form-field class="full-width">
+              <!--<mat-form-field class="full-width">
                 <mat-select placeholder="Existing Element" name="input_modelingLanguageOntology" multiple [(ngModel)]="data.paletteElement.languageSubclasses" required>
                   <mat-option *ngFor="let class of mService.modelingLanguageClasses" [value]="class.id" >{{class.label}}</mat-option>
                 </mat-select>
-              </mat-form-field>
+              </mat-form-field>-->
+              <ngx-select-dropdown name="input_modelingLanguageOntology" (change)="selectionChanged($event)" [multiple]="true" [(ngModel)]="data.paletteElement.languageSubclasses" [config]="config" [options]="mService.domainClasses" [required]="true">
+
+              </ngx-select-dropdown>
 
             </div>
 

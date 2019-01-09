@@ -13,11 +13,14 @@
         <div layout="row">
           <mat-checkbox name="rootElement" [(ngModel)]="domainElement.isRoot">Root element</mat-checkbox>
 
-        <mat-form-field class="full-width">
+        <!--<mat-form-field class="full-width">
           <mat-select placeholder="Parent Class" name="input_domainOntology" [(ngModel)]="domainElement.parentElement" >
             <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id">{{class.label}}</mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field>-->
+          <ngx-select-dropdown name="select_domainOntology" (change)="selectionChanged($event)" [multiple]="false" [(ngModel)]="domainElement.parentElement" [config]="config" [options]="mService.domainClasses">
+
+          </ngx-select-dropdown>
 
         <mat-form-field class="full-width">
           <input matInput placeholder="New Domain Element" name="input_label" [(ngModel)]="domainElement.label" required>
