@@ -14,6 +14,7 @@ export class ModalEditObjectPropertyComponent implements OnInit {
   @Output() objectPropertyEdited = new EventEmitter();
   public objectProperty: ObjectPropertyModel;
   public editedProperty: ObjectPropertyModel;
+  public config2: any;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public mService: ModellerService,
               public dialogRef: MatDialogRef<ModalEditObjectPropertyComponent>) { }
@@ -24,6 +25,17 @@ export class ModalEditObjectPropertyComponent implements OnInit {
     //this.editedProperty.domainName = this.datatypeProperty.domainName;
     this.editedProperty.label = this.objectProperty.label;
     this.editedProperty.range = this.objectProperty.range;
+
+    this.config2 = {
+      displayKey: 'label',
+      search: true,
+      height: 'auto',
+      placeholder: 'Select Range',
+      limitTo: 15,
+      moreText: 'more',
+      noResultsFound: 'No results found!',
+      searchPlaceholder: 'Search'
+    };
   }
 
   setStep(index: number) {
@@ -40,6 +52,10 @@ export class ModalEditObjectPropertyComponent implements OnInit {
 
   onCloseCancel() {
     this.dialogRef.close('Cancel');
+  }
+
+  selectionChanged($event: any) {
+    console.log('Selection changed');
   }
 
   editProperty() {

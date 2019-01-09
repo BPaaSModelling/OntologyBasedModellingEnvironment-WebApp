@@ -32,7 +32,7 @@ export class ModalCreateDomainElementsComponent implements OnInit {
       displayKey: 'label',
       search: true,
       height: 'auto',
-      placeholder: 'Select',
+      placeholder: 'Select Parent Class',
       limitTo: 15,
       moreText: 'more',
       noResultsFound: 'No results found!',

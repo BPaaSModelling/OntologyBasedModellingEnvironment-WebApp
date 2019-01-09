@@ -15,12 +15,24 @@ export class ModalInsertObjectPropertyComponent implements OnInit {
   @Output() newRelationAdded = new EventEmitter();
   public objectProperty: ObjectPropertyModel;
   step = 0;
+  public config: any;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public mService: ModellerService,
               public dialogRef: MatDialogRef<ModalInsertObjectPropertyComponent>) { }
 
   ngOnInit() {
     this.objectProperty = new ObjectPropertyModel();
+
+    this.config = {
+      displayKey: 'label',
+      search: true,
+      height: 'auto',
+      placeholder: 'Select a Range',
+      limitTo: 15,
+      moreText: 'more',
+      noResultsFound: 'No results found!',
+      searchPlaceholder: 'Search'
+    };
   }
 
   setStep(index: number) {
@@ -39,9 +51,15 @@ export class ModalInsertObjectPropertyComponent implements OnInit {
     this.dialogRef.close('Cancel');
   }
 
+  selectionChanged(event) {
+    console.log(event);
+    this.objectProperty.range = event.value.id;
+  }
+
   insertNewProperty() {
     this.objectProperty.id = (this.objectProperty.label).replace(new RegExp(' ', 'g'), '_');
     this.objectProperty.domainName = this.data.paletteElement.representedLanguageClass;
+    console.log(this.objectProperty.range);
     this.mService.createNewObjectProperty(JSON.stringify(this.objectProperty)).subscribe(
       (response) => {
         this.newRelationAdded.emit(this.objectProperty);

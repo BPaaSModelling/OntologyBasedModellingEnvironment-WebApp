@@ -10,6 +10,7 @@ import {PaletteCategoryModel} from "./_models/PaletteCategory.model";
 import {PaletteElementModel} from "./_models/PaletteElement.model";
 import {QueryAnswerModel} from "./_models/QueryAnswer.model";
 import {DatatypePropertyModel} from "./_models/DatatypeProperty.model";
+import {DomainElementModel} from "./_models/DomainElement.model";
 
 @Injectable()
 export class ModellerService {
@@ -18,8 +19,8 @@ export class ModellerService {
   public paletteCategories: PaletteCategoryModel[] = [];
   public paletteElement$: Observable<PaletteElementModel[]> = Observable.of([]);
   public paletteElements: PaletteElementModel[] = [];
-  public domainClasse$: Observable<QueryAnswerModel[]> = Observable.of([]);
-  public domainClasses: QueryAnswerModel[] = [];
+  public domainClasse$: Observable<DomainElementModel[]> = Observable.of([]);
+  public domainClasses: DomainElementModel[] = [];
   public modelingLanguageClasse$: Observable<QueryAnswerModel[]> = Observable.of([]);
   public modelingLanguageClasses: QueryAnswerModel[] = [];
   public datatypeProperties$: Observable<DatatypePropertyModel[]> = Observable.of([]);

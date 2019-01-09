@@ -28,6 +28,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public namespaceMap: Map<string, string>;
   public datatypeProperties: DatatypePropertyModel[] = [];
   public objectProperties: ObjectPropertyModel[] = [];
+  public config1: any;
 
   constructor(public dialogRef: MatDialogRef<ModalEditPaletteElementComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService, public dialog: MatDialog) {
@@ -121,10 +122,25 @@ export class ModalEditPaletteElementComponent implements OnInit {
       {"imageURL":"assets/images/BPMN-CMMN/Group4Process.bmp", "imageName":"Group4Process.bmp", "label":"Group of Processes", "thumbnailURL":"/assets/images/BPMN-CMMN/Group4Process.bmp", "thumbnailName" : "Group4Process.bmp"},
       {"imageURL":"assets/images/BPMN-CMMN/GroupOfAvtivities.png", "imageName":"GroupOfAvtivities.png", "label":"Group of Activities", "thumbnailURL":"/assets/images/BPMN-CMMN/GroupOfAvtivities.png", "thumbnailName" : "GroupOfAvtivities.png"}
     ];
+
+    this.config1 = {
+      displayKey: 'label',
+      search: true,
+      height: 'auto',
+      placeholder: 'Select Semantic Domain Element',
+      limitTo: 15,
+      moreText: 'more',
+      noResultsFound: 'No results found!',
+      searchPlaceholder: 'Search'
+    };
   }
 
   onCloseCancel() {
     this.dialogRef.close('Cancel');
+  }
+
+  selectionChanged($event: any) {
+    console.log('Selection changed');
   }
 
   openCreateDomainElementModalFromEdit(element: PaletteElementModel) {

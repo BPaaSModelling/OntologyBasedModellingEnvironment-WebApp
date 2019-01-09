@@ -204,7 +204,7 @@
                   <mat-option *ngFor="let class of mService.modelingLanguageClasses" [value]="class.id" >{{class.label}}</mat-option>
                 </mat-select>
               </mat-form-field>-->
-              <ngx-select-dropdown name="input_modelingLanguageOntology" (change)="selectionChanged($event)" [multiple]="true" [(ngModel)]="data.paletteElement.languageSubclasses" [config]="config" [options]="mService.domainClasses" [required]="true">
+              <ngx-select-dropdown name="input_modelingLanguageOntology" (change)="selectionChanged($event)" [multiple]="true" [(ngModel)]="data.paletteElement.languageSubclasses" [config]="config1" [options]="mService.domainClasses" [required]="true">
 
               </ngx-select-dropdown>
 
