@@ -18,7 +18,7 @@
               </mat-form-field>
 
               <mat-form-field class="full-width">
-                <mat-select [(ngModel)]="currentPaletteElement.languagePrefix" placeholder="Prefix" name="prefix">
+                <mat-select [(ngModel)]="currentPaletteElement.languagePrefix" placeholder="Prefix" name="prefix" required>
                   <mat-option *ngFor="let prefix of mService.namespacePrefixes" [value]="prefix">{{prefix}}</mat-option>
                 </mat-select>
               </mat-form-field>
