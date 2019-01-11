@@ -126,6 +126,7 @@ public config1: any;
 
   selectionChanged($event: any) {
     console.log('Selection changed');
+    this.currentPaletteElement.representedDomainClass = $event.value.id;
   }
 
   createElementInOntology() {

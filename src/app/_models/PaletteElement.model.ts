@@ -10,7 +10,7 @@ export class PaletteElementModel {
   hiddenFromPalette: boolean;
   childElements: PaletteElementModel[];
   representedLanguageClass: string;
-  representedDomainClass: DomainElementModel[];
+  representedDomainClass: string[];
   languageSubclasses: string[];
   languagePrefix: string;
   datatypePropertyId: string;
