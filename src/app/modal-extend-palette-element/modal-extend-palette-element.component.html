@@ -74,12 +74,12 @@
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Gateways') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Gateways') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Canvas Image" name="image.label" required>
                 <mat-option *ngFor="let image of gatewayImageList" [value]="image.imageName">
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Data') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Data') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Canvas Image" name="image.label" required>
                 <mat-option *ngFor="let image of dataObjectImageList" [value]="image.imageName">
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>

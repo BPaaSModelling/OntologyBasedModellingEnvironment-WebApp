@@ -40,14 +40,14 @@ export class ModalEditPaletteElementComponent implements OnInit {
 
   ngOnInit() {
     const domainNameArr = this.data.paletteElement.representedLanguageClass.split('#');
-    const domainStr = domainNameArr[0]; //!!!Fix this - should be in format bmm:BMMTask (prefix case-sensitive)
+    // const domainStr = domainNameArr[0]; //!!!Fix this - should be in format bmm:BMMTask (prefix case-sensitive)
     /*this.mService.queryNamespaceMap().subscribe(
       (data) => {
       this.namespaceMap = data;
       this.namespaceMap.set('bmm','hello');
       console.log(data);*/
-      const arr = domainStr.split("/");
-      const prefix = arr[arr.length - 1];
+      // const arr = domainStr.split("/");
+      const prefix = this.data.paletteElement.languagePrefix;
       this.domainName = prefix + ':' + domainNameArr[1];
       this.mService.queryDatatypeProperties(this.domainName).subscribe(
         (response) => {
