@@ -89,6 +89,11 @@
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Connectors') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label" required>
+                <mat-option *ngFor="let image of activityImageList" [value]="image.thumbnailName">
+                  <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                  {{image.label}}</mat-option>
+              </mat-select>
             </mat-form-field>
 
             <mat-form-field class="full-width">
@@ -114,6 +119,11 @@
               </mat-select>
               <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Groups') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
                 <mat-option *ngFor="let image of groupImageList" [value]="image.imageName">
+                  <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                  {{image.label}}</mat-option>
+              </mat-select>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Connectors') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+                <mat-option *ngFor="let image of activityImageList" [value]="image.imageName">
                   <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
@@ -189,7 +199,7 @@
           </form>
         </mat-card>
       </mat-tab>
-      <mat-tab label="Integrate with Existing Elements">
+      <mat-tab label="Integrate with Existing Elements" *ngIf="(data.paletteElement.paletteCategory.search('Category_Connectors') == -1)">
         <h3 class="mat-display-1">Add existing sub-classes to {{data.paletteElement.label}}</h3>
         <mat-card>
           <form class="form">
