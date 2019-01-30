@@ -1,4 +1,5 @@
 import {DomainElementModel} from "./DomainElement.model";
+import {QueryAnswerModel} from "./QueryAnswer.model";
 
 export class PaletteElementModel {
   id: string;
@@ -11,7 +12,7 @@ export class PaletteElementModel {
   childElements: PaletteElementModel[];
   representedLanguageClass: string;
   representedDomainClass: string[];
-  languageSubclasses: string[];
+  languageSubclasses: QueryAnswerModel[];
   languagePrefix: string;
   datatypePropertyId: string;
   datatypePropertyLabel: string;
