@@ -61,5 +61,6 @@ export class ModalCreateDomainElementsComponent implements OnInit {
 
   selectionChanged($event: any) {
     console.log('Selection changed');
+    this.domainElement.parentElement = $event.value.id;
   }
 }
