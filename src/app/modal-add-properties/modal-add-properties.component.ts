@@ -7,6 +7,7 @@ import {PaletteElementModel} from "../_models/PaletteElement.model";
 import {DomainElementModel} from "../_models/DomainElement.model";
 import {ModalInsertPropertyComponent} from "../modal-insert-datatype-property/modal-insert-datatype-property.component";
 import {ModalInsertObjectPropertyComponent} from "../modal-insert-object-property/modal-insert-object-property.component";
+import {ModalInsertLangobjectPropertyComponent} from "../modal-insert-langobject-property/modal-insert-langobject-property.component";
 import {ModalEditPropertiesComponent} from "../modal-edit-datatype-property/modal-edit-datatype-property.component";
 import {ModalEditObjectPropertyComponent} from "../modal-edit-object-property/modal-edit-object-property.component";
 
@@ -75,7 +76,7 @@ export class ModalAddPropertiesComponent implements OnInit {
     });
   }
 
-  openInsertNewRelation(element: PaletteElementModel) {
+  openInsertNewDomainRelation(element: PaletteElementModel) {
     const dialogRef1 = this.dialog.open(ModalInsertObjectPropertyComponent, {
       data: {paletteElement: this.data.paletteElement },
       height:'80%',
@@ -84,6 +85,23 @@ export class ModalAddPropertiesComponent implements OnInit {
     });
 
     const sub = dialogRef1.componentInstance.newRelationAdded.subscribe(() => {
+      this.mService.queryObjectProperties(this.domainName).subscribe(
+        (response) => {
+          this.objectProperties = response;
+        }
+      );
+    });
+  }
+
+  openInsertNewLanguageRelation(element: PaletteElementModel) {
+    const dialogRef1 = this.dialog.open(ModalInsertLangobjectPropertyComponent, {
+      data: {paletteElement: this.data.paletteElement, flag: 'lang' },
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    const sub = dialogRef1.componentInstance.newLangRelationAdded.subscribe(() => {
       this.mService.queryObjectProperties(this.domainName).subscribe(
         (response) => {
           this.objectProperties = response;

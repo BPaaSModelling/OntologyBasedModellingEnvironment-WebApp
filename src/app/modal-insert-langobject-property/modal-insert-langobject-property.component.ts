@@ -7,21 +7,19 @@ import {PaletteElementModel} from "../_models/PaletteElement.model";
 import {isNullOrUndefined} from "util";
 
 @Component({
-  selector: 'app-modal-insert-object-property',
-  templateUrl: './modal-insert-object-property.component.html',
-  styleUrls: ['./modal-insert-object-property.component.css']
+  selector: 'app-modal-insert-langobject-property',
+  templateUrl: './modal-insert-langobject-property.component.html',
+  styleUrls: ['./modal-insert-langobject-property.component.css']
 })
+export class ModalInsertLangobjectPropertyComponent implements OnInit {
 
-
-export class ModalInsertObjectPropertyComponent implements OnInit {
-
-  @Output() newRelationAdded = new EventEmitter();
+  @Output() newLangRelationAdded = new EventEmitter();
   public objectProperty: ObjectPropertyModel;
   step = 0;
   public config: any;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public mService: ModellerService,
-              public dialogRef: MatDialogRef<ModalInsertObjectPropertyComponent>,
+              public dialogRef: MatDialogRef<ModalInsertLangobjectPropertyComponent>,
               public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -62,31 +60,13 @@ export class ModalInsertObjectPropertyComponent implements OnInit {
     }
   }
 
-  openCreateDomainElementModalFromExtend(element: PaletteElementModel) {
-
-    const dialogRef = this.dialog.open(ModalCreateDomainElementsComponent, {
-      data: {paletteElement: element },
-      height:'80%',
-      width: '800px',
-      disableClose: false,
-    });
-
-    const sub = dialogRef.componentInstance.newDomainElementAdded.subscribe(() => {
-      this.mService.queryDomainClasses();
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed : ' + result);
-    });
-  }
-
   insertNewProperty() {
     this.objectProperty.id = (this.objectProperty.label).replace(new RegExp(' ', 'g'), '_');
     this.objectProperty.domainName = this.data.paletteElement.representedLanguageClass;
     console.log(this.objectProperty.range);
     this.mService.createNewObjectProperty(JSON.stringify(this.objectProperty)).subscribe(
       (response) => {
-        this.newRelationAdded.emit(this.objectProperty);
+        this.newLangRelationAdded.emit(this.objectProperty);
         this.dialogRef.close('Cancel');
       }
     );

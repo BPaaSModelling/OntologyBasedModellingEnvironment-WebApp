@@ -215,7 +215,7 @@ public config1: any;
     });
   }
 
-  openCreateDomainElementModalFromExtend(element: PaletteElementModel) {
+  /*openCreateDomainElementModalFromExtend(element: PaletteElementModel) {
 
     const dialogRef = this.dialog.open(ModalCreateDomainElementsComponent, {
       data: {paletteElement: element },
@@ -231,7 +231,7 @@ public config1: any;
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed : ' + result);
     });
-  }
+  }*/
 
   addSubClassesForLanguage(element: PaletteElementModel) {
     console.log('Selected subclasses : ');

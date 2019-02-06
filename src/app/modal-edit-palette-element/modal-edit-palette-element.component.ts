@@ -9,6 +9,7 @@ import {ModalEditObjectPropertyComponent} from "../modal-edit-object-property/mo
 import {DatatypePropertyModel} from "../_models/DatatypeProperty.model";
 import {ObjectPropertyModel} from "../_models/ObjectProperty.model";
 import {ModalInsertObjectPropertyComponent} from "../modal-insert-object-property/modal-insert-object-property.component";
+import {ModalInsertLangobjectPropertyComponent} from "../modal-insert-langobject-property/modal-insert-langobject-property.component";
 
 @Component({
   selector: 'app-modal-edit-palette-element',
@@ -70,9 +71,9 @@ export class ModalEditPaletteElementComponent implements OnInit {
 
     this.currentPaletteElement.label = this.data.paletteElement.label;
     this.currentPaletteElement.thumbnailURL = this.data.paletteElement.thumbnailURL;
-    console.log('this.data.paletteElement.thumbnailURL ' +this.data.paletteElement.thumbnailURL);
-    console.log('this.data.paletteElement.imageURL ' +this.data.paletteElement.imageURL);
-    console.log('this.data.paletteElement.comment ' +this.data.paletteElement.comment);
+    console.log('this.data.paletteElement.thumbnailURL ' + this.data.paletteElement.thumbnailURL);
+    console.log('this.data.paletteElement.imageURL ' + this.data.paletteElement.imageURL);
+    console.log('this.data.paletteElement.comment ' + this.data.paletteElement.comment);
     console.log(this.data.paletteElement);
     this.currentPaletteElement.imageURL = this.data.paletteElement.imageURL;
     this.currentPaletteElement.comment = this.data.paletteElement.comment;
@@ -251,7 +252,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
     );
   }
 
-  openInsertNewRelation(element: PaletteElementModel) {
+  openInsertNewDomainRelation(element: PaletteElementModel) {
 
     const dialogRef1 = this.dialog.open(ModalInsertObjectPropertyComponent, {
       data: {paletteElement: element },
@@ -261,6 +262,29 @@ export class ModalEditPaletteElementComponent implements OnInit {
     });
 
     const sub = dialogRef1.componentInstance.newRelationAdded.subscribe(() => {
+      this.mService.queryObjectProperties(this.domainName).subscribe(
+        (response) => {
+          this.objectProperties = response;
+          dialogRef1.close('Cancel');
+        }
+      );
+    });
+
+    dialogRef1.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }
+
+  openInsertNewLanguageRelation(element: PaletteElementModel) {
+
+    const dialogRef1 = this.dialog.open(ModalInsertLangobjectPropertyComponent, {
+      data: {paletteElement: element },
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    const sub = dialogRef1.componentInstance.newLangRelationAdded.subscribe(() => {
       this.mService.queryObjectProperties(this.domainName).subscribe(
         (response) => {
           this.objectProperties = response;

@@ -45,7 +45,8 @@ export class ModalCreateDomainElementsComponent implements OnInit {
     console.log(this.domainElement.parentElement);
     console.log(this.domainElement.label);
     this.domainElement.id = (this.domainElement.label).replace(new RegExp(' ', 'g'), '_');
-    if (this.domainElement.isRoot === false) {
+    if (this.domainElement.isRoot !== true) {
+      this.domainElement.isRoot = false;
       this.domainElement.parentElement = (this.domainElement.parentElement).replace('http://fhnw.ch/modelingEnvironment/DomainOntology#', '');
     }
     console.log(JSON.stringify(this.domainElement));

@@ -6,13 +6,13 @@
 </mat-toolbar>
 <mat-dialog-content style="max-width:800px;max-height:810px; ">
 
-  <h2 class="mat-display-2">Create New Relation</h2>
+  <h2 class="mat-display-2">Create New Language Dependent Relation</h2>
   <mat-card>
     <mat-accordion>
       <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
         <mat-expansion-panel-header>
           <mat-panel-title>Create new ObjectProperty</mat-panel-title>
-          <mat-panel-description>Refers to an existing concept</mat-panel-description>
+          <mat-panel-description>Refers to an existing language concept</mat-panel-description>
         </mat-expansion-panel-header>
 
         <mat-form-field class="full-width">
@@ -25,11 +25,10 @@
           </mat-select>
 
         </mat-form-field>-->
-        <ngx-select-dropdown name="select_range" (change)="selectionChanged($event)" [multiple]="false" [(ngModel)]="objectProperty.range" [config]="config" [options]="mService.domainClasses">
+        <ngx-select-dropdown name="select_range" (change)="selectionChanged($event)" [multiple]="false" [(ngModel)]="objectProperty.range" [config]="config" [options]="mService.modelingLanguageClasses">
 
         </ngx-select-dropdown>
 
-        <button mat-raised-button color="primary" (click)="openCreateDomainElementModalFromExtend(data.paletteElement)">Create New Domain Element</button>
 
         <mat-form-field class="full-width">
           <input matInput placeholder="Set a default value (optional)">

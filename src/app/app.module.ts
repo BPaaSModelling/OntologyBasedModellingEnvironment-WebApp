@@ -29,6 +29,7 @@ import { ModalAddPropertiesComponent } from './modal-add-properties/modal-add-pr
 import { ModalInsertObjectPropertyComponent } from './modal-insert-object-property/modal-insert-object-property.component';
 import { HeaderPaneComponent } from './header-pane/header-pane.component';
 import { ModalEditObjectPropertyComponent } from './modal-edit-object-property/modal-edit-object-property.component';
+import { ModalInsertLangobjectPropertyComponent } from './modal-insert-langobject-property/modal-insert-langobject-property.component';
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
@@ -55,7 +56,8 @@ const appRoutes: Routes = [
     ModalAddPropertiesComponent,
     ModalInsertObjectPropertyComponent,
     HeaderPaneComponent,
-    ModalEditObjectPropertyComponent
+    ModalEditObjectPropertyComponent,
+    ModalInsertLangobjectPropertyComponent
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -68,7 +70,8 @@ const appRoutes: Routes = [
     ModalAddPropertiesComponent,
     ModalEditPropertiesComponent,
     ModalEditObjectPropertyComponent,
-    ModalInsertObjectPropertyComponent
+    ModalInsertObjectPropertyComponent,
+    ModalInsertLangobjectPropertyComponent
   ],
   imports: [
     BrowserModule,
