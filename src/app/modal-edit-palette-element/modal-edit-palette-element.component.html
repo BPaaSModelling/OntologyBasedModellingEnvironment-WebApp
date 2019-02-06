@@ -13,31 +13,37 @@
           <form class="form">
 
             <div layout="row">
-              <mat-form-field class="full-width">
+              <mat-form-field>
                 <input matInput placeholder="Prefix" name="input_prefix" [(ngModel)]="data.paletteElement.languagePrefix" [value]="data.paletteElement.languagePrefix" disabled>
               </mat-form-field>
 
 
-              <mat-form-field class="full-width">
+              <mat-form-field>
                 <input matInput placeholder="New Label" name="input_label" [(ngModel)]="currentPaletteElement.label" [value]="currentPaletteElement.label" required>
               </mat-form-field>
 
             </div>
 
             <div layout="row">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Comment" name="input_comment" [(ngModel)]="currentPaletteElement.comment" [value]="currentPaletteElement.comment">
+              </mat-form-field>
+            </div>
+
+            <!--div layout="row"-->
               <!--<mat-form-field class="full-width">
                 <mat-select placeholder="Semantic Domain Element" name="input_domainOntology" multiple [(ngModel)]="data.paletteElement.representedDomainClass" >
                   <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id" >{{class.label}}</mat-option>
                 </mat-select>
               </mat-form-field>-->
-              <ngx-select-dropdown name="select_domainOntology" (change)="selectionChanged($event)" [multiple]="true" [(ngModel)]="data.paletteElement.representedDomainClass" [config]="config1" [options]="mService.domainClasses">
+              <!--<ngx-select-dropdown name="select_domainOntology" (change)="selectionChanged($event)" [multiple]="true" [(ngModel)]="data.paletteElement.representedDomainClass" [config]="config1" [options]="mService.domainClasses">
 
               </ngx-select-dropdown>
-              <button mat-raised-button color="primary" (click)="openCreateDomainElementModalFromEdit(data.paletteElement)">Create New Domain Element</button>
-            </div>
+              <button mat-raised-button color="primary" (click)="openCreateDomainElementModalFromEdit(data.paletteElement)">Create New Domain Element</button>-->
+            <!--/div-->
 
             <div layout="row">
-              <mat-form-field class="full-width">
+              <mat-form-field>
                 <!--<input type="url" matInput placeholder="Palette Image URL">-->
                 <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Activities') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label" required>
                   <mat-option *ngFor="let image of activityImageList" [value]="image.thumbnailName">
@@ -66,7 +72,7 @@
                 </mat-select>
               </mat-form-field>
 
-              <mat-form-field class="full-width">
+              <mat-form-field>
                 <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Activities') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
                   <mat-option *ngFor="let image of activityImageList" [value]="image.imageName">
                     <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >

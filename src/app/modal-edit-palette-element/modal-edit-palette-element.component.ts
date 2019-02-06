@@ -72,7 +72,11 @@ export class ModalEditPaletteElementComponent implements OnInit {
     this.currentPaletteElement.thumbnailURL = this.data.paletteElement.thumbnailURL;
     console.log('this.data.paletteElement.thumbnailURL ' +this.data.paletteElement.thumbnailURL);
     console.log('this.data.paletteElement.imageURL ' +this.data.paletteElement.imageURL);
+    console.log('this.data.paletteElement.comment ' +this.data.paletteElement.comment);
+    console.log(this.data.paletteElement);
     this.currentPaletteElement.imageURL = this.data.paletteElement.imageURL;
+    this.currentPaletteElement.comment = this.data.paletteElement.comment;
+    this.currentPaletteElement.uuid = this.data.paletteElement.uuid;
 
     this.activityImageList = [
       {"imageURL":"assets/images/BPMN-CMMN/AdHoc_Subprocess.png", "imageName":"AdHoc_Subprocess.png", "label":"AdHoc Subprocess", "thumbnailURL":"assets/images/BPMN-CMMN/Thumbnail_AdHoc_Subprocess.png", "thumbnailName" : "Thumbnail_AdHoc_Subprocess.png"},
@@ -189,10 +193,12 @@ export class ModalEditPaletteElementComponent implements OnInit {
   editElementInOntology() {
     const ele = this.currentPaletteElement;
     console.log('Edited label: '+ele.label);
+    console.log('Edited comment: '+ele.comment);
     console.log('Edited image: '+ele.imageURL);
     console.log('Edited thumbnail: '+ele.thumbnailURL);
     this.mService.editElement(this.data.paletteElement, ele).subscribe(
       (response) => {
+        //this.elementEdited.emit(ele);
         this.dialogRef.close();
       }
     );

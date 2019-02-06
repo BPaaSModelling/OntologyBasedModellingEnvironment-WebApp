@@ -13,33 +13,39 @@
           <form class="form">
 
             <div layout="row">
-              <mat-form-field class="full-width">
+              <mat-form-field>
                 <input matInput placeholder="Parent Element" name="input_parent" [(ngModel)]="data.paletteElement.label" [value]="data.paletteElement.label" disabled>
               </mat-form-field>
 
-              <mat-form-field class="full-width">
+              <mat-form-field>
                 <mat-select [(ngModel)]="currentPaletteElement.languagePrefix" placeholder="Prefix" name="prefix" required>
                   <mat-option *ngFor="let prefix of mService.namespacePrefixes" [value]="prefix">{{prefix}}</mat-option>
                 </mat-select>
               </mat-form-field>
 
-             <mat-form-field class="full-width">
+             <mat-form-field>
                 <input matInput placeholder="Child Element" name="input_child" [(ngModel)]="currentPaletteElement.label" [value]="currentPaletteElement.label" required>
              </mat-form-field>
 
             </div>
 
             <div layout="row">
+              <mat-form-field class="full-width" appearance="outline">
+                <input matInput placeholder="Comment" name="input_comment" [(ngModel)]="currentPaletteElement.comment" [value]="currentPaletteElement.comment">
+              </mat-form-field>
+            </div>
+
+            <!--div layout="row"-->
               <!--<mat-form-field class="full-width">
                 <mat-select placeholder="Semantic Domain Element" name="input_domainOntology" multiple [(ngModel)]="currentPaletteElement.representedDomainClass" >
                   <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id" >{{class.label}}</mat-option>
                 </mat-select>-->
-                <ngx-select-dropdown name="test_select" (change)="selectionChanged($event)" [multiple]="true" [(ngModel)]="currentPaletteElement.representedDomainClass" [config]="config" [options]="mService.domainClasses">
+                <!--<ngx-select-dropdown name="test_select" (change)="selectionChanged($event)" [multiple]="true" [(ngModel)]="currentPaletteElement.representedDomainClass" [config]="config" [options]="mService.domainClasses">
 
-                </ngx-select-dropdown>
+                </ngx-select-dropdown>-->
               <!--</mat-form-field>-->
-              <button mat-raised-button color="primary" (click)="openCreateDomainElementModalFromExtend(data.paletteElement)">Create New Domain Element</button>
-            </div>
+              <!--<button mat-raised-button color="primary" (click)="openCreateDomainElementModalFromExtend(data.paletteElement)">Create New Domain Element</button>-->
+            <!--/div-->
 
             <div layout="row">
 
@@ -53,7 +59,7 @@
               </mat-select>
             </mat-form-field>-->
 
-            <mat-form-field class="full-width">
+            <mat-form-field>
               <mat-select disabled="true" [(ngModel)]="data.paletteElement.paletteCategory" placeholder="Category" name="category.label">
                 <mat-option *ngFor="let category of mService.paletteCategories" [value]="category.id">{{category.label}}</mat-option>
               </mat-select>
@@ -62,7 +68,7 @@
             </div>
 
             <div layout="row">
-            <mat-form-field class="full-width">
+            <mat-form-field>
               <!--<input type="url" matInput placeholder="Palette Image URL">-->
               <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Activities') !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label" required>
                 <mat-option *ngFor="let image of activityImageList" [value]="image.thumbnailName">
@@ -96,7 +102,7 @@
               </mat-select>
             </mat-form-field>
 
-            <mat-form-field class="full-width">
+            <mat-form-field>
               <mat-select *ngIf="(data.paletteElement.paletteCategory.search('Category_Activities') !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
               <mat-option *ngFor="let image of activityImageList" [value]="image.imageName">
                 <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >

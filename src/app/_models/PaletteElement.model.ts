@@ -14,9 +14,10 @@ export class PaletteElementModel {
   representedDomainClass: string[];
   languageSubclasses: QueryAnswerModel[];
   languagePrefix: string;
-  datatypePropertyId: string;
+  comment: string;
+  /*datatypePropertyId: string;
   datatypePropertyLabel: string;
-  datatypePropertyValue: string;
+  datatypePropertyValue: string;*/
   shape: string;
   backgroundColor: string;
   height: number;
