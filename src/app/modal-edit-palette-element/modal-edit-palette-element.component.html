@@ -2,13 +2,13 @@
   <mat-toolbar>
     <div class="mat-toolbar-tools">
       <!-- <h2>Extend {{data.paletteElement.label}}</h2>-->
-      <h2>Edit</h2>
+      <h2 class="mat-display-2">Edit</h2>
     </div>
   </mat-toolbar>
   <mat-dialog-content style="max-width:800px;max-height:810px; ">
     <mat-tab-group mat-dynamic-height mat-border-bottom>
       <mat-tab label={{data.paletteElement.label}}>
-        <h3 class="mat-display-1">Edit {{data.paletteElement.label}}</h3>
+        <h3>Edit {{data.paletteElement.label}}</h3>
         <mat-card>
           <form class="form">
 
@@ -112,10 +112,10 @@
           </form>
         </mat-card>
       </mat-tab>
-      <mat-tab label="Attributes">
-        <h2 class="mat-display-2">Edit Attributes</h2>
+      <mat-tab label="Datatype">
+        <h3>Edit Datatype Property</h3>
         <mat-dialog-actions layout="row">
-          <button mat-raised-button color="accent" (click)="openInsertNewProperty(data.paletteElement)">Insert new Attribute</button>
+          <button mat-raised-button color="accent" (click)="openInsertNewProperty(data.paletteElement)">Insert new Datatype Property</button>
         </mat-dialog-actions>
         <mat-card>
           <mat-accordion *ngFor="let element of datatypeProperties">
@@ -161,11 +161,58 @@
         </mat-card>
       </mat-tab>
 
-      <mat-tab label="Relations">
-        <h2 class="mat-display-2">Edit Relations</h2>
+      <mat-tab label="Bridging Connector">
+        <h3>Edit Bridging Connector (Object Property)</h3>
         <mat-dialog-actions layout="row">
-          <button mat-raised-button color="accent" (click)="openInsertNewLanguageRelation(data.paletteElement)">Insert new Language Dependent Relation</button>
-          <button mat-raised-button color="accent" (click)="openInsertNewDomainRelation(data.paletteElement)">Insert new Language Independent Relation</button>
+          <button mat-raised-button color="accent" (click)="openInsertNewLanguageRelation(data.paletteElement)">Insert new Bridging Connector</button>
+        </mat-dialog-actions>
+        <mat-card>
+          <mat-accordion *ngFor="let element of objectProperties">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{element.label}}</mat-panel-title>
+                <mat-panel-description><b>Range</b>: <i>{{element.range}}</i></mat-panel-description>
+              </mat-expansion-panel-header>
+              <<mat-action-row>
+              <button mat-raised-button (click)="modifyLangobjectProperty(data.paletteElement, element)">Modify</button>
+              <button mat-raised-button color="warn" style="margin-right:20px;" (click)="deleteObjectProperty(element)">Delete</button>
+            </mat-action-row>
+            </mat-expansion-panel>
+
+            <!--<mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Last name</mat-panel-title>
+                <mat-panel-description>DataType</mat-panel-description>
+              </mat-expansion-panel-header>
+              <label><b>Range</b>: <i>String</i></label>
+              <mat-action-row>
+                <button mat-raised-button>Modify</button>
+                <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
+              </mat-action-row>
+            </mat-expansion-panel>
+
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>Date of birth</mat-panel-title>
+                  <mat-panel-description>DataType</mat-panel-description>
+                </mat-expansion-panel-header>
+                <label><b>Range</b>: <i>Date</i></label>
+                <mat-action-row>
+                  <button mat-raised-button>Modify</button>
+                  <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
+                </mat-action-row>
+              </mat-expansion-panel>-->
+
+          </mat-accordion>
+          <div layout="row">
+            <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
+          </div>
+        </mat-card>
+      </mat-tab>
+      <mat-tab label="Semantic Mapping">
+        <h3>Edit Semantic Mapping (Object Property)</h3>
+        <mat-dialog-actions layout="row">
+          <button mat-raised-button color="accent" (click)="openInsertNewDomainRelation(data.paletteElement)">Insert new Semantic Mapping</button>
         </mat-dialog-actions>
         <mat-card>
           <mat-accordion *ngFor="let element of objectProperties">
