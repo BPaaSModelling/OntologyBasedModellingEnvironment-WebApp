@@ -111,10 +111,17 @@ console.log(this.paletteElements);
       .map(response => response.json());
   }
 
-  createNewObjectProperty(oImg) {
+  createNewBridgingConnector(oImg) {
     let querySuccess: Boolean = false;
     console.log(oImg);
-    return this.http.post(EndpointSettings.getCreateObjectPropertyEndpoint(), oImg)
+    return this.http.post(EndpointSettings.getCreateBridgeConnectorEndpoint(), oImg)
+      .map(response => response.json());
+  }
+
+  createNewSemanticMapping(oImg) {
+    let querySuccess: Boolean = false;
+    console.log(oImg);
+    return this.http.post(EndpointSettings.getCreateSemanticMappingEndpoint(), oImg)
       .map(response => response.json());
   }
 
@@ -198,8 +205,13 @@ console.log(this.paletteElements);
       .map(response => response.json());
   }
 
-  queryObjectProperties(domainName) {
-    return this.http.get(EndpointSettings.getObjectPropertyEndpoint(domainName))
+  queryBridgingConnectors(domainName) {
+    return this.http.get(EndpointSettings.getBridgeConnectorEndpoint(domainName))
+      .map(response => response.json());
+  }
+
+  querySemanticMappings(domainName) {
+    return this.http.get(EndpointSettings.getSemanticMappingEndpoint(domainName))
       .map(response => response.json());
   }
 

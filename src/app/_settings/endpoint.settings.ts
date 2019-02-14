@@ -9,9 +9,11 @@ export class EndpointSettings {
   private static GETDOMAINCLASSES           : string = '/ModEnv/getDomainOntologyClasses';
   private static GETMODELINGLANGUAGELASSES  : string = '/ModEnv/getModelingLanguageOntologyElements';
   private static CREATEDATATYPEPROPERTY     : string = '/ModEnv/createDatatypeProperty';
-  private static CREATEOBJECTPROPERTY       : string = '/ModEnv/createObjectProperty';
+  private static CREATEBRIDGECONNECTOR       : string = '/ModEnv/createBridgeConnector';
+  private static CREATESEMANTICMAPPING       : string = '/ModEnv/createSemanticMapping';
   private static GETDATATYPEPROPERTIES      : string = '/ModEnv/getDatatypeProperties';
-  private static GETOBJECTPROPERTIES      : string = '/ModEnv/getObjectProperties';
+  private static GETBRIDGECONNECTORS      : string = '/ModEnv/getBridgeConnectors';
+  private static GETSEMANTICMAPPINGS      : string = '/ModEnv/getSemanticMappings';
   private static DELETEPALETTEELEMENT       : string = '/ModEnv/deletePaletteElement';
   private static HIDEPALETTEELEMENT         : string = '/ModEnv/hidePaletteElement';
   private static CREATELANGUAGESUBCLASSES   : string = '/ModEnv/createModelingLanguageSubclasses';
@@ -57,16 +59,24 @@ export class EndpointSettings {
     return EndpointSettings.ENDPOINT + EndpointSettings.CREATEDATATYPEPROPERTY;
   }
 
-  public static getCreateObjectPropertyEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.CREATEOBJECTPROPERTY;
+  public static getCreateBridgeConnectorEndpoint(): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.CREATEBRIDGECONNECTOR;
+  }
+
+  public static getCreateSemanticMappingEndpoint(): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.CREATESEMANTICMAPPING;
   }
 
   public static getDatatypePropertyEndpoint(domainName): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.GETDATATYPEPROPERTIES + '/' + domainName;
   }
 
-  public static getObjectPropertyEndpoint(domainName): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.GETOBJECTPROPERTIES + '/' + domainName;
+  public static getBridgeConnectorEndpoint(domainName): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.GETBRIDGECONNECTORS + '/' + domainName;
+  }
+
+  public static getSemanticMappingEndpoint(domainName): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.GETSEMANTICMAPPINGS + '/' + domainName;
   }
 
   public static getDeletePaletteElementEndpoint(): string {

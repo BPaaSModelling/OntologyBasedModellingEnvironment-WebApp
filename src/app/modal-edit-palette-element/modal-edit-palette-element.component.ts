@@ -5,7 +5,8 @@ import {ModellerService} from "../modeller.service";
 import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
 import {ModalInsertPropertyComponent} from "../modal-insert-datatype-property/modal-insert-datatype-property.component";
 import {ModalEditPropertiesComponent} from "../modal-edit-datatype-property/modal-edit-datatype-property.component";
-import {ModalEditObjectPropertyComponent} from "../modal-edit-object-property/modal-edit-object-property.component";
+import {ModalEditBCObjectPropertyComponent} from "../modal-edit-bc-object-property/modal-edit-bc-object-property.component";
+import {ModalEditSMObjectPropertyComponent} from "../modal-edit-sm-object-property/modal-edit-sm-object-property.component";
 import {DatatypePropertyModel} from "../_models/DatatypeProperty.model";
 import {ObjectPropertyModel} from "../_models/ObjectProperty.model";
 import {ModalInsertObjectPropertyComponent} from "../modal-insert-object-property/modal-insert-object-property.component";
@@ -28,7 +29,8 @@ export class ModalEditPaletteElementComponent implements OnInit {
   //public domainNameArr = [];
   public namespaceMap: Map<string, string>;
   public datatypeProperties: DatatypePropertyModel[] = [];
-  public objectProperties: ObjectPropertyModel[] = [];
+  public bridgingConnectors: ObjectPropertyModel[] = [];
+  public semanticMappings: ObjectPropertyModel[] = [];
   public config1: any;
 
   constructor(public dialogRef: MatDialogRef<ModalEditPaletteElementComponent>,
@@ -56,12 +58,18 @@ export class ModalEditPaletteElementComponent implements OnInit {
           console.log("Loading datatype properties");
         }
       );
-      this.mService.queryObjectProperties(this.domainName).subscribe(
+      this.mService.queryBridgingConnectors(this.domainName).subscribe(
         (response) => {
-          this.objectProperties = response;
+          this.bridgingConnectors = response;
           console.log("Loading object properties");
         }
       );
+    this.mService.querySemanticMappings(this.domainName).subscribe(
+      (response) => {
+        this.semanticMappings = response;
+        console.log("Loading object properties");
+      }
+    );
       //}
     //);
     this.mService.queryDomainClasses();
@@ -252,7 +260,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
     );
   }
 
-  openInsertNewDomainRelation(element: PaletteElementModel) {
+  openInsertNewSemanticMapping(element: PaletteElementModel) {
 
     const dialogRef1 = this.dialog.open(ModalInsertObjectPropertyComponent, {
       data: {paletteElement: element },
@@ -262,9 +270,9 @@ export class ModalEditPaletteElementComponent implements OnInit {
     });
 
     const sub = dialogRef1.componentInstance.newRelationAdded.subscribe(() => {
-      this.mService.queryObjectProperties(this.domainName).subscribe(
+      this.mService.querySemanticMappings(this.domainName).subscribe(
         (response) => {
-          this.objectProperties = response;
+          this.semanticMappings = response;
           dialogRef1.close('Cancel');
         }
       );
@@ -275,7 +283,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
     });
   }
 
-  openInsertNewLanguageRelation(element: PaletteElementModel) {
+  openInsertNewBridgingConnector(element: PaletteElementModel) {
 
     const dialogRef1 = this.dialog.open(ModalInsertLangobjectPropertyComponent, {
       data: {paletteElement: element },
@@ -285,9 +293,9 @@ export class ModalEditPaletteElementComponent implements OnInit {
     });
 
     const sub = dialogRef1.componentInstance.newLangRelationAdded.subscribe(() => {
-      this.mService.queryObjectProperties(this.domainName).subscribe(
+      this.mService.queryBridgingConnectors(this.domainName).subscribe(
         (response) => {
-          this.objectProperties = response;
+          this.bridgingConnectors = response;
           dialogRef1.close('Cancel');
         }
       );
@@ -298,20 +306,20 @@ export class ModalEditPaletteElementComponent implements OnInit {
     });
   }
 
-  modifyObjectProperty(element: PaletteElementModel, property: ObjectPropertyModel) {
-    const dialogRef1 = this.dialog.open(ModalEditObjectPropertyComponent, {
+  modifyBridgingConnector(element: PaletteElementModel, property: ObjectPropertyModel) {
+    const dialogRef1 = this.dialog.open(ModalEditBCObjectPropertyComponent, {
       data: {paletteElement: element, objectProperty: property },
       height:'80%',
       width: '800px',
       disableClose: false,
     });
 
-    const sub = dialogRef1.componentInstance.objectPropertyEdited.subscribe(() => {
+    const sub = dialogRef1.componentInstance.bridgingConnectorEdited.subscribe(() => {
       //const prefix = this.namespaceMap.get(this.domainName);
       //const domainStr = prefix + ":" + this.domainNameArr[1];
-      this.mService.queryObjectProperties(this.domainName).subscribe(
+      this.mService.queryBridgingConnectors(this.domainName).subscribe(
         (response) => {
-          this.objectProperties = response;
+          this.bridgingConnectors = response;
           dialogRef1.close('Cancel');
         }
       );
@@ -323,12 +331,50 @@ export class ModalEditPaletteElementComponent implements OnInit {
     });
   }
 
-  deleteObjectProperty(property: ObjectPropertyModel) {
+  modifySemanticMapping(element: PaletteElementModel, property: ObjectPropertyModel) {
+    const dialogRef1 = this.dialog.open(ModalEditSMObjectPropertyComponent, {
+      data: {paletteElement: element, objectProperty: property },
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    const sub = dialogRef1.componentInstance.semanticMappingEdited.subscribe(() => {
+      //const prefix = this.namespaceMap.get(this.domainName);
+      //const domainStr = prefix + ":" + this.domainNameArr[1];
+      this.mService.querySemanticMappings(this.domainName).subscribe(
+        (response) => {
+          this.semanticMappings = response;
+          dialogRef1.close('Cancel');
+        }
+      );
+
+    });
+
+    dialogRef1.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }
+
+  deleteSemanticMapping(property: ObjectPropertyModel) {
     this.mService.deleteObjectProperty(property).subscribe(
       (response) => {
-        this.mService.queryObjectProperties(this.domainName).subscribe(
+        this.mService.querySemanticMappings(this.domainName).subscribe(
           (response1) => {
-            this.objectProperties = response1;
+            this.semanticMappings = response1;
+          }
+        );
+
+      }
+    );
+  }
+
+  deleteBridgingConnector(property: ObjectPropertyModel) {
+    this.mService.deleteObjectProperty(property).subscribe(
+      (response) => {
+        this.mService.queryBridgingConnectors(this.domainName).subscribe(
+          (response1) => {
+            this.bridgingConnectors = response1;
           }
         );
 

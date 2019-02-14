@@ -64,7 +64,7 @@ export class ModalInsertLangobjectPropertyComponent implements OnInit {
     this.objectProperty.id = (this.objectProperty.label).replace(new RegExp(' ', 'g'), '_');
     this.objectProperty.domainName = this.data.paletteElement.representedLanguageClass;
     console.log(this.objectProperty.range);
-    this.mService.createNewObjectProperty(JSON.stringify(this.objectProperty)).subscribe(
+    this.mService.createNewBridgingConnector(JSON.stringify(this.objectProperty)).subscribe(
       (response) => {
         this.newLangRelationAdded.emit(this.objectProperty);
         this.dialogRef.close('Cancel');

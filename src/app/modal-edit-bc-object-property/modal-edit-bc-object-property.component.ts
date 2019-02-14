@@ -4,20 +4,20 @@ import {ModellerService} from "../modeller.service";
 import {ObjectPropertyModel} from "../_models/ObjectProperty.model";
 
 @Component({
-  selector: 'app-modal-edit-object-property',
-  templateUrl: './modal-edit-object-property.component.html',
-  styleUrls: ['./modal-edit-object-property.component.css']
+  selector: 'app-modal-edit-bc-object-property',
+  templateUrl: './modal-edit-bc-object-property.component.html',
+  styleUrls: ['./modal-edit-bc-object-property.component.css']
 })
-export class ModalEditObjectPropertyComponent implements OnInit {
+export class ModalEditBCObjectPropertyComponent implements OnInit {
 
   step = 0;
-  @Output() objectPropertyEdited = new EventEmitter();
+  @Output() bridgingConnectorEdited = new EventEmitter();
   public objectProperty: ObjectPropertyModel;
   public editedProperty: ObjectPropertyModel;
   public config2: any;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public mService: ModellerService,
-              public dialogRef: MatDialogRef<ModalEditObjectPropertyComponent>) { }
+              public dialogRef: MatDialogRef<ModalEditBCObjectPropertyComponent>) { }
 
   ngOnInit() {
     this.objectProperty = this.data.objectProperty;
@@ -63,7 +63,7 @@ export class ModalEditObjectPropertyComponent implements OnInit {
       (response) => {
         console.log(this.objectProperty);
         console.log(this.editedProperty);
-        this.objectPropertyEdited.emit(this.editedProperty);
+        this.bridgingConnectorEdited.emit(this.editedProperty);
       }
     );
   }
