@@ -9,7 +9,7 @@ export class EndpointSettings {
   private static GETDOMAINCLASSES           : string = '/ModEnv/getDomainOntologyClasses';
   private static GETMODELINGLANGUAGELASSES  : string = '/ModEnv/getModelingLanguageOntologyElements';
   private static CREATEDATATYPEPROPERTY     : string = '/ModEnv/createDatatypeProperty';
-  private static CREATEBRIDGECONNECTOR       : string = '/ModEnv/createBridgeConnector';
+  private static CREATEBRIDGECONNECTOR       : string = '/ModEnv/createBridgingConnector';
   private static CREATESEMANTICMAPPING       : string = '/ModEnv/createSemanticMapping';
   private static GETDATATYPEPROPERTIES      : string = '/ModEnv/getDatatypeProperties';
   private static GETBRIDGECONNECTORS      : string = '/ModEnv/getBridgeConnectors';
