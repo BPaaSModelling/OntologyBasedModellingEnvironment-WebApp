@@ -1,6 +1,8 @@
 export class EndpointSettings {
 
   private static ENDPOINT                   : string = 'http://localhost:8080';
+  private static GETMODELINGLANGUAGES       : string = '/ModEnv/getModelingLanguages';
+  private static GETMODELINGVIEWS           : string = '/ModEnv/getModelingViews';
   private static PALETTEELEMENTS            : string = '/ModEnv/getPaletteElements';
   private static PALETTECATEGORIES          : string = '/ModEnv/getPaletteCategories';
   private static CREATEELEMENT              : string = '/ModEnv/createPalletteElement';
@@ -26,6 +28,14 @@ export class EndpointSettings {
   private static DELETEOBJECTPROPERTY     : string = '/ModEnv/deleteObjectProperty';
 
   private static GETDOMAINCONCEPTS          : string = '/ModEnv/getDomainConcepts';
+
+  public static getModelingLanguagesEndpoint(): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.GETMODELINGLANGUAGES;
+  }
+
+  public static getModelingViewsEndpoint(langId): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.GETMODELINGVIEWS + '/' + langId;
+  }
 
   public static getPaletteElementsEndpoint(): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.PALETTEELEMENTS;

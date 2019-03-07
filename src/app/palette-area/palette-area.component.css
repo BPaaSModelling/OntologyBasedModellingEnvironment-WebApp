@@ -7,6 +7,25 @@
   margin-bottom: 5px;
 }
 
+.modelling-language {
+  text-align: center;
+  margin: 0px;
+  border-top: 1px solid darkslategray;
+  margin-bottom: 5px;
+  width: 100%;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 9pt;
+}
+
+.modelling-language-view {
+  text-align: center;
+  margin: 0px;
+  border-top: 1px solid darkslategray;
+  margin-bottom: 5px;
+  width: 100%;
+  font-size: 9pt;
+}
+
 .element-container {
   text-align: center;
   display: flex;

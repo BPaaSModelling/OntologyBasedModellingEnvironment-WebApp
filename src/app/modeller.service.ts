@@ -11,10 +11,12 @@ import {PaletteElementModel} from "./_models/PaletteElement.model";
 import {QueryAnswerModel} from "./_models/QueryAnswer.model";
 import {DatatypePropertyModel} from "./_models/DatatypeProperty.model";
 import {DomainElementModel} from "./_models/DomainElement.model";
+import {ModelingLanguageModel} from "./_models/ModelingLanguage.model";
 
 @Injectable()
 export class ModellerService {
   private options: RequestOptions;
+  public modelingLanguage$: Observable<ModelingLanguageModel[]> = Observable.of([]);
   public paletteCategorie$: Observable<PaletteCategoryModel[]> = Observable.of([]);
   public paletteCategories: PaletteCategoryModel[] = [];
   public paletteElement$: Observable<PaletteElementModel[]> = Observable.of([]);
@@ -31,6 +33,21 @@ export class ModellerService {
   constructor(private http: Http, private jsonp: Jsonp) {
     const headers = new Headers({ 'Content-Type': 'application/json'});
     this.options = new RequestOptions({headers: headers });
+  }
+
+  queryModelingLanguages(): void {
+    this.http.get(EndpointSettings.getModelingLanguagesEndpoint())
+      .map(response => response.json()).subscribe(
+      data => {
+        //console.log('PaletteElements received: ' + JSON.stringify(data));
+        this.modelingLanguage$ = Observable.of(data);
+        console.log(this.modelingLanguage$);
+      }, error => console.log('Could not query PaletteElements'));
+  }
+
+  queryModelingViews(langId) {
+    return this.http.get(EndpointSettings.getModelingViewsEndpoint(langId))
+      .map(response => response.json());
   }
 
   queryPaletteElements(): void {

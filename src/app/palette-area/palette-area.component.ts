@@ -10,6 +10,7 @@ import {MatDialog} from "@angular/material";
 import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
 import {ModalPaletteElementPropertiesComponent} from "../modal-palette-element-properties/modal-palette-element-properties.component";
 import {ModalEditPaletteElementComponent} from "../modal-edit-palette-element/modal-edit-palette-element.component";
+import {ModelingViewModel} from "../_models/ModelingView.model";
 
 @Component({
   selector: 'app-palette-area',
@@ -32,7 +33,11 @@ export class PaletteAreaComponent implements OnInit {
   @Output() showConnectorElementPropertyModal = new EventEmitter();
   @Output() showActivityElementPropertyModal = new EventEmitter();
   @Output() showEditPaletteElementModal = new EventEmitter();
+
+  public modelingViews: ModelingViewModel[] = [];
+
   constructor(private mService: ModellerService, public dialog: MatDialog) {
+    this.mService.queryModelingLanguages()
     this.mService.queryPaletteCategories();
     this.mService.queryPaletteElements();
     console.log('Palette elements:');
@@ -150,4 +155,19 @@ console.log(this.mService.paletteCategories);
     this.mService.hidePaletteElement(JSON.stringify(element));
   }
 
+  selectLang($event: any) {
+    console.log('Modeling language selected');
+    console.log($event.value);
+    this.mService.queryModelingViews($event.value).subscribe(
+    (response) => {
+        console.log(response);
+        this.modelingViews = response;
+    }
+    );
+  }
+
+  selectView($event: any) {
+    console.log('Modeling View selected');
+    console.log($event.value);
+  }
 }
