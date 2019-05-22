@@ -40,7 +40,7 @@ public config1: any;
   ngOnInit() {
     this.mService.queryDomainClasses();
     this.mService.queryModelingElementClasses();
-    this.mService.queryPaletteCategories();
+    //this.mService.queryPaletteCategories();
     this.mService.queryNamespacePrefixes();
 
 

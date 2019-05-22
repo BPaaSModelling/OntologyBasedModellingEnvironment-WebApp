@@ -52,7 +52,7 @@ export class ModellingAreaComponent implements OnInit {
   public constructor(private mService: ModellerService) {
     console.log('Constructor of graph');
     (go as any).licenseKey = "54ff43e7b11c28c702d95d76423d38f919a52e63998449a35a0412f6be086d1d239cef7157d78cc687f84cfb487fc2898fc1697d964f073cb539d08942e786aab63770b3400c40dea71136c5ceaa2ea1fa2b24a5c5b775a2dc718cf3bea1c59808eff4d54fcd5cb92b280735562bac49e7fc8973f950cf4e6b3d9ba3fffbbf4faf3c7184ccb4569aff5a70deb6f2a3417f";
-    this.mService.queryPaletteCategories();
+    //this.mService.queryPaletteCategories();
     this.mService.queryPaletteElements();
   }
 
@@ -140,7 +140,7 @@ export class ModellingAreaComponent implements OnInit {
             {
               name: 'Picture',
               source: "/assets/images/BPMN-CMMN/Collapsed_Subprocess.png",
-              margin: 5,
+              margin: 5, //increase margin if text alignment is changed to bottom
               stretch: go.GraphObject.Fill //stretch image to fill whole area of shape
               //imageStretch: go.GraphObject.Fill //do not distort the image
             },
@@ -153,7 +153,7 @@ export class ModellingAreaComponent implements OnInit {
               maxSize: new go.Size(200, NaN),
               wrap: go.TextBlock.WrapFit,
               editable: true,
-              alignment: go.Spot.Center
+              alignment: go.Spot.Center //or go.Spot.Bottom
             },
             new go.Binding("text").makeTwoWay(),
             new go.Binding("alignment")

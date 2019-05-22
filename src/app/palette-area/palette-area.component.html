@@ -12,7 +12,7 @@
   </mat-select>
 </div>
 
-<div class="category" [contextMenu]="paletteRightClickMenu" *ngFor="let category of (mService.paletteCategorie$ | async)">
+<div class="category" [contextMenu]="paletteRightClickMenu" *ngFor="let category of paletteCategories">
   <p class="category-title">{{category.label}}</p>
   <nav class="element-container">
     <ng-container *ngFor="let element of mService.paletteElements">

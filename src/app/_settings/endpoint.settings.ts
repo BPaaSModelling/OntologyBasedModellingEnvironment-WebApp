@@ -41,8 +41,8 @@ export class EndpointSettings {
     return EndpointSettings.ENDPOINT + EndpointSettings.PALETTEELEMENTS;
   }
 
-  public static getPaletteCategoriesEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.PALETTECATEGORIES;
+  public static getPaletteCategoriesEndpoint(viewId): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.PALETTECATEGORIES + '/' + viewId;
   }
 
   public static getCreateElementEndpoint(): string {

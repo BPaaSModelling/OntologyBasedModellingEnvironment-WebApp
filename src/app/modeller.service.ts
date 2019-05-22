@@ -61,14 +61,14 @@ console.log(this.paletteElements);
       }, error => console.log('Could not query PaletteElements'));
   }
 
-  queryPaletteCategories(): void {
-    this.http.get(EndpointSettings.getPaletteCategoriesEndpoint())
-      .map(response => response.json()).subscribe(
+  queryPaletteCategories(viewId) {
+    return this.http.get(EndpointSettings.getPaletteCategoriesEndpoint(viewId))
+      .map(response => response.json());/*.subscribe(
       data => {
         //console.log('PaletteCategories received: ' + JSON.stringify(data));
         this.paletteCategorie$ = Observable.of(data);
         this.paletteCategories = data;
-      }, error => console.log('Could not query PaletteElements'));
+      }, error => console.log('Could not query PaletteElements'));*/
   }
 
   createElementInOntology(oImg) {

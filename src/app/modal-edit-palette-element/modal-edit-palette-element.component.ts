@@ -74,7 +74,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
     //);
     this.mService.queryDomainClasses();
     this.mService.queryModelingElementClasses();
-    this.mService.queryPaletteCategories();
+    //this.mService.queryPaletteCategories();
     this.mService.queryNamespacePrefixes();
 
     this.currentPaletteElement.label = this.data.paletteElement.label;
