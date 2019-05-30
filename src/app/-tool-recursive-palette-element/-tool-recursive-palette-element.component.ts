@@ -7,6 +7,7 @@ import {ModalExtendPaletteElementComponent} from "../modal-extend-palette-elemen
 import {ModalPaletteElementPropertiesComponent} from "../modal-palette-element-properties/modal-palette-element-properties.component";
 import {MatDialog} from "@angular/material";
 import {ModalEditPaletteElementComponent} from "../modal-edit-palette-element/modal-edit-palette-element.component";
+import {VariablesSettings} from "../_settings/variables.settings";
 
 
 @Component({
@@ -29,12 +30,16 @@ export class ToolRecursivePaletteElementComponent implements OnInit {
   @Output() showCreateDomainElementModal1 = new EventEmitter();
   @Output() showActivityElementPropertyModal1 = new EventEmitter();
   @Output() showEditPaletteElementModal1 = new EventEmitter();
-constructor(private mService: ModellerService, public dialog: MatDialog) {
 
+  public imageRoot: string = "";
+  public categorySuffix: string = "";
+constructor(private mService: ModellerService, public dialog: MatDialog) {
+  this.imageRoot = VariablesSettings.IMG_ROOT;
   }
 
   ngOnInit() {
-    //console.log(this.child.id);
+    this.categorySuffix = this.child.paletteCategory.split("#")[1];
+    console.log(this.child.id);
   }
 
   private addNewShape(a: GraphicalElementModel): void {

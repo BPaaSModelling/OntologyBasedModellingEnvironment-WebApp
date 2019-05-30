@@ -17,6 +17,12 @@ export class VariablesSettings{
   public static CAT_CONNECTORS: string = 'Category_Connectors';
   /* END - Properties to the names of the categories in the PaletteOntology */
 
+  /* START - Organizational Model */
+  public static CAT_OrganizationalUnit: string = 'Category_OrganizationalUnit';
+  public static CAT_Performer: string = 'Category_Performer';
+  public static Category_Role: string = 'Category_Role';
+  /* END - Organizational Model */
+
   /* START - Properties to the complete path of the images for the categories */
   public static eventImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_EVENTS + "/";
   public static activitiesImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_ACTIVITIES + "/";

@@ -53,7 +53,7 @@ export class ModellingAreaComponent implements OnInit {
     console.log('Constructor of graph');
     (go as any).licenseKey = "54ff43e7b11c28c702d95d76423d38f919a52e63998449a35a0412f6be086d1d239cef7157d78cc687f84cfb487fc2898fc1697d964f073cb539d08942e786aab63770b3400c40dea71136c5ceaa2ea1fa2b24a5c5b775a2dc718cf3bea1c59808eff4d54fcd5cb92b280735562bac49e7fc8973f950cf4e6b3d9ba3fffbbf4faf3c7184ccb4569aff5a70deb6f2a3417f";
     //this.mService.queryPaletteCategories();
-    this.mService.queryPaletteElements();
+    //this.mService.queryPaletteElements();
   }
 
   /*getPalletteElements(): void {
@@ -189,8 +189,8 @@ export class ModellingAreaComponent implements OnInit {
       else {
         const elementId = element.uuid;
         const nodeId = '#' + elementId;
-        console.log('icon url is: ' + "assets/images/BPMN-CMMN/" + element.imageURL);
-        var imageURL = "assets/images/BPMN-CMMN/" + element.imageURL;
+        console.log('icon url is: ' + VariablesSettings.IMG_ROOT + (element.paletteCategory).split("#")[1] + "/" + element.imageURL);
+        var imageURL = VariablesSettings.IMG_ROOT + (element.paletteCategory).split("#")[1] + "/" + element.imageURL;
 
         console.log('shape: ' + element.shape + ' label: ' + element.label + 'bg color: ' + element.backgroundColor);
 

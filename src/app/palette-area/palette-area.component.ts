@@ -43,9 +43,7 @@ export class PaletteAreaComponent implements OnInit {
   constructor(private mService: ModellerService, public dialog: MatDialog) {
     this.mService.queryModelingLanguages()
     //this.mService.queryPaletteCategories();
-    this.mService.queryPaletteElements();
-    console.log('Palette elements:');
-console.log(this.mService.paletteElements);
+
 
 this.imageRoot = VariablesSettings.IMG_ROOT;
 //console.log('Palette categories');
@@ -182,6 +180,9 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
       (response) => {
         console.log(response);
         this.paletteCategories = response;
+        this.mService.queryPaletteElements();
+        console.log('Palette elements:');
+        console.log(this.mService.paletteElements);
       }
     );
     console.log('Palette categories');
