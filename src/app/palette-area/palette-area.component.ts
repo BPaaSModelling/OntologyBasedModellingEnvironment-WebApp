@@ -12,6 +12,7 @@ import {ModalPaletteElementPropertiesComponent} from "../modal-palette-element-p
 import {ModalEditPaletteElementComponent} from "../modal-edit-palette-element/modal-edit-palette-element.component";
 import {ModelingViewModel} from "../_models/ModelingView.model";
 import {PaletteCategoryModel} from "../_models/PaletteCategory.model";
+import {VariablesSettings} from "../_settings/variables.settings";
 
 @Component({
   selector: 'app-palette-area',
@@ -37,6 +38,7 @@ export class PaletteAreaComponent implements OnInit {
 
   public modelingViews: ModelingViewModel[] = [];
   public paletteCategories: PaletteCategoryModel[] = [];
+  public imageRoot: string = "";
 
   constructor(private mService: ModellerService, public dialog: MatDialog) {
     this.mService.queryModelingLanguages()
@@ -44,6 +46,8 @@ export class PaletteAreaComponent implements OnInit {
     this.mService.queryPaletteElements();
     console.log('Palette elements:');
 console.log(this.mService.paletteElements);
+
+this.imageRoot = VariablesSettings.IMG_ROOT;
 //console.log('Palette categories');
 //console.log(this.mService.paletteCategories);
 

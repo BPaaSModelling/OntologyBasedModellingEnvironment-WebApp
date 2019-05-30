@@ -17,7 +17,7 @@
   <nav class="element-container">
     <ng-container *ngFor="let element of mService.paletteElements">
       <ul class="element" *ngIf="(element.paletteCategory == category.id && element.hiddenFromPalette == false)">
-        <li class="paletteElement" ><a [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element" (click)="addNewShape(element)"><img class="thumbnail"  src="../assets/images/BPMN-CMMN/{{element.thumbnailURL}}" /></a>
+        <li class="paletteElement" ><a [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element" (click)="addNewShape(element)"><img class="thumbnail"  src="{{imageRoot}}{{category.idSuffix}}/{{element.thumbnailURL}}" /></a>
           <app--tool-recursive-palette-element (showActivityElementPropertyModal1)="toggleActivityElementPropertyModal($event)"
                                                (showExtendPaletteElementModal1)="toggleExtendPaletteElementModal($event)"
                                                (showEditPaletteElementModal1)="toggleEditPaletteElementModal($event)"

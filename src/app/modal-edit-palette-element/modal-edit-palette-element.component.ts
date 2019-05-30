@@ -11,6 +11,7 @@ import {DatatypePropertyModel} from "../_models/DatatypeProperty.model";
 import {ObjectPropertyModel} from "../_models/ObjectProperty.model";
 import {ModalInsertObjectPropertyComponent} from "../modal-insert-object-property/modal-insert-object-property.component";
 import {ModalInsertLangobjectPropertyComponent} from "../modal-insert-langobject-property/modal-insert-langobject-property.component";
+import {VariablesSettings} from "../_settings/variables.settings";
 
 @Component({
   selector: 'app-modal-edit-palette-element',
@@ -32,6 +33,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public bridgingConnectors: ObjectPropertyModel[] = [];
   public semanticMappings: ObjectPropertyModel[] = [];
   public config1: any;
+
 
   constructor(public dialogRef: MatDialogRef<ModalEditPaletteElementComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService, public dialog: MatDialog) {
