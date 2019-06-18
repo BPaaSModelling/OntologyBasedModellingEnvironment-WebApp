@@ -140,7 +140,7 @@ export class ModellingAreaComponent implements OnInit {
             {
               name: 'Picture',
               source: "/assets/images/BPMN-CMMN/Collapsed_Subprocess.png",
-              margin: 5, //increase margin if text alignment is changed to bottom
+              margin: 12, //increase margin if text alignment is changed to bottom
               stretch: go.GraphObject.Fill //stretch image to fill whole area of shape
               //imageStretch: go.GraphObject.Fill //do not distort the image
             },
@@ -153,7 +153,7 @@ export class ModellingAreaComponent implements OnInit {
               maxSize: new go.Size(200, NaN),
               wrap: go.TextBlock.WrapFit,
               editable: true,
-              alignment: go.Spot.Center //or go.Spot.Bottom
+              alignment: go.Spot.Bottom //or go.Spot.Bottom
             },
             new go.Binding("text").makeTwoWay(),
             new go.Binding("alignment")
@@ -210,7 +210,7 @@ export class ModellingAreaComponent implements OnInit {
           };
         }
         else
-           toData = {text: element.label, key: element.shape, fill: "#0000", source: imageURL, size: new go.Size(element.width, element.height), width: element.width, height: element.height};
+           toData = {text: element.label, key: element.shape, fill: "#0000", source: imageURL, size: new go.Size(element.width, element.height), width: element.width, height: element.height, alignment: go.Spot.Bottom};
 
         // add the new node data to the model
         var model = diagram.model;
