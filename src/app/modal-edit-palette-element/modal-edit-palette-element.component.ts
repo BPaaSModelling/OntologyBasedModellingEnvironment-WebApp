@@ -108,6 +108,8 @@ export class ModalEditPaletteElementComponent implements OnInit {
       {"imageURL":VariablesSettings.activitiesImagePath+"Subprocess.png", "imageName":"Subprocess.png", "label":"Subprocess", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_Subprocess.png", "thumbnailName" : "Thumbnail_Subprocess.png"},
       {"imageURL":VariablesSettings.activitiesImagePath+"Task.png", "imageName":"Task.png", "label":"Task", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_Task.png", "thumbnailName" : "Thumbnail_Task.png"},
       {"imageURL":VariablesSettings.activitiesImagePath+"User_Task.png", "imageName":"User_Task.png", "label":"User Task", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_User_Task.png", "thumbnailName" : "Thumbnail_User_Task.png"},
+      {"imageURL":VariablesSettings.activitiesImagePath+"Business_Rule_Task.png", "imageName":"Business_Rule_Task.png", "label":"Business Rule Task", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_Business_Rule_Task.png", "thumbnailName" : "Thumbnail_Business_Rule_Task.png"},
+      {"imageURL":VariablesSettings.activitiesImagePath+"Script_Task.png", "imageName":"Script_Task.png", "label":"Script Task", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_Script_Task.png", "thumbnailName" : "Thumbnail_Script_Task.png"},
       {"imageURL":VariablesSettings.activitiesImagePath+"Manual_Task.png", "imageName":"Manual_Task.png", "label":"Manual Task", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_Manual_Task.png", "thumbnailName" : "Thumbnail_Manual_Task.png"}
     ];
 
