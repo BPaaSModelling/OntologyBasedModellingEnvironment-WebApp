@@ -32,6 +32,7 @@ public sapscenesRelationsList: any;
 
 public config: any;
 public config1: any;
+public VariablesSettings: any;
 
 
 @Output() showCreateDomainElementModalFromExtend = new EventEmitter();
@@ -40,6 +41,7 @@ public config1: any;
     public dialogRef: MatDialogRef<ModalExtendPaletteElementComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService, public dialog: MatDialog) {
     this.currentPaletteElement = new PaletteElementModel();
+    this.VariablesSettings = VariablesSettings;
   }
 
 

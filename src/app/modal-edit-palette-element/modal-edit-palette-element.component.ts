@@ -37,6 +37,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public bridgingConnectors: ObjectPropertyModel[] = [];
   public semanticMappings: ObjectPropertyModel[] = [];
   public config1: any;
+  public VariablesSettings: any;
 
 
   constructor(public dialogRef: MatDialogRef<ModalEditPaletteElementComponent>,
@@ -44,7 +45,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
     this.currentPaletteElement = new PaletteElementModel();
     this.namespaceMap = new Map<string, string>();
     //this.domainElement = new DomainElementModel();
-
+    this.VariablesSettings = VariablesSettings;
   }
 
   ngOnInit() {
