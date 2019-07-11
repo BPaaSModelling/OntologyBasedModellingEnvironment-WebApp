@@ -24,8 +24,8 @@ export class VariablesSettings{
   /* END - Organizational Model */
 
   /* START - SAP Scenes */
-  public static CAT_SAPSCENES: string = 'Category_SAPScenes';
-  public static CAT_SAPRELATIONS: string = 'Category_SAPScenesConnectors';
+  public static CAT_SAPSCENES: string = 'SAPScenesElements';
+  public static CAT_SAPRELATIONS: string = 'SAPScenesRelations';
 
   /* START - Properties to the complete path of the images for the categories */
   public static eventImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_EVENTS + "/";
@@ -37,5 +37,5 @@ export class VariablesSettings{
   /* END - Properties to the complete path of the images for the categories */
 
   public static sapScenesImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_SAPSCENES + "/";
-  public static sapScenesImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_SAPRELATIONS + "/";
+  public static sapRelationsImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_SAPRELATIONS + "/";
 }

@@ -26,6 +26,10 @@ public eventImageList: any;
 public gatewayImageList: any;
 public dataObjectImageList: any;
 public groupImageList: any;
+
+public sapscenesImageList: any;
+public sapscenesRelationsList: any;
+
 public config: any;
 public config1: any;
 
@@ -94,6 +98,38 @@ public config1: any;
       {"imageURL":VariablesSettings.groupImagePath+"Group.jpg", "imageName":"Group.jpg", "label":"Group Large", "thumbnailURL":VariablesSettings.groupImagePath+"Group.jpg", "thumbnailName" : "Group.jpg"},
       {"imageURL":VariablesSettings.groupImagePath+"Group4Process.bmp", "imageName":"Group4Process.bmp", "label":"Group of Processes", "thumbnailURL":VariablesSettings.groupImagePath+"Group4Process.bmp", "thumbnailName" : "Group4Process.bmp"},
       {"imageURL":VariablesSettings.groupImagePath+"GroupOfAvtivities.png", "imageName":"GroupOfAvtivities.png", "label":"Group of Activities", "thumbnailURL":VariablesSettings.groupImagePath+"GroupOfAvtivities.png", "thumbnailName" : "GroupOfAvtivities.png"}
+    ];
+
+    this.sapscenesImageList = [
+      {"imageURL":VariablesSettings.sapScenesImagePath+"Architecture.PNG", "imageName":"Architecture.PNG", "label":"Architecture", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_Architecture.PNG", "thumbnailName" : "Thumbnail_Architecture.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"Window.PNG", "imageName":"Window.PNG", "label":"Window", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_Window.PNG", "thumbnailName" : "Thumbnail_Window.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"CoffeeMachine.PNG", "imageName":"CoffeeMachine.PNG", "label":"Coffee Machine", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_CoffeeMachine.PNG", "thumbnailName" : "Thumbnail_CoffeeMachine.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"Plants.PNG", "imageName":"Plants.PNG", "label":"Plants", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_Plants.PNG", "thumbnailName" : "Thumbnail_Plants.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"PhotoFrame.PNG", "imageName":"PhotoFrame.PNG", "label":"Photo Frame", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_PhotoFrame.PNG", "thumbnailName" : "Thumbnail_PhotoFrame.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"Lights.PNG", "imageName":"Lights.PNG", "label":"Lights", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_Lights.PNG", "thumbnailName" : "Thumbnail_Lights.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"Television.PNG", "imageName":"Television.PNG", "label":"Television", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_Television.PNG", "thumbnailName" : "Thumbnail_Television.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"Fan.PNG", "imageName":"Fan.PNG", "label":"Fan", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_Fan.PNG", "thumbnailName" : "Thumbnail_Fan.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"Bed.PNG", "imageName":"Bed.PNG", "label":"Bed", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_Bed.PNG", "thumbnailName" : "Thumbnail_Bed.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"ElectricAppliances.PNG", "imageName":"ElectricAppliances.PNG", "label":"Electric Appliances", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_ElectricAppliances.PNG", "thumbnailName" : "Thumbnail_ElectricAppliances.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"Dishwasher.PNG", "imageName":"Dishwasher.PNG", "label":"Dishwasher", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_Dishwasher.PNG", "thumbnailName" : "Thumbnail_Dishwasher.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"ExtractorHood.PNG", "imageName":"ExtractorHood.PNG", "label":"Extractor Hood", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_ExtractorHood.PNG", "thumbnailName" : "Thumbnail_ExtractorHood.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"Heater.PNG", "imageName":"Heater.PNG", "label":"Heater", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_Heater.PNG", "thumbnailName" : "Thumbnail_Heater.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"Cabinets.PNG", "imageName":"Cabinets.PNG", "label":"Cabinets", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_Cabinets.PNG", "thumbnailName" : "Thumbnail_Cabinets.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"HighCabinet.PNG", "imageName":"HighCabinet.PNG", "label":"High Cabinet", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_HighCabinet.PNG", "thumbnailName" : "Thumbnail_HighCabinet.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"WallCabinet.PNG", "imageName":"WallCabinet.PNG", "label":"Wall Cabinet", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_WallCabinet.PNG", "thumbnailName" : "Thumbnail_WallCabinet.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"LowerCabinet.PNG", "imageName":"LowerCabinet.PNG", "label":"Lower Cabinet", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_LowerCabinet.PNG", "thumbnailName" : "Thumbnail_LowerCabinet.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"HighCabinetForStorage.PNG", "imageName":"HighCabinetForStorage.PNG", "label":"High Cabinet For Storage", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_HighCabinetForStorage.PNG", "thumbnailName" : "Thumbnail_HighCabinetForStorage.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"HighCabinetWithOven.PNG", "imageName":"HighCabinetWithOven.PNG", "label":"High Cabinet With Oven", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_HighCabinetWithOven.PNG", "thumbnailName" : "Thumbnail_HighCabinetWithOven.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"WallCabinetWithGlass.PNG", "imageName":"WallCabinetWithGlass.PNG", "label":"Wall Cabinet With Glass", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_WallCabinetWithGlass.PNG", "thumbnailName" : "Thumbnail_WallCabinetWithGlass.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"LowerCabinetWithCookingRange.PNG", "imageName":"LowerCabinetWithCookingRange.PNG", "label":"Lower Cabinet With Cooking Range", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_LowerCabinetWithCookingRange.PNG", "thumbnailName" : "Thumbnail_LowerCabinetWithCookingRange.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"LowerCabinetWithShelves.PNG", "imageName":"LowerCabinetWithShelves.PNG", "label":"Lower Cabinet With Shelves", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_LowerCabinetWithShelves.PNG", "thumbnailName" : "Thumbnail_LowerCabinetWithShelves.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"LowerCabinetWithSinkAndWasteDisposal.png", "imageName":"LowerCabinetWithSinkAndWasteDisposal.png", "label":"Lower Cabinet With Sink And Waste Disposal", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_LowerCabinetWithSinkAndWasteDisposal.PNG", "thumbnailName" : "Thumbnail_LowerCabinetWithSinkAndWasteDisposal.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"DoubleDoorFridge.PNG", "imageName":"DoubleDoorFridge.PNG", "label":"Double Door Fridge", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_DoubleDoorFridge.PNG", "thumbnailName" : "Thumbnail_DoubleDoorFridge.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"SingleDoorFridge.PNG", "imageName":"SingleDoorFridge.PNG", "label":"Single Door Fridge", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_SingleDoorFridge.PNG", "thumbnailName" : "Thumbnail_SingleDoorFridge.PNG"}
+    ];
+
+    this.sapscenesRelationsList = [
+      {"imageURL":VariablesSettings.sapScenesImagePath+"BusinessWoman.PNG", "imageName":"BusinessWoman.PNG", "label":"Business Woman", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_BusinessWoman.PNG", "thumbnailName" : "Thumbnail_BusinessWoman.PNG"}
     ];
 
     this.config = {
