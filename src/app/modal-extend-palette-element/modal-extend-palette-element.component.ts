@@ -129,7 +129,9 @@ public config1: any;
     ];
 
     this.sapscenesRelationsList = [
-      {"imageURL":VariablesSettings.sapScenesImagePath+"BusinessWoman.PNG", "imageName":"BusinessWoman.PNG", "label":"Business Woman", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_BusinessWoman.PNG", "thumbnailName" : "Thumbnail_BusinessWoman.PNG"}
+      {"imageURL":VariablesSettings.sapScenesImagePath+"Thumbnail_Executes.PNG", "imageName":"Thumbnail_Executes.PNG", "label":"Executes", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_Executes.PNG", "thumbnailName" : "Thumbnail_Executes.PNG"},
+      {"imageURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasNote.PNG", "imageName":"Thumbnail_hasNote.PNG", "label":"Has Note", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasNote.PNG", "thumbnailName" : "Thumbnail_hasNote.PNG"}
+      {"imageURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasRelation.PNG", "imageName":"Thumbnail_hasRelation.PNG", "label":"Has Relation", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasRelation.PNG", "thumbnailName" : "Thumbnail_hasRelation.PNG"}
     ];
 
     this.config = {
