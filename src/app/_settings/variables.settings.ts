@@ -9,12 +9,12 @@ export class VariablesSettings{
   public static IMG_ROOT: string = '../assets/images/';
 
   /* START - Properties to the names of the categories in the PaletteOntology */
-  public static CAT_ACTIVITIES: string = 'Category_Activities';
-  public static CAT_EVENTS: string = 'Category_Events';
-  public static CAT_GATEWAYS: string = 'Category_Gateways';
-  public static CAT_DATA: string = 'Category_Data';
-  public static CAT_GROUPS: string = 'Category_Groups';
-  public static CAT_CONNECTORS: string = 'Category_Connectors';
+  public static CAT_ACTIVITIES: string = 'Category_Activities4BPMNProcessModelingView';
+  public static CAT_EVENTS: string = 'Category_Events4BPMNProcessModelingView';
+  public static CAT_GATEWAYS: string = 'Category_Gateways4BPMNProcessModelingView';
+  public static CAT_DATA: string = 'Category_Data4BPMNProcessModelingView';
+  public static CAT_GROUPS: string = 'Category_Groups4BPMNProcessModelingView';
+  public static CAT_CONNECTORS: string = 'Category_Connectors4BPMNProcessModelingView';
   /* END - Properties to the names of the categories in the PaletteOntology */
 
   /* START - Organizational Model */
@@ -22,6 +22,10 @@ export class VariablesSettings{
   public static CAT_Performer: string = 'Category_Performer';
   public static Category_Role: string = 'Category_Role';
   /* END - Organizational Model */
+
+  /* START - SAP Scenes */
+  public static CAT_SAPSCENES: string = 'Category_SAPScenes';
+  public static CAT_SAPRELATIONS: string = 'Category_SAPScenesConnectors';
 
   /* START - Properties to the complete path of the images for the categories */
   public static eventImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_EVENTS + "/";
@@ -31,4 +35,7 @@ export class VariablesSettings{
   public static groupImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_GROUPS + "/";
   public static connectorsImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_CONNECTORS + "/";
   /* END - Properties to the complete path of the images for the categories */
+
+  public static sapScenesImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_SAPSCENES + "/";
+  public static sapScenesImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_SAPRELATIONS + "/";
 }
