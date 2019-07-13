@@ -51,8 +51,7 @@ public VariablesSettings: any;
     //this.mService.queryPaletteCategories();
     this.mService.queryNamespacePrefixes();
 
-
-    console.log(this.data.paletteElement.paletteCategory);
+    console.log('Palette category for the element is" '+ this.data.paletteElement.categoryLabel);
     this.activityImageList = [
       {"imageURL":VariablesSettings.activitiesImagePath+"AdHoc_Subprocess.png", "imageName":"AdHoc_Subprocess.png", "label":"AdHoc Subprocess", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_AdHoc_Subprocess.png", "thumbnailName" : "Thumbnail_AdHoc_Subprocess.png"},
       {"imageURL":VariablesSettings.activitiesImagePath+"Business_Rule_Task.png", "imageName":"Business_Rule_Task.png", "label":"Business Rule Task", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_Business_Rule_Task.png", "thumbnailName" : "Thumbnail_Business_Rule_Task.png"},

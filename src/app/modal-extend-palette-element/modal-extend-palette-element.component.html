@@ -59,11 +59,15 @@
               </mat-select>
             </mat-form-field>-->
 
-            <mat-form-field>
+            <!--<mat-form-field>
               <mat-select disabled="true" [(ngModel)]="data.paletteElement.paletteCategory" placeholder="Category" name="category.label">
-                <mat-option *ngFor="let category of mService.paletteCategories" [value]="category.id">{{category.label}}</mat-option>
+                <mat-option *ngFor="let category of paletteCategories" [value]="category.id">{{category.label}}</mat-option>
               </mat-select>
-            </mat-form-field>
+            </mat-form-field>-->
+
+              <mat-form-field>
+                <input matInput placeholder="Category" name="input_category" [(ngModel)]="data.paletteElement.categoryLabel" [value]="data.paletteElement.categoryLabel" disabled>
+              </mat-form-field>
 
             </div>
 

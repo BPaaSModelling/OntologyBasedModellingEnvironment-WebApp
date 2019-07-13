@@ -6,6 +6,7 @@ export class PaletteElementModel {
   uuid: string;
   label: string;
   paletteCategory: string;
+  categoryLabel: string;
   parentElement: string;
   parentLanguageClass: string;
   hiddenFromPalette: boolean;
