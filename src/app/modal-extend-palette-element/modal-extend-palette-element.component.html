@@ -74,42 +74,42 @@
             <div layout="row">
             <mat-form-field>
               <!--<input type="url" matInput placeholder="Palette Image URL">-->
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_ACTIVITIES) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label" required>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_ACTIVITIES) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image.label" required>
                 <mat-option *ngFor="let image of activityImageList" [value]="image.thumbnailName">
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_EVENTS) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label" required>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_EVENTS) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image.label" required>
                 <mat-option *ngFor="let image of eventImageList" [value]="image.thumbnailName">
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_GATEWAYS) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Canvas Image" name="image.label" required>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_GATEWAYS) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image.label" required>
                 <mat-option *ngFor="let image of gatewayImageList" [value]="image.imageName">
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_DATA) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Canvas Image" name="image.label" required>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_DATA) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image.label" required>
                 <mat-option *ngFor="let image of dataObjectImageList" [value]="image.imageName">
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_GROUPS) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label" required>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_GROUPS) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image.label" required>
                 <mat-option *ngFor="let image of groupImageList" [value]="image.thumbnailName">
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_CONNECTORS) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image (thumbnail)" name="image.label" required>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_CONNECTORS) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image.label" required>
                 <mat-option *ngFor="let image of activityImageList" [value]="image.thumbnailName">
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_SAPSCENES) !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_SAPSCENES) !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Palette Image" name="image.label" required>
                 <mat-option *ngFor="let image of sapscenesImageList" [value]="image.thumbnailName">
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
               </mat-select>
-              <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_SAPRELATIONS) !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+              <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_SAPRELATIONS) !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Palette Image" name="image.label" required>
                 <mat-option *ngFor="let image of sapscenesRelationsList" [value]="image.thumbnailName">
                   <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                   {{image.label}}</mat-option>
