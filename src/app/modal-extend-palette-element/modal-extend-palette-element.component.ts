@@ -233,6 +233,8 @@ public VariablesSettings: any;
           disableClose: false,
         });
 
+        this.mService.queryPaletteElements();
+
         const sub = dialogRef1.componentInstance.propertiesAdded.subscribe(() => {
           dialogRef1.close('Cancel');
         });

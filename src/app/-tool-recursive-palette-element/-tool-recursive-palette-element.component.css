@@ -35,7 +35,7 @@ ul {
   display: none;
 }
 
-.NthLevelElement:hover app--tool-recursive-palette-element{
+.NthLevelElement:hover > app--tool-recursive-palette-element{
   display: block;
   position: absolute;
   top: 0;

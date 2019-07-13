@@ -74,14 +74,14 @@ li {
   padding-top: 3px;
 }
 
-.paletteElement:hover {
+/*.paletteElement:hover {
   display: block;
   position: absolute;
   background: lightgoldenrodyellow;
   border-radius: 6px;
   background-image: url(../../assets/images/background-highlight.png);
   background-repeat: repeat-x;
-}
+}*/
 
 .paletteElement > ul {
   display: none;
@@ -100,6 +100,7 @@ li {
 }
 
 app--tool-recursive-palette-element{
+  top:0;
   background: darkslategray;
   border-radius: 8px;
   border: 1px solid gray;
