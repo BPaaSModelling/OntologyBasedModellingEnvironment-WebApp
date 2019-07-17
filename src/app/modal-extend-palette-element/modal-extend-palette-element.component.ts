@@ -194,6 +194,8 @@ public VariablesSettings: any;
     ele.representedLanguageClass = ele.languagePrefix + (this.currentPaletteElement.label).replace(new RegExp(' ', 'g'), ''); /*important property to display in the pallette*/
 
     console.log('Thumbnail not selected: ' + this.currentPaletteElement.thumbnailURL);
+    ele.width = 100;
+    ele.height = 70;
     // Set width and height of the image as per category
     if (ele.paletteCategory.search(VariablesSettings.CAT_ACTIVITIES) !== -1) {
       ele.width = 100;
