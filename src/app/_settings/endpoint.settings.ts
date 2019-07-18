@@ -1,7 +1,7 @@
 export class EndpointSettings {
 
-  // private static ENDPOINT                   : string = 'http://localhost:8080'; // endpoint to locally deployed webservice
-  private static ENDPOINT                   : string = 'https://ontologybasedmodellingenv.herokuapp.com'; // heroku endpoint
+   private static ENDPOINT                   : string = 'http://localhost:8080'; // endpoint to locally deployed webservice
+  //private static ENDPOINT                   : string = 'https://ontologybasedmodellingenv.herokuapp.com'; // heroku endpoint
   private static GETMODELINGLANGUAGES       : string = '/ModEnv/getModelingLanguages';
   private static GETMODELINGVIEWS           : string = '/ModEnv/getModelingViews';
   private static PALETTEELEMENTS            : string = '/ModEnv/getPaletteElements';
