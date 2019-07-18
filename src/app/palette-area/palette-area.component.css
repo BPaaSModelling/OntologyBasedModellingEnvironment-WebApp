@@ -50,10 +50,10 @@ a {
   cursor: pointer;
 }
 
-.thumbnail{  height: 45px;
-  max-width: 100%;
-  width: 50px;
-  max-height: 100%;
+.thumbnail{  height: auto;
+  max-width: 60px;
+  width: auto;
+  max-height: 40px;
 
 }
 .element:nth-child(even){  float:right;  }
