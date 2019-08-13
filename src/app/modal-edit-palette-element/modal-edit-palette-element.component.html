@@ -81,7 +81,37 @@
                     {{image.label}}</mat-option>
                 </mat-select>
                 <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_SAPRELATIONS) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image.label" required>
-                  <mat-option *ngFor="let image of sapscenesRelationsList" [value]="image.thumbnailName">
+                <mat-option *ngFor="let image of sapscenesRelationsList" [value]="image.thumbnailName">
+                  <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                  {{image.label}}</mat-option>
+              </mat-select>
+
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_Document_DSML4PTM) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image.label" required>
+                <mat-option *ngFor="let image of documents4DSML4PTMImageList" [value]="image.thumbnailName">
+                  <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                  {{image.label}}</mat-option>
+              </mat-select>
+
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_Data_DSML4PTM) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image.label" required>
+                  <mat-option *ngFor="let image of data4DSML4PTMImageList" [value]="image.thumbnailName">
+                    <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_Activities_DSML4PTM) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image.label" required>
+                  <mat-option *ngFor="let image of activities4DSML4PTMImageList" [value]="image.thumbnailName">
+                    <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_DocumentConnectors_DSML4PTM) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image.label" required>
+                  <mat-option *ngFor="let image of connectors4DSML4PTMDocumentViewImageList" [value]="image.thumbnailName">
+                    <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_GROUPS4BPaaS) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image.label" required>
+                  <mat-option *ngFor="let image of group4BPaaSImageList" [value]="image.thumbnailName">
                     <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
                     {{image.label}}</mat-option>
                 </mat-select>
@@ -129,6 +159,37 @@
                     <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
                     {{image.label}}</mat-option>
                 </mat-select>
+
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_Document_DSML4PTM) !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+                  <mat-option *ngFor="let image of documents4DSML4PTMImageList" [value]="image.imageName">
+                    <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_Data_DSML4PTM) !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+                  <mat-option *ngFor="let image of data4DSML4PTMImageList" [value]="image.imageName">
+                    <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_Activities_DSML4PTM) !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+                  <mat-option *ngFor="let image of activities4DSML4PTMImageList" [value]="image.imageName">
+                    <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_DocumentConnectors_DSML4PTM) !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+                  <mat-option *ngFor="let image of connectors4DSML4PTMDocumentViewImageList" [value]="image.imageName">
+                    <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_GROUPS4BPaaS) !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+                  <mat-option *ngFor="let image of group4BPaaSImageList" [value]="image.imageName">
+                    <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+
               </mat-form-field>
 
             </div>

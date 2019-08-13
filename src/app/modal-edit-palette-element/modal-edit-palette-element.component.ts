@@ -27,6 +27,13 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public dataObjectImageList: any;
   public groupImageList: any;
 
+  public documents4DSML4PTMImageList: any;
+  public data4DSML4PTMImageList: any;
+  public activities4DSML4PTMImageList:any;
+  public connectors4DSML4PTMDocumentViewImageList:any;
+
+  public group4BPaaSImageList: any;
+
   public sapscenesImageList: any;
   public sapscenesRelationsList: any;
 
@@ -99,9 +106,9 @@ export class ModalEditPaletteElementComponent implements OnInit {
       {"imageURL":VariablesSettings.activitiesImagePath+"Business_Rule_Task.png", "imageName":"Business_Rule_Task.png", "label":"Business Rule Task", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_Business_Rule_Task.png", "thumbnailName" : "Thumbnail_Business_Rule_Task.png"},
       {"imageURL":VariablesSettings.activitiesImagePath+"Call_Activity.png", "imageName":"Call_Activity.png", "label":"Call Activity", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_Call_Activity.png", "thumbnailName" : "Thumbnail_Call_Activity.png"},
       {"imageURL":VariablesSettings.activitiesImagePath+"Collapsed_Subprocess.png", "imageName":"Collapsed_Subprocess.png", "label":"Collapsed Subprocess", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_Collapsed_Subprocess.png", "thumbnailName" : "Thumbnail_Collapsed_Subprocess.png"},
-      //{"imageURL":VariablesSettings.activitiesImagePath+"Discretionary_Task.png", "imageName":"Discretionary_Task.png", "label":"Discretionary Task", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_Discretionary_Task.png", "thumbnailName" : "Thumbnail_Discretionary_Task.png"},
-      //{"imageURL":VariablesSettings.activitiesImagePath+"KoGu.png", "imageName":"KoGu.png", "label":"KoGu", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_KoGu.png", "thumbnailName" : "Thumbnail_KoGu.png"},
-      //{"imageURL":VariablesSettings.activitiesImagePath+"KoGu_Stroke.png", "imageName":"KoGu_Stroke.png", "label":"KoGu Stroke", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_KoGu_Stroke.png", "thumbnailName" : "Thumbnail_KoGu_Stroke.png"},
+      {"imageURL":VariablesSettings.activitiesImagePath+"Discretionary_Task.png", "imageName":"Discretionary_Task.png", "label":"Discretionary Task", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_Discretionary_Task.png", "thumbnailName" : "Thumbnail_Discretionary_Task.png"},
+      {"imageURL":VariablesSettings.activitiesImagePath+"KoGu.png", "imageName":"KoGu.png", "label":"KoGu", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_KoGu.png", "thumbnailName" : "Thumbnail_KoGu.png"},
+      {"imageURL":VariablesSettings.activitiesImagePath+"KoGu_Stroke.png", "imageName":"KoGu_Stroke.png", "label":"KoGu Stroke", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_KoGu_Stroke.png", "thumbnailName" : "Thumbnail_KoGu_Stroke.png"},
       {"imageURL":VariablesSettings.activitiesImagePath+"Message_Task.png", "imageName":"Message_Task.png", "label":"Message Task", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_Message_Task.png", "thumbnailName" : "Thumbnail_Message_Task.png"},
       {"imageURL":VariablesSettings.activitiesImagePath+"Receive_Task.png", "imageName":"Receive_Task.png", "label":"Receive Message Task", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_Receive_Task.png", "thumbnailName" : "Thumbnail_Receive_Task.png"},
       {"imageURL":VariablesSettings.activitiesImagePath+"Send_Task.png", "imageName":"Send_Task.png", "label":"Send Message Task", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_Send_Task.png", "thumbnailName" : "Thumbnail_Send_Task.png"},
@@ -145,7 +152,37 @@ export class ModalEditPaletteElementComponent implements OnInit {
     this.groupImageList = [
       {"imageURL":VariablesSettings.groupImagePath+"Group.jpg", "imageName":"Group.jpg", "label":"Group Large", "thumbnailURL":VariablesSettings.groupImagePath+"Group.jpg", "thumbnailName" : "Group.jpg"},
       {"imageURL":VariablesSettings.groupImagePath+"Group4Process.bmp", "imageName":"Group4Process.bmp", "label":"Group of Processes", "thumbnailURL":VariablesSettings.groupImagePath+"Group4Process.bmp", "thumbnailName" : "Group4Process.bmp"},
-      {"imageURL":VariablesSettings.groupImagePath+"GroupOfAvtivities.png", "imageName":"GroupOfAvtivities.png", "label":"Group of Activities", "thumbnailURL":VariablesSettings.groupImagePath+"GroupOfAvtivities.png", "thumbnailName" : "GroupOfAvtivities.png"}
+      {"imageURL":VariablesSettings.groupImagePath+"GroupOfAvtivities.png", "imageName":"GroupOfAvtivities.png", "label":"Group of Activities", "thumbnailURL":VariablesSettings.groupImagePath+"GroupOfAvtivities.png", "thumbnailName" : "GroupOfAvtivities.png"},
+      {"imageURL":VariablesSettings.groupImagePath+"Group_ManagingCR.jpg", "imageName":"Group_ManagingCR.jpg", "label":"Managing Customer Relationship", "thumbnailURL":VariablesSettings.groupImagePath+"Group_ManagingCR.jpg", "thumbnailName" : "Group_ManagingCR.jpg"},
+      {"imageURL":VariablesSettings.groupImagePath+"Group_TransmittingBillData.jpg", "imageName":"Group_TransmittingBillData.jpg", "label":"Transmitting Billing Data", "thumbnailURL":VariablesSettings.groupImagePath+"Group_TransmittingBillData.jpg", "thumbnailName" : "Group_TransmittingBillData.jpg"},
+      {"imageURL":VariablesSettings.groupImagePath+"Group_GeneratingCustBillData.jpg", "imageName":"Group_GeneratingCustBillData.jpg", "label":"Generating Customer Billing Data", "thumbnailURL":VariablesSettings.groupImagePath+"Group_GeneratingCustBillData.jpg", "thumbnailName" : "Group_GeneratingCustBillData.jpg"}
+    ];
+
+    this.documents4DSML4PTMImageList = [
+      {"imageURL":VariablesSettings.documents4DSML4PTMImagePath+"ICFstandard-dkm.png", "imageName":"ICFstandard-dkm.png", "label":"ICF Standard", "thumbnailURL":VariablesSettings.documents4DSML4PTMImagePath+"ICFstandard-dkm.png", "thumbnailName" : "ICFstandard-dkm.png"},
+      {"imageURL":VariablesSettings.documents4DSML4PTMImagePath+"KoGuStrokeDocument-dkm.png", "imageName":"KoGuStrokeDocument-dkm.png", "label":"KoGu Stroke Document", "thumbnailURL":VariablesSettings.documents4DSML4PTMImagePath+"KoGuStrokeDocument-dkm.png", "thumbnailName" : "KoGuStrokeDocument-dkm.png"}
+    ];
+
+    this.data4DSML4PTMImageList = [
+      {"imageURL":VariablesSettings.data4DSML4PTMImagePath+"KoGu.png", "imageName":"KoGu.png", "label":"KoGu Data Object", "thumbnailURL":VariablesSettings.data4DSML4PTMImagePath+"KoGu.png", "thumbnailName" : "KoGu.png"},
+      {"imageURL":VariablesSettings.data4DSML4PTMImagePath+"KoGu_Stroke.png", "imageName":"KoGu_Stroke.png", "label":"KoGu Stroke Data Object", "thumbnailURL":VariablesSettings.data4DSML4PTMImagePath+"KoGu_Stroke.png", "thumbnailName" : "KoGu_Stroke.png"}
+    ];
+
+    this.activities4DSML4PTMImageList = [
+      {"imageURL":VariablesSettings.activities4DSML4PTMImagePath+"Prepare_CostReimbursement.png", "imageName":"Prepare_CostReimbursement.png", "label":"Prepare Cost Reimbursement", "thumbnailURL":VariablesSettings.activities4DSML4PTMImagePath+"Prepare_CostReimbursement.png", "thumbnailName" : "Prepare_CostReimbursement.png"},
+      {"imageURL":VariablesSettings.activities4DSML4PTMImagePath+"Finalize_KoGu.png", "imageName":"Finalize_KoGu.png", "label":"Finalize Cost Reimbursement", "thumbnailURL":VariablesSettings.activities4DSML4PTMImagePath+"Finalize_KoGu.png", "thumbnailName" : "Finalize_KoGu.png"}
+    ];
+
+    this.connectors4DSML4PTMDocumentViewImageList = [
+      {"imageURL":VariablesSettings.connectors4Document4DSML4PTMImagePath+"belongsTo-dkm.png", "imageName":"belongsTo-dkm.png", "label":"Belongs to", "thumbnailURL":VariablesSettings.connectors4Document4DSML4PTMImagePath+"Thumbnail_belongsTo-dkm.png", "thumbnailName" : "Thumbnail_belongsTo-dkm.png"},
+      {"imageURL":VariablesSettings.connectors4Document4DSML4PTMImagePath+"hasSubDocument-dkm.png", "imageName":"hasSubDocument-dkm.png", "label":"Has Sub-Document", "thumbnailURL":VariablesSettings.connectors4Document4DSML4PTMImagePath+"Thumbnail_hasSubDocument-dkm.png", "thumbnailName" : "Thumbnail_hasSubDocument-dkm.png"}
+    ];
+
+    this.group4BPaaSImageList = [
+      {"imageURL":VariablesSettings.group4BPaaSImagePath+"Group.jpg", "imageName":"Group.jpg", "label":"Group", "thumbnailURL":VariablesSettings.group4BPaaSImagePath+"Group.jpg", "thumbnailName" : "Group.jpg"},
+      {"imageURL":VariablesSettings.group4BPaaSImagePath+"Group_ManagingCR.jpg", "imageName":"Group_ManagingCR.jpg", "label":"Managing Customer Relationship", "thumbnailURL":VariablesSettings.group4BPaaSImagePath+"Group_ManagingCR.jpg", "thumbnailName" : "Group_ManagingCR.jpg"},
+      {"imageURL":VariablesSettings.group4BPaaSImagePath+"Group_TransmittingBillData.jpg", "imageName":"Group_TransmittingBillData.jpg", "label":"Transmitting Billing Data", "thumbnailURL":VariablesSettings.group4BPaaSImagePath+"Group_TransmittingBillData.jpg", "thumbnailName" : "Group_TransmittingBillData.jpg"},
+      {"imageURL":VariablesSettings.group4BPaaSImagePath+"Group_GeneratingCustBillData.jpg", "imageName":"Group_GeneratingCustBillData.jpg", "label":"Generating Customer Billing Data", "thumbnailURL":VariablesSettings.group4BPaaSImagePath+"Group_GeneratingCustBillData.jpg", "thumbnailName" : "Group_GeneratingCustBillData.jpg"}
     ];
 
     this.sapscenesImageList = [

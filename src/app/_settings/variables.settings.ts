@@ -8,7 +8,7 @@ export class VariablesSettings{
   /* Set the following property to the root of the images folder */
   public static IMG_ROOT: string = '../assets/images/';
 
-  /* START - Properties to the names of the categories in the PaletteOntology */
+  /* START - BPMN Properties to the names of the categories in the PaletteOntology */
   public static CAT_ACTIVITIES: string = 'Category_Activities4BPMNProcessModelingView';
   public static CAT_EVENTS: string = 'Category_Events4BPMNProcessModelingView';
   public static CAT_GATEWAYS: string = 'Category_Gateways4BPMNProcessModelingView';
@@ -23,9 +23,29 @@ export class VariablesSettings{
   public static Category_Role: string = 'Category_Role';
   /* END - Organizational Model */
 
+  /* START - DSML4PTM */
+  public static CAT_Document_DSML4PTM: string = 'Category_Document4DSML4PTMDocumentView';
+
+  public static CAT_Data_DSML4PTM: string = 'Category_Data4DSML4PTMProcessModelingView';
+
+  public static CAT_Activities_DSML4PTM: string = 'Category_Activities4DSML4PTMProcessModelingView';
+
+  public static CAT_DocumentConnectors_DSML4PTM: string = 'Category_Connectors4DKModelingView';
+
+  /* END - DSML4PTM  */
+  public static CAT_GROUPS4BPaaS: string = 'Category_Groups4BPaaSProcessModelingView';
+
+  /* START - BPaaS */
+
+
+
+  /* END - BPaaS  */
+
+
   /* START - SAP Scenes */
   public static CAT_SAPSCENES: string = 'SAPScenesElements';
   public static CAT_SAPRELATIONS: string = 'SAPScenesRelations';
+  /* END - SAP Scenes */
 
   /* START - Properties to the complete path of the images for the categories */
   public static eventImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_EVENTS + "/";
@@ -34,8 +54,15 @@ export class VariablesSettings{
   public static dataObjectImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_DATA + "/";
   public static groupImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_GROUPS + "/";
   public static connectorsImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_CONNECTORS + "/";
-  /* END - Properties to the complete path of the images for the categories */
+
+  public static documents4DSML4PTMImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_Document_DSML4PTM + "/";
+  public static data4DSML4PTMImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_Data_DSML4PTM + "/";
+  public static activities4DSML4PTMImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_Activities_DSML4PTM + "/";
+  public static connectors4Document4DSML4PTMImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_DocumentConnectors_DSML4PTM + "/";
+
+  public static group4BPaaSImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_GROUPS4BPaaS + "/";
 
   public static sapScenesImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_SAPSCENES + "/";
   public static sapRelationsImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_SAPRELATIONS + "/";
+  /* END - Properties to the complete path of the images for the categories */
 }
