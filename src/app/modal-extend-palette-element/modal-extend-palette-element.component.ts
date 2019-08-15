@@ -58,7 +58,8 @@ public VariablesSettings: any;
     //this.mService.queryPaletteCategories();
     this.mService.queryNamespacePrefixes();
 
-    console.log('Palette category for the element is" '+ this.data.paletteElement.categoryLabel);
+    console.log('Palette category for the element is ' + this.data.paletteElement.categoryLabel);
+    console.log('Palette category uri for the element is ' + this.data.paletteElement.paletteCategory);
     this.activityImageList = [
       {"imageURL":VariablesSettings.activitiesImagePath+"AdHoc_Subprocess.png", "imageName":"AdHoc_Subprocess.png", "label":"AdHoc Subprocess", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_AdHoc_Subprocess.png", "thumbnailName" : "Thumbnail_AdHoc_Subprocess.png"},
       {"imageURL":VariablesSettings.activitiesImagePath+"Business_Rule_Task.png", "imageName":"Business_Rule_Task.png", "label":"Business Rule Task", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_Business_Rule_Task.png", "thumbnailName" : "Thumbnail_Business_Rule_Task.png"},
@@ -257,18 +258,19 @@ public VariablesSettings: any;
     const ele = this.currentPaletteElement;
     ele.id = '';
     ele.uuid = (this.currentPaletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
-    console.log('uuid:' + ele.uuid);
+    //console.log('uuid:' + ele.uuid);
     ele.label = this.currentPaletteElement.label;
     ele.hiddenFromPalette = false;
     ele.usesImages = false;
-    ele.parentElement = (this.data.paletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
+    //console.log('parent element ' + this.data.paletteElement.id);
+    ele.parentElement = this.data.paletteElement.id;
     ele.parentLanguageClass = this.data.paletteElement.representedLanguageClass;
-    console.log('parent:' + ele.parentElement);
+    //console.log('parent:' + ele.parentElement);
     ele.paletteCategory = this.data.paletteElement.paletteCategory; // 'lo:Category_Activities';
-    console.log('category: ' + this.currentPaletteElement.paletteCategory);
+    //console.log('category: ' + this.currentPaletteElement.paletteCategory);
     ele.representedLanguageClass = ele.languagePrefix + (this.currentPaletteElement.label).replace(new RegExp(' ', 'g'), ''); /*important property to display in the pallette*/
 
-    console.log('Thumbnail not selected: ' + this.currentPaletteElement.thumbnailURL);
+    //console.log('Thumbnail not selected: ' + this.currentPaletteElement.thumbnailURL);
     ele.width = 100;
     ele.height = 70;
     // Set width and height of the image as per category
