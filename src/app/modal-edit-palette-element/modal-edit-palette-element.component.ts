@@ -34,6 +34,10 @@ export class ModalEditPaletteElementComponent implements OnInit {
 
   public group4BPaaSImageList: any;
 
+  public organizationalUnitImageList: any;
+  public performerImageList: any;
+  public roleImageList: any;
+
   public sapscenesImageList: any;
   public sapscenesRelationsList: any;
 
@@ -184,6 +188,21 @@ export class ModalEditPaletteElementComponent implements OnInit {
       {"imageURL":VariablesSettings.group4BPaaSImagePath+"Group_TransmittingBillData.jpg", "imageName":"Group_TransmittingBillData.jpg", "label":"Transmitting Billing Data", "thumbnailURL":VariablesSettings.group4BPaaSImagePath+"Group_TransmittingBillData.jpg", "thumbnailName" : "Group_TransmittingBillData.jpg"},
       {"imageURL":VariablesSettings.group4BPaaSImagePath+"Group_GeneratingCustBillData.jpg", "imageName":"Group_GeneratingCustBillData.jpg", "label":"Generating Customer Billing Data", "thumbnailURL":VariablesSettings.group4BPaaSImagePath+"Group_GeneratingCustBillData.jpg", "thumbnailName" : "Group_GeneratingCustBillData.jpg"}
     ];
+
+    this.organizationalUnitImageList = [
+      {"imageURL":VariablesSettings.organizationalUnitImagePath+"OrganizationalUnitAcuteHospital-OM.png", "imageName":"OrganizationalUnitAcuteHospital-OM.png", "label":"Acute Hospital", "thumbnailURL":VariablesSettings.organizationalUnitImagePath+"OrganizationalUnitAcuteHospital-OM.png", "thumbnailName" : "OrganizationalUnitAcuteHospital-OM.png"},
+      {"imageURL":VariablesSettings.organizationalUnitImagePath+"OrganizationalUnitRehabilitationClinic-OM.png", "imageName":"OrganizationalUnitRehabilitationClinic-OM.png", "label":"Rehab Clinic", "thumbnailURL":VariablesSettings.organizationalUnitImagePath+"OrganizationalUnitRehabilitationClinic-OM.png", "thumbnailName" : "OrganizationalUnitRehabilitationClinic-OM.png"}
+    ];
+
+    this.performerImageList = [
+      {"imageURL":VariablesSettings.performerImagePath+"Performer-OM.png", "imageName":"Performer-OM.png", "label":"Performer", "thumbnailURL":VariablesSettings.performerImagePath+"Performer-OM.png", "thumbnailName" : "Performer-OM.png"}
+    ];
+
+    this.roleImageList = [
+      {"imageURL":VariablesSettings.roleImagePath+"RoleAcutePhysician-OM.png", "imageName":"RoleAcutePhysician-OM.png", "label":"Acute Physician", "thumbnailURL":VariablesSettings.roleImagePath+"RoleAcutePhysician-OM.png", "thumbnailName" : "RoleAcutePhysician-OM.png"},
+      {"imageURL":VariablesSettings.roleImagePath+"RolePatient-OM.png", "imageName":"RolePatient-OM.png", "label":"Patient", "thumbnailURL":VariablesSettings.roleImagePath+"RolePatient-OM.png", "thumbnailName" : "RolePatient-OM.png"}
+    ];
+
 
     this.sapscenesImageList = [
       {"imageURL":VariablesSettings.sapScenesImagePath+"Architecture.PNG", "imageName":"Architecture.PNG", "label":"Architecture", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_Architecture.PNG", "thumbnailName" : "Thumbnail_Architecture.PNG"},

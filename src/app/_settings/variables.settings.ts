@@ -20,7 +20,7 @@ export class VariablesSettings{
   /* START - Organizational Model */
   public static CAT_OrganizationalUnit: string = 'Category_OrganizationalUnit';
   public static CAT_Performer: string = 'Category_Performer';
-  public static Category_Role: string = 'Category_Role';
+  public static CAT_Role: string = 'Category_Role';
   /* END - Organizational Model */
 
   /* START - DSML4PTM */
@@ -33,13 +33,15 @@ export class VariablesSettings{
   public static CAT_DocumentConnectors_DSML4PTM: string = 'Category_Connectors4DKModelingView';
 
   /* END - DSML4PTM  */
-  public static CAT_GROUPS4BPaaS: string = 'Category_Groups4BPaaSProcessModelingView';
 
   /* START - BPaaS */
-
-
+  public static CAT_GROUPS4BPaaS: string = 'Category_Groups4BPaaSProcessModelingView';
 
   /* END - BPaaS  */
+
+
+
+
 
 
   /* START - SAP Scenes */
@@ -61,6 +63,11 @@ export class VariablesSettings{
   public static connectors4Document4DSML4PTMImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_DocumentConnectors_DSML4PTM + "/";
 
   public static group4BPaaSImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_GROUPS4BPaaS + "/";
+
+  public static organizationalUnitImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_OrganizationalUnit + "/";
+  public static performerImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_Performer + "/";
+  public static roleImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_Role + "/";
+
 
   public static sapScenesImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_SAPSCENES + "/";
   public static sapRelationsImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_SAPRELATIONS + "/";
