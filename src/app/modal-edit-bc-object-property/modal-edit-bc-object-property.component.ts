@@ -55,7 +55,9 @@ export class ModalEditBCObjectPropertyComponent implements OnInit {
   }
 
   selectionChanged($event: any) {
-    console.log('Selection changed');
+    console.log('Selection changed in edit bc object property');
+    this.editedProperty.range = $event.value.id;
+    console.log(this.editedProperty.range);
   }
 
   editProperty() {

@@ -72,6 +72,7 @@ const appRoutes: Routes = [
     ModalAddPropertiesComponent,
     ModalEditPropertiesComponent,
     ModalEditBCObjectPropertyComponent,
+    ModalEditSMObjectPropertyComponent,
     ModalInsertObjectPropertyComponent,
     ModalInsertLangobjectPropertyComponent
   ],

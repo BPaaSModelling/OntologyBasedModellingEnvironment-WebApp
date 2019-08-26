@@ -56,6 +56,7 @@ export class ModalEditSMObjectPropertyComponent implements OnInit {
 
   selectionChanged($event: any) {
     console.log('Selection changed');
+    this.editedProperty.range = $event.value.id;
   }
 
   editProperty() {

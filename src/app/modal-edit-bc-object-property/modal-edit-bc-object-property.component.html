@@ -6,13 +6,13 @@
 <mat-dialog-content style="max-width:800px;max-height:810px; ">
 
   <h2 class="mat-display-2">Edit Relation</h2>
-  <mat-card>
+  <mat-card class="wide-display">
 
     <mat-accordion>
       <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
         <mat-expansion-panel-header>
           <mat-panel-title>Edit Selected Bridging Connector</mat-panel-title>
-          <mat-panel-description>Refers to an existing concept</mat-panel-description>
+
         </mat-expansion-panel-header>
 
         <mat-form-field class="full-width">
@@ -25,13 +25,16 @@
           </mat-select>
         </mat-form-field>-->
 
-        <ngx-select-dropdown name="select_range" (change)="selectionChanged($event)" [multiple]="false" [(ngModel)]="editedProperty.range" [config]="config2" [options]="mService.languageSubclasses">
+        <ngx-select-dropdown name="select_range" (change)="selectionChanged($event)" [multiple]="false" [(ngModel)]="editedProperty.range" [config]="config2" [options]="mService.modelingLanguageClasses">
 
         </ngx-select-dropdown>
+
+        <div layout="row">
 
         <mat-form-field class="full-width">
           <input matInput placeholder="Edit default value (optional)">
         </mat-form-field>
+        </div>
 
       </mat-expansion-panel>
 
