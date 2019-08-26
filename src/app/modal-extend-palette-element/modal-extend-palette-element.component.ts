@@ -124,7 +124,8 @@ public VariablesSettings: any;
 
     this.documents4DSML4PTMImageList = [
       {"imageURL":VariablesSettings.documents4DSML4PTMImagePath+"ICFstandard-dkm.png", "imageName":"ICFstandard-dkm.png", "label":"ICF Standard", "thumbnailURL":VariablesSettings.documents4DSML4PTMImagePath+"ICFstandard-dkm.png", "thumbnailName" : "ICFstandard-dkm.png"},
-      {"imageURL":VariablesSettings.documents4DSML4PTMImagePath+"KoGuStrokeDocument-dkm.png", "imageName":"KoGuStrokeDocument-dkm.png", "label":"KoGu Stroke Document", "thumbnailURL":VariablesSettings.documents4DSML4PTMImagePath+"KoGuStrokeDocument-dkm.png", "thumbnailName" : "KoGuStrokeDocument-dkm.png"}
+      {"imageURL":VariablesSettings.documents4DSML4PTMImagePath+"KoGuStrokeDocument-dkm.png", "imageName":"KoGuStrokeDocument-dkm.png", "label":"KoGu Stroke Document", "thumbnailURL":VariablesSettings.documents4DSML4PTMImagePath+"KoGuStrokeDocument-dkm.png", "thumbnailName" : "KoGuStrokeDocument-dkm.png"},
+      {"imageURL":VariablesSettings.documents4DSML4PTMImagePath+"MedicationList-dkm.png", "imageName":"MedicationList-dkm.png", "label":"ICF Document", "thumbnailURL":VariablesSettings.documents4DSML4PTMImagePath+"MedicationList-dkm.png", "thumbnailName" : "MedicationList-dkm.png"}
     ];
 
     this.data4DSML4PTMImageList = [
