@@ -22,19 +22,19 @@
 
         <mat-form-field class="full-width">
           <mat-select placeholder="Type of value" [(ngModel)]="editedProperty.range">
-            <mat-option value="Boolean">Boolean</mat-option>
-            <mat-option value="Date">Date</mat-option>
-            <mat-option value="DateTime">DateTime</mat-option>
-            <mat-option value="Decimal">Decimal</mat-option>
-            <mat-option value="Integer">Integer</mat-option>
-            <mat-option value="String">String</mat-option>
-            <mat-option value="HTML">HTML</mat-option>
+            <mat-option value="xsd:boolean">Boolean</mat-option>
+            <mat-option value="xsd:date">Date</mat-option>
+            <mat-option value="xsd:dateTime">DateTime</mat-option>
+            <mat-option value="xsd:decimal">Decimal</mat-option>
+            <mat-option value="xsd:integer">Integer</mat-option>
+            <mat-option value="xsd:string">String</mat-option>
+            <mat-option value="rdf:HTML">HTML</mat-option>
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field class="full-width">
-          <input matInput placeholder="Edit default value (optional)">
-        </mat-form-field>
+        <!--<mat-form-field class="full-width">
+          <input matInput placeholder="Edit default value (optional)" [(ngModel)]="editedProperty.defaultValue">
+        </mat-form-field>-->
 
       </mat-expansion-panel>
 
