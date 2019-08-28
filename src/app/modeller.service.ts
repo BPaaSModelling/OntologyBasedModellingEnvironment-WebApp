@@ -94,17 +94,17 @@ console.log(this.paletteElements);
     return querySuccess;*/
   }
 
-  hidePaletteElement(oImg): Boolean {
+  hidePaletteElement(oImg) {
     //console.log(JSON.stringify(oImg));
     let querySuccess: Boolean = false;
     console.log(oImg);
-    this.http.post(EndpointSettings.getHidePaletteElementEndpoint(), oImg)
-      .map(response => response.json()).subscribe(
+    return this.http.post(EndpointSettings.getHidePaletteElementEndpoint(), oImg)
+      .map(response => response.json());/*.subscribe(
       data => {
         querySuccess = (data == 'true');
       }
     );
-    return querySuccess;
+    return querySuccess;*/
   }
 
   createDomainElementInOntology(oImg): Boolean {

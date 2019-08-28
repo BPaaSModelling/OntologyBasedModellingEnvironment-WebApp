@@ -141,6 +141,11 @@ constructor(private mService: ModellerService, public dialog: MatDialog) {
   hideFromPalette(element: PaletteElementModel) {
     console.log('Hiding element : ' + element.label);
     element.uuid = (element.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
-    this.mService.hidePaletteElement(JSON.stringify(element));
+    this.mService.hidePaletteElement(JSON.stringify(element)).subscribe(
+      (response) => {
+        console.log(response);
+        this.mService.queryPaletteElements();
+      }
+    );
   }
 }

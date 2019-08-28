@@ -155,8 +155,14 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
 
   hideFromPalette(element: PaletteElementModel) {
     console.log('Hiding element : ' + element.label);
+    console.log(element.id);
     element.uuid = (element.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
-    this.mService.hidePaletteElement(JSON.stringify(element));
+    this.mService.hidePaletteElement(JSON.stringify(element)).subscribe(
+      (response) => {
+        console.log(response);
+        this.mService.queryPaletteElements();
+      }
+    );
   }
 
   selectLang($event: any) {
