@@ -10,6 +10,7 @@
   min-width: 170px;
   display: inline-block;
   z-index: 2;
+  overflow: auto;
 }
 .modelling-area{
   border-right: 1px solid #333333;
