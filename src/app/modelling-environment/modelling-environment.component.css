@@ -1,6 +1,8 @@
 .flex-container{
   border: 2px solid #000000;
-  height: 96vh;
+  /*height: 96vh;*/
+  height: 100%;
+  width: auto;
 }
 .palette-area{
   //background-color: #dddddd;
@@ -10,13 +12,18 @@
   min-width: 170px;
   display: inline-block;
   z-index: 2;
-  overflow: auto;
+  overflow: visible;
+  padding-bottom: 5px;
+  /*position: relative;*/
+  /*float: left;*/
 }
 .modelling-area{
   border-right: 1px solid #333333;
-  min-height: 100%;
-  width: 97%;
+  height: 100%;
+  width: 100%;
   z-index: 1;
+  /*position: relative;*/
+  /*float: right;*/
 }
 
 .header-pane {
@@ -25,7 +32,6 @@
   border-style: ridge;
   width: 99%;
   height: 90px;
-  display: flex;
   flex-flow: row wrap;
   /* This aligns items to the end line on main-axis */
   justify-content: flex-end;
