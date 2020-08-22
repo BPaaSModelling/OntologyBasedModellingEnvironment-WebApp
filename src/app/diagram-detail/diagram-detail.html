@@ -1,0 +1,38 @@
+<mat-table [dataSource]="diagramDetailDatasource" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="key">
+    <mat-header-cell *matHeaderCellDef> Key </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.relation}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="value">
+    <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <input type="text" [(ngModel)]="element.value" /></mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  <button (click)="save()">Save</button>
+</mat-table>
+
+<mat-table [dataSource]="modelElementAttributeDatasource" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="key">
+    <mat-header-cell *matHeaderCellDef> Key </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.relation}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="value">
+    <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <input type="text" [(ngModel)]="element.value" />
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+<button (click)="save()">Save</button>
+<button (click)="close()">Close</button>

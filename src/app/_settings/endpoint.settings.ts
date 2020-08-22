@@ -30,6 +30,33 @@ export class EndpointSettings {
 
   private static GETDOMAINCONCEPTS          : string = '/ModEnv/getDomainConcepts';
 
+  private static MODELS : string = '/ModEnv/model';
+  private static ARROWS : string = '/ModEnv/arrow-structures';
+
+  public static getModelsEndpoint(): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS;
+  }
+
+  public static getModelEndpoint(modelId: string): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId;
+  }
+
+  public static getDiagramEndpoint(modelId: string): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId + '/diagram';
+  }
+
+  public static getConnectionEndpoint(modelId: string): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId + '/connection';
+  }
+
+  public static getDiagramDetailEndpoint(modelId: string, diagramId: string): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId + '/diagram/' + diagramId;
+  }
+
+  public static getArrowsEndpoint(): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.ARROWS;
+  }
+
   public static getModelingLanguagesEndpoint(): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.GETMODELINGLANGUAGES;
   }

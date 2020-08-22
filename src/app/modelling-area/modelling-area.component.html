@@ -1,3 +1,25 @@
-<div style="width: 100%; display: flex; justify-content: space-between">
-<div id="myDiagramDiv" style="flex-grow: 1; height: 1000px; "></div>
+<div style="display: flex; flex-direction: column">
+  <div id="models" style="width: 400px">
+
+    <mat-form-field appearance="fill">
+      <mat-select
+        (change)="selectionChanged($event)"
+        [(ngModel)]="selectedModel">
+        <mat-option *ngFor="let model of models" [value]="model">{{model.label}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button (click)="openModelCreationModel()">Add</button>
+    <button (click)="deleteModel()">Delete</button>
+  </div>
+  <div style="display: flex; flex-direction: row">
+    <div id="myDiagramDiv" style="flex-grow: 1; height: 1000px; "></div>
+    <diagram-detail
+      *ngIf="diagramDetailsToDisplay != undefined && selectedModel != undefined"
+      [diagramDetail]="diagramDetailsToDisplay"
+      [model]="selectedModel"
+      (closeRequest)="closeDetails()"
+      style="width:500px"
+    ></diagram-detail>
+  </div>
 </div>

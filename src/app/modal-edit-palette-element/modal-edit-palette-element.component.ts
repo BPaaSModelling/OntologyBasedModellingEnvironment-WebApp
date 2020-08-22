@@ -12,6 +12,7 @@ import {ObjectPropertyModel} from "../_models/ObjectProperty.model";
 import {ModalInsertObjectPropertyComponent} from "../modal-insert-object-property/modal-insert-object-property.component";
 import {ModalInsertLangobjectPropertyComponent} from "../modal-insert-langobject-property/modal-insert-langobject-property.component";
 import {VariablesSettings} from "../_settings/variables.settings";
+import * as go from 'gojs';
 
 @Component({
   selector: 'app-modal-edit-palette-element',
@@ -49,6 +50,8 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public semanticMappings: ObjectPropertyModel[] = [];
   public config1: any;
   public VariablesSettings: any;
+
+  public arrowHeads: string[] = [];
 
 
   constructor(public dialogRef: MatDialogRef<ModalEditPaletteElementComponent>,
@@ -104,6 +107,9 @@ export class ModalEditPaletteElementComponent implements OnInit {
     this.currentPaletteElement.imageURL = this.data.paletteElement.imageURL;
     this.currentPaletteElement.comment = this.data.paletteElement.comment;
     this.currentPaletteElement.uuid = this.data.paletteElement.uuid;
+    this.currentPaletteElement.arrowStroke = this.data.paletteElement.arrowStroke;
+    this.currentPaletteElement.toArrow = this.data.paletteElement.toArrow;
+    this.currentPaletteElement.fromArrow = this.data.paletteElement.fromArrow;
 
     this.activityImageList = [
       {"imageURL":VariablesSettings.activitiesImagePath+"AdHoc_Subprocess.png", "imageName":"AdHoc_Subprocess.png", "label":"AdHoc Subprocess", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_AdHoc_Subprocess.png", "thumbnailName" : "Thumbnail_AdHoc_Subprocess.png"},
@@ -268,6 +274,10 @@ export class ModalEditPaletteElementComponent implements OnInit {
       {"imageURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasNote.PNG", "imageName":"Thumbnail_hasNote.PNG", "label":"Has Note", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasNote.PNG", "thumbnailName" : "Thumbnail_hasNote.PNG"},
       {"imageURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasRelation.PNG", "imageName":"Thumbnail_hasRelation.PNG", "label":"Has Relation", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasRelation.PNG", "thumbnailName" : "Thumbnail_hasRelation.PNG"}
     ];
+
+    this.mService.getArrowStructures().then(value => {
+      this.arrowHeads = value;
+    });
 
     this.config1 = {
       displayKey: 'label',

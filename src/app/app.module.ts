@@ -9,8 +9,22 @@ import {RouterModule, Routes} from '@angular/router';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import {ModellerService} from './modeller.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {MatListModule, MatButtonModule, MatToolbarModule, MatDialogModule, MatTabsModule, MatCardModule,
-  MatSelectModule, MatOptionModule, MatInputModule, MatFormFieldModule, MatCheckboxModule, MatExpansionModule} from '@angular/material';
+import {
+  MatListModule,
+  MatButtonModule,
+  MatToolbarModule,
+  MatDialogModule,
+  MatTabsModule,
+  MatCardModule,
+  MatSelectModule,
+  MatOptionModule,
+  MatInputModule,
+  MatFormFieldModule,
+  MatCheckboxModule,
+  MatExpansionModule,
+  MatGridListModule,
+  MatTableModule
+} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToolRecursivePaletteElementComponent} from './-tool-recursive-palette-element/-tool-recursive-palette-element.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -31,6 +45,8 @@ import { HeaderPaneComponent } from './header-pane/header-pane.component';
 import { ModalEditBCObjectPropertyComponent } from './modal-edit-bc-object-property/modal-edit-bc-object-property.component';
 import { ModalInsertLangobjectPropertyComponent } from './modal-insert-langobject-property/modal-insert-langobject-property.component';
 import { ModalEditSMObjectPropertyComponent } from './modal-edit-sm-object-property/modal-edit-sm-object-property.component';
+import { ModalModelCreation } from './modal-model-creation/modal-model-creation.component';
+import {DiagramDetailComponent} from './diagram-detail/diagram-detail.component';
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
@@ -59,7 +75,9 @@ const appRoutes: Routes = [
     HeaderPaneComponent,
     ModalEditBCObjectPropertyComponent,
     ModalInsertLangobjectPropertyComponent,
-    ModalEditSMObjectPropertyComponent
+    ModalEditSMObjectPropertyComponent,
+    ModalModelCreation,
+    DiagramDetailComponent
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -74,7 +92,9 @@ const appRoutes: Routes = [
     ModalEditBCObjectPropertyComponent,
     ModalEditSMObjectPropertyComponent,
     ModalInsertObjectPropertyComponent,
-    ModalInsertLangobjectPropertyComponent
+    ModalInsertLangobjectPropertyComponent,
+    ModalModelCreation,
+    DiagramDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -100,7 +120,9 @@ const appRoutes: Routes = [
     MatExpansionModule,
     FormsModule,
     ReactiveFormsModule,
-    SelectDropDownModule
+    SelectDropDownModule,
+    MatGridListModule,
+    MatTableModule
   ],
   providers: [ModellerService],
   bootstrap: [AppComponent]

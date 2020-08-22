@@ -228,6 +228,22 @@
 
               </mat-form-field>
 
+              <mat-form-field>
+                <mat-select [(ngModel)]="currentPaletteElement.fromArrow" placeholder="From Arrow" name="arrow.from">
+                  <mat-option *ngFor="let arrow of arrowHeads" [value]="arrow">
+                    {{arrow}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-select [(ngModel)]="currentPaletteElement.toArrow" placeholder="To Arrow" name="arrow.to">
+                  <mat-option *ngFor="let arrow of arrowHeads" [value]="arrow">
+                    {{arrow}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
             </div>
             <br/>
             <div layout="row">

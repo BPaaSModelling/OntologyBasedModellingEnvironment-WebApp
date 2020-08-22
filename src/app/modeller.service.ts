@@ -12,6 +12,12 @@ import {QueryAnswerModel} from "./_models/QueryAnswer.model";
 import {DatatypePropertyModel} from "./_models/DatatypeProperty.model";
 import {DomainElementModel} from "./_models/DomainElement.model";
 import {ModelingLanguageModel} from "./_models/ModelingLanguage.model";
+import {Model} from './_models/Model.model';
+import {HttpClient} from '@angular/common/http';
+import {element} from 'protractor';
+import {DiagramDetail} from './_models/DiagramDetail.model';
+import {Diagram} from './_models/Diagram.model';
+import {toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
 
 @Injectable()
 export class ModellerService {
@@ -251,4 +257,84 @@ console.log(this.paletteElements);
     return this.http.get(EndpointSettings.getDomainConceptsEndpoint())
       .map(response => response.json());
   }*/
+
+  getArrowStructures(): Promise<string[]> {
+    return this.http.get(EndpointSettings.getArrowsEndpoint())
+      .toPromise()
+      .then(response => response.json() as string[]);
+  }
+
+  getModels(): Promise<Model[]> {
+    return this.http.get(EndpointSettings.getModelsEndpoint())
+      .toPromise()
+      .then(response => response.json() as Model[]);
+  }
+
+  createModel(label: string): Promise<Model> {
+
+    let dto: Model = new Model();
+    dto.label = label;
+
+    return this.http.post(EndpointSettings.getModelsEndpoint(), dto)
+      .toPromise()
+      .then(response => response.json() as Model);
+  }
+
+  createDiagram(modelId: string, diagramId: string, label: string, x: number, y: number, paletteConstruct: string): Promise<DiagramDetail> {
+    let payload: Object = {
+      x: toInteger(x),
+      y: toInteger(y),
+      paletteConstruct: paletteConstruct,
+      uuid: diagramId,
+      label
+    }
+
+    return this.http.put(EndpointSettings.getDiagramEndpoint(modelId), payload)
+      .toPromise()
+      .then(response => response.json() as DiagramDetail);
+  }
+
+  createConnection(modelId: string, diagramId: string, x: number, y: number, from: string, to: string, paletteConstruct: string): Promise<DiagramDetail> {
+    let payload: Object = {
+      x: toInteger(x),
+      y: toInteger(y),
+      paletteConstruct: paletteConstruct,
+      uuid: diagramId,
+      from: from,
+      to: to
+    }
+
+    return this.http.put(EndpointSettings.getConnectionEndpoint(modelId), payload)
+      .toPromise()
+      .then(response => response.json() as DiagramDetail);
+  }
+
+  getDiagrams(modelId: string): Promise<Diagram[]> {
+    return this.http.get(EndpointSettings.getDiagramEndpoint(modelId))
+      .toPromise()
+      .then(response => response.json() as Diagram[])
+  }
+
+  getDiagramDetails(modelId: string, diagramId: string): Promise<DiagramDetail> {
+    return this.http.get(EndpointSettings.getDiagramDetailEndpoint(modelId, diagramId))
+      .toPromise()
+      .then(response => response.json() as DiagramDetail);
+  }
+
+  updateDiagram(diagramDetail: DiagramDetail, modelId: string) {
+    this.http.put(EndpointSettings.getDiagramDetailEndpoint(modelId, diagramDetail.id), diagramDetail)
+      .toPromise()
+      .then(response => console.log(response));
+  }
+
+  deleteDiagram(modelId: string, diagramId: string) {
+    this.http.delete(EndpointSettings.getDiagramDetailEndpoint(modelId, diagramId))
+      .toPromise()
+      .then(response => console.log(response));
+  }
+
+  deleteModel(modelId: string): Promise<Object> {
+    return this.http.delete(EndpointSettings.getModelEndpoint(modelId))
+      .toPromise();
+  }
 }

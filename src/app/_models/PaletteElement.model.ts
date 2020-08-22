@@ -30,6 +30,12 @@ export class PaletteElementModel {
   imageURL: string;
   thumbnailURL: string;
 
+  toArrow: string;
+  fromArrow: string;
+  arrowStroke: string;
+
+  type: string;
+
   tempLabel;
   tempUuid;
 }
