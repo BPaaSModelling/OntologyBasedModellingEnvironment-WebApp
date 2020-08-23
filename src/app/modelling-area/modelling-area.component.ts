@@ -1,6 +1,6 @@
 import {Component, HostListener, Input, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import * as go from 'gojs';
-import {ChangedEvent, GraphObject, InputEvent, Key, Point} from 'gojs';
+import {ChangedEvent, GraphObject, InputEvent} from 'gojs';
 import {PaletteElementModel} from '../_models/PaletteElement.model';
 import {VariablesSettings} from '../_settings/variables.settings';
 import {ModellerService} from '../modeller.service';
@@ -59,7 +59,8 @@ export class ModellingAreaComponent implements OnInit {
     displayKey: 'label'
   };
 
-  private selectedConnectorMode: PaletteElementModel;
+  public selectedConnectorMode: PaletteElementModel;
+  private pathPatterns: Map<string, string> = new Map();
 
   public diagramDetailsToDisplay: DiagramDetail;
 
@@ -75,7 +76,45 @@ export class ModellingAreaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-     this.prepareModels();
+    this.prepareModels();
+
+    this.pathPatterns.set("Single", "M0 0 L1 0");
+    this.pathPatterns.set("Double", "M0 0 L1 0 M0 3 L1 3");
+    this.pathPatterns.set("Triple", "M0 0 L1 0 M0 3 L1 3 M0 6 L1 6");
+    this.pathPatterns.set("Dash", "M0 0 M3 0 L6 0");
+    this.pathPatterns.set("DoubleDash", "M0 0 M3 0 L6 0 M3 3 L6 3");
+    this.pathPatterns.set("Dot", "M0 0 M4 0 L4.1 0");
+    this.pathPatterns.set("DoubleDot", "M0 0 M4 0 L4.1 0 M4 3 L4.1 3");
+    this.pathPatterns.set("BackSlash", "M0 3 L2 6 M1 0 L5 6 M4 0 L6 3");
+    this.pathPatterns.set("Slash", "M0 3 L2 0 M1 6 L5 0 M4 6 L6 3");
+    this.pathPatterns.set("Coil", "M0 0 C2.5 0  5 2.5  5 5  C5 7.5  5 10  2.5 10  C0 10  0 7.5  0 5  C0 2.5  2.5 0  5 0");
+    this.pathPatterns.set("Square", "M0 0 M1 0 L7 0 7 6 1 6z");
+    this.pathPatterns.set("Circle", "M0 3 A3 3 0 1 0 6 4  A3 3 0 1 0 0 3");
+    this.pathPatterns.set("BigCircle", "M0 5 A5 5 0 1 0 10 5  A5 5 0 1 0 0 5");
+    this.pathPatterns.set("Triangle", "M0 0 L4 4 0 8z");
+    this.pathPatterns.set("Diamond", "M0 4 L4 0 8 4 4 8z");
+    this.pathPatterns.set("Dentil", "M0 0 L2 0  2 6  6 6  6 0  8 0");
+    this.pathPatterns.set("Greek", "M0 0 L1 0  1 3  0 3  M0 6 L4 6  4 0  8 0  M8 3 L7 3  7 6  8 6");
+    this.pathPatterns.set("Seed", "M0 0 A9 9 0 0 0 12 0  A9 9 180 0 0 0 0");
+    this.pathPatterns.set("SemiCircle", "M0 0 A4 4 0 0 1 8 0");
+    this.pathPatterns.set("BlindHem", "M0 4 L2 4  4 0  6 4  8 4");
+    this.pathPatterns.set("Zipper", "M0 4 L1 4 1 0 8 0 8 4 9 4  M0 6 L3 6 3 2 6 2 6 6 9 6");
+    this.pathPatterns.set("Herringbone", "M0 2 L2 4 0 6  M2 0 L4 2  M4 6 L2 8");
+    this.pathPatterns.set("Sawtooth", "M0 3 L4 0 2 6 6 3");
+  }
+
+  private convertGeometryToShape(geometry: string) {
+
+    if (!geometry) return null;
+
+    return $(go.Shape,
+      {
+        geometryString: geometry,
+        fill: "transparent",
+        stroke: "gray",
+        strokeWidth: 2
+      }
+    );
   }
 
   private prepareModels() {
@@ -99,7 +138,8 @@ export class ModellingAreaComponent implements OnInit {
                 from: diagram.modelElementAttributes.find(value => value.relation == 'modelingRelationHasSourceModelingElement').value,
                 to: diagram.modelElementAttributes.find(value => value.relation == 'modelingRelationHasTargetModelingElement').value,
                 fromArrow: diagram.fromArrow,
-                toArrow: diagram.toArrow
+                toArrow: diagram.toArrow,
+                pathPattern: this.pathPatterns.get(diagram.arrowStroke)
               }
 
               model.goJsModel.addLinkData(linkData);
@@ -184,8 +224,12 @@ export class ModellingAreaComponent implements OnInit {
     this.myDiagram.linkTemplate =
       $(go.Link,  // the whole link panel
         $(go.Shape,  // the link shape
-          // the first element is assumed to be main element: as if isPanelMain were true
-          { stroke: "gray", strokeWidth: 2 }),
+        {
+          stroke: "transparent",
+          strokeWidth: 3
+        },
+          new go.Binding("pathPattern", "pathPattern", this.convertGeometryToShape)
+        ),
         $(go.Shape,  // the "from" arrowhead
           new go.Binding("fromArrow", "fromArrow"),
           { scale: 2, fill: "#FDE70E" }),
@@ -308,14 +352,15 @@ export class ModellingAreaComponent implements OnInit {
       if (txn.name === 'Linking') {
         let change = txn.changes.toArray().find(element => element.propertyName === 'data');
         let link = this.myDiagram.findLinkForData(change.object.data);
+
+        if (this.selectedConnectorMode === undefined || !(this.selectedConnectorMode.toArrow !== undefined && this.selectedConnectorMode.fromArrow !== undefined && this.selectedConnectorMode.arrowStroke !== undefined)) {
+          this.myDiagram.model.removeLinkData(link.data);
+          return;
+        }
+
         link.data.toArrow = this.selectedConnectorMode.toArrow;
         link.data.fromArrow = this.selectedConnectorMode.fromArrow;
-
-        //this.myDiagram.rebuildParts();
-
-        if (this.selectedConnectorMode === undefined) {
-          // TODO: cancel link
-        }
+        link.data.pathPattern = this.pathPatterns.get(this.selectedConnectorMode.arrowStroke);
 
         let fromElement = change.newValue.from;
         let toElement = change.newValue.to;

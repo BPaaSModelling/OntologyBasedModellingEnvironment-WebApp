@@ -10,6 +10,7 @@ export class Diagram {
   imageUrl: string
   fromArrow: string
   toArrow: string
+  arrowStroke: string
   modelElementType: string
   modelElementAttributes: Relation[]
 }

@@ -47,6 +47,7 @@ public config1: any;
 public VariablesSettings: any;
 
 public arrowHeads: string[] = [];
+public arrowStrokes: string[] = [];
 
 
 @Output() showCreateDomainElementModalFromExtend = new EventEmitter();
@@ -233,7 +234,8 @@ public arrowHeads: string[] = [];
     ];
 
     this.mService.getArrowStructures().then(value => {
-      this.arrowHeads = value;
+      this.arrowHeads = value.heads;
+      this.arrowStrokes = value.strokes;
     });
 
     console.log(this.arrowHeads);

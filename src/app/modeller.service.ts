@@ -18,6 +18,7 @@ import {element} from 'protractor';
 import {DiagramDetail} from './_models/DiagramDetail.model';
 import {Diagram} from './_models/Diagram.model';
 import {toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
+import { ArrowStructures } from "./_models/ArrowStructures.model";
 
 @Injectable()
 export class ModellerService {
@@ -258,10 +259,10 @@ console.log(this.paletteElements);
       .map(response => response.json());
   }*/
 
-  getArrowStructures(): Promise<string[]> {
+  getArrowStructures(): Promise<ArrowStructures> {
     return this.http.get(EndpointSettings.getArrowsEndpoint())
       .toPromise()
-      .then(response => response.json() as string[]);
+      .then(response => response.json() as ArrowStructures);
   }
 
   getModels(): Promise<Model[]> {

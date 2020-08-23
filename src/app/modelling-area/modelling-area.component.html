@@ -1,6 +1,5 @@
 <div style="display: flex; flex-direction: column">
-  <div id="models" style="width: 400px">
-
+  <div style="display: flex; flex-direction: row">
     <mat-form-field appearance="fill">
       <mat-select
         (change)="selectionChanged($event)"
@@ -9,8 +8,12 @@
       </mat-select>
     </mat-form-field>
 
-    <button (click)="openModelCreationModel()">Add</button>
-    <button (click)="deleteModel()">Delete</button>
+    <button style="height: fit-content; align-self: center" (click)="openModelCreationModel()">Add</button>
+    <button style="height: fit-content; align-self: center" (click)="deleteModel()">Delete</button>
+
+    <div *ngIf="selectedConnectorMode">
+      Current arrow configuration: toArrow {{selectedConnectorMode.toArrow}}, fromArrow {{selectedConnectorMode.fromArrow}}, arrowStroke {{selectedConnectorMode.arrowStroke}}
+    </div>
   </div>
   <div style="display: flex; flex-direction: row">
     <div id="myDiagramDiv" style="flex-grow: 1; height: 1000px; "></div>

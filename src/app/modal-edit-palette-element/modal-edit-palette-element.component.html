@@ -244,6 +244,14 @@
                 </mat-select>
               </mat-form-field>
 
+              <mat-form-field>
+                <mat-select [(ngModel)]="currentPaletteElement.arrowStroke" placeholder="Arrow Stroke" name="arrow.stroke">
+                  <mat-option *ngFor="let arrow of arrowStrokes" [value]="arrow">
+                    {{arrow}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
             </div>
             <br/>
             <div layout="row">

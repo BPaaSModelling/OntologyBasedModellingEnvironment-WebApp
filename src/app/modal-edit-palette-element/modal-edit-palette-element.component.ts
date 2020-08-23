@@ -52,6 +52,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public VariablesSettings: any;
 
   public arrowHeads: string[] = [];
+  public arrowStrokes: string[] = [];
 
 
   constructor(public dialogRef: MatDialogRef<ModalEditPaletteElementComponent>,
@@ -276,7 +277,8 @@ export class ModalEditPaletteElementComponent implements OnInit {
     ];
 
     this.mService.getArrowStructures().then(value => {
-      this.arrowHeads = value;
+      this.arrowHeads = value.heads;
+      this.arrowStrokes = value.strokes;
     });
 
     this.config1 = {
