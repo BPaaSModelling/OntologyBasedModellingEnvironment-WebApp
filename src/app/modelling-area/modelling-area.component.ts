@@ -11,6 +11,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {DiagramDetail} from '../_models/DiagramDetail.model';
 import {UUID} from 'angular2-uuid';
 import {toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
+import {link} from 'fs';
 
 let $: any;
 let myDiagram: any;
@@ -103,7 +104,7 @@ export class ModellingAreaComponent implements OnInit {
     this.pathPatterns.set("Sawtooth", "M0 3 L4 0 2 6 6 3");
   }
 
-  private convertGeometryToShape(geometry: string) {
+  private static convertGeometryToShape(geometry: string) {
 
     if (!geometry) return null;
 
@@ -111,8 +112,8 @@ export class ModellingAreaComponent implements OnInit {
       {
         geometryString: geometry,
         fill: "transparent",
-        stroke: "gray",
-        strokeWidth: 2
+        stroke: "black",
+        strokeWidth: 1
       }
     );
   }
@@ -228,14 +229,14 @@ export class ModellingAreaComponent implements OnInit {
           stroke: "transparent",
           strokeWidth: 3
         },
-          new go.Binding("pathPattern", "pathPattern", this.convertGeometryToShape)
+          new go.Binding("pathPattern", "pathPattern", ModellingAreaComponent.convertGeometryToShape)
         ),
         $(go.Shape,  // the "from" arrowhead
           new go.Binding("fromArrow", "fromArrow"),
-          { scale: 2, fill: "#FDE70E" }),
+          { scale: 2 }),
         $(go.Shape,  // the "to" arrowhead
           new go.Binding("toArrow", "toArrow"),
-          { scale: 2, fill: "#FDE70E" }),
+          { scale: 2 }),
         $(go.TextBlock,
           {
             font: "11pt Helvetica, Arial, sans-serif",
@@ -557,6 +558,108 @@ export class ModellingAreaComponent implements OnInit {
         this.myDiagram.model.linkDataArray = [];
       });
     }
+  }
+
+  private prepareStrokeDemoModel() {
+    let arrowheads = go.Shape.getArrowheadGeometries().toKeySet().toArray();
+    if (arrowheads.length % 2 === 1) arrowheads.push("");
+
+    var linkdata = [];
+    var nodedata = [];
+    var i = 0;
+    for (var j = 0; j < this.pathPatterns.size; j++) {
+      nodedata.push({
+        key: (j+1),
+        text: Array.from(this.pathPatterns.keys())[j],
+        fill: '#0000',
+        source: "../assets/images/Category_Activities4BPMNProcessModelingView/Task.png",
+        size: new go.Size(300, 50),
+        width: 300,
+        height: 50,
+        alignment: go.Spot.Bottom,
+        loc: new go.Point(0, j*50)
+      });
+      nodedata.push({
+        key: -(j+1),
+        text: Array.from(this.pathPatterns.keys())[j],
+        fill: '#0000',
+        source: "../assets/images/Category_Activities4BPMNProcessModelingView/Task.png",
+        size: new go.Size(300, 50),
+        width: 300,
+        height: 50,
+        alignment: go.Spot.Bottom,
+        loc: new go.Point(500, j*50)
+      });
+      linkdata.push({
+        from: j+1,
+        to: -(j+1),
+        fromArrow: arrowheads[0],
+        toArrow: arrowheads[0],
+        pathPattern: Array.from(this.pathPatterns.values())[j]
+      });
+    }
+
+    this.myDiagram.model =
+      $(go.GraphLinksModel,
+        { // this gets copied automatically when there's a link data reference to a new node key
+          // and is then added to the nodeDataArray
+          archetypeNodeData: {},
+          // the node array starts with just the special Center node
+          nodeDataArray: nodedata,
+          // the link array was created above
+          linkDataArray: linkdata
+        });
+  }
+
+  private prepareArrowsHeadDemoModel() {
+    let arrowheads = go.Shape.getArrowheadGeometries().toKeySet().toArray();
+    if (arrowheads.length % 2 === 1) arrowheads.push("");
+
+    var linkdata = [];
+    var nodedata = [];
+    var i = 0;
+    for (var j = 0; j < arrowheads.length; j = j + 2) {
+      nodedata.push({
+        key: j,
+        text: arrowheads[j],
+        fill: '#0000',
+        source: "../assets/images/Category_Activities4BPMNProcessModelingView/Task.png",
+        size: new go.Size(300, 50),
+        width: 300,
+        height: 50,
+        alignment: go.Spot.Bottom,
+        loc: new go.Point(0, j*50)
+      });
+      nodedata.push({
+        key: j+1,
+        text: arrowheads[j+1],
+        fill: '#0000',
+        source: "../assets/images/Category_Activities4BPMNProcessModelingView/Task.png",
+        size: new go.Size(300, 50),
+        width: 300,
+        height: 50,
+        alignment: go.Spot.Bottom,
+        loc: new go.Point(500, j*50)
+      });
+      linkdata.push({
+        from: j,
+        to: j+1,
+        fromArrow: arrowheads[j],
+        toArrow: arrowheads[j+1],
+        pathPattern: this.pathPatterns.get("Single")
+      });
+    }
+
+    this.myDiagram.model =
+      $(go.GraphLinksModel,
+        { // this gets copied automatically when there's a link data reference to a new node key
+          // and is then added to the nodeDataArray
+          archetypeNodeData: {},
+          // the node array starts with just the special Center node
+          nodeDataArray: nodedata,
+          // the link array was created above
+          linkDataArray: linkdata
+        });
   }
 }
 // https://github.com/shlomiassaf/ngx-modialog

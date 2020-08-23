@@ -12,7 +12,10 @@
     <button style="height: fit-content; align-self: center" (click)="deleteModel()">Delete</button>
 
     <div *ngIf="selectedConnectorMode">
-      Current arrow configuration: toArrow {{selectedConnectorMode.toArrow}}, fromArrow {{selectedConnectorMode.fromArrow}}, arrowStroke {{selectedConnectorMode.arrowStroke}}
+      Current arrow configuration:
+      <img class="thumbnail" [src]="'../assets/images/Arrows/' + selectedConnectorMode.fromArrow + '.PNG'" >
+      <img class="thumbnail" [src]="'../assets/images/Strokes/' + selectedConnectorMode.arrowStroke + '.PNG'" >
+      <img class="thumbnail" [src]="'../assets/images/Arrows/' + selectedConnectorMode.toArrow + '.PNG'" >
     </div>
   </div>
   <div style="display: flex; flex-direction: row">
