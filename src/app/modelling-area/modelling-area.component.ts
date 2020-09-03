@@ -12,6 +12,7 @@ import {DiagramDetail} from '../_models/DiagramDetail.model';
 import {UUID} from 'angular2-uuid';
 import {toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
 import {element} from 'protractor';
+import * as _ from 'lodash';
 
 let $: any;
 let myDiagram: any;
@@ -487,33 +488,44 @@ export class ModellingAreaComponent implements OnInit {
 
       if (nodeInfo.diagramDetail.modelElementType === 'ModelingElement' || nodeInfo.diagramDetail.modelElementType === 'ModelingContainer') {
 
+        if (nodeInfo.node.group !== undefined) {
+          // check if element has been moved outside the container and update the container
+          let containerNode = this.myDiagram.model.findNodeDataForKey(nodeInfo.node.group);
+          if (!this.isNodeInContainer(containerNode, nodeInfo.diagramDetail)) {
+            delete nodeInfo.node.group;
+            _.remove(containerNode.element.containedDiagrams, s => s === nodeInfo.diagramDetail.id);
+            this.mService.updateDiagram(containerNode.element, this.selectedModel.id);
+          }
+        }
+        // check if element has been moved inside any of the containers and update those
         this.myDiagram.model.nodeDataArray.forEach(containerNode => {
-          if (containerNode.element.modelElementType === 'ModelingContainer' && nodeInfo.diagramDetail.id != containerNode.element.id) {
-            if (
-              containerNode.element.x < nodeInfo.diagramDetail.x &&
-              containerNode.element.x + containerNode.element.width > nodeInfo.diagramDetail.x + nodeInfo.diagramDetail.width &&
-              containerNode.element.y < nodeInfo.diagramDetail.y &&
-              containerNode.element.y + containerNode.element.height > nodeInfo.diagramDetail.y + nodeInfo.diagramDetail.height
-            ) {
-              nodeInfo.node.group = containerNode.element.id;
-              let containedDiagrams = containerNode.element.containedDiagrams || [];
-              if (!containedDiagrams.includes(nodeInfo.diagramDetail.id)) {
-                containedDiagrams.push(nodeInfo.diagramDetail.id);
-                containerNode.element.containedDiagrams = containedDiagrams;
-                this.mService.updateDiagram(containerNode.element, this.selectedModel.id);
-              }
-            } else if (nodeInfo.node.group !== undefined) {
-              nodeInfo.node.group = undefined;
+          if (
+            containerNode.element.modelElementType === 'ModelingContainer' &&
+            nodeInfo.diagramDetail.id != containerNode.element.id &&
+            this.isNodeInContainer(containerNode, nodeInfo.diagramDetail)
+          ) {
+            nodeInfo.node.group = containerNode.element.id;
+            let containedDiagrams = containerNode.element.containedDiagrams || [];
+            if (!containedDiagrams.includes(nodeInfo.diagramDetail.id)) {
+              containedDiagrams.push(nodeInfo.diagramDetail.id);
+              containerNode.element.containedDiagrams = containedDiagrams;
+              this.mService.updateDiagram(containerNode.element, this.selectedModel.id);
             }
           }
         });
-
-        this.mService.updateDiagram(nodeInfo.diagramDetail, this.selectedModel.id);
-
       }
+
+      this.mService.updateDiagram(nodeInfo.diagramDetail, this.selectedModel.id);
     });
 
     this.myDiagram.rebuildParts();
+  }
+
+  private isNodeInContainer(containerNode, diagram) {
+    return containerNode.element.x < diagram.x &&
+      containerNode.element.x + containerNode.element.width > diagram.x + diagram.width &&
+      containerNode.element.y < diagram.y &&
+      containerNode.element.y + containerNode.element.height > diagram.y + diagram.height;
   }
 
   selectionChanged($event: any) {
@@ -594,38 +606,21 @@ export class ModellingAreaComponent implements OnInit {
 
     let elementKey = element.id.split('#')[1] + '_Diagram_' + element.tempUuid;
 
-    var toData = {};
-    if (element.paletteCategory === VariablesSettings.paletteCatogorySwimlanesURI) {
-      console.log('inside swimlane');
-      toData = {
-        text: element.label,
-        key: element.shape,
-        fill: "#0000",
-        source: imageURL,
-        size: new go.Size(element.width, element.height),
-        width: element.width,
-        height: element.height,
-        angle: 0,
-        alignment: go.Spot.Left,
-        element: element
-      };
-    }
-    else
-       toData = {
-        text: element.label,
-         key: elementKey,
-         fill: "#0000",
-         source: imageURL,
-         size: new go.Size(element.width, element.height),
-         width: element.width,
-         height: element.height,
-         alignment: go.Spot.Bottom,
-         click: (e: InputEvent, obj: GraphObject) => {
-           if (obj.part.data.element != undefined) {
-             this.diagramDetailsToDisplay = obj.part.data.element;
-           }
+    let toData = {
+      text: element.label,
+       key: elementKey,
+       fill: "#0000",
+       source: imageURL,
+       size: new go.Size(element.width, element.height),
+       width: element.width,
+       height: element.height,
+       alignment: go.Spot.Bottom,
+       click: (e: InputEvent, obj: GraphObject) => {
+         if (obj.part.data.element != undefined) {
+           this.diagramDetailsToDisplay = obj.part.data.element;
          }
-      };
+       }
+    };
 
     // add the new node data to the model
     var model = this.myDiagram.model;
@@ -645,6 +640,9 @@ export class ModellingAreaComponent implements OnInit {
       element.id.split('#')[1]
     ).then(response => {
       newnode.part.data.element = response;
+      if (response.modelElementType === 'ModelingContainer') {
+        newnode.part.data.isGroup = true;
+      }
     });
   }
 
