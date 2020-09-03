@@ -424,9 +424,25 @@ export class ModellingAreaComponent implements OnInit {
 
       if (txn.name === 'Linking') {
         this.handleNodeLinking(txn);
+      }
 
+      if (txn.name === 'Resizing') {
+        this.handleNodeResizing(txn);
       }
     });
+  }
+
+  private handleNodeResizing(txn: any) {
+
+    // resizing should only be affecting one element, we are not interested in the others
+    let latestChange = _.last(txn.changes.toArray().filter(change => change.propertyName === 'size'));
+    let diagramDetail = latestChange.object.element;
+    diagramDetail.width = toInteger(latestChange.newValue.split(" ")[0]);
+    diagramDetail.height = toInteger(latestChange.newValue.split(" ")[1]);
+    latestChange.object.width = diagramDetail.width;
+    latestChange.object.height = diagramDetail.height;
+
+    this.mService.updateDiagram(diagramDetail, this.selectedModel.id);
   }
 
   private handleNodeDeleted(txn) {
