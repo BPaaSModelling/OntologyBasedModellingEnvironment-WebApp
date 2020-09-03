@@ -141,10 +141,10 @@ export class ModellingAreaComponent implements OnInit {
                 key: diagram.id,
                 element: diagram,
                 text: diagram.label,
-                from: diagram.fromDiagram,
-                to: diagram.toDiagram,
                 fromArrow: diagram.fromArrow,
                 toArrow: diagram.toArrow,
+                from: this.findDiagramById(model.diagrams, diagram.fromDiagram),
+                to: this.findDiagramById(model.diagrams, diagram.toDiagram),
                 pathPattern: this.pathPatterns.get(diagram.arrowStroke)
               }
 
@@ -205,6 +205,7 @@ export class ModellingAreaComponent implements OnInit {
                 findNodeDataForKey.group = diagram.id;
               });
             }
+
           });
         });
       });
@@ -212,14 +213,24 @@ export class ModellingAreaComponent implements OnInit {
     });
   }
 
+  private findDiagramById(diagrams: DiagramDetail[], diagramId: string) {
+
+    let diagramDetail = diagrams.find(diag => diag.modelingLanguageConstructInstance === diagramId);
+    if (diagramDetail !== undefined) {
+      return diagramDetail.id;
+    }
+
+    return undefined;
+  }
+
   /*getPalletteElements(): void {
-      this.palletteElement_Observable = this.mService.queryPaletteElements();
-      this.palletteElement_Observable.subscribe(palletteElement => {
-        this.palletteElements = palletteElement;
-        console.log('Inside getPalletteElements');
-        console.log(this.palletteElements);
-      });
-    }*/
+        this.palletteElement_Observable = this.mService.queryPaletteElements();
+        this.palletteElement_Observable.subscribe(palletteElement => {
+          this.palletteElements = palletteElement;
+          console.log('Inside getPalletteElements');
+          console.log(this.palletteElements);
+        });
+      }*/
 
   initDiagramCanvas() {
 
