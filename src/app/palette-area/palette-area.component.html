@@ -17,7 +17,15 @@
   <nav class="element-container">
     <ng-container *ngFor="let element of mService.paletteElements">
       <ul class="element" *ngIf="(element.paletteCategory == category.id && element.hiddenFromPalette == false)">
-        <li class="paletteElement" ><a [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element" (click)="addNewShape(element)"><img class="thumbnail"  src="{{imageRoot}}{{category.idSuffix}}/{{element.thumbnailURL}}" /></a>
+        <li class="paletteElement" >
+          <a *ngIf="element.type != 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element" (click)="addNewShape(element)">
+            <img class="thumbnail"  src="{{imageRoot}}{{category.idSuffix}}/{{element.thumbnailURL}}" />
+          </a>
+          <a *ngIf="element.type == 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element" (click)="addNewShape(element)">
+            <img class="thumbnail-arrow-head" [src]="'../assets/images/Arrows/' + element.fromArrow + '.PNG'" >
+            <img class="thumbnail-arrow-stroke" [src]="'../assets/images/Strokes/' + element.arrowStroke + '.PNG'" >
+            <img class="thumbnail-arrow-head" [src]="'../assets/images/Arrows/' + element.toArrow + '.PNG'" >
+          </a>
           <app--tool-recursive-palette-element (showActivityElementPropertyModal1)="toggleActivityElementPropertyModal($event)"
                                                (showExtendPaletteElementModal1)="toggleExtendPaletteElementModal($event)"
                                                (showEditPaletteElementModal1)="toggleEditPaletteElementModal($event)"

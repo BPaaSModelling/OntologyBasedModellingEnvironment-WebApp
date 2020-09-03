@@ -13,9 +13,9 @@
 
     <div *ngIf="selectedConnectorMode">
       Current arrow configuration:
-      <img class="thumbnail" [src]="'../assets/images/Arrows/' + selectedConnectorMode.fromArrow + '.PNG'" >
-      <img class="thumbnail" [src]="'../assets/images/Strokes/' + selectedConnectorMode.arrowStroke + '.PNG'" >
-      <img class="thumbnail" [src]="'../assets/images/Arrows/' + selectedConnectorMode.toArrow + '.PNG'" >
+      <img style="max-height: 40px; max-width:40px" [src]="'../assets/images/Arrows/' + selectedConnectorMode.fromArrow + '.PNG'" >
+      <img style="max-height: 40px; max-width:120px" class="thumbnail" [src]="'../assets/images/Strokes/' + selectedConnectorMode.arrowStroke + '.PNG'" >
+      <img style="max-height: 40px; max-width:40px" class="thumbnail" [src]="'../assets/images/Arrows/' + selectedConnectorMode.toArrow + '.PNG'" >
     </div>
   </div>
   <div style="display: flex; flex-direction: row">
