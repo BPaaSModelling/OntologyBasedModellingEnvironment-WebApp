@@ -13,10 +13,7 @@ import {DatatypePropertyModel} from "./_models/DatatypeProperty.model";
 import {DomainElementModel} from "./_models/DomainElement.model";
 import {ModelingLanguageModel} from "./_models/ModelingLanguage.model";
 import {Model} from './_models/Model.model';
-import {HttpClient} from '@angular/common/http';
-import {element} from 'protractor';
 import {DiagramDetail} from './_models/DiagramDetail.model';
-import {Diagram} from './_models/Diagram.model';
 import {toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
 import { ArrowStructures } from "./_models/ArrowStructures.model";
 
@@ -310,10 +307,10 @@ console.log(this.paletteElements);
       .then(response => response.json() as DiagramDetail);
   }
 
-  getDiagrams(modelId: string): Promise<Diagram[]> {
+  getDiagrams(modelId: string): Promise<DiagramDetail[]> {
     return this.http.get(EndpointSettings.getDiagramEndpoint(modelId))
       .toPromise()
-      .then(response => response.json() as Diagram[])
+      .then(response => response.json() as DiagramDetail[])
   }
 
   getDiagramDetails(modelId: string, diagramId: string): Promise<DiagramDetail> {

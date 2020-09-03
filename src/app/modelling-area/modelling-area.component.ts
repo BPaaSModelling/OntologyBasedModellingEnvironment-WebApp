@@ -11,7 +11,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {DiagramDetail} from '../_models/DiagramDetail.model';
 import {UUID} from 'angular2-uuid';
 import {toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
-import {link} from 'fs';
+import {element} from 'protractor';
 
 let $: any;
 let myDiagram: any;
@@ -78,30 +78,34 @@ export class ModellingAreaComponent implements OnInit {
 
   ngOnInit(): void {
     this.prepareModels();
+    this.prepareCustomRelations();
+  }
 
-    this.pathPatterns.set("Single", "M0 0 L1 0");
-    this.pathPatterns.set("Double", "M0 0 L1 0 M0 3 L1 3");
-    this.pathPatterns.set("Triple", "M0 0 L1 0 M0 3 L1 3 M0 6 L1 6");
-    this.pathPatterns.set("Dash", "M0 0 M3 0 L6 0");
-    this.pathPatterns.set("DoubleDash", "M0 0 M3 0 L6 0 M3 3 L6 3");
-    this.pathPatterns.set("Dot", "M0 0 M4 0 L4.1 0");
-    this.pathPatterns.set("DoubleDot", "M0 0 M4 0 L4.1 0 M4 3 L4.1 3");
-    this.pathPatterns.set("BackSlash", "M0 3 L2 6 M1 0 L5 6 M4 0 L6 3");
-    this.pathPatterns.set("Slash", "M0 3 L2 0 M1 6 L5 0 M4 6 L6 3");
-    this.pathPatterns.set("Coil", "M0 0 C2.5 0  5 2.5  5 5  C5 7.5  5 10  2.5 10  C0 10  0 7.5  0 5  C0 2.5  2.5 0  5 0");
-    this.pathPatterns.set("Square", "M0 0 M1 0 L7 0 7 6 1 6z");
-    this.pathPatterns.set("Circle", "M0 3 A3 3 0 1 0 6 4  A3 3 0 1 0 0 3");
-    this.pathPatterns.set("BigCircle", "M0 5 A5 5 0 1 0 10 5  A5 5 0 1 0 0 5");
-    this.pathPatterns.set("Triangle", "M0 0 L4 4 0 8z");
-    this.pathPatterns.set("Diamond", "M0 4 L4 0 8 4 4 8z");
-    this.pathPatterns.set("Dentil", "M0 0 L2 0  2 6  6 6  6 0  8 0");
-    this.pathPatterns.set("Greek", "M0 0 L1 0  1 3  0 3  M0 6 L4 6  4 0  8 0  M8 3 L7 3  7 6  8 6");
-    this.pathPatterns.set("Seed", "M0 0 A9 9 0 0 0 12 0  A9 9 180 0 0 0 0");
-    this.pathPatterns.set("SemiCircle", "M0 0 A4 4 0 0 1 8 0");
-    this.pathPatterns.set("BlindHem", "M0 4 L2 4  4 0  6 4  8 4");
-    this.pathPatterns.set("Zipper", "M0 4 L1 4 1 0 8 0 8 4 9 4  M0 6 L3 6 3 2 6 2 6 6 9 6");
-    this.pathPatterns.set("Herringbone", "M0 2 L2 4 0 6  M2 0 L4 2  M4 6 L2 8");
-    this.pathPatterns.set("Sawtooth", "M0 3 L4 0 2 6 6 3");
+  private prepareCustomRelations() {
+    // https://gojs.net/latest/samples/relationships.html
+    this.pathPatterns.set('Single', 'M0 0 L1 0');
+    this.pathPatterns.set('Double', 'M0 0 L1 0 M0 3 L1 3');
+    this.pathPatterns.set('Triple', 'M0 0 L1 0 M0 3 L1 3 M0 6 L1 6');
+    this.pathPatterns.set('Dash', 'M0 0 M3 0 L6 0');
+    this.pathPatterns.set('DoubleDash', 'M0 0 M3 0 L6 0 M3 3 L6 3');
+    this.pathPatterns.set('Dot', 'M0 0 M4 0 L4.1 0');
+    this.pathPatterns.set('DoubleDot', 'M0 0 M4 0 L4.1 0 M4 3 L4.1 3');
+    this.pathPatterns.set('BackSlash', 'M0 3 L2 6 M1 0 L5 6 M4 0 L6 3');
+    this.pathPatterns.set('Slash', 'M0 3 L2 0 M1 6 L5 0 M4 6 L6 3');
+    this.pathPatterns.set('Coil', 'M0 0 C2.5 0  5 2.5  5 5  C5 7.5  5 10  2.5 10  C0 10  0 7.5  0 5  C0 2.5  2.5 0  5 0');
+    this.pathPatterns.set('Square', 'M0 0 M1 0 L7 0 7 6 1 6z');
+    this.pathPatterns.set('Circle', 'M0 3 A3 3 0 1 0 6 4  A3 3 0 1 0 0 3');
+    this.pathPatterns.set('BigCircle', 'M0 5 A5 5 0 1 0 10 5  A5 5 0 1 0 0 5');
+    this.pathPatterns.set('Triangle', 'M0 0 L4 4 0 8z');
+    this.pathPatterns.set('Diamond', 'M0 4 L4 0 8 4 4 8z');
+    this.pathPatterns.set('Dentil', 'M0 0 L2 0  2 6  6 6  6 0  8 0');
+    this.pathPatterns.set('Greek', 'M0 0 L1 0  1 3  0 3  M0 6 L4 6  4 0  8 0  M8 3 L7 3  7 6  8 6');
+    this.pathPatterns.set('Seed', 'M0 0 A9 9 0 0 0 12 0  A9 9 180 0 0 0 0');
+    this.pathPatterns.set('SemiCircle', 'M0 0 A4 4 0 0 1 8 0');
+    this.pathPatterns.set('BlindHem', 'M0 4 L2 4  4 0  6 4  8 4');
+    this.pathPatterns.set('Zipper', 'M0 4 L1 4 1 0 8 0 8 4 9 4  M0 6 L3 6 3 2 6 2 6 6 9 6');
+    this.pathPatterns.set('Herringbone', 'M0 2 L2 4 0 6  M2 0 L4 2  M4 6 L2 8');
+    this.pathPatterns.set('Sawtooth', 'M0 3 L4 0 2 6 6 3');
   }
 
   private static convertGeometryToShape(geometry: string) {
@@ -136,8 +140,8 @@ export class ModellingAreaComponent implements OnInit {
                 key: diagram.id,
                 element: diagram,
                 text: diagram.label,
-                from: diagram.modelElementAttributes.find(value => value.relation == 'modelingRelationHasSourceModelingElement').value,
-                to: diagram.modelElementAttributes.find(value => value.relation == 'modelingRelationHasTargetModelingElement').value,
+                from: diagram.fromDiagram,
+                to: diagram.toDiagram,
                 fromArrow: diagram.fromArrow,
                 toArrow: diagram.toArrow,
                 pathPattern: this.pathPatterns.get(diagram.arrowStroke)
@@ -145,7 +149,7 @@ export class ModellingAreaComponent implements OnInit {
 
               model.goJsModel.addLinkData(linkData);
 
-            } else {
+            } else if (diagram.modelElementType === 'ModelingElement') {
 
               let nodeData = {
                 text: diagram.label,
@@ -166,8 +170,40 @@ export class ModellingAreaComponent implements OnInit {
               };
 
               model.goJsModel.addNodeData(nodeData);
+            } else if (diagram.modelElementType === 'ModelingContainer') {
+
+              let nodeData = {
+                text: diagram.label,
+                key: diagram.id,
+                fill: '#0000',
+                source: VariablesSettings.IMG_ROOT + diagram.imageUrl,
+                size: new go.Size(diagram.width, diagram.height),
+                width: diagram.width,
+                height: diagram.height,
+                alignment: go.Spot.Bottom,
+                loc: new go.Point(diagram.x, diagram.y),
+                element: diagram,
+                isGroup: true,
+                click: (e: InputEvent, obj: GraphObject) => {
+                  if (obj.part.data.element != undefined) {
+                    this.diagramDetailsToDisplay = obj.part.data.element;
+                  }
+                }
+              };
+
+              model.goJsModel.addNodeData(nodeData);
             }
 
+          });
+
+          model.diagrams.forEach(diagram => {
+            if (diagram.modelElementType === 'ModelingContainer') {
+              let containedElements = diagram.containedDiagrams || [];
+              containedElements.forEach(element => {
+                let findNodeDataForKey = model.goJsModel.findNodeDataForKey(element);
+                findNodeDataForKey.group = diagram.id;
+              });
+            }
           });
         });
       });
@@ -260,6 +296,7 @@ export class ModellingAreaComponent implements OnInit {
         },
         new go.Binding("location", "loc"),
         new go.Binding("click", "click"),
+        new go.Binding("group", "containedInContainer"),
         { selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate },
         new go.Binding("angle").makeTwoWay(),
         // the main object is a Panel that surrounds a TextBlock with a Shape
@@ -308,6 +345,51 @@ export class ModellingAreaComponent implements OnInit {
         )
     );
 
+    this.myDiagram.groupTemplate =
+      $(go.Group, "Auto",
+        {
+          name: "GROUP",
+          angle:0
+        },
+        new go.Binding("location", "loc"),
+        new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
+        new go.Binding("angle"),
+        $(go.Shape, "Rectangle",  // default figure
+          {
+            name: "SHAPE",
+            portId: "", // the default port: if no spot on link data, use closest side
+            fromLinkable: true, toLinkable: true, cursor: "pointer",
+            fill: "#000000",  // default color
+            //width: 835, height: 575,
+            strokeWidth: 0
+          },
+          new go.Binding("fill")),
+        new go.Binding("width"),
+        new go.Binding("height"),
+        $(go.Picture,
+          {
+            name: 'Picture',
+            source: "/assets/images/BPMN-CMMN/Collapsed_Subprocess.png",
+            margin: 12, //increase margin if text alignment is changed to bottom
+            stretch: go.GraphObject.Fill //stretch image to fill whole area of shape
+            //imageStretch: go.GraphObject.Fill //do not distort the image
+          },
+          new go.Binding("source"),
+          new go.Binding("desiredSize")),
+        $(go.TextBlock,
+          {
+            font: "11pt Helvetica, Arial, sans-serif",
+            margin: 8,
+            maxSize: new go.Size(200, NaN),
+            wrap: go.TextBlock.WrapFit,
+            editable: true,
+            alignment: go.Spot.Bottom //or go.Spot.Bottom
+          },
+          new go.Binding("text").makeTwoWay(),
+          new go.Binding("alignment")
+        )
+      );
+
     this.myDiagram.layout = new go.Layout();
 
     this.myDiagram.addModelChangedListener((evt: ChangedEvent) => {
@@ -317,71 +399,121 @@ export class ModellingAreaComponent implements OnInit {
       if (txn === null) return;
 
       if (txn.name === 'Move') {
-        let lastMovedNodes = new Map();
-
-        txn.changes.toArray().forEach(evt => {
-
-          let nodeData = evt.object;
-
-          let diagramDetail: DiagramDetail = nodeData.data.element;
-          diagramDetail.x = toInteger(nodeData.location.x);
-          diagramDetail.y = toInteger(nodeData.location.y);
-
-          lastMovedNodes.set(diagramDetail.id, diagramDetail);
-        });
-
-        lastMovedNodes.forEach(diagramDetail => {
-          this.mService.updateDiagram(diagramDetail, this.selectedModel.id);
-        });
+        this.handleNodeMove(txn);
       }
 
       if (txn.name === 'TextEditing') {
-        let nodeData = txn.changes.iteratorBackwards.first().object;
-        let diagramDetail: DiagramDetail = nodeData.element;
-        diagramDetail.label = nodeData.text;
-
-        this.mService.updateDiagram(diagramDetail, this.selectedModel.id);
+        this.handleNodeTextEditing(txn);
       }
 
       if (txn.name === 'Delete') {
-        txn.changes.toArray().filter(element => element.propertyName === 'parts').forEach(evt => {
-          // TODO: with this change, we can even omit trying to find out the connected diagrams in the backend
-          this.mService.deleteDiagram(this.selectedModel.id, evt.oldValue.data.element.id);
-        });
+        this.handleNodeDeleted(txn);
       }
 
       if (txn.name === 'Linking') {
-        let change = txn.changes.toArray().find(element => element.propertyName === 'data');
-        let link = this.myDiagram.findLinkForData(change.object.data);
-
-        if (this.selectedConnectorMode === undefined || !(this.selectedConnectorMode.toArrow !== undefined && this.selectedConnectorMode.fromArrow !== undefined && this.selectedConnectorMode.arrowStroke !== undefined)) {
-          this.myDiagram.model.removeLinkData(link.data);
-          return;
-        }
-
-        link.data.toArrow = this.selectedConnectorMode.toArrow;
-        link.data.fromArrow = this.selectedConnectorMode.fromArrow;
-        link.data.pathPattern = this.pathPatterns.get(this.selectedConnectorMode.arrowStroke);
-
-        let fromElement = change.newValue.from;
-        let toElement = change.newValue.to;
-
-        this.mService.createConnection(
-          this.selectedModel.id,
-          UUID.UUID(),
-          change.object.location.x,
-          change.object.location.y,
-          fromElement,
-          toElement,
-          this.selectedConnectorMode.id.split('#')[1]
-        ).then(response => {
-          link.data.element = response;
-        });
-
-        this.myDiagram.rebuildParts();
+        this.handleNodeLinking(txn);
 
       }
     });
+  }
+
+  private handleNodeDeleted(txn) {
+    txn.changes.toArray().filter(element => element.propertyName === 'parts').forEach(evt => {
+      // TODO: with this change, we can even omit trying to find out the connected diagrams in the backend
+      this.mService.deleteDiagram(this.selectedModel.id, evt.oldValue.data.element.id);
+    });
+  }
+
+  private handleNodeTextEditing(txn) {
+    let nodeData = txn.changes.iteratorBackwards.first().object;
+    let diagramDetail: DiagramDetail = nodeData.element;
+    diagramDetail.label = nodeData.text;
+
+    this.mService.updateDiagram(diagramDetail, this.selectedModel.id);
+  }
+
+  private handleNodeLinking(txn) {
+    let change = txn.changes.toArray().find(element => element.propertyName === 'data');
+    let link = this.myDiagram.findLinkForData(change.object.data);
+
+    if (this.selectedConnectorMode === undefined || !(this.selectedConnectorMode.toArrow !== undefined && this.selectedConnectorMode.fromArrow !== undefined && this.selectedConnectorMode.arrowStroke !== undefined)) {
+      this.myDiagram.model.removeLinkData(link.data);
+      return;
+    }
+
+    link.data.toArrow = this.selectedConnectorMode.toArrow;
+    link.data.fromArrow = this.selectedConnectorMode.fromArrow;
+    link.data.pathPattern = this.pathPatterns.get(this.selectedConnectorMode.arrowStroke);
+
+    let fromElement = change.newValue.from;
+    let toElement = change.newValue.to;
+
+    this.mService.createConnection(
+      this.selectedModel.id,
+      UUID.UUID(),
+      change.object.location.x,
+      change.object.location.y,
+      fromElement,
+      toElement,
+      this.selectedConnectorMode.id.split('#')[1]
+    ).then(response => {
+      link.data.element = response;
+    });
+
+    this.myDiagram.rebuildParts();
+  }
+
+  private handleNodeMove(txn) {
+    let lastMovedNodes = new Map();
+
+    txn.changes.toArray().forEach(evt => {
+
+      let nodeData = evt.object;
+
+      let diagramDetail: DiagramDetail = nodeData.data.element;
+      diagramDetail.x = toInteger(nodeData.location.x);
+      diagramDetail.y = toInteger(nodeData.location.y);
+
+      lastMovedNodes.set(
+        diagramDetail.id,
+        {
+          diagramDetail: diagramDetail,
+          node: nodeData.data
+        }
+      );
+    });
+
+    lastMovedNodes.forEach(nodeInfo => {
+
+      if (nodeInfo.diagramDetail.modelElementType === 'ModelingElement' || nodeInfo.diagramDetail.modelElementType === 'ModelingContainer') {
+
+        this.myDiagram.model.nodeDataArray.forEach(containerNode => {
+          if (containerNode.element.modelElementType === 'ModelingContainer' && nodeInfo.diagramDetail.id != containerNode.element.id) {
+            if (
+              containerNode.element.x < nodeInfo.diagramDetail.x &&
+              containerNode.element.x + containerNode.element.width > nodeInfo.diagramDetail.x + nodeInfo.diagramDetail.width &&
+              containerNode.element.y < nodeInfo.diagramDetail.y &&
+              containerNode.element.y + containerNode.element.height > nodeInfo.diagramDetail.y + nodeInfo.diagramDetail.height
+            ) {
+              nodeInfo.node.group = containerNode.element.id;
+              let containedDiagrams = containerNode.element.containedDiagrams || [];
+              if (!containedDiagrams.includes(nodeInfo.diagramDetail.id)) {
+                containedDiagrams.push(nodeInfo.diagramDetail.id);
+                containerNode.element.containedDiagrams = containedDiagrams;
+                this.mService.updateDiagram(containerNode.element, this.selectedModel.id);
+              }
+            } else if (nodeInfo.node.group !== undefined) {
+              nodeInfo.node.group = undefined;
+            }
+          }
+        });
+
+        this.mService.updateDiagram(nodeInfo.diagramDetail, this.selectedModel.id);
+
+      }
+    });
+
+    this.myDiagram.rebuildParts();
   }
 
   selectionChanged($event: any) {

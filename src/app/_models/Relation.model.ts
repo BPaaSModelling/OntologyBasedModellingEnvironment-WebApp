@@ -3,6 +3,4 @@ export class Relation {
   relationPrefix: string;
   value: string;
   valuePrefix: string;
-  range: string;
-  rangePrefix: string;
 }

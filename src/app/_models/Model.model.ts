@@ -1,8 +1,8 @@
-import {Diagram} from './Diagram.model';
+import {DiagramDetail} from './DiagramDetail.model';
 
 export class Model {
     id: string;
     label: string;
-    diagrams: Diagram[];
+    diagrams: DiagramDetail[];
     goJsModel;
   }

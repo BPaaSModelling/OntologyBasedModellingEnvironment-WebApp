@@ -38,7 +38,7 @@ export class DiagramDetailComponent implements OnInit {
   }
 
   private setupDatasources() {
-    this.modelElementAttributeDatasource = new RelationDatasource(this.diagramDetail.modelElementAttributes);
+    this.modelElementAttributeDatasource = new RelationDatasource(this.diagramDetail.modelElementAttributes.values);
     let diagramDetailRealtions = this.getDiagramDetailRelations(this.diagramDetail);
     this.diagramDetailDatasource = new RelationDatasource(diagramDetailRealtions);
   }
@@ -48,7 +48,7 @@ export class DiagramDetailComponent implements OnInit {
   }
 
   save() {
-    this.diagramDetail.modelElementAttributes = this.modelElementAttributeDatasource.data.getValue();
+    this.diagramDetail.modelElementAttributes.values = this.modelElementAttributeDatasource.data.getValue();
     this.diagramDetail.diagramRepresentsModel = this.diagramDetailDatasource.data.getValue().find(value => value.relation == 'diagramRepresentsModel').value;
     this.diagramDetail.modelingLanguageConstructInstance = this.diagramDetailDatasource.data.getValue().find(value => value.relation == 'modelingLanguageConstructInstance').value;
     this.diagramDetail.note = this.diagramDetailDatasource.data.getValue().find(value => value.relation == 'note').value;
@@ -58,7 +58,7 @@ export class DiagramDetailComponent implements OnInit {
 
   getDiagramDetailRelations(diagramDetail: DiagramDetail): Relation[] {
 
-    return diagramDetail.modelElementAttributes.filter(value => this.diagramRelations.includes(value.relation));
+    return diagramDetail.modelElementAttributes.values.filter(value => this.diagramRelations.includes(value.relation));
   }
 
   close() {
