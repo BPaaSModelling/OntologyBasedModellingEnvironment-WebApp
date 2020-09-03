@@ -486,7 +486,7 @@ export class ModellingAreaComponent implements OnInit {
 
     lastMovedNodes.forEach(nodeInfo => {
 
-      if (nodeInfo.diagramDetail.modelElementType === 'ModelingElement' || nodeInfo.diagramDetail.modelElementType === 'ModelingContainer') {
+      if (nodeInfo.diagramDetail.modelElementType === 'ModelingElement') {
 
         if (nodeInfo.node.group !== undefined) {
           // check if element has been moved outside the container and update the container
