@@ -16,6 +16,7 @@ import {Model} from './_models/Model.model';
 import {DiagramDetail} from './_models/DiagramDetail.model';
 import {toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
 import { ArrowStructures } from "./_models/ArrowStructures.model";
+import {InstantiationTargetType} from './_models/InstantiationTargetType.model';
 
 @Injectable()
 export class ModellerService {
@@ -278,13 +279,14 @@ console.log(this.paletteElements);
       .then(response => response.json() as Model);
   }
 
-  createDiagram(modelId: string, diagramId: string, label: string, x: number, y: number, paletteConstruct: string): Promise<DiagramDetail> {
+  createDiagram(modelId: string, diagramId: string, label: string, x: number, y: number, paletteConstruct: string, instantiationTargetType: InstantiationTargetType): Promise<DiagramDetail> {
     let payload: Object = {
       x: toInteger(x),
       y: toInteger(y),
       paletteConstruct: paletteConstruct,
       uuid: diagramId,
-      label
+      label,
+      instantiationType: instantiationTargetType
     }
 
     return this.http.put(EndpointSettings.getDiagramEndpoint(modelId), payload)
@@ -292,14 +294,15 @@ console.log(this.paletteElements);
       .then(response => response.json() as DiagramDetail);
   }
 
-  createConnection(modelId: string, diagramId: string, x: number, y: number, from: string, to: string, paletteConstruct: string): Promise<DiagramDetail> {
+  createConnection(modelId: string, diagramId: string, x: number, y: number, from: string, to: string, paletteConstruct: string, instantiationTargetType: InstantiationTargetType): Promise<DiagramDetail> {
     let payload: Object = {
       x: toInteger(x),
       y: toInteger(y),
       paletteConstruct: paletteConstruct,
       uuid: diagramId,
       from: from,
-      to: to
+      to: to,
+      instantiationType: instantiationTargetType
     }
 
     return this.http.put(EndpointSettings.getConnectionEndpoint(modelId), payload)

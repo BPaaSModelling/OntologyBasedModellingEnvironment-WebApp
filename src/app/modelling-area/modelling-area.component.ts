@@ -11,8 +11,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {DiagramDetail} from '../_models/DiagramDetail.model';
 import {UUID} from 'angular2-uuid';
 import {toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
-import {element} from 'protractor';
 import * as _ from 'lodash';
+import {InstantiationTargetType} from '../_models/InstantiationTargetType.model';
 
 let $: any;
 let myDiagram: any;
@@ -231,6 +231,7 @@ export class ModellingAreaComponent implements OnInit {
           console.log(this.palletteElements);
         });
       }*/
+  selectedInstantiationType: InstantiationTargetType = InstantiationTargetType.INSTANCE;
 
   initDiagramCanvas() {
 
@@ -483,7 +484,8 @@ export class ModellingAreaComponent implements OnInit {
       change.object.location.y,
       fromElement,
       toElement,
-      this.selectedConnectorMode.id.split('#')[1]
+      this.selectedConnectorMode.id.split('#')[1],
+      this.selectedInstantiationType
     ).then(response => {
       link.data.element = response;
     });
@@ -606,6 +608,7 @@ export class ModellingAreaComponent implements OnInit {
 
     console.log('category is: ' + element.paletteCategory);
     console.log(VariablesSettings.paletteCategoryConnectorsURI);
+    console.log('instantiation type ' + this.selectedInstantiationType);
     /*
     if (element.paletteCategory === VariablesSettings.paletteCategoryConnectorsURI) {
       this.connectorModeOn = true;
@@ -664,7 +667,8 @@ export class ModellingAreaComponent implements OnInit {
       newnode.part.data.text,
       newnode.location.x,
       newnode.location.y,
-      element.id.split('#')[1]
+      element.id.split('#')[1],
+      this.selectedInstantiationType
     ).then(response => {
       newnode.part.data.element = response;
       if (response.modelElementType === 'ModelingContainer') {
@@ -817,6 +821,10 @@ export class ModellingAreaComponent implements OnInit {
           // the link array was created above
           linkDataArray: linkdata
         });
+  }
+
+  getInstantiationTypes(): InstantiationTargetType[] {
+    return _.values(InstantiationTargetType);
   }
 }
 // https://github.com/shlomiassaf/ngx-modialog
