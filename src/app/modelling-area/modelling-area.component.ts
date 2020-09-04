@@ -13,6 +13,8 @@ import {UUID} from 'angular2-uuid';
 import {toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
 import * as _ from 'lodash';
 import {InstantiationTargetType} from '../_models/InstantiationTargetType.model';
+import {ModalViewDiagramDetail} from '../diagram-detail/modal-diagram-detail.component';
+import {DiagramDetailAndModel} from '../diagram-detail/DiagramDetailAndModel';
 
 let $: any;
 let myDiagram: any;
@@ -57,15 +59,8 @@ export class ModellingAreaComponent implements OnInit {
 
   public models: Model[] = [];
   public selectedModel: Model;
-  public modelSelectionDropdownConfig = {
-    displayKey: 'label'
-  };
-
   public selectedConnectorMode: PaletteElementModel;
   private pathPatterns: Map<string, string> = new Map();
-
-  public diagramDetailsToDisplay: DiagramDetail;
-
   private dialog: MatDialog;
 
   public constructor(private mService: ModellerService, public matDialog: MatDialog) {
@@ -162,12 +157,7 @@ export class ModellingAreaComponent implements OnInit {
                 height: diagram.height,
                 alignment: go.Spot.Bottom,
                 loc: new go.Point(diagram.x, diagram.y),
-                element: diagram,
-                click: (e: InputEvent, obj: GraphObject) => {
-                  if (obj.part.data.element != undefined) {
-                    this.diagramDetailsToDisplay = obj.part.data.element;
-                  }
-                }
+                element: diagram
               };
 
               model.goJsModel.addNodeData(nodeData);
@@ -184,12 +174,7 @@ export class ModellingAreaComponent implements OnInit {
                 alignment: go.Spot.Bottom,
                 loc: new go.Point(diagram.x, diagram.y),
                 element: diagram,
-                isGroup: true,
-                click: (e: InputEvent, obj: GraphObject) => {
-                  if (obj.part.data.element != undefined) {
-                    this.diagramDetailsToDisplay = obj.part.data.element;
-                  }
-                }
+                isGroup: true
               };
 
               model.goJsModel.addNodeData(nodeData);
@@ -308,7 +293,6 @@ export class ModellingAreaComponent implements OnInit {
           resizeObjectName: "PANEL" // Changing this to Picture resizes the images, however links are a problem
         },
         new go.Binding("location", "loc"),
-        new go.Binding("click", "click"),
         new go.Binding("group", "containedInContainer"),
         { selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate },
         new go.Binding("angle").makeTwoWay(),
@@ -402,6 +386,38 @@ export class ModellingAreaComponent implements OnInit {
           new go.Binding("alignment")
         )
       );
+
+    this.myDiagram.nodeTemplate.contextMenu =
+      $("ContextMenu",
+        $("ContextMenuButton",
+          $(go.TextBlock, "Details"),
+          {
+            click: (e, obj) => {
+              let node = obj.part.adornedPart;
+              if (node != null) {
+                let element = node.data.element;
+
+                let diagramDetailAndModel = new DiagramDetailAndModel();
+                diagramDetailAndModel.modelId = this.selectedModel.id;
+                diagramDetailAndModel.diagramDetail = element;
+
+                let dialogRef = this.dialog.open(ModalViewDiagramDetail, {
+                  data: diagramDetailAndModel
+                });
+
+                dialogRef.afterClosed().subscribe(result => {
+                  if (result) {
+                    console.log(result);
+                  }
+                });
+              }
+            }
+          }
+        )
+      );
+
+    this.myDiagram.linkTemplate.contextMenu = this.myDiagram.nodeTemplate.contextMenu;
+    this.myDiagram.groupTemplate.contextMenu = this.myDiagram.nodeTemplate.contextMenu;
 
     this.myDiagram.layout = new go.Layout();
 
@@ -644,12 +660,7 @@ export class ModellingAreaComponent implements OnInit {
        size: new go.Size(element.width, element.height),
        width: element.width,
        height: element.height,
-       alignment: go.Spot.Bottom,
-       click: (e: InputEvent, obj: GraphObject) => {
-         if (obj.part.data.element != undefined) {
-           this.diagramDetailsToDisplay = obj.part.data.element;
-         }
-       }
+       alignment: go.Spot.Bottom
     };
 
     // add the new node data to the model
@@ -704,10 +715,6 @@ export class ModellingAreaComponent implements OnInit {
         port.fill = show ? "rgba(0,0,0,.3)" : null;
       }
     });
-  }
-
-  closeDetails() {
-    this.diagramDetailsToDisplay = undefined;
   }
 
   deleteModel() {

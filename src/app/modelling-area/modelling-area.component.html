@@ -31,12 +31,5 @@
   </div>
   <div style="display: flex; flex-direction: row">
     <div id="myDiagramDiv" style="flex-grow: 1; height: 1000px; "></div>
-    <diagram-detail
-      *ngIf="diagramDetailsToDisplay != undefined && selectedModel != undefined"
-      [diagramDetail]="diagramDetailsToDisplay"
-      [model]="selectedModel"
-      (closeRequest)="closeDetails()"
-      style="width:500px"
-    ></diagram-detail>
   </div>
 </div>
