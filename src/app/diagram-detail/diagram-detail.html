@@ -2,13 +2,22 @@
 
   <ng-container matColumnDef="key">
     <mat-header-cell *matHeaderCellDef> Key </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{element.relation}} </mat-cell>
+    <mat-cell *matCellDef="let element"> {{element.relation.relation}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="value">
     <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <input type="text" [(ngModel)]="element.value" /></mat-cell>
+      <input *ngIf="element.selectorOptions == undefined"
+             type="text"
+             [(ngModel)]="element.relation.value" />
+      <mat-form-field *ngIf="element.selectorOptions != undefined">
+        <mat-select [(ngModel)]="element.relation.value"
+                    name="value">
+          <mat-option *ngFor="let value of element.selectorOptions" [value]="value">{{value}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -20,13 +29,13 @@
 
   <ng-container matColumnDef="key">
     <mat-header-cell *matHeaderCellDef> Key </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{element.relation}} </mat-cell>
+    <mat-cell *matCellDef="let element"> {{element.relation.relation}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="value">
     <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <input type="text" [(ngModel)]="element.value" />
+      <input type="text" [(ngModel)]="element.relation.value" />
     </mat-cell>
   </ng-container>
 

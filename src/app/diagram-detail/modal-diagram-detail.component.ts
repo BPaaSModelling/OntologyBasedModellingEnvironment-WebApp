@@ -3,10 +3,11 @@ import {Component, Inject, SimpleChanges} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Model} from '../_models/Model.model';
 import {DiagramDetail} from '../_models/DiagramDetail.model';
-import {RelationDatasource} from '../_models/RelationDatasource.model';
+import {RelationDatasource} from './RelationDatasource.model';
 import {Relation} from '../_models/Relation.model';
 import {ModellerService} from '../modeller.service';
 import {DiagramDetailAndModel} from './DiagramDetailAndModel';
+import {RelationEditorModel} from './RelationEditorModel';
 
 @Component({
   selector: 'modal-diagram-detail',
@@ -33,7 +34,7 @@ export class ModalViewDiagramDetail {
   }
 
   private setupDatasources() {
-    this.modelElementAttributeDatasource = new RelationDatasource(this.data.diagramDetail.modelElementAttributes.values);
+    //this.modelElementAttributeDatasource = new RelationDatasource(this.data.diagramDetail.modelElementAttributes.values);
     let diagramDetailRelations = this.getDiagramDetailRelations(this.data.diagramDetail);
     this.diagramDetailDatasource = new RelationDatasource(diagramDetailRelations);
   }
@@ -43,19 +44,19 @@ export class ModalViewDiagramDetail {
   }
 
   save() {
-    this.data.diagramDetail.modelElementAttributes.values = this.modelElementAttributeDatasource.data.getValue();
-    this.data.diagramDetail.diagramRepresentsModel = this.diagramDetailDatasource.data.getValue().find(value => value.relation == 'diagramRepresentsModel').value;
-    this.data.diagramDetail.modelingLanguageConstructInstance = this.diagramDetailDatasource.data.getValue().find(value => value.relation == 'modelingLanguageConstructInstance').value;
-    this.data.diagramDetail.note = this.diagramDetailDatasource.data.getValue().find(value => value.relation == 'note').value;
-    this.data.diagramDetail.paletteConstruct = this.diagramDetailDatasource.data.getValue().find(value => value.relation == 'paletteConstruct').value;
+    //this.data.diagramDetail.modelElementAttributes.values = this.modelElementAttributeDatasource.data.getValue();
+    this.data.diagramDetail.diagramRepresentsModel = this.diagramDetailDatasource.data.getValue().find(value => value.relation.relation == 'diagramRepresentsModel').relation.value;
+    this.data.diagramDetail.modelingLanguageConstructInstance = this.diagramDetailDatasource.data.getValue().find(value => value.relation.relation == 'modelingLanguageConstructInstance').relation.value;
+    this.data.diagramDetail.note = this.diagramDetailDatasource.data.getValue().find(value => value.relation.relation == 'note').relation.value;
+    this.data.diagramDetail.paletteConstruct = this.diagramDetailDatasource.data.getValue().find(value => value.relation.relation == 'paletteConstruct').relation.value;
     this.modellerService.updateDiagram(this.data.diagramDetail, this.data.modelId);
 
     this.dialogRef.close();
   }
 
-  getDiagramDetailRelations(diagramDetail: DiagramDetail): Relation[] {
+  getDiagramDetailRelations(diagramDetail: DiagramDetail): RelationEditorModel[] {
 
-    let diagramRelations: Relation[] = [];
+    let diagramRelations: RelationEditorModel[] = [];
 
     let diagramRepresentsModel = new Relation();
     diagramRepresentsModel.relation = 'diagramRepresentsModel';
@@ -73,10 +74,12 @@ export class ModalViewDiagramDetail {
     paletteConstruct.relation = 'paletteConstruct';
     paletteConstruct.value = diagramDetail.paletteConstruct;
 
-    diagramRelations.push(diagramRepresentsModel);
-    diagramRelations.push(modelingLanguageConstructInstance);
-    diagramRelations.push(note);
-    diagramRelations.push(paletteConstruct);
+    let modelEditor = new RelationEditorModel(diagramRepresentsModel);
+    this.modellerService.getModels().then(value => modelEditor.selectorOptions = value.map(value1 => value1.id));
+    diagramRelations.push(modelEditor);
+    diagramRelations.push(new RelationEditorModel(modelingLanguageConstructInstance));
+    diagramRelations.push(new RelationEditorModel(note));
+    diagramRelations.push(new RelationEditorModel(paletteConstruct));
 
     return diagramRelations;
   }
