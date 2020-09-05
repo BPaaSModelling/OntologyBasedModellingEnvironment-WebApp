@@ -1,4 +1,4 @@
-import {DiagramDetail} from '../_models/DiagramDetail.model';
+import {DiagramDetail} from './DiagramDetail.model';
 
 export class DiagramDetailAndModel {
   diagramDetail: DiagramDetail

@@ -14,7 +14,7 @@
       <mat-form-field *ngIf="element.selectorOptions != undefined">
         <mat-select [(ngModel)]="element.relation.value"
                     name="value">
-          <mat-option *ngFor="let value of element.selectorOptions" [value]="value">{{value}}</mat-option>
+          <mat-option *ngFor="let value of element.selectorOptions" [value]="value.id">{{value.label}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-cell>

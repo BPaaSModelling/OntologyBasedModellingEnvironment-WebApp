@@ -1,8 +1,10 @@
 import {Relation} from '../_models/Relation.model';
+import {ValueModel} from './ValueModel';
 
 export class RelationEditorModel {
   relation: Relation
-  selectorOptions: string[]
+  selectorOptions: ValueModel[]
+  selectedValue: ValueModel
 
   constructor(relation: Relation) {
     this.relation = relation;

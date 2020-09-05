@@ -14,7 +14,9 @@ import {toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
 import * as _ from 'lodash';
 import {InstantiationTargetType} from '../_models/InstantiationTargetType.model';
 import {ModalViewDiagramDetail} from '../diagram-detail/modal-diagram-detail.component';
-import {DiagramDetailAndModel} from '../diagram-detail/DiagramDetailAndModel';
+import {DiagramDetailAndModel} from '../_models/DiagramDetailAndModel';
+import {ModalModelLink} from '../modal-model-link/modal-model-link';
+import {ModalDiagramNote} from '../modal-diagram-note/modal-diagram-note';
 
 let $: any;
 let myDiagram: any;
@@ -401,14 +403,46 @@ export class ModellingAreaComponent implements OnInit {
                 diagramDetailAndModel.modelId = this.selectedModel.id;
                 diagramDetailAndModel.diagramDetail = element;
 
-                let dialogRef = this.dialog.open(ModalViewDiagramDetail, {
+                this.dialog.open(ModalViewDiagramDetail, {
                   data: diagramDetailAndModel
                 });
+              }
+            }
+          }
+        ),
+        $("ContextMenuButton",
+          $(go.TextBlock, "Model Link"),
+          {
+            click: (e, obj) => {
+              let node = obj.part.adornedPart;
+              if (node != null) {
+                let element = node.data.element;
 
-                dialogRef.afterClosed().subscribe(result => {
-                  if (result) {
-                    console.log(result);
-                  }
+                let diagramDetailAndModel = new DiagramDetailAndModel();
+                diagramDetailAndModel.modelId = this.selectedModel.id;
+                diagramDetailAndModel.diagramDetail = element;
+
+                this.dialog.open(ModalModelLink, {
+                  data: diagramDetailAndModel
+                });
+              }
+            }
+          }
+        ),
+        $("ContextMenuButton",
+          $(go.TextBlock, "Note"),
+          {
+            click: (e, obj) => {
+              let node = obj.part.adornedPart;
+              if (node != null) {
+                let element = node.data.element;
+
+                let diagramDetailAndModel = new DiagramDetailAndModel();
+                diagramDetailAndModel.modelId = this.selectedModel.id;
+                diagramDetailAndModel.diagramDetail = element;
+
+                this.dialog.open(ModalDiagramNote, {
+                  data: diagramDetailAndModel
                 });
               }
             }

@@ -47,6 +47,8 @@ import { ModalInsertLangobjectPropertyComponent } from './modal-insert-langobjec
 import { ModalEditSMObjectPropertyComponent } from './modal-edit-sm-object-property/modal-edit-sm-object-property.component';
 import { ModalModelCreation } from './modal-model-creation/modal-model-creation.component';
 import {ModalViewDiagramDetail} from './diagram-detail/modal-diagram-detail.component';
+import { ModalModelLink } from "./modal-model-link/modal-model-link";
+import { ModalDiagramNote } from "./modal-diagram-note/modal-diagram-note";
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
@@ -77,7 +79,9 @@ const appRoutes: Routes = [
     ModalInsertLangobjectPropertyComponent,
     ModalEditSMObjectPropertyComponent,
     ModalModelCreation,
-    ModalViewDiagramDetail
+    ModalViewDiagramDetail,
+    ModalModelLink,
+    ModalDiagramNote
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -94,7 +98,9 @@ const appRoutes: Routes = [
     ModalInsertObjectPropertyComponent,
     ModalInsertLangobjectPropertyComponent,
     ModalModelCreation,
-    ModalViewDiagramDetail
+    ModalViewDiagramDetail,
+    ModalModelLink,
+    ModalDiagramNote
   ],
   imports: [
     BrowserModule,
