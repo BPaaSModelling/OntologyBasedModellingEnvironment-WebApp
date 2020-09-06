@@ -480,7 +480,36 @@ export class ModellingAreaComponent implements OnInit {
       if (txn.name === 'Resizing') {
         this.handleNodeResizing(txn);
       }
+
+      if (txn.name === 'Paste') {
+        this.handleNodePaste(txn);
+      }
     });
+  }
+
+  private handleNodePaste(txn: any) {
+    // TODO handle case when several elements are copied (including containers and links)
+    let data = txn.changes.toArray().find(change => change.propertyName = 'nodeDataArray').newValue;
+    let pastedNodeDataElement = data.element;
+
+    let paletteConstructName = pastedNodeDataElement.paletteConstruct.split(":")[1];
+    let key = paletteConstructName + '_Diagram_' + UUID.UUID();
+
+    pastedNodeDataElement.id = key;
+    this.myDiagram.model.setDataProperty(data, "key", key);
+
+    this.mService.createDiagram(
+      this.selectedModel.id,
+      pastedNodeDataElement.id,
+      pastedNodeDataElement.label,
+      pastedNodeDataElement.x,
+      pastedNodeDataElement.y,
+      paletteConstructName,
+      this.selectedInstantiationType
+    ).then(response => {
+      pastedNodeDataElement = response;
+    });
+
   }
 
   private handleNodeResizing(txn: any) {
