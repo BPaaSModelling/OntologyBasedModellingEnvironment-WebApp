@@ -138,11 +138,19 @@ export class ModellingAreaComponent implements OnInit {
                 key: diagram.id,
                 element: diagram,
                 text: diagram.label,
-                fromArrow: diagram.fromArrow,
-                toArrow: diagram.toArrow,
+                fromArrow: diagram.fromArrow || "",
+                toArrow: diagram.toArrow || "",
                 from: this.findDiagramById(model.diagrams, diagram.fromDiagram),
                 to: this.findDiagramById(model.diagrams, diagram.toDiagram),
                 pathPattern: this.pathPatterns.get(diagram.arrowStroke)
+              }
+
+              if (diagram.fromArrow !== undefined) {
+                linkData.fromArrow = diagram.fromArrow;
+              }
+
+              if (diagram.toArrow !== undefined) {
+                linkData.toArrow = diagram.toArrow;
               }
 
               model.goJsModel.addLinkData(linkData);
@@ -544,13 +552,13 @@ export class ModellingAreaComponent implements OnInit {
     let change = txn.changes.toArray().find(element => element.propertyName === 'data');
     let link = this.myDiagram.findLinkForData(change.object.data);
 
-    if (this.selectedConnectorMode === undefined || !(this.selectedConnectorMode.toArrow !== undefined && this.selectedConnectorMode.fromArrow !== undefined && this.selectedConnectorMode.arrowStroke !== undefined)) {
+    if (this.selectedConnectorMode === undefined || this.selectedConnectorMode.arrowStroke === undefined) {
       this.myDiagram.model.removeLinkData(link.data);
       return;
     }
 
-    link.data.toArrow = this.selectedConnectorMode.toArrow;
-    link.data.fromArrow = this.selectedConnectorMode.fromArrow;
+    link.data.toArrow = this.selectedConnectorMode.toArrow || "";
+    link.data.fromArrow = this.selectedConnectorMode.fromArrow || "";
     link.data.pathPattern = this.pathPatterns.get(this.selectedConnectorMode.arrowStroke);
 
     let fromElement = change.newValue.from;
@@ -824,7 +832,7 @@ export class ModellingAreaComponent implements OnInit {
       linkdata.push({
         from: j+1,
         to: -(j+1),
-        fromArrow: arrowheads[0],
+        fromArrow: "",
         toArrow: arrowheads[0],
         pathPattern: Array.from(this.pathPatterns.values())[j]
       });

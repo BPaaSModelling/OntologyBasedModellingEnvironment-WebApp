@@ -24,9 +24,9 @@
       <mat-card-header>
         <mat-card-title>Current arrow configuration</mat-card-title>
       </mat-card-header>
-      <img style="max-height: 30px; max-width:30px" [src]="'../assets/images/Arrows/' + selectedConnectorMode.fromArrow + '.PNG'" >
+      <img *ngIf="selectedConnectorMode.fromArrow" style="max-height: 30px; max-width:30px" [src]="'../assets/images/Arrows/' + selectedConnectorMode.fromArrow + '.PNG'" >
       <img style="max-height: 30px; max-width:90px" class="thumbnail" [src]="'../assets/images/Strokes/' + selectedConnectorMode.arrowStroke + '.PNG'" >
-      <img style="max-height: 30px; max-width:30px" class="thumbnail" [src]="'../assets/images/Arrows/' + selectedConnectorMode.toArrow + '.PNG'" >
+      <img *ngIf="selectedConnectorMode.toArrow" style="max-height: 30px; max-width:30px" class="thumbnail" [src]="'../assets/images/Arrows/' + selectedConnectorMode.toArrow + '.PNG'" >
     </mat-card>
   </div>
   <div style="display: flex; flex-direction: row">
