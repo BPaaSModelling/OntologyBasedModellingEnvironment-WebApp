@@ -543,10 +543,12 @@ export class ModellingAreaComponent implements OnInit {
   private handleNodeDeleted(txn) {
     txn.changes.toArray().filter(element => element.propertyName === 'parts').forEach(evt => {
       // notify the container about the delete
+      // TODO: this does not work if you also delete containers - fix - can be also done in the backend (cleanup of modeling element)
+      /*
       if (evt.oldValue.data.group != undefined) {
         this.removeNodeFromContainer(evt.oldValue.data.group, evt.oldValue.data.element.id);
       }
-
+*/
       // TODO as goJs seems to detect deletions of attached sequence flows, we can simplify the queries in the backend
       this.mService.deleteDiagram(this.selectedModel.id, evt.oldValue.data.element.id);
     });
@@ -613,7 +615,7 @@ export class ModellingAreaComponent implements OnInit {
     });
 
     lastMovedNodes.forEach(nodeInfo => {
-      if (nodeInfo.diagramDetail.modelElementType === 'ModelingElement' && nodeInfo.diagramDetail.modelElementType === 'ModelingContainer') {
+      if (nodeInfo.diagramDetail.modelElementType === 'ModelingElement' || nodeInfo.diagramDetail.modelElementType === 'ModelingContainer') {
         this.updateContainerInformationIfNeeded(nodeInfo);
         this.mService.updateDiagram(nodeInfo.diagramDetail, this.selectedModel.id);
       }
