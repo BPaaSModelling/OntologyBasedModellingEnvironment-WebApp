@@ -1,6 +1,6 @@
 import {Component, HostListener, Input, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import * as go from 'gojs';
-import {ChangedEvent, GraphObject, InputEvent} from 'gojs';
+import {ChangedEvent} from 'gojs';
 import {PaletteElementModel} from '../_models/PaletteElement.model';
 import {VariablesSettings} from '../_settings/variables.settings';
 import {ModellerService} from '../modeller.service';
@@ -542,7 +542,12 @@ export class ModellingAreaComponent implements OnInit {
 
   private handleNodeDeleted(txn) {
     txn.changes.toArray().filter(element => element.propertyName === 'parts').forEach(evt => {
-      // TODO: with this change, we can even omit trying to find out the connected diagrams in the backend
+      // notify the container about the delete
+      if (evt.oldValue.data.group != undefined) {
+        this.removeNodeFromContainer(evt.oldValue.data.group, evt.oldValue.data.element.id);
+      }
+
+      // TODO as goJs seems to detect deletions of attached sequence flows, we can simplify the queries in the backend
       this.mService.deleteDiagram(this.selectedModel.id, evt.oldValue.data.element.id);
     });
   }
@@ -608,10 +613,10 @@ export class ModellingAreaComponent implements OnInit {
     });
 
     lastMovedNodes.forEach(nodeInfo => {
-
-      this.updateContainerInformationIfNeeded(nodeInfo);
-
-      this.mService.updateDiagram(nodeInfo.diagramDetail, this.selectedModel.id);
+      if (nodeInfo.diagramDetail.modelElementType === 'ModelingElement' && nodeInfo.diagramDetail.modelElementType === 'ModelingContainer') {
+        this.updateContainerInformationIfNeeded(nodeInfo);
+        this.mService.updateDiagram(nodeInfo.diagramDetail, this.selectedModel.id);
+      }
     });
 
     this.myDiagram.rebuildParts();
@@ -647,11 +652,8 @@ export class ModellingAreaComponent implements OnInit {
       ((mostSpecificContainer !== undefined && initialContainerKey !== mostSpecificContainer.id) || // moved to another container
         (mostSpecificContainer === undefined)) // moved out of the container into the open space
     ) {
-      let containerNode = this.myDiagram.model.findNodeDataForKey(nodeInfo.node.group);
-
+      this.removeNodeFromContainer(nodeInfo.node.group, nodeInfo.diagramDetail.id);
       delete nodeInfo.node.group;
-      _.remove(containerNode.element.containedDiagrams, s => s === nodeInfo.diagramDetail.id);
-      this.mService.updateDiagram(containerNode.element, this.selectedModel.id);
     }
 
     if (mostSpecificContainer !== undefined) {
@@ -663,6 +665,12 @@ export class ModellingAreaComponent implements OnInit {
         this.mService.updateDiagram(mostSpecificContainer, this.selectedModel.id);
       }
     }
+  }
+
+  private removeNodeFromContainer(groupKey, nodeKeyToRemove) {
+    let containerNode = this.myDiagram.model.findNodeDataForKey(groupKey);
+    _.remove(containerNode.element.containedDiagrams, s => s === nodeKeyToRemove);
+    this.mService.updateDiagram(containerNode.element, this.selectedModel.id);
   }
 
   private isNodeInContainer(containerNode, diagram) {
