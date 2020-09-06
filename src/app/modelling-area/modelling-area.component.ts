@@ -602,41 +602,68 @@ export class ModellingAreaComponent implements OnInit {
       );
     });
 
+    function findGrandestMovedParentOrReturnNode(node) {
+      let newVar = lastMovedNodes.get(node.group);
+      if (newVar === undefined) return node;
+      return findGrandestMovedParentOrReturnNode(newVar.node);
+    }
+
     lastMovedNodes.forEach(nodeInfo => {
 
-      if (nodeInfo.diagramDetail.modelElementType === 'ModelingElement') {
-
-        if (nodeInfo.node.group !== undefined) {
-          // check if element has been moved outside the container and update the container
-          let containerNode = this.myDiagram.model.findNodeDataForKey(nodeInfo.node.group);
-          if (!this.isNodeInContainer(containerNode, nodeInfo.diagramDetail)) {
-            delete nodeInfo.node.group;
-            _.remove(containerNode.element.containedDiagrams, s => s === nodeInfo.diagramDetail.id);
-            this.mService.updateDiagram(containerNode.element, this.selectedModel.id);
-          }
-        }
-        // check if element has been moved inside any of the containers and update those
-        this.myDiagram.model.nodeDataArray.forEach(containerNode => {
-          if (
-            containerNode.element.modelElementType === 'ModelingContainer' &&
-            nodeInfo.diagramDetail.id != containerNode.element.id &&
-            this.isNodeInContainer(containerNode, nodeInfo.diagramDetail)
-          ) {
-            nodeInfo.node.group = containerNode.element.id;
-            let containedDiagrams = containerNode.element.containedDiagrams || [];
-            if (!containedDiagrams.includes(nodeInfo.diagramDetail.id)) {
-              containedDiagrams.push(nodeInfo.diagramDetail.id);
-              containerNode.element.containedDiagrams = containedDiagrams;
-              this.mService.updateDiagram(containerNode.element, this.selectedModel.id);
-            }
-          }
-        });
-      }
+      this.updateContainerInformationIfNeeded(nodeInfo);
 
       this.mService.updateDiagram(nodeInfo.diagramDetail, this.selectedModel.id);
     });
 
     this.myDiagram.rebuildParts();
+  }
+
+  private updateContainerInformationIfNeeded(nodeInfo) {
+    let initialContainerKey = nodeInfo.node.group;
+
+    // check if element has been moved inside any of the containers and update those
+    let overlappedContainers: DiagramDetail[] = [];
+
+    this.myDiagram.model.nodeDataArray.forEach(containerNode => {
+      if (
+        containerNode.element.modelElementType === 'ModelingContainer' &&
+        nodeInfo.diagramDetail.id != containerNode.element.id &&
+        this.isNodeInContainer(containerNode, nodeInfo.diagramDetail)
+      ) {
+        overlappedContainers.push(containerNode.element);
+      }
+    });
+
+    let mostSpecificContainer: DiagramDetail = undefined;
+    overlappedContainers.forEach(value => {
+      if (mostSpecificContainer === undefined) {
+        mostSpecificContainer = value;
+      }
+      if (mostSpecificContainer.containedDiagrams !== undefined && mostSpecificContainer.containedDiagrams.includes(value.id)) {
+        mostSpecificContainer = value;
+      }
+    });
+
+    if (initialContainerKey !== undefined &&
+      ((mostSpecificContainer !== undefined && initialContainerKey !== mostSpecificContainer.id) || // moved to another container
+        (mostSpecificContainer === undefined)) // moved out of the container into the open space
+    ) {
+      let containerNode = this.myDiagram.model.findNodeDataForKey(nodeInfo.node.group);
+
+      delete nodeInfo.node.group;
+      _.remove(containerNode.element.containedDiagrams, s => s === nodeInfo.diagramDetail.id);
+      this.mService.updateDiagram(containerNode.element, this.selectedModel.id);
+    }
+
+    if (mostSpecificContainer !== undefined) {
+      nodeInfo.node.group = mostSpecificContainer.id;
+      let containedDiagrams = mostSpecificContainer.containedDiagrams || [];
+      if (!containedDiagrams.includes(nodeInfo.diagramDetail.id)) {
+        containedDiagrams.push(nodeInfo.diagramDetail.id);
+        mostSpecificContainer.containedDiagrams = containedDiagrams;
+        this.mService.updateDiagram(mostSpecificContainer, this.selectedModel.id);
+      }
+    }
   }
 
   private isNodeInContainer(containerNode, diagram) {
