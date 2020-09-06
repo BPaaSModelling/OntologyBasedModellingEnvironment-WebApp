@@ -356,7 +356,9 @@ export class ModellingAreaComponent implements OnInit {
       $(go.Group, "Auto",
         {
           name: "GROUP",
-          angle:0
+          angle:0,
+          resizable: true,
+          resizeObjectName: "PANEL"
         },
         new go.Binding("location", "loc"),
         new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
