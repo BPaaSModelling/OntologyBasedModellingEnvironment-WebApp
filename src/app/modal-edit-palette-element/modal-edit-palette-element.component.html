@@ -134,6 +134,12 @@
                     {{image.label}}</mat-option>
                 </mat-select>
 
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_ArchiMate) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image.label" required>
+                  <mat-option *ngFor="let image of archiMateList" [value]="image.thumbnailName">
+                    <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+
               </mat-form-field>
 
               <mat-form-field>
@@ -222,6 +228,18 @@
 
                 <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_Role) !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
                   <mat-option *ngFor="let image of roleImageList" [value]="image.imageName">
+                    <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_Role) !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+                  <mat-option *ngFor="let image of roleImageList" [value]="image.imageName">
+                    <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_ArchiMate) !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+                  <mat-option *ngFor="let image of archiMateList" [value]="image.imageName">
                     <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
                     {{image.label}}</mat-option>
                 </mat-select>
