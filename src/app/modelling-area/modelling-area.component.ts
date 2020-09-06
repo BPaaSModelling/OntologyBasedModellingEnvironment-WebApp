@@ -196,8 +196,13 @@ export class ModellingAreaComponent implements OnInit {
             if (diagram.modelElementType === 'ModelingContainer') {
               let containedElements = diagram.containedDiagrams || [];
               containedElements.forEach(element => {
-                let findNodeDataForKey = model.goJsModel.findNodeDataForKey(element);
-                findNodeDataForKey.group = diagram.id;
+                var nodeData = model.goJsModel.findNodeDataForKey(element);
+                if (nodeData == null) {
+                  nodeData = model.goJsModel.findLinkDataForKey(element);
+                }
+                if (nodeData != null) {
+                  nodeData.group = diagram.id;
+                }
               });
             }
 
@@ -601,12 +606,6 @@ export class ModellingAreaComponent implements OnInit {
         }
       );
     });
-
-    function findGrandestMovedParentOrReturnNode(node) {
-      let newVar = lastMovedNodes.get(node.group);
-      if (newVar === undefined) return node;
-      return findGrandestMovedParentOrReturnNode(newVar.node);
-    }
 
     lastMovedNodes.forEach(nodeInfo => {
 
