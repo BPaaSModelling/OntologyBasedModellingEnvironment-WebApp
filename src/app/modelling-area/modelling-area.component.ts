@@ -196,12 +196,12 @@ export class ModellingAreaComponent implements OnInit {
             if (diagram.modelElementType === 'ModelingContainer') {
               let containedElements = diagram.containedDiagrams || [];
               containedElements.forEach(element => {
-                var nodeData = model.goJsModel.findNodeDataForKey(element);
-                if (nodeData == null) {
-                  nodeData = model.goJsModel.findLinkDataForKey(element);
+                var data = model.goJsModel.nodeDataArray.find(nodeData => nodeData.element.modelingLanguageConstructInstance === element);
+                if (data == null) {
+                  data = model.goJsModel.linkDataArray.find(nodeData => nodeData.element.modelingLanguageConstructInstance === element);
                 }
-                if (nodeData != null) {
-                  nodeData.group = diagram.id;
+                if (data != null) {
+                  data.group = diagram.id;
                 }
               });
             }
@@ -546,7 +546,7 @@ export class ModellingAreaComponent implements OnInit {
       // TODO: this does not work if you also delete containers - fix - can be also done in the backend (cleanup of modeling element)
       /*
       if (evt.oldValue.data.group != undefined) {
-        this.removeNodeFromContainer(evt.oldValue.data.group, evt.oldValue.data.element.id);
+        this.removeElementFromContainer(evt.oldValue.data.group, evt.oldValue.data.element.id);
       }
 */
       // TODO as goJs seems to detect deletions of attached sequence flows, we can simplify the queries in the backend
@@ -645,7 +645,7 @@ export class ModellingAreaComponent implements OnInit {
       if (mostSpecificContainer === undefined) {
         mostSpecificContainer = value;
       }
-      if (mostSpecificContainer.containedDiagrams !== undefined && mostSpecificContainer.containedDiagrams.includes(value.id)) {
+      if (mostSpecificContainer.containedDiagrams !== undefined && mostSpecificContainer.containedDiagrams.includes(value.modelingLanguageConstructInstance)) {
         mostSpecificContainer = value;
       }
     });
@@ -654,24 +654,24 @@ export class ModellingAreaComponent implements OnInit {
       ((mostSpecificContainer !== undefined && initialContainerKey !== mostSpecificContainer.id) || // moved to another container
         (mostSpecificContainer === undefined)) // moved out of the container into the open space
     ) {
-      this.removeNodeFromContainer(nodeInfo.node.group, nodeInfo.diagramDetail.id);
+      this.removeElementFromContainer(nodeInfo.node.group, nodeInfo.diagramDetail.modelingLanguageConstructInstance);
       delete nodeInfo.node.group;
     }
 
     if (mostSpecificContainer !== undefined) {
       nodeInfo.node.group = mostSpecificContainer.id;
       let containedDiagrams = mostSpecificContainer.containedDiagrams || [];
-      if (!containedDiagrams.includes(nodeInfo.diagramDetail.id)) {
-        containedDiagrams.push(nodeInfo.diagramDetail.id);
+      if (!containedDiagrams.includes(nodeInfo.diagramDetail.modelingLanguageConstructInstance)) {
+        containedDiagrams.push(nodeInfo.diagramDetail.modelingLanguageConstructInstance);
         mostSpecificContainer.containedDiagrams = containedDiagrams;
         this.mService.updateDiagram(mostSpecificContainer, this.selectedModel.id);
       }
     }
   }
 
-  private removeNodeFromContainer(groupKey, nodeKeyToRemove) {
+  private removeElementFromContainer(groupKey, elementKey) {
     let containerNode = this.myDiagram.model.findNodeDataForKey(groupKey);
-    _.remove(containerNode.element.containedDiagrams, s => s === nodeKeyToRemove);
+    _.remove(containerNode.element.containedDiagrams, s => s === elementKey);
     this.mService.updateDiagram(containerNode.element, this.selectedModel.id);
   }
 
