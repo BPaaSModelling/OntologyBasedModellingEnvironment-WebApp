@@ -21,4 +21,5 @@ export class DiagramDetail {
   toDiagram: string
   containedDiagrams: string[]
   modelElementType: string
+  otherVisualisationsOfSameLanguageConstruct: string[]
 }

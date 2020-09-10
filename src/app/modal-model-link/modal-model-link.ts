@@ -34,14 +34,15 @@ export class ModalModelLink {
   }
 
   save() {
-    this.data.diagramDetail.diagramRepresentsModel = this.selectedModel.id;
-    this.modellerService.updateDiagram(this.data.diagramDetail, this.data.modelId);
-    this.dialogRef.close();
+    this.dialogRef.close({
+      action: 'Save',
+      selectedModelId: this.selectedModel.id
+    });
   }
 
   delete() {
-    delete this.data.diagramDetail.diagramRepresentsModel;
-    this.modellerService.updateDiagram(this.data.diagramDetail, this.data.modelId);
-    this.dialogRef.close();
+    this.dialogRef.close({
+      action: 'Delete'
+    });
   }
 }

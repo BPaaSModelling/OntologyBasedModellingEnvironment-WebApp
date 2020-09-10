@@ -2,7 +2,7 @@
   <div style="display: flex; flex-direction: row">
     <mat-form-field appearance="fill">
       <mat-select
-        (change)="selectionChanged($event)"
+        (change)="selectionChanged()"
         [(ngModel)]="selectedModel">
         <mat-option *ngFor="let model of models" [value]="model">{{model.label}}</mat-option>
       </mat-select>

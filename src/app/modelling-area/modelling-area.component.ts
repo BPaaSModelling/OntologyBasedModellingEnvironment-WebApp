@@ -17,6 +17,11 @@ import {ModalViewDiagramDetail} from '../diagram-detail/modal-diagram-detail.com
 import {DiagramDetailAndModel} from '../_models/DiagramDetailAndModel';
 import {ModalModelLink} from '../modal-model-link/modal-model-link';
 import {ModalDiagramNote} from '../modal-diagram-note/modal-diagram-note';
+import {
+  ModalModellingLanguageConstructInstanceLink,
+  VisualisationLinksData
+} from '../modal-modelling-language-construct-instance-link/modal-modelling-language-construct-instance-link';
+import {getQueryValue} from '@angular/core/src/view/query';
 
 let $: any;
 let myDiagram: any;
@@ -125,90 +130,97 @@ export class ModellingAreaComponent implements OnInit {
       this.models = models;
 
       this.models.forEach(model => {
-
         model.goJsModel = new go.GraphLinksModel();
 
         this.mService.getDiagrams(model.id).then(value => {
-          model.diagrams = value;
-          model.diagrams.forEach(diagram => {
-
-            if (diagram.modelElementType === 'ModelingRelation') {
-
-              let linkData = {
-                key: diagram.id,
-                element: diagram,
-                text: diagram.label,
-                fromArrow: diagram.fromArrow || "",
-                toArrow: diagram.toArrow || "",
-                from: this.findDiagramById(model.diagrams, diagram.fromDiagram),
-                to: this.findDiagramById(model.diagrams, diagram.toDiagram),
-                pathPattern: this.pathPatterns.get(diagram.arrowStroke)
-              }
-
-              if (diagram.fromArrow !== undefined) {
-                linkData.fromArrow = diagram.fromArrow;
-              }
-
-              if (diagram.toArrow !== undefined) {
-                linkData.toArrow = diagram.toArrow;
-              }
-
-              model.goJsModel.addLinkData(linkData);
-
-            } else if (diagram.modelElementType === 'ModelingElement') {
-
-              let nodeData = {
-                text: diagram.label,
-                key: diagram.id,
-                fill: '#0000',
-                source: VariablesSettings.IMG_ROOT + diagram.imageUrl,
-                size: new go.Size(diagram.width, diagram.height),
-                width: diagram.width,
-                height: diagram.height,
-                alignment: go.Spot.Bottom,
-                loc: new go.Point(diagram.x, diagram.y),
-                element: diagram
-              };
-
-              model.goJsModel.addNodeData(nodeData);
-            } else if (diagram.modelElementType === 'ModelingContainer') {
-
-              let nodeData = {
-                text: diagram.label,
-                key: diagram.id,
-                fill: '#0000',
-                source: VariablesSettings.IMG_ROOT + diagram.imageUrl,
-                size: new go.Size(diagram.width, diagram.height),
-                width: diagram.width,
-                height: diagram.height,
-                alignment: go.Spot.Bottom,
-                loc: new go.Point(diagram.x, diagram.y),
-                element: diagram,
-                isGroup: true
-              };
-
-              model.goJsModel.addNodeData(nodeData);
-            }
-
-          });
-
-          model.diagrams.forEach(diagram => {
-            if (diagram.modelElementType === 'ModelingContainer') {
-              let containedElements = diagram.containedDiagrams || [];
-              containedElements.forEach(element => {
-                var data = model.goJsModel.nodeDataArray.find(nodeData => nodeData.element.modelingLanguageConstructInstance === element);
-                if (data == null) {
-                  data = model.goJsModel.linkDataArray.find(nodeData => nodeData.element.modelingLanguageConstructInstance === element);
-                }
-                if (data != null) {
-                  data.group = diagram.id;
-                }
-              });
-            }
-
-          });
+          this.prepareDiagrams(model, value);
         });
       });
+
+    });
+  }
+  private prepareDiagrams(model: Model, value: DiagramDetail[]) {
+    model.diagrams = value;
+    model.diagrams.forEach(diagram => {
+
+      if (diagram.modelElementType === 'ModelingRelation') {
+
+        let linkData = {
+          key: diagram.id,
+          element: diagram,
+          text: diagram.label,
+          fromArrow: diagram.fromArrow || '',
+          toArrow: diagram.toArrow || '',
+          from: this.findDiagramById(model.diagrams, diagram.fromDiagram),
+          to: this.findDiagramById(model.diagrams, diagram.toDiagram),
+          pathPattern: this.pathPatterns.get(diagram.arrowStroke),
+          otherVisualisationsOfSameLanguageConstruct: diagram.otherVisualisationsOfSameLanguageConstruct
+        };
+
+        if (diagram.fromArrow !== undefined) {
+          linkData.fromArrow = diagram.fromArrow;
+        }
+
+        if (diagram.toArrow !== undefined) {
+          linkData.toArrow = diagram.toArrow;
+        }
+
+        model.goJsModel.addLinkData(linkData);
+
+      } else if (diagram.modelElementType === 'ModelingElement') {
+
+        let nodeData = {
+          text: diagram.label,
+          key: diagram.id,
+          fill: '#0000',
+          source: VariablesSettings.IMG_ROOT + diagram.imageUrl,
+          size: new go.Size(diagram.width, diagram.height),
+          width: diagram.width,
+          height: diagram.height,
+          alignment: go.Spot.Bottom,
+          loc: new go.Point(diagram.x, diagram.y),
+          element: diagram,
+          diagramRepresentsModel: diagram.diagramRepresentsModel,
+          otherVisualisationsOfSameLanguageConstruct: diagram.otherVisualisationsOfSameLanguageConstruct
+        };
+
+        model.goJsModel.addNodeData(nodeData);
+      } else if (diagram.modelElementType === 'ModelingContainer') {
+
+        let nodeData = {
+          text: diagram.label,
+          key: diagram.id,
+          fill: '#0000',
+          source: VariablesSettings.IMG_ROOT + diagram.imageUrl,
+          size: new go.Size(diagram.width, diagram.height),
+          width: diagram.width,
+          height: diagram.height,
+          alignment: go.Spot.Bottom,
+          loc: new go.Point(diagram.x, diagram.y),
+          element: diagram,
+          diagramRepresentsModel: diagram.diagramRepresentsModel,
+          otherVisualisationsOfSameLanguageConstruct: diagram.otherVisualisationsOfSameLanguageConstruct,
+          isGroup: true
+        };
+
+        model.goJsModel.addNodeData(nodeData);
+      }
+
+    });
+
+    model.diagrams.forEach(diagram => {
+      if (diagram.modelElementType === 'ModelingContainer') {
+        let containedElements = diagram.containedDiagrams || [];
+        containedElements.forEach(element => {
+          var data = model.goJsModel.nodeDataArray.find(nodeData => nodeData.element.modelingLanguageConstructInstance === element);
+          if (data == null) {
+            data = model.goJsModel.linkDataArray.find(nodeData => nodeData.element.modelingLanguageConstructInstance === element);
+          }
+          if (data != null) {
+            data.group = diagram.id;
+          }
+        });
+      }
 
     });
   }
@@ -353,9 +365,33 @@ export class ModellingAreaComponent implements OnInit {
             },
             new go.Binding("text").makeTwoWay(),
             new go.Binding("alignment")
+          ),
+          $(go.Shape,
+            {
+              alignment: go.Spot.TopLeft,
+              alignmentFocus: go.Spot.TopLeft,
+              width: 12, height: 12, fill: "orange",
+              visible: false,
+              figure: "Arrow"
+            },
+            new go.Binding("visible", "diagramRepresentsModel", convertFieldExistenceToLinkVisibility)
+          ),
+          $(go.Shape,
+            {
+              alignment: go.Spot.BottomLeft,
+              alignmentFocus: go.Spot.BottomLeft,
+              width: 12, height: 12, fill: "orange",
+              visible: false,
+              figure: "MultiDocument"
+            },
+            new go.Binding("visible", "otherVisualisationsOfSameLanguageConstruct", convertFieldExistenceToLinkVisibility)
           )
         )
     );
+
+    function convertFieldExistenceToLinkVisibility (obj) {
+      return obj != undefined;
+    }
 
     this.myDiagram.groupTemplate =
       $(go.Group, "Auto",
@@ -437,8 +473,22 @@ export class ModellingAreaComponent implements OnInit {
                 diagramDetailAndModel.modelId = this.selectedModel.id;
                 diagramDetailAndModel.diagramDetail = element;
 
-                this.dialog.open(ModalModelLink, {
+                let dialogRef = this.dialog.open(ModalModelLink, {
                   data: diagramDetailAndModel
+                });
+
+                dialogRef.afterClosed().subscribe(result => {
+                  if (result.action === 'Delete') {
+                    delete element.diagramRepresentsModel;
+                    this.mService.updateDiagram(element, this.selectedModel.id);
+                  } else if (result.action === 'Save') {
+                    element.diagramRepresentsModel = result.selectedModelId;
+                    this.myDiagram.model.setDataProperty(node.data, 'element', element);
+                    this.myDiagram.model.setDataProperty(node.data, 'diagramRepresentsModel', element.diagramRepresentsModel);
+                    this.mService.updateDiagram(element, this.selectedModel.id);
+                  }
+
+                  this.myDiagram.rebuildParts();
                 });
               }
             }
@@ -458,6 +508,42 @@ export class ModellingAreaComponent implements OnInit {
 
                 this.dialog.open(ModalDiagramNote, {
                   data: diagramDetailAndModel
+                });
+              }
+            }
+          }
+        ),
+        $("ContextMenuButton",
+          $(go.TextBlock, "Visualisations of same element"),
+          {
+            click: (e, obj) => {
+              let node = obj.part.adornedPart;
+              if (node != null) {
+                let element = node.data.element;
+
+                let otherVisualisationsData = new VisualisationLinksData();
+                otherVisualisationsData.modelingLanguageConstructInstanceId = element.modelingLanguageConstructInstance;
+                otherVisualisationsData.otherVisualisations = [];
+
+                if (element.otherVisualisationsOfSameLanguageConstruct !== undefined) {
+                  this.models.forEach(model => {
+                    let diagramDetail = model.diagrams.find(diagram => element.otherVisualisationsOfSameLanguageConstruct.includes(diagram.id));
+                    if (diagramDetail !== undefined) {
+                      let data = new DiagramDetailAndModel();
+                      data.modelId = model.id;
+                      data.diagramDetail = diagramDetail;
+                      otherVisualisationsData.otherVisualisations.push(data);
+                    }
+                  });
+                }
+
+                let data = new DiagramDetailAndModel();
+                data.modelId = this.selectedModel.id;
+                data.diagramDetail = element;
+                otherVisualisationsData.otherVisualisations.push(data);
+
+                this.dialog.open(ModalModellingLanguageConstructInstanceLink, {
+                  data: otherVisualisationsData
                 });
               }
             }
@@ -513,16 +599,11 @@ export class ModellingAreaComponent implements OnInit {
     pastedNodeDataElement.id = key;
     this.myDiagram.model.setDataProperty(data, "key", key);
 
-    this.mService.createDiagram(
-      this.selectedModel.id,
-      pastedNodeDataElement.id,
-      pastedNodeDataElement.label,
-      pastedNodeDataElement.x,
-      pastedNodeDataElement.y,
-      paletteConstructName,
-      this.selectedInstantiationType
+    this.mService.copyDiagram(
+      pastedNodeDataElement,
+      this.selectedModel.id
     ).then(response => {
-      pastedNodeDataElement = response;
+      data.element = response;
     });
 
   }
@@ -682,7 +763,7 @@ export class ModellingAreaComponent implements OnInit {
       containerNode.element.y + containerNode.element.height > diagram.y + diagram.height;
   }
 
-  selectionChanged($event: any) {
+  selectionChanged() {
 
     if (this.myDiagram === undefined) {
       this.initDiagramCanvas();
@@ -769,7 +850,8 @@ export class ModellingAreaComponent implements OnInit {
        size: new go.Size(element.width, element.height),
        width: element.width,
        height: element.height,
-       alignment: go.Spot.Bottom
+       alignment: go.Spot.Bottom,
+       diagramRepresentsModel: undefined
     };
 
     // add the new node data to the model
@@ -778,8 +860,6 @@ export class ModellingAreaComponent implements OnInit {
 
     let newnode = this.myDiagram.findNodeForData(toData);
     this.myDiagram.select(newnode);
-
-    this.myDiagram.commitTransaction("Add State");
 
     this.mService.createDiagram(
       this.selectedModel.id,
@@ -794,6 +874,8 @@ export class ModellingAreaComponent implements OnInit {
       if (response.modelElementType === 'ModelingContainer') {
         newnode.part.data.isGroup = true;
       }
+
+      this.myDiagram.commitTransaction("Add State");
     });
   }
 

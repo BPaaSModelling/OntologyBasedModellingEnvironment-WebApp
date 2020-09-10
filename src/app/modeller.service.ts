@@ -294,6 +294,25 @@ console.log(this.paletteElements);
       .then(response => response.json() as DiagramDetail);
   }
 
+  copyDiagram(existingDiagram: DiagramDetail, modelId: string): Promise<DiagramDetail> {
+    let payload: Object = {
+      paletteConstruct: existingDiagram.paletteConstruct,
+      x: existingDiagram.x,
+      y: existingDiagram.y,
+      w: existingDiagram.width,
+      h: existingDiagram.height,
+      uuid: existingDiagram.id,
+      label: existingDiagram.label,
+      modelingLanguageConstructInstance: existingDiagram.modelingLanguageConstructInstance,
+      note: existingDiagram.note,
+      diagramRepresentsModel: existingDiagram.diagramRepresentsModel
+    }
+
+    return this.http.put(EndpointSettings.getDiagramEndpoint(modelId), payload)
+      .toPromise()
+      .then(response => response.json() as DiagramDetail);
+  }
+
   createConnection(modelId: string, diagramId: string, x: number, y: number, from: string, to: string, paletteConstruct: string, instantiationTargetType: InstantiationTargetType): Promise<DiagramDetail> {
     let payload: Object = {
       x: toInteger(x),
