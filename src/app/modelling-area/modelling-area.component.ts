@@ -120,7 +120,8 @@ export class ModellingAreaComponent implements OnInit {
         geometryString: geometry,
         fill: "transparent",
         stroke: "black",
-        strokeWidth: 1
+        strokeWidth: 1.5,
+        strokeCap: "round"
       }
     );
   }
