@@ -17,7 +17,6 @@ import * as _ from 'lodash';
 })
 export class ModalViewDiagramDetail {
 
-  displayedColumnsDiagramAttrs: string[] = ['key', 'value'];
   displayedColumnsModelAttrs: string[] = ['key', 'value', 'actions'];
   hiddenValueOptions: string[] = [
     'modelingContainerContainsModelingLanguageConstruct',
@@ -25,7 +24,6 @@ export class ModalViewDiagramDetail {
     'modelingRelationHasTargetModelingElement'
   ];
 
-  diagramDetailDatasource: RelationDatasource;
   modelElementAttributeDatasource: RelationDatasource;
 
   options: RelationOption[];
@@ -45,10 +43,7 @@ export class ModalViewDiagramDetail {
   }
 
   private setupDatasources() {
-
     this.prepareModelingLanguageElementAttributes();
-    let diagramDetailRelations = this.getDiagramDetailRelations(this.data.diagramDetail);
-    this.diagramDetailDatasource = new RelationDatasource(diagramDetailRelations);
   }
 
   private prepareModelingLanguageElementAttributes() {
@@ -106,8 +101,6 @@ export class ModalViewDiagramDetail {
     }
 
     this.data.diagramDetail.modelElementAttributes.values = notInTableValues.concat(tableValues);
-    this.data.diagramDetail.modelingLanguageConstructInstance = this.diagramDetailDatasource.data.getValue().find(value => value.relation.relation == 'modelingLanguageConstructInstance').relation.value;
-    this.data.diagramDetail.paletteConstruct = this.diagramDetailDatasource.data.getValue().find(value => value.relation.relation == 'paletteConstruct').relation.value;
     this.modellerService.updateDiagram(this.data.diagramDetail, this.data.modelId);
 
     this.dialogRef.close();

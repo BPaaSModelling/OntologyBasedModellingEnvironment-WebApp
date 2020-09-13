@@ -1,32 +1,5 @@
-<h2 class="mat-title">Diagram attributes</h2>
-
-<mat-table [dataSource]="diagramDetailDatasource" class="mat-elevation-z8">
-
-  <ng-container matColumnDef="key">
-    <mat-header-cell *matHeaderCellDef> Relation </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{element.relation.relation}} </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="value">
-    <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      <input *ngIf="element.selectorOptions == undefined"
-             type="text"
-             [(ngModel)]="element.relation.value" />
-      <mat-form-field *ngIf="element.selectorOptions != undefined">
-        <mat-select [(ngModel)]="element.relation.value"
-                    name="value">
-          <mat-option *ngFor="let value of element.selectorOptions" [value]="value.id">{{value.label}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </mat-cell>
-  </ng-container>
-
-  <mat-header-row *matHeaderRowDef="displayedColumnsDiagramAttrs"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumnsDiagramAttrs;"></mat-row>
-</mat-table>
-
 <h2 class="mat-title" style="padding-top: 1rem">Model element attributes</h2>
+<span class="mat-caption">ID: {{data.diagramDetail.modelingLanguageConstructInstance}}</span><br/>
 <span class="mat-caption">Instantiation Type: {{data.diagramDetail.modelElementAttributes.instantiationType}}</span>
 
 <mat-table *ngIf="modelElementAttributeDatasource !== undefined && modelElementAttributeDatasource.data.getValue().length > 0" [dataSource]="modelElementAttributeDatasource" class="mat-elevation-z8">

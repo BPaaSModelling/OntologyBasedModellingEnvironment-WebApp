@@ -22,6 +22,7 @@ import {
   VisualisationLinksData
 } from '../modal-modelling-language-construct-instance-link/modal-modelling-language-construct-instance-link';
 import {getQueryValue} from '@angular/core/src/view/query';
+import {ModalPaletteVisualisation} from '../modal-palette-visualisation/modal-palette-visualisation';
 
 let $: any;
 let myDiagram: any;
@@ -80,6 +81,7 @@ export class ModellingAreaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.mService.queryPaletteElements();
     this.prepareModels();
     this.prepareCustomRelations();
   }
@@ -476,7 +478,7 @@ export class ModellingAreaComponent implements OnInit {
     this.myDiagram.nodeTemplate.contextMenu =
       $("ContextMenu",
         $("ContextMenuButton",
-          $(go.TextBlock, "Details"),
+          $(go.TextBlock, "Model Element Attributes"),
           {
             click: (e, obj) => {
               let node = obj.part.adornedPart;
@@ -581,6 +583,34 @@ export class ModellingAreaComponent implements OnInit {
                 this.dialog.open(ModalModellingLanguageConstructInstanceLink, {
                   data: otherVisualisationsData
                 });
+              }
+            }
+          }
+        ),
+        $("ContextMenuButton",
+          $(go.TextBlock, "Visualisation"),
+          {
+            click: (e, obj) => {
+              let node = obj.part.adornedPart;
+              if (node != null) {
+                let element = node.data.element;
+
+                let diagramDetailAndModel = new DiagramDetailAndModel();
+                diagramDetailAndModel.modelId = this.selectedModel.id;
+                diagramDetailAndModel.diagramDetail = element;
+
+                let dialogRef = this.dialog.open(ModalPaletteVisualisation, {
+                  data: diagramDetailAndModel
+                });
+
+                dialogRef.afterClosed().subscribe(result => {
+                  if (result !== 'Cancel') {
+                    element.paletteConstruct = result.paletteConstruct;
+                    this.mService.updateDiagram(element, this.selectedModel.id);
+                    this.myDiagram.rebuildParts();
+                  }
+                });
+
               }
             }
           }
