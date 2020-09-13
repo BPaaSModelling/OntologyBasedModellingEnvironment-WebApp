@@ -154,6 +154,7 @@ export class ModellingAreaComponent implements OnInit {
           from: this.findDiagramById(model.diagrams, diagram.fromDiagram),
           to: this.findDiagramById(model.diagrams, diagram.toDiagram),
           pathPattern: this.pathPatterns.get(diagram.arrowStroke),
+          diagramRepresentsModel: diagram.diagramRepresentsModel,
           otherVisualisationsOfSameLanguageConstruct: diagram.otherVisualisationsOfSameLanguageConstruct
         };
 
@@ -298,16 +299,27 @@ export class ModellingAreaComponent implements OnInit {
         $(go.Shape,  // the "to" arrowhead
           new go.Binding("toArrow", "toArrow"),
           { scale: 2 }),
-        $(go.TextBlock,
+        $(go.TextBlock, "left",
           {
             font: "11pt Helvetica, Arial, sans-serif",
             margin: 8,
             maxSize: new go.Size(200, NaN),
             wrap: go.TextBlock.WrapFit,
             editable: true,
-            alignment: go.Spot.Bottom //or go.Spot.Bottom
+            segmentOffset: new go.Point(0, -10),
+            alignment: go.Spot.Left //or go.Spot.Bottom
           },
           new go.Binding("text").makeTwoWay()
+        ),
+        $(go.Shape,
+          {
+            alignment: go.Spot.TopLeft,
+            alignmentFocus: go.Spot.TopLeft,
+            width: 12, height: 12, fill: "orange",
+            visible: false,
+            figure: "Arrow"
+          },
+          new go.Binding("visible", "diagramRepresentsModel", convertFieldExistenceToLinkVisibility)
         )
       );
 
@@ -437,6 +449,26 @@ export class ModellingAreaComponent implements OnInit {
           },
           new go.Binding("text").makeTwoWay(),
           new go.Binding("alignment")
+        ),
+        $(go.Shape,
+          {
+            alignment: go.Spot.TopLeft,
+            alignmentFocus: go.Spot.TopLeft,
+            width: 12, height: 12, fill: "orange",
+            visible: false,
+            figure: "Arrow"
+          },
+          new go.Binding("visible", "diagramRepresentsModel", convertFieldExistenceToLinkVisibility)
+        ),
+        $(go.Shape,
+          {
+            alignment: go.Spot.BottomLeft,
+            alignmentFocus: go.Spot.BottomLeft,
+            width: 12, height: 12, fill: "orange",
+            visible: false,
+            figure: "MultiDocument"
+          },
+          new go.Binding("visible", "otherVisualisationsOfSameLanguageConstruct", convertFieldExistenceToLinkVisibility)
         )
       );
 
@@ -478,6 +510,9 @@ export class ModellingAreaComponent implements OnInit {
                 });
 
                 dialogRef.afterClosed().subscribe(result => {
+
+                  if (result === undefined) return;
+
                   if (result.action === 'Delete') {
                     delete element.diagramRepresentsModel;
                     this.mService.updateDiagram(element, this.selectedModel.id);
