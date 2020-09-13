@@ -1,7 +1,6 @@
 import {Component, Inject, SimpleChanges} from '@angular/core';
 
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {Model} from '../_models/Model.model';
 import {DiagramDetail} from '../_models/DiagramDetail.model';
 import {RelationDatasource} from './RelationDatasource.model';
 import {Relation} from '../_models/Relation.model';
@@ -9,6 +8,8 @@ import {ModellerService} from '../modeller.service';
 import {DiagramDetailAndModel} from '../_models/DiagramDetailAndModel';
 import {RelationEditorModel} from './RelationEditorModel';
 import {ValueModel} from './ValueModel';
+import {RelationOption} from '../_models/RelationOption.model';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'modal-diagram-detail',
@@ -16,10 +17,14 @@ import {ValueModel} from './ValueModel';
 })
 export class ModalViewDiagramDetail {
 
-  displayedColumns: string[] = ['key', 'value'];
+  displayedColumnsDiagramAttrs: string[] = ['key', 'value'];
+  displayedColumnsModelAttrs: string[] = ['key', 'value', 'actions'];
 
   diagramDetailDatasource: RelationDatasource;
   modelElementAttributeDatasource: RelationDatasource;
+
+  options: RelationOption[];
+  selectedOption: RelationOption;
 
   constructor(
     public dialogRef: MatDialogRef<ModalViewDiagramDetail>,
@@ -35,9 +40,39 @@ export class ModalViewDiagramDetail {
   }
 
   private setupDatasources() {
-    //this.modelElementAttributeDatasource = new RelationDatasource(this.data.diagramDetail.modelElementAttributes.values);
+
+    this.prepareModelingLanguageElementAttributes();
     let diagramDetailRelations = this.getDiagramDetailRelations(this.data.diagramDetail);
     this.diagramDetailDatasource = new RelationDatasource(diagramDetailRelations);
+  }
+
+  private prepareModelingLanguageElementAttributes() {
+
+    this.options = this.data.diagramDetail.modelElementAttributes.options.filter(opt => this.isAvailableInDetailsView(opt.relation));
+
+    let promises: Promise<RelationEditorModel>[] = [];
+
+    this.data.diagramDetail.modelElementAttributes
+      .values.filter(value => {
+        return this.isAvailableInDetailsView(value.relation);
+      })
+      .forEach(value => {
+        let editor = new RelationEditorModel(value);
+        let promise = this.modellerService.getOptionsForRelation(value.relationPrefix + ':' + value.relation)
+          .then(response => {
+            editor.selectorOptions = response.instances.concat(response.classes)
+              .map(option => new ValueModel(option.split(':')[0], option.split(':')[1]));
+
+            editor.selectedValue = new ValueModel(value.valuePrefix, value.value);
+            return editor;
+          });
+
+        promises.push(promise);
+      });
+
+    Promise.all(promises).then(promiseResult => {
+      this.modelElementAttributeDatasource = new RelationDatasource(promiseResult);
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -45,7 +80,27 @@ export class ModalViewDiagramDetail {
   }
 
   save() {
-    //this.data.diagramDetail.modelElementAttributes.values = this.modelElementAttributeDatasource.data.getValue();
+    let tableValues = this.modelElementAttributeDatasource.data.getValue()
+      .filter(tableValue => {
+        return tableValue.selectedValue != undefined;
+      })
+      .map(tableValue => {
+        let rel = tableValue.relation;
+        rel.valuePrefix = tableValue.selectedValue.id;
+        rel.value = tableValue.selectedValue.value;
+        return rel;
+    });
+
+    let notInTableValues = [];
+
+    if (this.data.diagramDetail.modelElementAttributes.values !== undefined) {
+      notInTableValues = this.data.diagramDetail.modelElementAttributes
+        .values.filter(value => {
+        return !this.isAvailableInDetailsView(value.relation);
+      });
+    }
+
+    this.data.diagramDetail.modelElementAttributes.values = notInTableValues.concat(tableValues);
     this.data.diagramDetail.modelingLanguageConstructInstance = this.diagramDetailDatasource.data.getValue().find(value => value.relation.relation == 'modelingLanguageConstructInstance').relation.value;
     this.data.diagramDetail.paletteConstruct = this.diagramDetailDatasource.data.getValue().find(value => value.relation.relation == 'paletteConstruct').relation.value;
     this.modellerService.updateDiagram(this.data.diagramDetail, this.data.modelId);
@@ -73,5 +128,39 @@ export class ModalViewDiagramDetail {
 
   close() {
     this.dialogRef.close();
+  }
+
+  addRelation() {
+    let rel = new Relation();
+    rel.relation = this.selectedOption.relation;
+    rel.relationPrefix = this.selectedOption.relationPrefix;
+    let editor = new RelationEditorModel(rel);
+
+    this.modellerService.getOptionsForRelation(rel.relationPrefix + ':' + rel.relation)
+      .then(response => {
+
+        let valueModels = response.instances.concat(response.classes).map(option => new ValueModel(option.split(':')[0], option.split(':')[1]));
+        editor.selectorOptions = valueModels;
+        let values = this.modelElementAttributeDatasource.data.getValue();
+        values.push(editor);
+        this.modelElementAttributeDatasource = new RelationDatasource(values)
+      });
+  }
+
+  isAvailableInDetailsView(relation: string) {
+    return relation != 'modelingRelationHasSourceModelingElement' && relation != 'modelingRelationHasTargetModelingElement';
+  }
+
+  compareModelValues(o1: ValueModel, o2: ValueModel) {
+    return _.isEqual(o1, o2);
+  }
+
+  removeRelation(element: RelationEditorModel) {
+    let values = this.modelElementAttributeDatasource.data.getValue();
+    _.remove(values, value => {
+      return _.isEqual(value, element);
+    });
+
+    this.modelElementAttributeDatasource = new RelationDatasource(values)
   }
 }

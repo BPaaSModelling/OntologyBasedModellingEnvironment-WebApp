@@ -17,6 +17,7 @@ import {DiagramDetail} from './_models/DiagramDetail.model';
 import {toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
 import { ArrowStructures } from "./_models/ArrowStructures.model";
 import {InstantiationTargetType} from './_models/InstantiationTargetType.model';
+import {RelationOptions} from './_models/RelationOptions.model';
 
 @Injectable()
 export class ModellerService {
@@ -356,5 +357,11 @@ console.log(this.paletteElements);
   deleteModel(modelId: string): Promise<Object> {
     return this.http.delete(EndpointSettings.getModelEndpoint(modelId))
       .toPromise();
+  }
+
+  getOptionsForRelation(relationId: string): Promise<RelationOptions> {
+    return this.http.get(EndpointSettings.getRelationOptionsEndpoint(relationId))
+      .toPromise()
+      .then(response => response.json() as RelationOptions)
   }
 }

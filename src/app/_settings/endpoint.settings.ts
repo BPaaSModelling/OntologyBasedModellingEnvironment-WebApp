@@ -160,4 +160,8 @@ export class EndpointSettings {
   public static getDomainConceptsEndpoint(): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.GETDOMAINCONCEPTS;
   }
+
+  static getRelationOptionsEndpoint(relationid: string) {
+    return EndpointSettings.ENDPOINT + "/ModEnv/relations/" + relationid + "/options";
+  }
 }
