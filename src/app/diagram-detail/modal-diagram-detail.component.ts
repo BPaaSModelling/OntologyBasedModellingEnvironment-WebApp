@@ -19,6 +19,11 @@ export class ModalViewDiagramDetail {
 
   displayedColumnsDiagramAttrs: string[] = ['key', 'value'];
   displayedColumnsModelAttrs: string[] = ['key', 'value', 'actions'];
+  hiddenValueOptions: string[] = [
+    'modelingContainerContainsModelingLanguageConstruct',
+    'modelingRelationHasSourceModelingElement',
+    'modelingRelationHasTargetModelingElement'
+  ];
 
   diagramDetailDatasource: RelationDatasource;
   modelElementAttributeDatasource: RelationDatasource;
@@ -148,7 +153,7 @@ export class ModalViewDiagramDetail {
   }
 
   isAvailableInDetailsView(relation: string) {
-    return relation != 'modelingRelationHasSourceModelingElement' && relation != 'modelingRelationHasTargetModelingElement';
+    return !this.hiddenValueOptions.includes(relation);
   }
 
   compareModelValues(o1: ValueModel, o2: ValueModel) {
