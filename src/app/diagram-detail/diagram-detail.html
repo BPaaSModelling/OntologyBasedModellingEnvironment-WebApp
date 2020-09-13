@@ -1,4 +1,4 @@
-Instantiation Type: {{data.diagramDetail.modelElementAttributes.instantiationType}}
+<h2 class="mat-title">Diagram attributes</h2>
 
 <mat-table [dataSource]="diagramDetailDatasource" class="mat-elevation-z8">
 
@@ -24,10 +24,12 @@ Instantiation Type: {{data.diagramDetail.modelElementAttributes.instantiationTyp
 
   <mat-header-row *matHeaderRowDef="displayedColumnsDiagramAttrs"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumnsDiagramAttrs;"></mat-row>
-  <button (click)="save()">Save</button>
 </mat-table>
 
-<mat-table [dataSource]="modelElementAttributeDatasource" class="mat-elevation-z8">
+<h2 class="mat-title" style="padding-top: 1rem">Model element attributes</h2>
+<span class="mat-caption">Instantiation Type: {{data.diagramDetail.modelElementAttributes.instantiationType}}</span>
+
+<mat-table *ngIf="modelElementAttributeDatasource !== undefined && modelElementAttributeDatasource.data.getValue().length > 0" [dataSource]="modelElementAttributeDatasource" class="mat-elevation-z8">
 
   <ng-container matColumnDef="key">
     <mat-header-cell *matHeaderCellDef> Relation </mat-header-cell>
@@ -63,8 +65,10 @@ Instantiation Type: {{data.diagramDetail.modelElementAttributes.instantiationTyp
       <mat-option *ngFor="let option of options" [value]="option">{{option.relationPrefix + ':'  + option.relation}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <button (click)="addRelation()">Add Relation</button>
+  <button class="mat-button" (click)="addRelation()">Add Relation</button>
 </div>
 
-<button (click)="save()">Save</button>
-<button (click)="close()">Close</button>
+<div class="button-row">
+  <button class="mat-button" (click)="save()">Save</button>
+  <button class="mat-button" (click)="close()">Close</button>
+</div>
