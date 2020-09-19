@@ -12,7 +12,7 @@ import {Observable} from 'rxjs/Observable';
 })
 export class ModalModellingLanguageConstructInstanceLink {
 
-  displayedColumns: string[] = ['model', 'diagram'];
+  displayedColumns: string[] = ['modelId', 'modelLabel', 'diagram'];
 
   modelingLanguageConstructInstanceId: string;
   otherVisualisations: VisualisationLinksDataDatasource;
@@ -27,7 +27,8 @@ export class ModalModellingLanguageConstructInstanceLink {
 
       let data = new VisualisationLinksTableEntry();
       data.diagram = value.diagramDetail.id;
-      data.model = value.modelId;
+      data.modelId = value.modelId;
+      data.modelLabel = value.modelLabel;
 
       return data;
     });
@@ -46,7 +47,8 @@ export class VisualisationLinksData {
 }
 
 export class VisualisationLinksTableEntry {
-  model: string
+  modelId: string
+  modelLabel: string
   diagram: string
 }
 

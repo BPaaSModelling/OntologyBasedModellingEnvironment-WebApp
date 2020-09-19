@@ -563,20 +563,24 @@ export class ModellingAreaComponent implements OnInit {
                 otherVisualisationsData.modelingLanguageConstructInstanceId = element.modelingLanguageConstructInstance;
                 otherVisualisationsData.otherVisualisations = [];
 
+                // referenced diagrams
                 if (element.otherVisualisationsOfSameLanguageConstruct !== undefined) {
                   this.models.forEach(model => {
                     let diagramDetail = model.diagrams.find(diagram => element.otherVisualisationsOfSameLanguageConstruct.includes(diagram.id));
                     if (diagramDetail !== undefined) {
                       let data = new DiagramDetailAndModel();
                       data.modelId = model.id;
+                      data.modelLabel = model.label;
                       data.diagramDetail = diagramDetail;
                       otherVisualisationsData.otherVisualisations.push(data);
                     }
                   });
                 }
 
+                // current element
                 let data = new DiagramDetailAndModel();
                 data.modelId = this.selectedModel.id;
+                data.modelLabel = this.selectedModel.label;
                 data.diagramDetail = element;
                 otherVisualisationsData.otherVisualisations.push(data);
 

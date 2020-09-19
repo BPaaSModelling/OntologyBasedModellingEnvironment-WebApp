@@ -6,9 +6,14 @@
 <mat-dialog-content>
   <mat-table [dataSource]="otherVisualisations" class="mat-elevation-z8">
 
-    <ng-container matColumnDef="model">
-      <mat-header-cell *matHeaderCellDef> Model </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.model}} </mat-cell>
+    <ng-container matColumnDef="modelId">
+      <mat-header-cell *matHeaderCellDef> Model ID </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.modelId}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="modelLabel">
+      <mat-header-cell *matHeaderCellDef> Model Label </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.modelLabel}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="diagram">
