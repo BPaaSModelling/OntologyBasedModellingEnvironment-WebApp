@@ -678,13 +678,14 @@ export class ModellingAreaComponent implements OnInit {
 
       response.otherVisualisationsOfSameLanguageConstruct.forEach(otherElementDataKey => {
         let otherNodeData = this.myDiagram.model.findNodeDataForKey(otherElementDataKey);
-        let otherElements = otherNodeData.element.otherVisualisationsOfSameLanguageConstruct && otherNodeData.element.otherVisualisationsOfSameLanguageConstruct.slice() || [];
-        otherElements.push(response.id);
-        this.myDiagram.model.setDataProperty(otherNodeData, "otherVisualisationsOfSameLanguageConstruct", otherElements)
-        otherNodeData.element.otherVisualisationsOfSameLanguageConstruct = otherElements;
+        if (otherNodeData) {
+          let otherElements = otherNodeData.element.otherVisualisationsOfSameLanguageConstruct && otherNodeData.element.otherVisualisationsOfSameLanguageConstruct.slice() || [];
+          otherElements.push(response.id);
+          this.myDiagram.model.setDataProperty(otherNodeData, "otherVisualisationsOfSameLanguageConstruct", otherElements)
+          otherNodeData.element.otherVisualisationsOfSameLanguageConstruct = otherElements;
+        }
       });
     });
-
   }
 
   private handleNodeResizing(txn: any) {
