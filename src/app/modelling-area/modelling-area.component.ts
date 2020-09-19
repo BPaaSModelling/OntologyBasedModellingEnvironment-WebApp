@@ -23,6 +23,7 @@ import {
 } from '../modal-modelling-language-construct-instance-link/modal-modelling-language-construct-instance-link';
 import {getQueryValue} from '@angular/core/src/view/query';
 import {ModalPaletteVisualisation} from '../modal-palette-visualisation/modal-palette-visualisation';
+import {ModalModelEdit} from '../modal-model-edit/modal-model-edit.component';
 
 let $: any;
 let myDiagram: any;
@@ -876,6 +877,19 @@ export class ModellingAreaComponent implements OnInit {
           .then(model => {
             this.models = [...this.models, model];
           });
+      }
+    });
+  }
+
+  openModelEditModel() {
+    let dialogRef = this.dialog.open(ModalModelEdit, {
+      data: this.selectedModel
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.selectedModel.label = result.label;
+        this.models = [...this.models];
       }
     });
   }

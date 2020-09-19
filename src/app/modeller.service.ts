@@ -359,6 +359,14 @@ console.log(this.paletteElements);
       .toPromise();
   }
 
+  updateModel(model: Model) {
+    this.http.put(EndpointSettings.getModelEndpoint(model.id), {
+      id: model.id,
+      label: model.label
+    }).toPromise()
+      .then(response => console.log(response));
+  }
+
   getOptionsForRelation(relationId: string): Promise<RelationOptions> {
     return this.http.get(EndpointSettings.getRelationOptionsEndpoint(relationId))
       .toPromise()
