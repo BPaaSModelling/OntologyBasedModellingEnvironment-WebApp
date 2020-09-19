@@ -302,7 +302,7 @@ export class ModellingAreaComponent implements OnInit {
         $(go.Shape,  // the "to" arrowhead
           new go.Binding("toArrow", "toArrow"),
           { scale: 2 }),
-        $(go.TextBlock, "left",
+        $(go.TextBlock,
           {
             font: "11pt Helvetica, Arial, sans-serif",
             margin: 8,
@@ -657,19 +657,32 @@ export class ModellingAreaComponent implements OnInit {
   private handleNodePaste(txn: any) {
     // TODO handle case when several elements are copied (including containers and links)
     let data = txn.changes.toArray().find(change => change.propertyName = 'nodeDataArray').newValue;
-    let pastedNodeDataElement = data.element;
+    let element = data.element;
 
-    let paletteConstructName = pastedNodeDataElement.paletteConstruct.split(":")[1];
+    let paletteConstructName = element.paletteConstruct.split(":")[1];
     let key = paletteConstructName + '_Diagram_' + UUID.UUID();
 
-    pastedNodeDataElement.id = key;
-    this.myDiagram.model.setDataProperty(data, "key", key);
+    this.myDiagram.model.setKeyForNodeData(data, key);
+    let newElement = Object.assign({}, element); // apparently copying leads to referencing the same element from both data objects...
+    newElement.id = key;
+    let newNodeData = this.myDiagram.model.findNodeDataForKey(key);
+    newNodeData.element = newElement;
 
     this.mService.copyDiagram(
-      pastedNodeDataElement,
+      newElement,
       this.selectedModel.id
     ).then(response => {
-      data.element = response;
+      let nodeToManipulate = this.myDiagram.model.findNodeDataForKey(key);
+      this.myDiagram.model.setDataProperty(nodeToManipulate, "otherVisualisationsOfSameLanguageConstruct", response.otherVisualisationsOfSameLanguageConstruct)
+      nodeToManipulate.element = response;
+
+      response.otherVisualisationsOfSameLanguageConstruct.forEach(otherElementDataKey => {
+        let otherNodeData = this.myDiagram.model.findNodeDataForKey(otherElementDataKey);
+        let otherElements = otherNodeData.element.otherVisualisationsOfSameLanguageConstruct && otherNodeData.element.otherVisualisationsOfSameLanguageConstruct.slice() || [];
+        otherElements.push(response.id);
+        this.myDiagram.model.setDataProperty(otherNodeData, "otherVisualisationsOfSameLanguageConstruct", otherElements)
+        otherNodeData.element.otherVisualisationsOfSameLanguageConstruct = otherElements;
+      });
     });
 
   }
@@ -744,7 +757,9 @@ export class ModellingAreaComponent implements OnInit {
   private handleNodeMove(txn) {
     let lastMovedNodes = new Map();
 
-    txn.changes.toArray().forEach(evt => {
+    txn.changes.toArray()
+      .filter(evt => ['location', 'position'].includes(evt.propertyName))
+      .forEach(evt => {
 
       let nodeData = evt.object;
 
