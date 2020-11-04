@@ -1,12 +1,10 @@
 import {Component, Inject} from '@angular/core';
 
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {Model} from '../_models/Model.model';
-import {DiagramDetail} from '../_models/DiagramDetail.model';
 import {ModellerService} from '../modeller.service';
-import {DiagramDetailAndModel} from '../_models/DiagramDetailAndModel';
 import {PaletteElementModel} from '../_models/PaletteElement.model';
 import {VariablesSettings} from '../_settings/variables.settings';
+import {ModelElementDetailAndModel} from '../_models/ModelElementDetailAndModel';
 
 @Component({
   selector: 'modal-palette-visualisation',
@@ -22,7 +20,7 @@ export class ModalPaletteVisualisation {
   constructor(
     public dialogRef: MatDialogRef<ModalPaletteVisualisation>,
     private modellerService: ModellerService,
-    @Inject(MAT_DIALOG_DATA) public data: DiagramDetailAndModel) {}
+    @Inject(MAT_DIALOG_DATA) public data: ModelElementDetailAndModel) {}
 
   ngOnInit(): void {
     this.modellerService.paletteElements.forEach(paletteElement => {
@@ -32,12 +30,12 @@ export class ModalPaletteVisualisation {
 
   resolveChildHierarchyOrPushToSelector(paletteElement: PaletteElementModel) {
     if (paletteElement.childElements === undefined || paletteElement.childElements.length === 0) {
-      if ((this.data.diagramDetail.modelElementType === 'ModelingElement' || this.data.diagramDetail.modelElementType === 'ModelingContainer') &&
+      if ((this.data.elementDetail.modelElementType === 'ModelingElement' || this.data.elementDetail.modelElementType === 'ModelingContainer') &&
         paletteElement.type === 'PaletteElement') {
         this.paletteElements.push(paletteElement);
       }
 
-      if (this.data.diagramDetail.modelElementType === 'ModelingRelation' &&
+      if (this.data.elementDetail.modelElementType === 'ModelingRelation' &&
         paletteElement.type === 'PaletteConnector') {
         this.paletteElements.push(paletteElement);
       }

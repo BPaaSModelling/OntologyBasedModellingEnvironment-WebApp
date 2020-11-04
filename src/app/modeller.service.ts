@@ -13,7 +13,7 @@ import {DatatypePropertyModel} from "./_models/DatatypeProperty.model";
 import {DomainElementModel} from "./_models/DomainElement.model";
 import {ModelingLanguageModel} from "./_models/ModelingLanguage.model";
 import {Model} from './_models/Model.model';
-import {DiagramDetail} from './_models/DiagramDetail.model';
+import {ModelElementDetail} from './_models/ModelElementDetail.model';
 import {toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
 import { ArrowStructures } from "./_models/ArrowStructures.model";
 import {InstantiationTargetType} from './_models/InstantiationTargetType.model';
@@ -280,46 +280,46 @@ console.log(this.paletteElements);
       .then(response => response.json() as Model);
   }
 
-  createDiagram(modelId: string, diagramId: string, label: string, x: number, y: number, paletteConstruct: string, instantiationTargetType: InstantiationTargetType): Promise<DiagramDetail> {
+  createElement(modelId: string, shapeId: string, label: string, x: number, y: number, paletteConstruct: string, instantiationTargetType: InstantiationTargetType): Promise<ModelElementDetail> {
     let payload: Object = {
       x: toInteger(x),
       y: toInteger(y),
       paletteConstruct: paletteConstruct,
-      uuid: diagramId,
+      uuid: shapeId,
       label,
       instantiationType: instantiationTargetType
     }
 
-    return this.http.put(EndpointSettings.getDiagramEndpoint(modelId), payload)
+    return this.http.put(EndpointSettings.getElementEndpoint(modelId), payload)
       .toPromise()
-      .then(response => response.json() as DiagramDetail);
+      .then(response => response.json() as ModelElementDetail);
   }
 
-  copyDiagram(existingDiagram: DiagramDetail, modelId: string): Promise<DiagramDetail> {
+  copyElement(existingElement: ModelElementDetail, modelId: string): Promise<ModelElementDetail> {
     let payload: Object = {
-      paletteConstruct: existingDiagram.paletteConstruct,
-      x: existingDiagram.x,
-      y: existingDiagram.y,
-      w: existingDiagram.width,
-      h: existingDiagram.height,
-      uuid: existingDiagram.id,
-      label: existingDiagram.label,
-      modelingLanguageConstructInstance: existingDiagram.modelingLanguageConstructInstance,
-      note: existingDiagram.note,
-      diagramRepresentsModel: existingDiagram.diagramRepresentsModel
+      paletteConstruct: existingElement.paletteConstruct,
+      x: existingElement.x,
+      y: existingElement.y,
+      w: existingElement.width,
+      h: existingElement.height,
+      uuid: existingElement.id,
+      label: existingElement.label,
+      modelingLanguageConstructInstance: existingElement.modelingLanguageConstructInstance,
+      note: existingElement.note,
+      shapeRepresentsModel: existingElement.shapeRepresentsModel
     }
 
-    return this.http.put(EndpointSettings.getDiagramEndpoint(modelId), payload)
+    return this.http.put(EndpointSettings.getElementEndpoint(modelId), payload)
       .toPromise()
-      .then(response => response.json() as DiagramDetail);
+      .then(response => response.json() as ModelElementDetail);
   }
 
-  createConnection(modelId: string, diagramId: string, x: number, y: number, from: string, to: string, paletteConstruct: string, instantiationTargetType: InstantiationTargetType): Promise<DiagramDetail> {
+  createConnection(modelId: string, shapeId: string, x: number, y: number, from: string, to: string, paletteConstruct: string, instantiationTargetType: InstantiationTargetType): Promise<ModelElementDetail> {
     let payload: Object = {
       x: toInteger(x),
       y: toInteger(y),
       paletteConstruct: paletteConstruct,
-      uuid: diagramId,
+      uuid: shapeId,
       from: from,
       to: to,
       instantiationType: instantiationTargetType
@@ -327,29 +327,29 @@ console.log(this.paletteElements);
 
     return this.http.put(EndpointSettings.getConnectionEndpoint(modelId), payload)
       .toPromise()
-      .then(response => response.json() as DiagramDetail);
+      .then(response => response.json() as ModelElementDetail);
   }
 
-  getDiagrams(modelId: string): Promise<DiagramDetail[]> {
-    return this.http.get(EndpointSettings.getDiagramEndpoint(modelId))
+  getElements(modelId: string): Promise<ModelElementDetail[]> {
+    return this.http.get(EndpointSettings.getElementEndpoint(modelId))
       .toPromise()
-      .then(response => response.json() as DiagramDetail[])
+      .then(response => response.json() as ModelElementDetail[])
   }
 
-  getDiagramDetails(modelId: string, diagramId: string): Promise<DiagramDetail> {
-    return this.http.get(EndpointSettings.getDiagramDetailEndpoint(modelId, diagramId))
+  getELementDetails(modelId: string, shapeId: string): Promise<ModelElementDetail> {
+    return this.http.get(EndpointSettings.getElementDetailEndpoint(modelId, shapeId))
       .toPromise()
-      .then(response => response.json() as DiagramDetail);
+      .then(response => response.json() as ModelElementDetail);
   }
 
-  updateDiagram(diagramDetail: DiagramDetail, modelId: string) {
-    this.http.put(EndpointSettings.getDiagramDetailEndpoint(modelId, diagramDetail.id), diagramDetail)
+  updateElement(elementDetail: ModelElementDetail, modelId: string) {
+    this.http.put(EndpointSettings.getElementDetailEndpoint(modelId, elementDetail.id), elementDetail)
       .toPromise()
       .then(response => console.log(response));
   }
 
-  deleteDiagram(modelId: string, diagramId: string) {
-    this.http.delete(EndpointSettings.getDiagramDetailEndpoint(modelId, diagramId))
+  deleteElement(modelId: string, shapeId: string) {
+    this.http.delete(EndpointSettings.getElementDetailEndpoint(modelId, shapeId))
       .toPromise()
       .then(response => console.log(response));
   }

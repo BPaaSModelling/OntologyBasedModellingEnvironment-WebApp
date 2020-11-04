@@ -1,6 +1,6 @@
 <h2 class="mat-title" style="padding-top: 1rem">Model element attributes</h2>
-<span class="mat-caption">ID: {{data.diagramDetail.modelingLanguageConstructInstance}}</span><br/>
-<span class="mat-caption">Instantiation Type: {{data.diagramDetail.modelElementAttributes.instantiationType}}</span>
+<span class="mat-caption">ID: {{data.elementDetail.modelingLanguageConstructInstance}}</span><br/>
+<span class="mat-caption">Instantiation Type: {{data.elementDetail.abstractElementAttributes.instantiationType}}</span>
 
 <mat-table *ngIf="modelElementAttributeDatasource !== undefined && modelElementAttributeDatasource.data.getValue().length > 0" [dataSource]="modelElementAttributeDatasource" class="mat-elevation-z8">
 

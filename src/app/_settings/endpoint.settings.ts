@@ -41,16 +41,16 @@ export class EndpointSettings {
     return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId;
   }
 
-  public static getDiagramEndpoint(modelId: string): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId + '/diagram';
+  public static getElementEndpoint(modelId: string): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId + '/element';
   }
 
   public static getConnectionEndpoint(modelId: string): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId + '/connection';
   }
 
-  public static getDiagramDetailEndpoint(modelId: string, diagramId: string): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId + '/diagram/' + diagramId;
+  public static getElementDetailEndpoint(modelId: string, id: string): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId + '/element/' + id;
   }
 
   public static getArrowsEndpoint(): string {

@@ -8,22 +8,21 @@ import {ContextMenuComponent} from 'ngx-contextmenu';
 import {Model} from '../_models/Model.model';
 import {ModalModelCreation} from '../modal-model-creation/modal-model-creation.component';
 import {MatDialog} from '@angular/material/dialog';
-import {DiagramDetail} from '../_models/DiagramDetail.model';
 import {UUID} from 'angular2-uuid';
 import {toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
 import * as _ from 'lodash';
 import {InstantiationTargetType} from '../_models/InstantiationTargetType.model';
-import {ModalViewDiagramDetail} from '../diagram-detail/modal-diagram-detail.component';
-import {DiagramDetailAndModel} from '../_models/DiagramDetailAndModel';
 import {ModalModelLink} from '../modal-model-link/modal-model-link';
-import {ModalDiagramNote} from '../modal-diagram-note/modal-diagram-note';
+import {ModalElementNote} from '../modal-element-note/modal-element-note.component';
 import {
   ModalModellingLanguageConstructInstanceLink,
   VisualisationLinksData
 } from '../modal-modelling-language-construct-instance-link/modal-modelling-language-construct-instance-link';
-import {getQueryValue} from '@angular/core/src/view/query';
 import {ModalPaletteVisualisation} from '../modal-palette-visualisation/modal-palette-visualisation';
 import {ModalModelEdit} from '../modal-model-edit/modal-model-edit.component';
+import {ModelElementDetail} from '../_models/ModelElementDetail.model';
+import {ModelElementDetailAndModel} from '../_models/ModelElementDetailAndModel';
+import {ModalViewElementDetail} from '../model-element-detail/model-element-detail.component';
 
 let $: any;
 let myDiagram: any;
@@ -136,75 +135,75 @@ export class ModellingAreaComponent implements OnInit {
       this.models.forEach(model => {
         model.goJsModel = new go.GraphLinksModel();
 
-        this.mService.getDiagrams(model.id).then(value => {
-          this.prepareDiagrams(model, value);
+        this.mService.getElements(model.id).then(value => {
+          this.prepareModelElements(model, value);
         });
       });
 
     });
   }
-  private prepareDiagrams(model: Model, value: DiagramDetail[]) {
-    model.diagrams = value;
-    model.diagrams.forEach(diagram => {
+  private prepareModelElements(model: Model, value: ModelElementDetail[]) {
+    model.elements = value;
+    model.elements.forEach(element => {
 
-      if (diagram.modelElementType === 'ModelingRelation') {
+      if (element.modelElementType === 'ModelingRelation') {
 
         let linkData = {
-          key: diagram.id,
-          element: diagram,
-          text: diagram.label,
-          fromArrow: diagram.fromArrow || '',
-          toArrow: diagram.toArrow || '',
-          from: this.findDiagramById(model.diagrams, diagram.fromDiagram),
-          to: this.findDiagramById(model.diagrams, diagram.toDiagram),
-          pathPattern: this.pathPatterns.get(diagram.arrowStroke),
-          diagramRepresentsModel: diagram.diagramRepresentsModel,
-          otherVisualisationsOfSameLanguageConstruct: diagram.otherVisualisationsOfSameLanguageConstruct
+          key: element.id,
+          element: element,
+          text: element.label,
+          fromArrow: element.fromArrow || '',
+          toArrow: element.toArrow || '',
+          from: this.findShapeById(model.elements, element.fromShape),
+          to: this.findShapeById(model.elements, element.toShape),
+          pathPattern: this.pathPatterns.get(element.arrowStroke),
+          shapeRepresentsModel: element.shapeRepresentsModel,
+          otherVisualisationsOfSameLanguageConstruct: element.otherVisualisationsOfSameLanguageConstruct
         };
 
-        if (diagram.fromArrow !== undefined) {
-          linkData.fromArrow = diagram.fromArrow;
+        if (element.fromArrow !== undefined) {
+          linkData.fromArrow = element.fromArrow;
         }
 
-        if (diagram.toArrow !== undefined) {
-          linkData.toArrow = diagram.toArrow;
+        if (element.toArrow !== undefined) {
+          linkData.toArrow = element.toArrow;
         }
 
         model.goJsModel.addLinkData(linkData);
 
-      } else if (diagram.modelElementType === 'ModelingElement') {
+      } else if (element.modelElementType === 'ModelingElement') {
 
         let nodeData = {
-          text: diagram.label,
-          key: diagram.id,
+          text: element.label,
+          key: element.id,
           fill: '#0000',
-          source: VariablesSettings.IMG_ROOT + diagram.imageUrl,
-          size: new go.Size(diagram.width, diagram.height),
-          width: diagram.width,
-          height: diagram.height,
+          source: VariablesSettings.IMG_ROOT + element.imageUrl,
+          size: new go.Size(element.width, element.height),
+          width: element.width,
+          height: element.height,
           alignment: go.Spot.Bottom,
-          loc: new go.Point(diagram.x, diagram.y),
-          element: diagram,
-          diagramRepresentsModel: diagram.diagramRepresentsModel,
-          otherVisualisationsOfSameLanguageConstruct: diagram.otherVisualisationsOfSameLanguageConstruct
+          loc: new go.Point(element.x, element.y),
+          element: element,
+          shapeRepresentsModel: element.shapeRepresentsModel,
+          otherVisualisationsOfSameLanguageConstruct: element.otherVisualisationsOfSameLanguageConstruct
         };
 
         model.goJsModel.addNodeData(nodeData);
-      } else if (diagram.modelElementType === 'ModelingContainer') {
+      } else if (element.modelElementType === 'ModelingContainer') {
 
         let nodeData = {
-          text: diagram.label,
-          key: diagram.id,
+          text: element.label,
+          key: element.id,
           fill: '#0000',
-          source: VariablesSettings.IMG_ROOT + diagram.imageUrl,
-          size: new go.Size(diagram.width, diagram.height),
-          width: diagram.width,
-          height: diagram.height,
+          source: VariablesSettings.IMG_ROOT + element.imageUrl,
+          size: new go.Size(element.width, element.height),
+          width: element.width,
+          height: element.height,
           alignment: go.Spot.Bottom,
-          loc: new go.Point(diagram.x, diagram.y),
-          element: diagram,
-          diagramRepresentsModel: diagram.diagramRepresentsModel,
-          otherVisualisationsOfSameLanguageConstruct: diagram.otherVisualisationsOfSameLanguageConstruct,
+          loc: new go.Point(element.x, element.y),
+          element: element,
+          shapeRepresentsModel: element.shapeRepresentsModel,
+          otherVisualisationsOfSameLanguageConstruct: element.otherVisualisationsOfSameLanguageConstruct,
           isGroup: true
         };
 
@@ -213,16 +212,16 @@ export class ModellingAreaComponent implements OnInit {
 
     });
 
-    model.diagrams.forEach(diagram => {
-      if (diagram.modelElementType === 'ModelingContainer') {
-        let containedElements = diagram.containedDiagrams || [];
+    model.elements.forEach(modelElement => {
+      if (modelElement.modelElementType === 'ModelingContainer') {
+        let containedElements = modelElement.containedShapes || [];
         containedElements.forEach(element => {
           var data = model.goJsModel.nodeDataArray.find(nodeData => nodeData.element.modelingLanguageConstructInstance === element);
           if (data == null) {
             data = model.goJsModel.linkDataArray.find(nodeData => nodeData.element.modelingLanguageConstructInstance === element);
           }
           if (data != null) {
-            data.group = diagram.id;
+            data.group = modelElement.id;
           }
         });
       }
@@ -230,11 +229,11 @@ export class ModellingAreaComponent implements OnInit {
     });
   }
 
-  private findDiagramById(diagrams: DiagramDetail[], diagramId: string) {
+  private findShapeById(modelElements: ModelElementDetail[], shapeId: string) {
 
-    let diagramDetail = diagrams.find(diag => diag.modelingLanguageConstructInstance === diagramId);
-    if (diagramDetail !== undefined) {
-      return diagramDetail.id;
+    const modelElement = modelElements.find(diag => diag.modelingLanguageConstructInstance === shapeId);
+    if (modelElement !== undefined) {
+      return modelElement.id;
     }
 
     return undefined;
@@ -323,7 +322,7 @@ export class ModellingAreaComponent implements OnInit {
             visible: false,
             figure: "Arrow"
           },
-          new go.Binding("visible", "diagramRepresentsModel", convertFieldExistenceToLinkVisibility)
+          new go.Binding("visible", "shapeRepresentsModel", convertFieldExistenceToLinkVisibility)
         )
       );
 
@@ -390,7 +389,7 @@ export class ModellingAreaComponent implements OnInit {
               visible: false,
               figure: "Arrow"
             },
-            new go.Binding("visible", "diagramRepresentsModel", convertFieldExistenceToLinkVisibility)
+            new go.Binding("visible", "shapeRepresentsModel", convertFieldExistenceToLinkVisibility)
           ),
           $(go.Shape,
             {
@@ -462,7 +461,7 @@ export class ModellingAreaComponent implements OnInit {
             visible: false,
             figure: "Arrow"
           },
-          new go.Binding("visible", "diagramRepresentsModel", convertFieldExistenceToLinkVisibility)
+          new go.Binding("visible", "shapeRepresentsModel", convertFieldExistenceToLinkVisibility)
         ),
         $(go.Shape,
           {
@@ -486,12 +485,12 @@ export class ModellingAreaComponent implements OnInit {
               if (node != null) {
                 let element = node.data.element;
 
-                let diagramDetailAndModel = new DiagramDetailAndModel();
-                diagramDetailAndModel.modelId = this.selectedModel.id;
-                diagramDetailAndModel.diagramDetail = element;
+                let modelElementAndModel = new ModelElementDetailAndModel();
+                modelElementAndModel.modelId = this.selectedModel.id;
+                modelElementAndModel.elementDetail = element;
 
-                this.dialog.open(ModalViewDiagramDetail, {
-                  data: diagramDetailAndModel
+                this.dialog.open(ModalViewElementDetail, {
+                  data: modelElementAndModel
                 });
               }
             }
@@ -505,12 +504,12 @@ export class ModellingAreaComponent implements OnInit {
               if (node != null) {
                 let element = node.data.element;
 
-                let diagramDetailAndModel = new DiagramDetailAndModel();
-                diagramDetailAndModel.modelId = this.selectedModel.id;
-                diagramDetailAndModel.diagramDetail = element;
+                let modelElementDetailAndModel = new ModelElementDetailAndModel();
+                modelElementDetailAndModel.modelId = this.selectedModel.id;
+                modelElementDetailAndModel.elementDetail = element;
 
                 let dialogRef = this.dialog.open(ModalModelLink, {
-                  data: diagramDetailAndModel
+                  data: modelElementDetailAndModel
                 });
 
                 dialogRef.afterClosed().subscribe(result => {
@@ -518,13 +517,13 @@ export class ModellingAreaComponent implements OnInit {
                   if (result === undefined) return;
 
                   if (result.action === 'Delete') {
-                    delete element.diagramRepresentsModel;
-                    this.mService.updateDiagram(element, this.selectedModel.id);
+                    delete element.shapeRepresentsModel;
+                    this.mService.updateElement(element, this.selectedModel.id);
                   } else if (result.action === 'Save') {
-                    element.diagramRepresentsModel = result.selectedModelId;
+                    element.shapeRepresentsModel = result.selectedModelId;
                     this.myDiagram.model.setDataProperty(node.data, 'element', element);
-                    this.myDiagram.model.setDataProperty(node.data, 'diagramRepresentsModel', element.diagramRepresentsModel);
-                    this.mService.updateDiagram(element, this.selectedModel.id);
+                    this.myDiagram.model.setDataProperty(node.data, 'shapeRepresentsModel', element.shapeRepresentsModel);
+                    this.mService.updateElement(element, this.selectedModel.id);
                   }
 
                   this.myDiagram.rebuildParts();
@@ -541,12 +540,12 @@ export class ModellingAreaComponent implements OnInit {
               if (node != null) {
                 let element = node.data.element;
 
-                let diagramDetailAndModel = new DiagramDetailAndModel();
-                diagramDetailAndModel.modelId = this.selectedModel.id;
-                diagramDetailAndModel.diagramDetail = element;
+                let modelElementDetailAndModel = new ModelElementDetailAndModel();
+                modelElementDetailAndModel.modelId = this.selectedModel.id;
+                modelElementDetailAndModel.elementDetail = element;
 
-                this.dialog.open(ModalDiagramNote, {
-                  data: diagramDetailAndModel
+                this.dialog.open(ModalElementNote, {
+                  data: modelElementDetailAndModel
                 });
               }
             }
@@ -564,25 +563,25 @@ export class ModellingAreaComponent implements OnInit {
                 otherVisualisationsData.modelingLanguageConstructInstanceId = element.modelingLanguageConstructInstance;
                 otherVisualisationsData.otherVisualisations = [];
 
-                // referenced diagrams
+                // referenced shapes
                 if (element.otherVisualisationsOfSameLanguageConstruct !== undefined) {
                   this.models.forEach(model => {
-                    let diagramDetail = model.diagrams.find(diagram => element.otherVisualisationsOfSameLanguageConstruct.includes(diagram.id));
-                    if (diagramDetail !== undefined) {
-                      let data = new DiagramDetailAndModel();
+                    let modelElementDetail = model.elements.find(modelElement => element.otherVisualisationsOfSameLanguageConstruct.includes(modelElement.id));
+                    if (modelElementDetail !== undefined) {
+                      let data = new ModelElementDetailAndModel();
                       data.modelId = model.id;
                       data.modelLabel = model.label;
-                      data.diagramDetail = diagramDetail;
+                      data.elementDetail = modelElementDetail;
                       otherVisualisationsData.otherVisualisations.push(data);
                     }
                   });
                 }
 
                 // current element
-                let data = new DiagramDetailAndModel();
+                let data = new ModelElementDetailAndModel();
                 data.modelId = this.selectedModel.id;
                 data.modelLabel = this.selectedModel.label;
-                data.diagramDetail = element;
+                data.elementDetail = element;
                 otherVisualisationsData.otherVisualisations.push(data);
 
                 this.dialog.open(ModalModellingLanguageConstructInstanceLink, {
@@ -600,18 +599,18 @@ export class ModellingAreaComponent implements OnInit {
               if (node != null) {
                 let element = node.data.element;
 
-                let diagramDetailAndModel = new DiagramDetailAndModel();
-                diagramDetailAndModel.modelId = this.selectedModel.id;
-                diagramDetailAndModel.diagramDetail = element;
+                let modelElementDetailAndModel = new ModelElementDetailAndModel();
+                modelElementDetailAndModel.modelId = this.selectedModel.id;
+                modelElementDetailAndModel.elementDetail = element;
 
                 let dialogRef = this.dialog.open(ModalPaletteVisualisation, {
-                  data: diagramDetailAndModel
+                  data: modelElementDetailAndModel
                 });
 
                 dialogRef.afterClosed().subscribe(result => {
                   if (result !== 'Cancel') {
                     element.paletteConstruct = result.paletteConstruct;
-                    this.mService.updateDiagram(element, this.selectedModel.id);
+                    this.mService.updateElement(element, this.selectedModel.id);
                     this.myDiagram.rebuildParts();
                   }
                 });
@@ -665,7 +664,7 @@ export class ModellingAreaComponent implements OnInit {
     let element = data.element;
 
     let paletteConstructName = element.paletteConstruct.split(":")[1];
-    let key = paletteConstructName + '_Diagram_' + UUID.UUID();
+    let key = paletteConstructName + '_Shape_' + UUID.UUID();
 
     this.myDiagram.model.setKeyForNodeData(data, key);
     let newElement = Object.assign({}, element); // apparently copying leads to referencing the same element from both data objects...
@@ -673,7 +672,7 @@ export class ModellingAreaComponent implements OnInit {
     let newNodeData = this.myDiagram.model.findNodeDataForKey(key);
     newNodeData.element = newElement;
 
-    this.mService.copyDiagram(
+    this.mService.copyElement(
       newElement,
       this.selectedModel.id
     ).then(response => {
@@ -697,13 +696,13 @@ export class ModellingAreaComponent implements OnInit {
 
     // resizing should only be affecting one element, we are not interested in the others
     let latestChange = _.last(txn.changes.toArray().filter(change => change.propertyName === 'size'));
-    let diagramDetail = latestChange.object.element;
-    diagramDetail.width = toInteger(latestChange.newValue.split(" ")[0]);
-    diagramDetail.height = toInteger(latestChange.newValue.split(" ")[1]);
-    latestChange.object.width = diagramDetail.width;
-    latestChange.object.height = diagramDetail.height;
+    let modelElement = latestChange.object.element;
+    modelElement.width = toInteger(latestChange.newValue.split(" ")[0]);
+    modelElement.height = toInteger(latestChange.newValue.split(" ")[1]);
+    latestChange.object.width = modelElement.width;
+    latestChange.object.height = modelElement.height;
 
-    this.mService.updateDiagram(diagramDetail, this.selectedModel.id);
+    this.mService.updateElement(modelElement, this.selectedModel.id);
   }
 
   private handleNodeDeleted(txn) {
@@ -716,16 +715,16 @@ export class ModellingAreaComponent implements OnInit {
       }
 */
       // TODO as goJs seems to detect deletions of attached sequence flows, we can simplify the queries in the backend
-      this.mService.deleteDiagram(this.selectedModel.id, evt.oldValue.data.element.id);
+      this.mService.deleteElement(this.selectedModel.id, evt.oldValue.data.element.id);
     });
   }
 
   private handleNodeTextEditing(txn) {
     let nodeData = txn.changes.iteratorBackwards.first().object;
-    let diagramDetail: DiagramDetail = nodeData.element;
-    diagramDetail.label = nodeData.text;
+    let modelElement: ModelElementDetail = nodeData.element;
+    modelElement.label = nodeData.text;
 
-    this.mService.updateDiagram(diagramDetail, this.selectedModel.id);
+    this.mService.updateElement(modelElement, this.selectedModel.id);
   }
 
   private handleNodeLinking(txn) {
@@ -769,23 +768,23 @@ export class ModellingAreaComponent implements OnInit {
 
       let nodeData = evt.object;
 
-      let diagramDetail: DiagramDetail = nodeData.data.element;
-      diagramDetail.x = toInteger(nodeData.location.x);
-      diagramDetail.y = toInteger(nodeData.location.y);
+      let modelElement: ModelElementDetail = nodeData.data.element;
+      modelElement.x = toInteger(nodeData.location.x);
+      modelElement.y = toInteger(nodeData.location.y);
 
       lastMovedNodes.set(
-        diagramDetail.id,
+        modelElement.id,
         {
-          diagramDetail: diagramDetail,
+          modelElementDetail: modelElement,
           node: nodeData.data
         }
       );
     });
 
     lastMovedNodes.forEach(nodeInfo => {
-      if (nodeInfo.diagramDetail.modelElementType === 'ModelingElement' || nodeInfo.diagramDetail.modelElementType === 'ModelingContainer') {
+      if (nodeInfo.modelElementDetail.modelElementType === 'ModelingElement' || nodeInfo.modelElementDetail.modelElementType === 'ModelingContainer') {
         this.updateContainerInformationIfNeeded(nodeInfo);
-        this.mService.updateDiagram(nodeInfo.diagramDetail, this.selectedModel.id);
+        this.mService.updateElement(nodeInfo.modelElementDetail, this.selectedModel.id);
       }
     });
 
@@ -796,24 +795,24 @@ export class ModellingAreaComponent implements OnInit {
     let initialContainerKey = nodeInfo.node.group;
 
     // check if element has been moved inside any of the containers and update those
-    let overlappedContainers: DiagramDetail[] = [];
+    let overlappedContainers: ModelElementDetail[] = [];
 
     this.myDiagram.model.nodeDataArray.forEach(containerNode => {
       if (
         containerNode.element.modelElementType === 'ModelingContainer' &&
-        nodeInfo.diagramDetail.id != containerNode.element.id &&
-        this.isNodeInContainer(containerNode, nodeInfo.diagramDetail)
+        nodeInfo.modelElementDetail.id != containerNode.element.id &&
+        this.isNodeInContainer(containerNode, nodeInfo.modelElementDetail)
       ) {
         overlappedContainers.push(containerNode.element);
       }
     });
 
-    let mostSpecificContainer: DiagramDetail = undefined;
+    let mostSpecificContainer: ModelElementDetail = undefined;
     overlappedContainers.forEach(value => {
       if (mostSpecificContainer === undefined) {
         mostSpecificContainer = value;
       }
-      if (mostSpecificContainer.containedDiagrams !== undefined && mostSpecificContainer.containedDiagrams.includes(value.modelingLanguageConstructInstance)) {
+      if (mostSpecificContainer.containedShapes !== undefined && mostSpecificContainer.containedShapes.includes(value.modelingLanguageConstructInstance)) {
         mostSpecificContainer = value;
       }
     });
@@ -822,32 +821,32 @@ export class ModellingAreaComponent implements OnInit {
       ((mostSpecificContainer !== undefined && initialContainerKey !== mostSpecificContainer.id) || // moved to another container
         (mostSpecificContainer === undefined)) // moved out of the container into the open space
     ) {
-      this.removeElementFromContainer(nodeInfo.node.group, nodeInfo.diagramDetail.modelingLanguageConstructInstance);
+      this.removeElementFromContainer(nodeInfo.node.group, nodeInfo.modelElementDetail.modelingLanguageConstructInstance);
       delete nodeInfo.node.group;
     }
 
     if (mostSpecificContainer !== undefined) {
       nodeInfo.node.group = mostSpecificContainer.id;
-      let containedDiagrams = mostSpecificContainer.containedDiagrams || [];
-      if (!containedDiagrams.includes(nodeInfo.diagramDetail.modelingLanguageConstructInstance)) {
-        containedDiagrams.push(nodeInfo.diagramDetail.modelingLanguageConstructInstance);
-        mostSpecificContainer.containedDiagrams = containedDiagrams;
-        this.mService.updateDiagram(mostSpecificContainer, this.selectedModel.id);
+      let containedShapes = mostSpecificContainer.containedShapes || [];
+      if (!containedShapes.includes(nodeInfo.modelElementDetail.modelingLanguageConstructInstance)) {
+        containedShapes.push(nodeInfo.modelElementDetail.modelingLanguageConstructInstance);
+        mostSpecificContainer.containedShapes = containedShapes;
+        this.mService.updateElement(mostSpecificContainer, this.selectedModel.id);
       }
     }
   }
 
   private removeElementFromContainer(groupKey, elementKey) {
     let containerNode = this.myDiagram.model.findNodeDataForKey(groupKey);
-    _.remove(containerNode.element.containedDiagrams, s => s === elementKey);
-    this.mService.updateDiagram(containerNode.element, this.selectedModel.id);
+    _.remove(containerNode.element.containedShapes, s => s === elementKey);
+    this.mService.updateElement(containerNode.element, this.selectedModel.id);
   }
 
-  private isNodeInContainer(containerNode, diagram) {
-    return containerNode.element.x < diagram.x &&
-      containerNode.element.x + containerNode.element.width > diagram.x + diagram.width &&
-      containerNode.element.y < diagram.y &&
-      containerNode.element.y + containerNode.element.height > diagram.y + diagram.height;
+  private isNodeInContainer(containerNode, node) {
+    return containerNode.element.x < node.x &&
+      containerNode.element.x + containerNode.element.width > node.x + node.width &&
+      containerNode.element.y < node.y &&
+      containerNode.element.y + containerNode.element.height > node.y + node.height;
   }
 
   selectionChanged() {
@@ -940,7 +939,7 @@ export class ModellingAreaComponent implements OnInit {
 
     console.log('Palette category: ' + element.paletteCategory);
 
-    let elementKey = element.id.split('#')[1] + '_Diagram_' + element.tempUuid;
+    let elementKey = element.id.split('#')[1] + '_Shape_' + element.tempUuid;
 
     let toData = {
       text: element.label,
@@ -951,7 +950,7 @@ export class ModellingAreaComponent implements OnInit {
        width: element.width,
        height: element.height,
        alignment: go.Spot.Bottom,
-       diagramRepresentsModel: undefined
+       shapeRepresentsModel: undefined
     };
 
     // add the new node data to the model
@@ -961,7 +960,7 @@ export class ModellingAreaComponent implements OnInit {
     let newnode = this.myDiagram.findNodeForData(toData);
     this.myDiagram.select(newnode);
 
-    this.mService.createDiagram(
+    this.mService.createElement(
       this.selectedModel.id,
       elementKey,
       newnode.part.data.text,

@@ -2,9 +2,8 @@ import {Component, Inject} from '@angular/core';
 
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Model} from '../_models/Model.model';
-import {DiagramDetail} from '../_models/DiagramDetail.model';
 import {ModellerService} from '../modeller.service';
-import {DiagramDetailAndModel} from '../_models/DiagramDetailAndModel';
+import {ModelElementDetailAndModel} from '../_models/ModelElementDetailAndModel';
 
 @Component({
   selector: 'modal-model-link',
@@ -18,13 +17,13 @@ export class ModalModelLink {
   constructor(
     public dialogRef: MatDialogRef<ModalModelLink>,
     private modellerService: ModellerService,
-    @Inject(MAT_DIALOG_DATA) public data: DiagramDetailAndModel) {}
+    @Inject(MAT_DIALOG_DATA) public data: ModelElementDetailAndModel) {}
 
   ngOnInit(): void {
     this.modellerService.getModels().then(value => {
       this.models = value;
-      if (this.data.diagramDetail.diagramRepresentsModel != undefined) {
-        this.selectedModel = this.models.find(value1 => value1.id == this.data.diagramDetail.diagramRepresentsModel);
+      if (this.data.elementDetail.shapeRepresentsModel != undefined) {
+        this.selectedModel = this.models.find(value1 => value1.id == this.data.elementDetail.shapeRepresentsModel);
       }
     });
   }

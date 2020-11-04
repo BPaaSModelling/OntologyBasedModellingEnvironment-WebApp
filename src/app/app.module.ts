@@ -46,12 +46,12 @@ import { ModalEditBCObjectPropertyComponent } from './modal-edit-bc-object-prope
 import { ModalInsertLangobjectPropertyComponent } from './modal-insert-langobject-property/modal-insert-langobject-property.component';
 import { ModalEditSMObjectPropertyComponent } from './modal-edit-sm-object-property/modal-edit-sm-object-property.component';
 import { ModalModelCreation } from './modal-model-creation/modal-model-creation.component';
-import {ModalViewDiagramDetail} from './diagram-detail/modal-diagram-detail.component';
 import { ModalModelLink } from "./modal-model-link/modal-model-link";
-import { ModalDiagramNote } from "./modal-diagram-note/modal-diagram-note";
+import { ModalElementNote } from "./modal-element-note/modal-element-note.component";
 import {ModalModellingLanguageConstructInstanceLink} from './modal-modelling-language-construct-instance-link/modal-modelling-language-construct-instance-link';
 import {ModalPaletteVisualisation} from './modal-palette-visualisation/modal-palette-visualisation';
 import {ModalModelEdit} from './modal-model-edit/modal-model-edit.component';
+import {ModalViewElementDetail} from './model-element-detail/model-element-detail.component';
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
@@ -82,9 +82,9 @@ const appRoutes: Routes = [
     ModalInsertLangobjectPropertyComponent,
     ModalEditSMObjectPropertyComponent,
     ModalModelCreation,
-    ModalViewDiagramDetail,
+    ModalViewElementDetail,
     ModalModelLink,
-    ModalDiagramNote,
+    ModalElementNote,
     ModalModellingLanguageConstructInstanceLink,
     ModalPaletteVisualisation,
     ModalModelEdit
@@ -104,9 +104,9 @@ const appRoutes: Routes = [
     ModalInsertObjectPropertyComponent,
     ModalInsertLangobjectPropertyComponent,
     ModalModelCreation,
-    ModalViewDiagramDetail,
+    ModalViewElementDetail,
     ModalModelLink,
-    ModalDiagramNote,
+    ModalElementNote,
     ModalModellingLanguageConstructInstanceLink,
     ModalPaletteVisualisation,
     ModalModelEdit

@@ -1,10 +1,10 @@
 import {Component, Inject} from '@angular/core';
 
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {DiagramDetailAndModel} from '../_models/DiagramDetailAndModel';
 import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
+import {ModelElementDetailAndModel} from '../_models/ModelElementDetailAndModel';
 
 @Component({
   selector: 'modal-modelling-language-construct-instance-link',
@@ -12,7 +12,7 @@ import {Observable} from 'rxjs/Observable';
 })
 export class ModalModellingLanguageConstructInstanceLink {
 
-  displayedColumns: string[] = ['modelId', 'modelLabel', 'diagram'];
+  displayedColumns: string[] = ['modelId', 'modelLabel', 'shape'];
 
   modelingLanguageConstructInstanceId: string;
   otherVisualisations: VisualisationLinksDataDatasource;
@@ -26,7 +26,7 @@ export class ModalModellingLanguageConstructInstanceLink {
     let tableDataSource = this.data.otherVisualisations.map(value => {
 
       let data = new VisualisationLinksTableEntry();
-      data.diagram = value.diagramDetail.id;
+      data.shape = value.elementDetail.id;
       data.modelId = value.modelId;
       data.modelLabel = value.modelLabel;
 
@@ -43,13 +43,13 @@ export class ModalModellingLanguageConstructInstanceLink {
 
 export class VisualisationLinksData {
   modelingLanguageConstructInstanceId: string
-  otherVisualisations: DiagramDetailAndModel[]
+  otherVisualisations: ModelElementDetailAndModel[]
 }
 
 export class VisualisationLinksTableEntry {
   modelId: string
   modelLabel: string
-  diagram: string
+  shape: string
 }
 
 export class VisualisationLinksDataDatasource extends DataSource<VisualisationLinksTableEntry> {

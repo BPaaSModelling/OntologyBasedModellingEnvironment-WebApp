@@ -1,7 +1,6 @@
-import {Relation} from './Relation.model';
 import {ModelElementAttributes} from './ModelElementAttributes.model';
 
-export class DiagramDetail {
+export class ModelElementDetail {
   id: string
   label: string
   note: string
@@ -10,16 +9,16 @@ export class DiagramDetail {
   width: number
   height: number
   modelingLanguageConstructInstance: string
-  diagramRepresentsModel: string
+  shapeRepresentsModel: string
   paletteConstruct: string
-  modelElementAttributes: ModelElementAttributes
+  abstractElementAttributes: ModelElementAttributes
   fromArrow: string
   toArrow: string
   arrowStroke: string
   imageUrl: string
-  fromDiagram: string
-  toDiagram: string
-  containedDiagrams: string[]
+  fromShape: string
+  toShape: string
+  containedShapes: string[]
   modelElementType: string
   otherVisualisationsOfSameLanguageConstruct: string[]
 }
