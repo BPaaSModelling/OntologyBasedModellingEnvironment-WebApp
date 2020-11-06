@@ -364,6 +364,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
       (response) => {
         //this.elementEdited.emit(ele);
         this.dialogRef.close();
+        this.mService.queryPaletteElements();
       }
     );
   }
