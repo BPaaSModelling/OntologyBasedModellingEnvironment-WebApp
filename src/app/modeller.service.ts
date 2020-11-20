@@ -18,6 +18,7 @@ import {toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
 import { ArrowStructures } from "./_models/ArrowStructures.model";
 import {InstantiationTargetType} from './_models/InstantiationTargetType.model';
 import {RelationOptions} from './_models/RelationOptions.model';
+import ModellingLanguageConstructInstance from './_models/ModellingLanguageConstructInstance.model';
 
 @Injectable()
 export class ModellerService {
@@ -371,5 +372,13 @@ console.log(this.paletteElements);
     return this.http.get(EndpointSettings.getRelationOptionsEndpoint(relationId))
       .toPromise()
       .then(response => response.json() as RelationOptions)
+  }
+
+  getInstancesOfModellingLanguageConstruct(id: string): Promise<ModellingLanguageConstructInstance[]> {
+    return this.http.post(EndpointSettings.getModellingConstructInstances(), {
+      id: id
+    })
+      .toPromise()
+      .then(response => response.json() as ModellingLanguageConstructInstance[])
   }
 }

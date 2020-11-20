@@ -11,6 +11,7 @@ export class ModelElementDetail {
   modelingLanguageConstructInstance: string
   shapeRepresentsModel: string
   paletteConstruct: string
+  modellingLanguageConstruct: string
   abstractElementAttributes: ModelElementAttributes
   fromArrow: string
   toArrow: string

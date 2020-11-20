@@ -13,6 +13,7 @@ import {ModalEditPaletteElementComponent} from "../modal-edit-palette-element/mo
 import {ModelingViewModel} from "../_models/ModelingView.model";
 import {PaletteCategoryModel} from "../_models/PaletteCategory.model";
 import {VariablesSettings} from "../_settings/variables.settings";
+import {ModalShowLanguageInstances} from '../modal-show-language-instances/modal-show-language-instances';
 
 @Component({
   selector: 'app-palette-area',
@@ -193,5 +194,9 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     );
     console.log('Palette categories');
     console.log(this.paletteCategories);
+  }
+
+  showInstantiatedElements(element: PaletteElementModel) {
+    this.dialog.open(ModalShowLanguageInstances, {data:element});
   }
 }

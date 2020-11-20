@@ -52,6 +52,7 @@ import {ModalModellingLanguageConstructInstanceLink} from './modal-modelling-lan
 import {ModalPaletteVisualisation} from './modal-palette-visualisation/modal-palette-visualisation';
 import {ModalModelEdit} from './modal-model-edit/modal-model-edit.component';
 import {ModalViewElementDetail} from './model-element-detail/model-element-detail.component';
+import {ModalShowLanguageInstances} from './modal-show-language-instances/modal-show-language-instances';
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
@@ -87,7 +88,8 @@ const appRoutes: Routes = [
     ModalElementNote,
     ModalModellingLanguageConstructInstanceLink,
     ModalPaletteVisualisation,
-    ModalModelEdit
+    ModalModelEdit,
+    ModalShowLanguageInstances
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -109,7 +111,8 @@ const appRoutes: Routes = [
     ModalElementNote,
     ModalModellingLanguageConstructInstanceLink,
     ModalPaletteVisualisation,
-    ModalModelEdit
+    ModalModelEdit,
+    ModalShowLanguageInstances
   ],
   imports: [
     BrowserModule,
