@@ -165,7 +165,7 @@ export class EndpointSettings {
     return EndpointSettings.ENDPOINT + "/ModEnv/relations/" + relationid + "/options";
   }
 
-  public static getModellingConstructInstances() {
-    return EndpointSettings.ENDPOINT + "/ModEnv/modelling-language-construct/instances/search";
+  public static getConceptualElementInstances() {
+    return EndpointSettings.ENDPOINT + "/ModEnv/model-elements/search";
   }
 }

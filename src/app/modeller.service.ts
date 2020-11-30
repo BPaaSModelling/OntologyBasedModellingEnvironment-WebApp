@@ -337,12 +337,6 @@ console.log(this.paletteElements);
       .then(response => response.json() as ModelElementDetail[])
   }
 
-  getELementDetails(modelId: string, shapeId: string): Promise<ModelElementDetail> {
-    return this.http.get(EndpointSettings.getElementDetailEndpoint(modelId, shapeId))
-      .toPromise()
-      .then(response => response.json() as ModelElementDetail);
-  }
-
   updateElement(elementDetail: ModelElementDetail, modelId: string) {
     this.http.put(EndpointSettings.getElementDetailEndpoint(modelId, elementDetail.id), elementDetail)
       .toPromise()
@@ -374,8 +368,8 @@ console.log(this.paletteElements);
       .then(response => response.json() as RelationOptions)
   }
 
-  getInstancesOfModellingLanguageConstruct(id: string): Promise<ModellingLanguageConstructInstance[]> {
-    return this.http.post(EndpointSettings.getModellingConstructInstances(), {
+  getInstancesOfConceptualElements(id: string): Promise<ModellingLanguageConstructInstance[]> {
+    return this.http.post(EndpointSettings.getConceptualElementInstances(), {
       id: id
     })
       .toPromise()

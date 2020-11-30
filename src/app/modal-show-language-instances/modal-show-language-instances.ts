@@ -23,7 +23,7 @@ export class ModalShowLanguageInstances {
     private modellerService: ModellerService,
     @Inject(MAT_DIALOG_DATA) public data: PaletteElementModel) {
     this.modellerService.getModels().then(models => {
-      this.modellerService.getInstancesOfModellingLanguageConstruct(data.id).then(values => {
+      this.modellerService.getInstancesOfConceptualElements(data.id).then(values => {
         const data = values.map(value => {
           const label = models.find(model => model.id === value.modelId).label;
           return {...value, modelLabel: label}
