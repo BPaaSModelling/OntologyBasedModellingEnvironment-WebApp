@@ -305,10 +305,9 @@ export class ModellingAreaComponent implements OnInit {
         $(go.TextBlock,
           {
             font: "11pt Helvetica, Arial, sans-serif",
-            margin: 8,
-            maxSize: new go.Size(200, NaN),
             wrap: go.TextBlock.WrapFit,
             editable: true,
+            textAlign: 'center',
             segmentOffset: new go.Point(0, -10),
             alignment: go.Spot.Left //or go.Spot.Bottom
           },
@@ -707,14 +706,6 @@ export class ModellingAreaComponent implements OnInit {
 
   private handleNodeDeleted(txn) {
     txn.changes.toArray().filter(element => element.propertyName === 'parts').forEach(evt => {
-      // notify the container about the delete
-      // TODO: this does not work if you also delete containers - fix - can be also done in the backend (cleanup of modeling element)
-      /*
-      if (evt.oldValue.data.group != undefined) {
-        this.removeElementFromContainer(evt.oldValue.data.group, evt.oldValue.data.element.id);
-      }
-*/
-      // TODO as goJs seems to detect deletions of attached sequence flows, we can simplify the queries in the backend
       this.mService.deleteElement(this.selectedModel.id, evt.oldValue.data.element.id);
     });
   }
