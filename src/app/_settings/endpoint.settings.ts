@@ -30,6 +30,33 @@ export class EndpointSettings {
 
   private static GETDOMAINCONCEPTS          : string = '/ModEnv/getDomainConcepts';
 
+  private static MODELS : string = '/ModEnv/model';
+  private static ARROWS : string = '/ModEnv/arrow-structures';
+
+  public static getModelsEndpoint(): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS;
+  }
+
+  public static getModelEndpoint(modelId: string): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId;
+  }
+
+  public static getElementEndpoint(modelId: string): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId + '/element';
+  }
+
+  public static getConnectionEndpoint(modelId: string): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId + '/connection';
+  }
+
+  public static getElementDetailEndpoint(modelId: string, id: string): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId + '/element/' + id;
+  }
+
+  public static getArrowsEndpoint(): string {
+    return EndpointSettings.ENDPOINT + EndpointSettings.ARROWS;
+  }
+
   public static getModelingLanguagesEndpoint(): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.GETMODELINGLANGUAGES;
   }
@@ -132,5 +159,13 @@ export class EndpointSettings {
 
   public static getDomainConceptsEndpoint(): string {
     return EndpointSettings.ENDPOINT + EndpointSettings.GETDOMAINCONCEPTS;
+  }
+
+  public static getRelationOptionsEndpoint(relationid: string) {
+    return EndpointSettings.ENDPOINT + "/ModEnv/relations/" + relationid + "/options";
+  }
+
+  public static getConceptualElementInstances() {
+    return EndpointSettings.ENDPOINT + "/ModEnv/model-elements/search";
   }
 }

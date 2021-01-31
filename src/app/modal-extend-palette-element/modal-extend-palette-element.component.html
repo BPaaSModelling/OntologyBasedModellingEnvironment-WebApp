@@ -257,6 +257,32 @@
 
             </mat-form-field>
 
+            <mat-form-field>
+              <mat-select [(ngModel)]="currentPaletteElement.fromArrow" placeholder="From Arrow" name="arrow.from">
+                <mat-option *ngFor="let arrow of arrowHeads" [value]="arrow">
+                  {{arrow}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-select [(ngModel)]="currentPaletteElement.toArrow" placeholder="To Arrow" name="arrow.to">
+                <mat-option *ngFor="let arrow of arrowHeads" [value]="arrow">
+                  <img class="thumbnail" [src]="'../assets/images/Arrows/' + arrow + '.PNG'"  [alt]="arrow" >
+                  {{arrow}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-select [(ngModel)]="currentPaletteElement.arrowStroke" placeholder="Arrow Stroke" name="arrow.stroke">
+                <mat-option *ngFor="let arrow of arrowStrokes" [value]="arrow">
+                  <img class="thumbnail" [src]="'../assets/images/Strokes/' + arrow + '.PNG'"  [alt]="arrow" >
+                  {{arrow}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
             </div>
             <br/>
             <div layout="row">

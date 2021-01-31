@@ -39,7 +39,9 @@ export class VariablesSettings{
 
   /* END - BPaaS  */
 
-
+  /* START - ArchiMate */
+  public static CAT_ArchiMate: string = 'ArchiMate_General';
+  /* END - ArchiMate  */
 
 
 
@@ -71,5 +73,7 @@ export class VariablesSettings{
 
   public static sapScenesImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_SAPSCENES + "/";
   public static sapRelationsImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_SAPRELATIONS + "/";
+
+  public static archiMateImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_ArchiMate + "/";
   /* END - Properties to the complete path of the images for the categories */
 }

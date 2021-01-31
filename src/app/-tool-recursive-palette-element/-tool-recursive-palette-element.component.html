@@ -51,4 +51,7 @@
   <ng-template let-element contextMenuItem (execute)="removeFromPalette($event.item)">
     Delete
   </ng-template>
+  <ng-template let-element contextMenuItem (execute)="showInstantiatedElements($event.item)">
+    Show Instances
+  </ng-template>
 </context-menu>

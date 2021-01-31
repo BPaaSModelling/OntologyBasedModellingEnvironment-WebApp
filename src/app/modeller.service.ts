@@ -12,6 +12,13 @@ import {QueryAnswerModel} from "./_models/QueryAnswer.model";
 import {DatatypePropertyModel} from "./_models/DatatypeProperty.model";
 import {DomainElementModel} from "./_models/DomainElement.model";
 import {ModelingLanguageModel} from "./_models/ModelingLanguage.model";
+import {Model} from './_models/Model.model';
+import {ModelElementDetail} from './_models/ModelElementDetail.model';
+import {toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
+import { ArrowStructures } from "./_models/ArrowStructures.model";
+import {InstantiationTargetType} from './_models/InstantiationTargetType.model';
+import {RelationOptions} from './_models/RelationOptions.model';
+import ModellingLanguageConstructInstance from './_models/ModellingLanguageConstructInstance.model';
 
 @Injectable()
 export class ModellerService {
@@ -251,4 +258,121 @@ console.log(this.paletteElements);
     return this.http.get(EndpointSettings.getDomainConceptsEndpoint())
       .map(response => response.json());
   }*/
+
+  getArrowStructures(): Promise<ArrowStructures> {
+    return this.http.get(EndpointSettings.getArrowsEndpoint())
+      .toPromise()
+      .then(response => response.json() as ArrowStructures);
+  }
+
+  getModels(): Promise<Model[]> {
+    return this.http.get(EndpointSettings.getModelsEndpoint())
+      .toPromise()
+      .then(response => response.json() as Model[]);
+  }
+
+  createModel(label: string): Promise<Model> {
+
+    let dto: Model = new Model();
+    dto.label = label;
+
+    return this.http.post(EndpointSettings.getModelsEndpoint(), dto)
+      .toPromise()
+      .then(response => response.json() as Model);
+  }
+
+  createElement(modelId: string, shapeId: string, label: string, x: number, y: number, paletteConstruct: string, instantiationTargetType: InstantiationTargetType): Promise<ModelElementDetail> {
+    let payload: Object = {
+      x: toInteger(x),
+      y: toInteger(y),
+      paletteConstruct: paletteConstruct,
+      uuid: shapeId,
+      label,
+      instantiationType: instantiationTargetType
+    }
+
+    return this.http.put(EndpointSettings.getElementEndpoint(modelId), payload)
+      .toPromise()
+      .then(response => response.json() as ModelElementDetail);
+  }
+
+  copyElement(existingElement: ModelElementDetail, modelId: string): Promise<ModelElementDetail> {
+    let payload: Object = {
+      paletteConstruct: existingElement.paletteConstruct,
+      x: existingElement.x,
+      y: existingElement.y,
+      w: existingElement.width,
+      h: existingElement.height,
+      uuid: existingElement.id,
+      label: existingElement.label,
+      modelingLanguageConstructInstance: existingElement.modelingLanguageConstructInstance,
+      note: existingElement.note,
+      shapeRepresentsModel: existingElement.shapeRepresentsModel
+    }
+
+    return this.http.put(EndpointSettings.getElementEndpoint(modelId), payload)
+      .toPromise()
+      .then(response => response.json() as ModelElementDetail);
+  }
+
+  createConnection(modelId: string, shapeId: string, x: number, y: number, from: string, to: string, paletteConstruct: string, instantiationTargetType: InstantiationTargetType): Promise<ModelElementDetail> {
+    let payload: Object = {
+      x: toInteger(x),
+      y: toInteger(y),
+      paletteConstruct: paletteConstruct,
+      uuid: shapeId,
+      from: from,
+      to: to,
+      instantiationType: instantiationTargetType
+    }
+
+    return this.http.put(EndpointSettings.getConnectionEndpoint(modelId), payload)
+      .toPromise()
+      .then(response => response.json() as ModelElementDetail);
+  }
+
+  getElements(modelId: string): Promise<ModelElementDetail[]> {
+    return this.http.get(EndpointSettings.getElementEndpoint(modelId))
+      .toPromise()
+      .then(response => response.json() as ModelElementDetail[])
+  }
+
+  updateElement(elementDetail: ModelElementDetail, modelId: string) {
+    this.http.put(EndpointSettings.getElementDetailEndpoint(modelId, elementDetail.id), elementDetail)
+      .toPromise()
+      .then(response => console.log(response));
+  }
+
+  deleteElement(modelId: string, shapeId: string) {
+    this.http.delete(EndpointSettings.getElementDetailEndpoint(modelId, shapeId))
+      .toPromise()
+      .then(response => console.log(response));
+  }
+
+  deleteModel(modelId: string): Promise<Object> {
+    return this.http.delete(EndpointSettings.getModelEndpoint(modelId))
+      .toPromise();
+  }
+
+  updateModel(model: Model) {
+    this.http.put(EndpointSettings.getModelEndpoint(model.id), {
+      id: model.id,
+      label: model.label
+    }).toPromise()
+      .then(response => console.log(response));
+  }
+
+  getOptionsForRelation(relationId: string): Promise<RelationOptions> {
+    return this.http.get(EndpointSettings.getRelationOptionsEndpoint(relationId))
+      .toPromise()
+      .then(response => response.json() as RelationOptions)
+  }
+
+  getInstancesOfConceptualElements(id: string): Promise<ModellingLanguageConstructInstance[]> {
+    return this.http.post(EndpointSettings.getConceptualElementInstances(), {
+      id: id
+    })
+      .toPromise()
+      .then(response => response.json() as ModellingLanguageConstructInstance[])
+  }
 }

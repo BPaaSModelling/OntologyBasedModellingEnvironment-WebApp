@@ -134,6 +134,12 @@
                     {{image.label}}</mat-option>
                 </mat-select>
 
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_ArchiMate) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image.label" required>
+                  <mat-option *ngFor="let image of archiMateList" [value]="image.thumbnailName">
+                    <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+
               </mat-form-field>
 
               <mat-form-field>
@@ -226,6 +232,48 @@
                     {{image.label}}</mat-option>
                 </mat-select>
 
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_Role) !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+                  <mat-option *ngFor="let image of roleImageList" [value]="image.imageName">
+                    <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+
+                <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_ArchiMate) !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+                  <mat-option *ngFor="let image of archiMateList" [value]="image.imageName">
+                    <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                    {{image.label}}</mat-option>
+                </mat-select>
+
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-select [(ngModel)]="currentPaletteElement.fromArrow" placeholder="From Arrow" name="arrow.from">
+                  <mat-option *ngFor="let arrow of arrowHeads" [value]="arrow">
+                    <img class="thumbnail" [src]="'../assets/images/Arrows/' + arrow + '.PNG'"  [alt]="arrow" >
+                    {{arrow}}
+                  </mat-option>
+                  <mat-option [value]="undefined">None</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-select [(ngModel)]="currentPaletteElement.toArrow" placeholder="To Arrow" name="arrow.to">
+                  <mat-option *ngFor="let arrow of arrowHeads" [value]="arrow">
+                    <img class="thumbnail" [src]="'../assets/images/Arrows/' + arrow + '.PNG'"  [alt]="arrow" >
+                    {{arrow}}
+                  </mat-option>
+                  <mat-option [value]="undefined">None</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-select [(ngModel)]="currentPaletteElement.arrowStroke" placeholder="Arrow Stroke" name="arrow.stroke">
+                  <mat-option *ngFor="let arrow of arrowStrokes" [value]="arrow">
+                    <img class="thumbnail" [src]="'../assets/images/Strokes/' + arrow + '.PNG'"  [alt]="arrow" >
+                    {{arrow}}
+                  </mat-option>
+                  <mat-option [value]="undefined">None</mat-option>
+                </mat-select>
               </mat-form-field>
 
             </div>

@@ -12,6 +12,7 @@ import {ObjectPropertyModel} from "../_models/ObjectProperty.model";
 import {ModalInsertObjectPropertyComponent} from "../modal-insert-object-property/modal-insert-object-property.component";
 import {ModalInsertLangobjectPropertyComponent} from "../modal-insert-langobject-property/modal-insert-langobject-property.component";
 import {VariablesSettings} from "../_settings/variables.settings";
+import * as go from 'gojs';
 
 @Component({
   selector: 'app-modal-edit-palette-element',
@@ -40,6 +41,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
 
   public sapscenesImageList: any;
   public sapscenesRelationsList: any;
+  public archiMateList: any;
 
   public domainName: string;
   //public domainNameArr = [];
@@ -49,6 +51,9 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public semanticMappings: ObjectPropertyModel[] = [];
   public config1: any;
   public VariablesSettings: any;
+
+  public arrowHeads: string[] = [];
+  public arrowStrokes: string[] = [];
 
 
   constructor(public dialogRef: MatDialogRef<ModalEditPaletteElementComponent>,
@@ -104,6 +109,9 @@ export class ModalEditPaletteElementComponent implements OnInit {
     this.currentPaletteElement.imageURL = this.data.paletteElement.imageURL;
     this.currentPaletteElement.comment = this.data.paletteElement.comment;
     this.currentPaletteElement.uuid = this.data.paletteElement.uuid;
+    this.currentPaletteElement.arrowStroke = this.data.paletteElement.arrowStroke;
+    this.currentPaletteElement.toArrow = this.data.paletteElement.toArrow;
+    this.currentPaletteElement.fromArrow = this.data.paletteElement.fromArrow;
 
     this.activityImageList = [
       {"imageURL":VariablesSettings.activitiesImagePath+"AdHoc_Subprocess.png", "imageName":"AdHoc_Subprocess.png", "label":"AdHoc Subprocess", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_AdHoc_Subprocess.png", "thumbnailName" : "Thumbnail_AdHoc_Subprocess.png"},
@@ -269,6 +277,20 @@ export class ModalEditPaletteElementComponent implements OnInit {
       {"imageURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasRelation.PNG", "imageName":"Thumbnail_hasRelation.PNG", "label":"Has Relation", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasRelation.PNG", "thumbnailName" : "Thumbnail_hasRelation.PNG"}
     ];
 
+    this.archiMateList = [
+      {"imageURL":VariablesSettings.archiMateImagePath+"ApplicationComponent.png", "imageName":"ApplicationComponent.png", "label":"Application Component", "thumbnailURL":VariablesSettings.archiMateImagePath+"ApplicationComponent_Thumbnail.png", "thumbnailName" : "ApplicationComponent_Thumbnail.png"},
+      {"imageURL":VariablesSettings.archiMateImagePath+"ApplicationService.png", "imageName":"ApplicationService.png", "label":"Application Service", "thumbnailURL":VariablesSettings.archiMateImagePath+"ApplicationService_Thumbnail.png", "thumbnailName" : "ApplicationService_Thumbnail.png"},
+      {"imageURL":VariablesSettings.archiMateImagePath+"BusinessObject.png", "imageName":"BusinessObject.png", "label":"Business Object", "thumbnailURL":VariablesSettings.archiMateImagePath+"BusinessObject.png", "thumbnailName" : "BusinessObject.png"},
+      {"imageURL":VariablesSettings.archiMateImagePath+"BusinessProcess.png", "imageName":"BusinessProcess.png", "label":"Business Process", "thumbnailURL":VariablesSettings.archiMateImagePath+"BusinessProcess_Thumbnail.png", "thumbnailName" : "BusinessProcess_Thumbnail.png"},
+      {"imageURL":VariablesSettings.archiMateImagePath+"SystemSoftware.png", "imageName":"SystemSoftware.png", "label":"System Software", "thumbnailURL":VariablesSettings.archiMateImagePath+"SystemSoftware_Thumbnail.png", "thumbnailName" : "SystemSoftware_Thumbnail.png"},
+      {"imageURL":VariablesSettings.archiMateImagePath+"TechnologyService.png", "imageName":"TechnologyService.png", "label":"Technology Service", "thumbnailURL":VariablesSettings.archiMateImagePath+"TechnologyService_Thumbnail.png", "thumbnailName" : "TechnologyService_Thumbnail.png"}
+    ];
+
+    this.mService.getArrowStructures().then(value => {
+      this.arrowHeads = value.heads;
+      this.arrowStrokes = value.strokes;
+    });
+
     this.config1 = {
       displayKey: 'label',
       search: true,
@@ -342,6 +364,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
       (response) => {
         //this.elementEdited.emit(ele);
         this.dialogRef.close();
+        this.mService.queryPaletteElements();
       }
     );
   }

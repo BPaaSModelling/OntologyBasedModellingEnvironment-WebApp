@@ -8,6 +8,7 @@ import {ModalPaletteElementPropertiesComponent} from "../modal-palette-element-p
 import {MatDialog} from "@angular/material";
 import {ModalEditPaletteElementComponent} from "../modal-edit-palette-element/modal-edit-palette-element.component";
 import {VariablesSettings} from "../_settings/variables.settings";
+import {ModalShowLanguageInstances} from '../modal-show-language-instances/modal-show-language-instances';
 
 
 @Component({
@@ -147,5 +148,9 @@ constructor(private mService: ModellerService, public dialog: MatDialog) {
         this.mService.queryPaletteElements();
       }
     );
+  }
+
+  showInstantiatedElements(element: PaletteElementModel) {
+    this.dialog.open(ModalShowLanguageInstances, {data:element});
   }
 }

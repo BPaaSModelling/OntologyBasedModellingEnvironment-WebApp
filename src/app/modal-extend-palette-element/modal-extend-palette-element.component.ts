@@ -6,6 +6,7 @@ import {PaletteElementModel} from "../_models/PaletteElement.model";
 import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
 import {ModalAddPropertiesComponent} from "../modal-add-properties/modal-add-properties.component";
 import {VariablesSettings} from "../_settings/variables.settings";
+import * as go from 'gojs';
 
 @Component({
   selector: 'app-modal-extend-palette-element',
@@ -44,6 +45,9 @@ public sapscenesRelationsList: any;
 public config: any;
 public config1: any;
 public VariablesSettings: any;
+
+public arrowHeads: string[] = [];
+public arrowStrokes: string[] = [];
 
 
 @Output() showCreateDomainElementModalFromExtend = new EventEmitter();
@@ -229,7 +233,12 @@ public VariablesSettings: any;
       {"imageURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasRelation.PNG", "imageName":"Thumbnail_hasRelation.PNG", "label":"Has Relation", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasRelation.PNG", "thumbnailName" : "Thumbnail_hasRelation.PNG"}
     ];
 
+    this.mService.getArrowStructures().then(value => {
+      this.arrowHeads = value.heads;
+      this.arrowStrokes = value.strokes;
+    });
 
+    console.log(this.arrowHeads);
 
     this.config = {
       displayKey: 'label', //if objects array passed which key to be displayed defaults to description

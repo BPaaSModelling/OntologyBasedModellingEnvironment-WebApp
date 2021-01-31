@@ -9,8 +9,22 @@ import {RouterModule, Routes} from '@angular/router';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import {ModellerService} from './modeller.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {MatListModule, MatButtonModule, MatToolbarModule, MatDialogModule, MatTabsModule, MatCardModule,
-  MatSelectModule, MatOptionModule, MatInputModule, MatFormFieldModule, MatCheckboxModule, MatExpansionModule} from '@angular/material';
+import {
+  MatListModule,
+  MatButtonModule,
+  MatToolbarModule,
+  MatDialogModule,
+  MatTabsModule,
+  MatCardModule,
+  MatSelectModule,
+  MatOptionModule,
+  MatInputModule,
+  MatFormFieldModule,
+  MatCheckboxModule,
+  MatExpansionModule,
+  MatGridListModule,
+  MatTableModule
+} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToolRecursivePaletteElementComponent} from './-tool-recursive-palette-element/-tool-recursive-palette-element.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -31,6 +45,14 @@ import { HeaderPaneComponent } from './header-pane/header-pane.component';
 import { ModalEditBCObjectPropertyComponent } from './modal-edit-bc-object-property/modal-edit-bc-object-property.component';
 import { ModalInsertLangobjectPropertyComponent } from './modal-insert-langobject-property/modal-insert-langobject-property.component';
 import { ModalEditSMObjectPropertyComponent } from './modal-edit-sm-object-property/modal-edit-sm-object-property.component';
+import { ModalModelCreation } from './modal-model-creation/modal-model-creation.component';
+import { ModalModelLink } from "./modal-model-link/modal-model-link";
+import { ModalElementNote } from "./modal-element-note/modal-element-note.component";
+import {ModalModellingLanguageConstructInstanceLink} from './modal-modelling-language-construct-instance-link/modal-modelling-language-construct-instance-link';
+import {ModalPaletteVisualisation} from './modal-palette-visualisation/modal-palette-visualisation';
+import {ModalModelEdit} from './modal-model-edit/modal-model-edit.component';
+import {ModalViewElementDetail} from './model-element-detail/model-element-detail.component';
+import {ModalShowLanguageInstances} from './modal-show-language-instances/modal-show-language-instances';
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
@@ -59,7 +81,15 @@ const appRoutes: Routes = [
     HeaderPaneComponent,
     ModalEditBCObjectPropertyComponent,
     ModalInsertLangobjectPropertyComponent,
-    ModalEditSMObjectPropertyComponent
+    ModalEditSMObjectPropertyComponent,
+    ModalModelCreation,
+    ModalViewElementDetail,
+    ModalModelLink,
+    ModalElementNote,
+    ModalModellingLanguageConstructInstanceLink,
+    ModalPaletteVisualisation,
+    ModalModelEdit,
+    ModalShowLanguageInstances
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -74,7 +104,15 @@ const appRoutes: Routes = [
     ModalEditBCObjectPropertyComponent,
     ModalEditSMObjectPropertyComponent,
     ModalInsertObjectPropertyComponent,
-    ModalInsertLangobjectPropertyComponent
+    ModalInsertLangobjectPropertyComponent,
+    ModalModelCreation,
+    ModalViewElementDetail,
+    ModalModelLink,
+    ModalElementNote,
+    ModalModellingLanguageConstructInstanceLink,
+    ModalPaletteVisualisation,
+    ModalModelEdit,
+    ModalShowLanguageInstances
   ],
   imports: [
     BrowserModule,
@@ -100,7 +138,9 @@ const appRoutes: Routes = [
     MatExpansionModule,
     FormsModule,
     ReactiveFormsModule,
-    SelectDropDownModule
+    SelectDropDownModule,
+    MatGridListModule,
+    MatTableModule
   ],
   providers: [ModellerService],
   bootstrap: [AppComponent]
