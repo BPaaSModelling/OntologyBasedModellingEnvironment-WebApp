@@ -60,10 +60,16 @@ export class ModalViewElementDetail {
         let editor = new RelationEditorModel(value);
         let promise = this.modellerService.getOptionsForRelation(value.relationPrefix + ':' + value.relation)
           .then(response => {
-            editor.selectorOptions = response.instances.concat(response.classes)
-              .map(option => new ValueModel(option.split(':')[0], option.split(':')[1]));
+            if (response.isPrimitive) {
+              editor.isPrimitive = true;
+              editor.primitiveTypeRange = response.primitiveTypeRange;
+              editor.relation.value = editor.relation.value.split("^^")[0].replace('"', '').replace('"', '')
+            } else {
+              editor.selectorOptions = response.instances.concat(response.classes)
+                .map(option => new ValueModel(option.split(':')[0], option.split(':')[1]));
 
-            editor.selectedValue = new ValueModel(value.valuePrefix, value.value);
+              editor.selectedValue = new ValueModel(value.value.split(':')[0], value.value.split(':')[1]);
+            }
             return editor;
           });
 
@@ -82,13 +88,18 @@ export class ModalViewElementDetail {
   save() {
     let tableValues = this.modelElementAttributeDatasource.data.getValue()
       .filter(tableValue => {
-        return tableValue.selectedValue != undefined;
+        return tableValue.selectedValue != undefined || (tableValue.relation != undefined && tableValue.relation.value != undefined);
       })
       .map(tableValue => {
-        let rel = tableValue.relation;
-        rel.valuePrefix = tableValue.selectedValue.id;
-        rel.value = tableValue.selectedValue.value;
-        return rel;
+        if (tableValue.selectedValue != undefined) {
+          let rel = tableValue.relation;
+          rel.value = tableValue.selectedValue.id + ':' + tableValue.selectedValue.value;
+          return rel;
+        } else {
+          let rel = tableValue.relation;
+          rel.value = '"' + tableValue.relation.value + '"^^' + tableValue.primitiveTypeRange
+          return rel;
+        }
     });
 
     let notInTableValues = [];
@@ -137,8 +148,12 @@ export class ModalViewElementDetail {
     this.modellerService.getOptionsForRelation(rel.relationPrefix + ':' + rel.relation)
       .then(response => {
 
-        let valueModels = response.instances.concat(response.classes).map(option => new ValueModel(option.split(':')[0], option.split(':')[1]));
-        editor.selectorOptions = valueModels;
+        if (response.isPrimitive) {
+          editor.isPrimitive = true;
+          editor.primitiveTypeRange = response.primitiveTypeRange;
+        } else {
+          editor.selectorOptions = response.instances.concat(response.classes).map(option => new ValueModel(option.split(':')[0], option.split(':')[1]));
+        }
         let values = this.modelElementAttributeDatasource.data.getValue();
         values.push(editor);
         this.modelElementAttributeDatasource = new RelationDatasource(values)
