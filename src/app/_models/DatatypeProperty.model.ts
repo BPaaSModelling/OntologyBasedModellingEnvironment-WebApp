@@ -3,5 +3,6 @@ export class DatatypePropertyModel {
   domainName: string;
   label: string;
   range: string;
+  isAvailableToModel: boolean;
   defaultValue: string;
 }

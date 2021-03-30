@@ -23,6 +23,7 @@ export class ModalEditPropertiesComponent implements OnInit {
     //this.editedProperty.domainName = this.datatypeProperty.domainName;
     this.editedProperty.label = this.datatypeProperty.label;
     this.editedProperty.range = this.datatypeProperty.range;
+    this.editedProperty.isAvailableToModel = this.datatypeProperty.isAvailableToModel;
   }
 
   setStep(index: number) {
