@@ -27,6 +27,7 @@ export class EndpointSettings {
   private static EDITOBJECTPROPERTY       : string = '/ModEnv/editObjectProperty';
   private static DELETEDATATYPEPROPERTY     : string = '/ModEnv/deleteDatatypeProperty';
   private static DELETEOBJECTPROPERTY     : string = '/ModEnv/deleteObjectProperty';
+  private static CREATENEWIMAGE             : string = '/ModEnv/createNewImage';
 
   private static GETDOMAINCONCEPTS          : string = '/ModEnv/getDomainConcepts';
 
@@ -167,5 +168,9 @@ export class EndpointSettings {
 
   public static getConceptualElementInstances() {
     return EndpointSettings.ENDPOINT + "/ModEnv/model-elements/search";
+  }
+
+  public static getCreateNewImageEndpoint() {
+    return EndpointSettings.ENDPOINT + EndpointSettings.CREATENEWIMAGE;
   }
 }
