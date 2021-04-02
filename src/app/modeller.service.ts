@@ -375,4 +375,12 @@ console.log(this.paletteElements);
       .toPromise()
       .then(response => response.json() as ModellingLanguageConstructInstance[])
   }
+
+  uploadNewImageToBackend(image: File) {
+    const formData = new FormData();
+
+    formData.append('image', image);
+
+    this.http.post(EndpointSettings.getCreateNewImageEndpoint(), formData).toPromise().then(response => console.log(response));
+  }
 }
