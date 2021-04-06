@@ -42,6 +42,11 @@ public roleImageList: any;
 public sapscenesImageList: any;
 public sapscenesRelationsList: any;
 
+  public archiMateApplicationLayerList: any;
+  public archiMateBusinessLayerList: any;
+  public archiMateTechnologyLayerList: any;
+
+
 public config: any;
 public config1: any;
 public VariablesSettings: any;
@@ -227,11 +232,35 @@ public arrowStrokes: string[] = [];
       {"imageURL":VariablesSettings.sapScenesImagePath+"beer3.png", "imageName":"beer3.png", "label":"Beer3", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_beer3.png", "thumbnailName" : "Thumbnail_beer3.png"}
     ];
 
-    this.sapscenesRelationsList = [
-      {"imageURL":VariablesSettings.sapScenesImagePath+"Thumbnail_Executes.PNG", "imageName":"Thumbnail_Executes.PNG", "label":"Executes", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_Executes.PNG", "thumbnailName" : "Thumbnail_Executes.PNG"},
-      {"imageURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasNote.PNG", "imageName":"Thumbnail_hasNote.PNG", "label":"Has Note", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasNote.PNG", "thumbnailName" : "Thumbnail_hasNote.PNG"},
-      {"imageURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasRelation.PNG", "imageName":"Thumbnail_hasRelation.PNG", "label":"Has Relation", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasRelation.PNG", "thumbnailName" : "Thumbnail_hasRelation.PNG"}
+//Start ArchiMate
+    this.archiMateBusinessLayerList = [
+      {"imageURL":VariablesSettings.archiMateBusinessLayerImagePath+"BusinessActor.png", "imageName":"BusinessActor.png", "label":"Business Actor", "thumbnailURL":VariablesSettings.archiMateBusinessLayerImagePath+"BusinessActor.png", "thumbnailName" : "BusinessActor.png"},
+      {"imageURL":VariablesSettings.archiMateBusinessLayerImagePath+"BusinessObject.png", "imageName":"BusinessObject.png", "label":"Business Object", "thumbnailURL":VariablesSettings.archiMateBusinessLayerImagePath+"BusinessObject_Thumbnail.png", "thumbnailName" : "BusinessObject_Thumbnail.png"},
+      {"imageURL":VariablesSettings.archiMateBusinessLayerImagePath+"BusinessProcess.png", "imageName":"BusinessProcess.png", "label":"Business Process", "thumbnailURL":VariablesSettings.archiMateBusinessLayerImagePath+"BusinessProcess_Thumbnail.png", "thumbnailName" : "BusinessProcess_Thumbnail.png"}
+
+
+
     ];
+
+    this.archiMateApplicationLayerList = [
+      {"imageURL":VariablesSettings.archiMateApplicationLayerImagePath+"ApplicationComponent.png", "imageName":"ApplicationComponent.png", "label":"Application Component", "thumbnailURL":VariablesSettings.archiMateApplicationLayerImagePath+"ApplicationComponent_Thumbnail.png", "thumbnailName" : "ApplicationComponent_Thumbnail.png"},
+      {"imageURL":VariablesSettings.archiMateApplicationLayerImagePath+"ApplicationService.png", "imageName":"ApplicationService.png", "label":"Application Service", "thumbnailURL":VariablesSettings.archiMateApplicationLayerImagePath+"ApplicationService_Thumbnail.png", "thumbnailName" : "ApplicationService_Thumbnail.png"},
+      ];
+
+    this.archiMateTechnologyLayerList = [
+      {"imageURL":VariablesSettings.archiMateTechLayerImagePath+"SystemSoftware.png", "imageName":"SystemSoftware.png", "label":"System Software", "thumbnailURL":VariablesSettings.archiMateTechLayerImagePath+"SystemSoftware_Thumbnail.png", "thumbnailName" : "SystemSoftware_Thumbnail.png"},
+      {"imageURL":VariablesSettings.archiMateTechLayerImagePath+"TechnologyService.png", "imageName":"TechnologyService.png", "label":"Technology Service", "thumbnailURL":VariablesSettings.archiMateTechLayerImagePath+"TechnologyService_Thumbnail.png", "thumbnailName" : "TechnologyService_Thumbnail.png"},
+      {"imageURL":VariablesSettings.archiMateTechLayerImagePath+"Node.png", "imageName":"Node.png", "label":"Node", "thumbnailURL":VariablesSettings.archiMateTechLayerImagePath+"Node.png", "thumbnailName" : "Node.png"}
+    ];
+//finish ArchiMate
+
+
+
+    this.roleImageList = [
+      {"imageURL":VariablesSettings.roleImagePath+"RoleAcutePhysician-OM.png", "imageName":"RoleAcutePhysician-OM.png", "label":"Acute Physician", "thumbnailURL":VariablesSettings.roleImagePath+"RoleAcutePhysician-OM.png", "thumbnailName" : "RoleAcutePhysician-OM.png"},
+      {"imageURL":VariablesSettings.roleImagePath+"RolePatient-OM.png", "imageName":"RolePatient-OM.png", "label":"Patient", "thumbnailURL":VariablesSettings.roleImagePath+"RolePatient-OM.png", "thumbnailName" : "RolePatient-OM.png"}
+    ];
+
 
     this.mService.getArrowStructures().then(value => {
       this.arrowHeads = value.heads;

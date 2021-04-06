@@ -40,7 +40,9 @@ export class VariablesSettings{
   /* END - BPaaS  */
 
   /* START - ArchiMate */
-  public static CAT_ArchiMate: string = 'ArchiMate_General';
+  public static CAT_ArchiMate_ApplicationLayer: string = 'ArchiMate_ApplicationLayer';
+  public static CAT_ArchiMate_BusinessLayer: string = 'ArchiMate_BusinessLayer';
+  public static CAT_ArchiMate_TechnologyLayer: string = 'ArchiMate_TechnologyLayer';
   /* END - ArchiMate  */
 
 
@@ -74,6 +76,8 @@ export class VariablesSettings{
   public static sapScenesImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_SAPSCENES + "/";
   public static sapRelationsImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_SAPRELATIONS + "/";
 
-  public static archiMateImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_ArchiMate + "/";
+  public static archiMateApplicationLayerImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_ArchiMate_ApplicationLayer + "/";
+  public static archiMateBusinessLayerImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_ArchiMate_BusinessLayer + "/";
+  public static archiMateTechLayerImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_ArchiMate_TechnologyLayer + "/";
   /* END - Properties to the complete path of the images for the categories */
 }

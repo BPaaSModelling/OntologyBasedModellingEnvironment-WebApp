@@ -43,6 +43,10 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public sapscenesRelationsList: any;
   public archiMateList: any;
 
+  public archiMateApplicationLayerList: any;
+  public archiMateBusinessLayerList: any;
+  public archiMateTechnologyLayerList: any;
+
   public domainName: string;
   //public domainNameArr = [];
   public namespaceMap: Map<string, string>;
@@ -277,14 +281,28 @@ export class ModalEditPaletteElementComponent implements OnInit {
       {"imageURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasRelation.PNG", "imageName":"Thumbnail_hasRelation.PNG", "label":"Has Relation", "thumbnailURL":VariablesSettings.sapScenesImagePath+"Thumbnail_hasRelation.PNG", "thumbnailName" : "Thumbnail_hasRelation.PNG"}
     ];
 
-    this.archiMateList = [
-      {"imageURL":VariablesSettings.archiMateImagePath+"ApplicationComponent.png", "imageName":"ApplicationComponent.png", "label":"Application Component", "thumbnailURL":VariablesSettings.archiMateImagePath+"ApplicationComponent_Thumbnail.png", "thumbnailName" : "ApplicationComponent_Thumbnail.png"},
-      {"imageURL":VariablesSettings.archiMateImagePath+"ApplicationService.png", "imageName":"ApplicationService.png", "label":"Application Service", "thumbnailURL":VariablesSettings.archiMateImagePath+"ApplicationService_Thumbnail.png", "thumbnailName" : "ApplicationService_Thumbnail.png"},
-      {"imageURL":VariablesSettings.archiMateImagePath+"BusinessObject.png", "imageName":"BusinessObject.png", "label":"Business Object", "thumbnailURL":VariablesSettings.archiMateImagePath+"BusinessObject.png", "thumbnailName" : "BusinessObject.png"},
-      {"imageURL":VariablesSettings.archiMateImagePath+"BusinessProcess.png", "imageName":"BusinessProcess.png", "label":"Business Process", "thumbnailURL":VariablesSettings.archiMateImagePath+"BusinessProcess_Thumbnail.png", "thumbnailName" : "BusinessProcess_Thumbnail.png"},
-      {"imageURL":VariablesSettings.archiMateImagePath+"SystemSoftware.png", "imageName":"SystemSoftware.png", "label":"System Software", "thumbnailURL":VariablesSettings.archiMateImagePath+"SystemSoftware_Thumbnail.png", "thumbnailName" : "SystemSoftware_Thumbnail.png"},
-      {"imageURL":VariablesSettings.archiMateImagePath+"TechnologyService.png", "imageName":"TechnologyService.png", "label":"Technology Service", "thumbnailURL":VariablesSettings.archiMateImagePath+"TechnologyService_Thumbnail.png", "thumbnailName" : "TechnologyService_Thumbnail.png"}
+
+    //Start ArchiMate
+    this.archiMateBusinessLayerList = [
+      {"imageURL":VariablesSettings.archiMateBusinessLayerImagePath+"BusinessActor.png", "imageName":"BusinessActor.png", "label":"Business Actor", "thumbnailURL":VariablesSettings.archiMateBusinessLayerImagePath+"BusinessActor.png", "thumbnailName" : "BusinessActor.png"},
+      {"imageURL":VariablesSettings.archiMateBusinessLayerImagePath+"BusinessObject.png", "imageName":"BusinessObject.png", "label":"Business Object", "thumbnailURL":VariablesSettings.archiMateBusinessLayerImagePath+"BusinessObject_Thumbnail.png", "thumbnailName" : "BusinessObject_Thumbnail.png"},
+      {"imageURL":VariablesSettings.archiMateBusinessLayerImagePath+"BusinessProcess.png", "imageName":"BusinessProcess.png", "label":"Business Process", "thumbnailURL":VariablesSettings.archiMateBusinessLayerImagePath+"BusinessProcess_Thumbnail.png", "thumbnailName" : "BusinessProcess_Thumbnail.png"}
     ];
+
+    this.archiMateApplicationLayerList = [
+      {"imageURL":VariablesSettings.archiMateApplicationLayerImagePath+"ApplicationComponent.png", "imageName":"ApplicationComponent.png", "label":"Application Component", "thumbnailURL":VariablesSettings.archiMateApplicationLayerImagePath+"ApplicationComponent_Thumbnail.png", "thumbnailName" : "ApplicationComponent_Thumbnail.png"},
+      {"imageURL":VariablesSettings.archiMateApplicationLayerImagePath+"ApplicationService.png", "imageName":"ApplicationService.png", "label":"Application Service", "thumbnailURL":VariablesSettings.archiMateApplicationLayerImagePath+"ApplicationService_Thumbnail.png", "thumbnailName" : "ApplicationService_Thumbnail.png"},
+    ];
+
+    this.archiMateTechnologyLayerList = [
+      {"imageURL":VariablesSettings.archiMateTechLayerImagePath+"SystemSoftware.png", "imageName":"SystemSoftware.png", "label":"System Software", "thumbnailURL":VariablesSettings.archiMateTechLayerImagePath+"SystemSoftware_Thumbnail.png", "thumbnailName" : "SystemSoftware_Thumbnail.png"},
+      {"imageURL":VariablesSettings.archiMateTechLayerImagePath+"TechnologyService.png", "imageName":"TechnologyService.png", "label":"Technology Service", "thumbnailURL":VariablesSettings.archiMateTechLayerImagePath+"TechnologyService_Thumbnail.png", "thumbnailName" : "TechnologyService_Thumbnail.png"},
+      {"imageURL":VariablesSettings.archiMateTechLayerImagePath+"Node.png", "imageName":"Node.png", "label":"Node", "thumbnailURL":VariablesSettings.archiMateTechLayerImagePath+"Node.png", "thumbnailName" : "Node.png"}
+    ];
+//finish ArchiMate
+
+
+
 
     this.mService.getArrowStructures().then(value => {
       this.arrowHeads = value.heads;
