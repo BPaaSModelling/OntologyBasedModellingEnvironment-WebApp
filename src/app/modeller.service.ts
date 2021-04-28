@@ -32,6 +32,7 @@ export class ModellerService {
   public domainClasses: DomainElementModel[] = [];
   public modelingLanguageClasse$: Observable<QueryAnswerModel[]> = Observable.of([]);
   public modelingLanguageClasses: QueryAnswerModel[] = [];
+  public selectedModelingLanguage;
   public datatypeProperties$: Observable<DatatypePropertyModel[]> = Observable.of([]);
   public namespacePrefixe$: Observable<string[]> = Observable.of([]);
   public namespacePrefixes: string[] = [];
@@ -53,6 +54,7 @@ export class ModellerService {
   }
 
   queryModelingViews(langId) {
+    this.selectedModelingLanguage = langId;
     return this.http.get(EndpointSettings.getModelingViewsEndpoint(langId))
       .map(response => response.json());
   }
@@ -365,7 +367,7 @@ console.log(this.paletteElements);
   getOptionsForRelation(relationId: string): Promise<RelationOptions> {
     return this.http.get(EndpointSettings.getRelationOptionsEndpoint(relationId))
       .toPromise()
-      .then(response => response.json() as RelationOptions)
+      .then(response => response.json() as RelationOptions);
   }
 
   getInstancesOfConceptualElements(id: string): Promise<ModellingLanguageConstructInstance[]> {
@@ -373,7 +375,7 @@ console.log(this.paletteElements);
       id: id
     })
       .toPromise()
-      .then(response => response.json() as ModellingLanguageConstructInstance[])
+      .then(response => response.json() as ModellingLanguageConstructInstance[]);
   }
 
   uploadNewImageToBackend(image: File) {
@@ -382,5 +384,10 @@ console.log(this.paletteElements);
     formData.append('image', image);
 
     this.http.post(EndpointSettings.getCreateNewImageEndpoint(), formData).toPromise().then(response => console.log(response));
+  }
+
+  getUploadedImages(): Promise<Object[]> {
+    return this.http.get(EndpointSettings.getUploadedImagesEndpoint()).toPromise()
+    .then(response => response.json() as Object[]);
   }
 }

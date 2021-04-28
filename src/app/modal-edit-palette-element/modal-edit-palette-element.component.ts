@@ -43,6 +43,8 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public sapscenesRelationsList: any;
   public archiMateList: any;
 
+  public uploadedList: any;
+
   public domainName: string;
   //public domainNameArr = [];
   public namespaceMap: Map<string, string>;
@@ -55,6 +57,9 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public arrowHeads: string[] = [];
   public arrowStrokes: string[] = [];
 
+  public imageList: any;
+  public selectedPalletteImageList: any;
+
 
   constructor(public dialogRef: MatDialogRef<ModalEditPaletteElementComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService, public dialog: MatDialog) {
@@ -64,7 +69,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
     this.VariablesSettings = VariablesSettings;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     const domainNameArr = this.data.paletteElement.representedLanguageClass.split('#');
     // const domainStr = domainNameArr[0]; //!!!Fix this - should be in format bmm:BMMTask (prefix case-sensitive)
     /*this.mService.queryNamespaceMap().subscribe(
@@ -99,19 +104,6 @@ export class ModalEditPaletteElementComponent implements OnInit {
     this.mService.queryModelingElementClasses();
     //this.mService.queryPaletteCategories();
     this.mService.queryNamespacePrefixes();
-
-    this.currentPaletteElement.label = this.data.paletteElement.label;
-    this.currentPaletteElement.thumbnailURL = this.data.paletteElement.thumbnailURL;
-    console.log('this.data.paletteElement.thumbnailURL ' + this.data.paletteElement.thumbnailURL);
-    console.log('this.data.paletteElement.imageURL ' + this.data.paletteElement.imageURL);
-    console.log('this.data.paletteElement.comment ' + this.data.paletteElement.comment);
-    console.log(this.data.paletteElement);
-    this.currentPaletteElement.imageURL = this.data.paletteElement.imageURL;
-    this.currentPaletteElement.comment = this.data.paletteElement.comment;
-    this.currentPaletteElement.uuid = this.data.paletteElement.uuid;
-    this.currentPaletteElement.arrowStroke = this.data.paletteElement.arrowStroke;
-    this.currentPaletteElement.toArrow = this.data.paletteElement.toArrow;
-    this.currentPaletteElement.fromArrow = this.data.paletteElement.fromArrow;
 
     this.activityImageList = [
       {"imageURL":VariablesSettings.activitiesImagePath+"AdHoc_Subprocess.png", "imageName":"AdHoc_Subprocess.png", "label":"AdHoc Subprocess", "thumbnailURL":VariablesSettings.activitiesImagePath+"Thumbnail_AdHoc_Subprocess.png", "thumbnailName" : "Thumbnail_AdHoc_Subprocess.png"},
@@ -285,6 +277,82 @@ export class ModalEditPaletteElementComponent implements OnInit {
       {"imageURL":VariablesSettings.archiMateImagePath+"SystemSoftware.png", "imageName":"SystemSoftware.png", "label":"System Software", "thumbnailURL":VariablesSettings.archiMateImagePath+"SystemSoftware_Thumbnail.png", "thumbnailName" : "SystemSoftware_Thumbnail.png"},
       {"imageURL":VariablesSettings.archiMateImagePath+"TechnologyService.png", "imageName":"TechnologyService.png", "label":"Technology Service", "thumbnailURL":VariablesSettings.archiMateImagePath+"TechnologyService_Thumbnail.png", "thumbnailName" : "TechnologyService_Thumbnail.png"}
     ];
+    await this.mService.getUploadedImages().then(values => {
+      console.log('getting uploaded images');
+      // http://fhnw.ch/modelingEnvironment/PaletteOntology#Category_Activities4BPMNProcessModelingView
+      let currentPalletteCategory = this.data.paletteElement.paletteCategory.split('#')[1];
+      switch (currentPalletteCategory) {
+        case VariablesSettings.CAT_ACTIVITIES:
+          this.selectedPalletteImageList = this.activityImageList;
+          break;
+        case VariablesSettings.CAT_EVENTS:
+          this.selectedPalletteImageList = this.eventImageList;
+          break;
+        case VariablesSettings.CAT_GATEWAYS:
+          this.selectedPalletteImageList = this.gatewayImageList;
+          break;
+        case VariablesSettings.CAT_DATA:
+          this.selectedPalletteImageList = this.dataObjectImageList;
+          break;
+        case VariablesSettings.CAT_GROUPS:
+          this.selectedPalletteImageList = this.groupImageList;
+          break;
+        case VariablesSettings.CAT_CONNECTORS:
+          this.selectedPalletteImageList = this.activityImageList;
+          break;
+        case VariablesSettings.CAT_SAPSCENES:
+          this.selectedPalletteImageList = this.sapscenesImageList;
+          break;
+        case VariablesSettings.CAT_SAPRELATIONS:
+          this.selectedPalletteImageList = this.sapscenesRelationsList;
+          break;
+        case VariablesSettings.CAT_Document_DSML4PTM:
+          this.selectedPalletteImageList = this.documents4DSML4PTMImageList;
+          break;
+        case VariablesSettings.CAT_Data_DSML4PTM:
+          this.selectedPalletteImageList = this.data4DSML4PTMImageList;
+          break;
+        case VariablesSettings.CAT_Activities_DSML4PTM:
+          this.selectedPalletteImageList = this.activities4DSML4PTMImageList;
+          break;
+        case VariablesSettings.CAT_DocumentConnectors_DSML4PTM:
+          this.selectedPalletteImageList = this.connectors4DSML4PTMDocumentViewImageList;
+          break;
+        case VariablesSettings.CAT_GROUPS4BPaaS:
+          this.selectedPalletteImageList = this.group4BPaaSImageList;
+          break;
+        case VariablesSettings.CAT_OrganizationalUnit:
+          this.selectedPalletteImageList = this.organizationalUnitImageList;
+          break;
+        case VariablesSettings.CAT_Performer:
+          this.selectedPalletteImageList = this.performerImageList;
+          break;
+        case VariablesSettings.CAT_Role:
+          this.selectedPalletteImageList = this.roleImageList;
+          break;
+        case VariablesSettings.CAT_ArchiMate:
+          this.selectedPalletteImageList = this.archiMateList;
+          break;
+      }
+      this.uploadedList = values;
+      this.imageList = this.selectedPalletteImageList.concat(this.uploadedList);
+      console.log(this.imageList);
+    });
+
+    this.currentPaletteElement.label = this.data.paletteElement.label;
+    this.currentPaletteElement.thumbnailURL = this.data.paletteElement.thumbnailURL;
+    console.log('this.data.paletteElement.thumbnailURL ' + this.data.paletteElement.thumbnailURL);
+    console.log('this.data.paletteElement.imageURL ' + this.data.paletteElement.imageURL);
+    console.log('this.data.paletteElement.comment ' + this.data.paletteElement.comment);
+    console.log(this.data.paletteElement);
+    this.currentPaletteElement.imageURL = this.data.paletteElement.imageURL;
+    this.currentPaletteElement.comment = this.data.paletteElement.comment;
+    this.currentPaletteElement.uuid = this.data.paletteElement.uuid;
+    this.currentPaletteElement.arrowStroke = this.data.paletteElement.arrowStroke;
+    this.currentPaletteElement.toArrow = this.data.paletteElement.toArrow;
+    this.currentPaletteElement.fromArrow = this.data.paletteElement.fromArrow;
+
+
 
     this.mService.getArrowStructures().then(value => {
       this.arrowHeads = value.heads;
