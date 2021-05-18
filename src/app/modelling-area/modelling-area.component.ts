@@ -181,7 +181,7 @@ export class ModellingAreaComponent implements OnInit {
           size: new go.Size(element.width, element.height),
           width: element.width,
           height: element.height,
-          alignment: go.Spot.Bottom,
+          alignment: go.Spot.Center,
           loc: new go.Point(element.x, element.y),
           element: element,
           shapeRepresentsModel: element.shapeRepresentsModel,
@@ -940,7 +940,7 @@ export class ModellingAreaComponent implements OnInit {
        size: new go.Size(element.width, element.height),
        width: element.width,
        height: element.height,
-       alignment: go.Spot.Bottom,
+       alignment: go.Spot.Center,
        shapeRepresentsModel: undefined
     };
 
