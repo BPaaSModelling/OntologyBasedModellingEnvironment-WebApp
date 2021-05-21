@@ -760,8 +760,9 @@ export class ModellingAreaComponent implements OnInit {
       let nodeData = evt.object;
 
       let modelElement: ModelElementDetail = nodeData.data.element;
-      modelElement.x = toInteger(nodeData.location.x);
-      modelElement.y = toInteger(nodeData.location.y);
+      modelElement.x = toInteger(evt.newValue.x);
+      modelElement.y = toInteger(evt.newValue.y);
+      nodeData.data.loc = new go.Point(modelElement.x, modelElement.y);
 
       lastMovedNodes.set(
         modelElement.id,
