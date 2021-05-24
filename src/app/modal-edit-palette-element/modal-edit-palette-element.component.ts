@@ -60,6 +60,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public imageList: any;
   public selectedPalletteImageList: any;
 
+  selectedFile: File;
 
   constructor(public dialogRef: MatDialogRef<ModalEditPaletteElementComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService, public dialog: MatDialog) {
@@ -277,6 +278,41 @@ export class ModalEditPaletteElementComponent implements OnInit {
       {"imageURL":VariablesSettings.archiMateImagePath+"SystemSoftware.png", "imageName":"SystemSoftware.png", "label":"System Software", "thumbnailURL":VariablesSettings.archiMateImagePath+"SystemSoftware_Thumbnail.png", "thumbnailName" : "SystemSoftware_Thumbnail.png"},
       {"imageURL":VariablesSettings.archiMateImagePath+"TechnologyService.png", "imageName":"TechnologyService.png", "label":"Technology Service", "thumbnailURL":VariablesSettings.archiMateImagePath+"TechnologyService_Thumbnail.png", "thumbnailName" : "TechnologyService_Thumbnail.png"}
     ];
+    await this.loadImages();
+
+    this.currentPaletteElement.label = this.data.paletteElement.label;
+    this.currentPaletteElement.thumbnailURL = this.data.paletteElement.thumbnailURL;
+    console.log('this.data.paletteElement.thumbnailURL ' + this.data.paletteElement.thumbnailURL);
+    console.log('this.data.paletteElement.imageURL ' + this.data.paletteElement.imageURL);
+    console.log('this.data.paletteElement.comment ' + this.data.paletteElement.comment);
+    console.log(this.data.paletteElement);
+    this.currentPaletteElement.imageURL = this.data.paletteElement.imageURL;
+    this.currentPaletteElement.comment = this.data.paletteElement.comment;
+    this.currentPaletteElement.uuid = this.data.paletteElement.uuid;
+    this.currentPaletteElement.arrowStroke = this.data.paletteElement.arrowStroke;
+    this.currentPaletteElement.toArrow = this.data.paletteElement.toArrow;
+    this.currentPaletteElement.fromArrow = this.data.paletteElement.fromArrow;
+
+
+
+    this.mService.getArrowStructures().then(value => {
+      this.arrowHeads = value.heads;
+      this.arrowStrokes = value.strokes;
+    });
+
+    this.config1 = {
+      displayKey: 'label',
+      search: true,
+      height: 'auto',
+      placeholder: 'Select Semantic Domain Element',
+      limitTo: 15,
+      moreText: 'more',
+      noResultsFound: 'No results found!',
+      searchPlaceholder: 'Search'
+    };
+  }
+
+  private async loadImages() {
     await this.mService.getUploadedImages().then(values => {
       console.log('getting uploaded images');
       // http://fhnw.ch/modelingEnvironment/PaletteOntology#Category_Activities4BPMNProcessModelingView
@@ -338,37 +374,6 @@ export class ModalEditPaletteElementComponent implements OnInit {
       this.imageList = this.selectedPalletteImageList.concat(this.uploadedList);
       console.log(this.imageList);
     });
-
-    this.currentPaletteElement.label = this.data.paletteElement.label;
-    this.currentPaletteElement.thumbnailURL = this.data.paletteElement.thumbnailURL;
-    console.log('this.data.paletteElement.thumbnailURL ' + this.data.paletteElement.thumbnailURL);
-    console.log('this.data.paletteElement.imageURL ' + this.data.paletteElement.imageURL);
-    console.log('this.data.paletteElement.comment ' + this.data.paletteElement.comment);
-    console.log(this.data.paletteElement);
-    this.currentPaletteElement.imageURL = this.data.paletteElement.imageURL;
-    this.currentPaletteElement.comment = this.data.paletteElement.comment;
-    this.currentPaletteElement.uuid = this.data.paletteElement.uuid;
-    this.currentPaletteElement.arrowStroke = this.data.paletteElement.arrowStroke;
-    this.currentPaletteElement.toArrow = this.data.paletteElement.toArrow;
-    this.currentPaletteElement.fromArrow = this.data.paletteElement.fromArrow;
-
-
-
-    this.mService.getArrowStructures().then(value => {
-      this.arrowHeads = value.heads;
-      this.arrowStrokes = value.strokes;
-    });
-
-    this.config1 = {
-      displayKey: 'label',
-      search: true,
-      height: 'auto',
-      placeholder: 'Select Semantic Domain Element',
-      limitTo: 15,
-      moreText: 'more',
-      noResultsFound: 'No results found!',
-      searchPlaceholder: 'Search'
-    };
   }
 
   onCloseCancel() {
@@ -604,5 +609,19 @@ export class ModalEditPaletteElementComponent implements OnInit {
 
       }
     );
+  }
+  processImageUpload(imageInput: any) {
+    const file: File = imageInput.files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener('load', async (event: any) => {
+
+      this.selectedFile = file;
+      const currentPalletteCategory = this.data.paletteElement.paletteCategory.split('#')[1];
+      await this.mService.uploadNewImageToBackend(this.selectedFile, currentPalletteCategory);
+      await this.loadImages();
+    });
+
+    reader.readAsDataURL(file);
   }
 }

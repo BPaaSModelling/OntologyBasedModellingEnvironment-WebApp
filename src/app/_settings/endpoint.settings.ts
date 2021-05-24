@@ -28,6 +28,7 @@ export class EndpointSettings {
   private static DELETEDATATYPEPROPERTY     : string = '/ModEnv/deleteDatatypeProperty';
   private static DELETEOBJECTPROPERTY     : string = '/ModEnv/deleteObjectProperty';
   private static CREATENEWIMAGE             : string = '/ModEnv/createNewImage';
+  private static UPLOADEDIMAGES             : string = '/ModEnv/getUploadedImagePaths';
 
   private static GETDOMAINCONCEPTS          : string = '/ModEnv/getDomainConcepts';
 
@@ -172,5 +173,8 @@ export class EndpointSettings {
 
   public static getCreateNewImageEndpoint() {
     return EndpointSettings.ENDPOINT + EndpointSettings.CREATENEWIMAGE;
+  }
+  public static getUploadedImagesEndpoint() {
+    return EndpointSettings.ENDPOINT + EndpointSettings.UPLOADEDIMAGES;
   }
 }

@@ -378,12 +378,13 @@ console.log(this.paletteElements);
       .then(response => response.json() as ModellingLanguageConstructInstance[]);
   }
 
-  uploadNewImageToBackend(image: File) {
+  async uploadNewImageToBackend(image: File, prefix: string) {
     const formData = new FormData();
 
     formData.append('image', image);
+    formData.append('prefix', prefix);
 
-    this.http.post(EndpointSettings.getCreateNewImageEndpoint(), formData).toPromise().then(response => console.log(response));
+    await this.http.post(EndpointSettings.getCreateNewImageEndpoint(), formData).toPromise().then(response => console.log(response));
   }
 
   getUploadedImages(): Promise<Object[]> {

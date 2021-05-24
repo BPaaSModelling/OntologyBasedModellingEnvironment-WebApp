@@ -29,14 +29,6 @@
       <img style="max-height: 30px; max-width:90px" class="thumbnail" [src]="'../assets/images/Strokes/' + selectedConnectorMode.arrowStroke + '.PNG'" >
       <img *ngIf="selectedConnectorMode.toArrow" style="max-height: 30px; max-width:30px" class="thumbnail" [src]="'../assets/images/Arrows/' + selectedConnectorMode.toArrow + '.PNG'" >
     </mat-card>
-
-    <label  style="height: fit-content; align-self: center">
-      <span style="font-family:Roboto,Helvetica Neue,sans-serif">New Image</span>
-      <input #imageInput
-             type="file"
-             accept="image/*"
-             (change)="processImageUpload(imageInput)">
-    </label>
   </div>
   <div style="display: flex; flex-direction: row">
     <div id="myDiagramDiv" style="flex-grow: 1; height: 1000px; "></div>
