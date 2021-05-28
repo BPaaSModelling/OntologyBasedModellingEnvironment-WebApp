@@ -388,10 +388,10 @@ console.log(this.paletteElements);
     await this.http.post(EndpointSettings.getCreateNewImageEndpoint(), formData).toPromise().then(response => console.log(response));
   }
 
-  getUploadedImages(): Promise<Object[]> {
+  getUploadedImages(currentPalletteCategory: string): Promise<Object[]> {
     const accessToken = 'AFIKhPLzfVUAAAAAAAAAAfDZSHlPkzk-TevdQ3N0KIWun_q33_xsp3U5PkK_Abk1';
     const dbx = new Dropbox({ accessToken: accessToken });
-    dbx.filesListFolder({ path: '/assets/images' })
+    dbx.filesListFolder({ path: '/assets/images/' + currentPalletteCategory})
       .then((response: any) => {
         console.log(response);
       })

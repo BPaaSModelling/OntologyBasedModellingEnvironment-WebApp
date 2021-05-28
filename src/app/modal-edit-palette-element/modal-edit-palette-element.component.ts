@@ -313,10 +313,9 @@ export class ModalEditPaletteElementComponent implements OnInit {
   }
 
   private async loadImages() {
-    await this.mService.getUploadedImages().then(values => {
+    const currentPalletteCategory = this.data.paletteElement.paletteCategory.split('#')[1];
+    await this.mService.getUploadedImages(currentPalletteCategory).then(values => {
       console.log('getting uploaded images');
-      // http://fhnw.ch/modelingEnvironment/PaletteOntology#Category_Activities4BPMNProcessModelingView
-      let currentPalletteCategory = this.data.paletteElement.paletteCategory.split('#')[1];
       switch (currentPalletteCategory) {
         case VariablesSettings.CAT_ACTIVITIES:
           this.selectedPalletteImageList = this.activityImageList;
