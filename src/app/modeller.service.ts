@@ -19,6 +19,7 @@ import { ArrowStructures } from "./_models/ArrowStructures.model";
 import {InstantiationTargetType} from './_models/InstantiationTargetType.model';
 import {RelationOptions} from './_models/RelationOptions.model';
 import ModellingLanguageConstructInstance from './_models/ModellingLanguageConstructInstance.model';
+import { Dropbox } from 'dropbox';
 
 @Injectable()
 export class ModellerService {
@@ -388,7 +389,16 @@ console.log(this.paletteElements);
   }
 
   getUploadedImages(): Promise<Object[]> {
+    const accessToken = 'AFIKhPLzfVUAAAAAAAAAAfDZSHlPkzk-TevdQ3N0KIWun_q33_xsp3U5PkK_Abk1';
+    const dbx = new Dropbox({ accessToken: accessToken });
+    dbx.filesListFolder({ path: '/assets/images' })
+      .then((response: any) => {
+        console.log(response);
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
     return this.http.get(EndpointSettings.getUploadedImagesEndpoint()).toPromise()
-    .then(response => response.json() as Object[]);
-  }
+      .then(response => response.json() as Object[]);
+    }
 }
