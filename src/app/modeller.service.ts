@@ -35,7 +35,7 @@ export class ModellerService {
   public datatypeProperties$: Observable<DatatypePropertyModel[]> = Observable.of([]);
   public namespacePrefixe$: Observable<string[]> = Observable.of([]);
   public namespacePrefixes: string[] = [];
-  public namespaceMap$: Observable<Map<string, string>> = Observable.of({});
+  //public namespaceMap$: Observable<Map<string, string>> = Observable.of({});
 
   constructor(private http: Http, private jsonp: Jsonp) {
     const headers = new Headers({ 'Content-Type': 'application/json'});
