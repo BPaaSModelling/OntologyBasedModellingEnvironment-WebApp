@@ -76,7 +76,8 @@
       <mat-tab label="Class Properties">
         <h2 class="mat-display-2">Class Properties</h2>
         <mat-dialog-actions layout="row">
-          <button mat-raised-button color="accent" (click)="openInsertNewProperty(data.paletteElement)">Insert new property</button>
+          <!-- Heroku difference -->
+          <button mat-raised-button color="accent" (click)="try()">Insert new property</button>
           <button mat-raised-button color="accent">Manage connection combinations</button>
         </mat-dialog-actions>
         <mat-card>

@@ -86,7 +86,9 @@
           <button mat-raised-button color="accent" (click)="openInsertNewProperty(data.paletteElement)">Insert new Attribute</button>
         </mat-dialog-actions>
         <mat-card>
-            <mat-accordion *ngFor="let element of mService.datatypeProperties">
+          <!-- Heroku difference -->
+          <!--<mat-accordion *ngFor="let element of mService.datatypeProperties">-->
+          <mat-accordion *ngFor="let element of datatypeProperties">
             <mat-expansion-panel>
               <mat-expansion-panel-header>
                 <mat-panel-title>{{element.label}}</mat-panel-title>

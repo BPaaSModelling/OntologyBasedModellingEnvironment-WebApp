@@ -13,6 +13,8 @@ import {ModellerService} from "../modeller.service";
 export class ModalPaletteElementPropertiesComponent implements OnInit {
   private domainName: string;
   private namespaceMap: Map<string, string>;
+  // Heroku difference
+  public datatypeProperties: any;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog,
               public dialogRef: MatDialogRef<ModalPaletteElementPropertiesComponent>,
@@ -31,7 +33,13 @@ export class ModalPaletteElementPropertiesComponent implements OnInit {
       }
     );
 
-    this.mService.queryDatatypeProperties(this.domainName);
+    // Heroku difference
+    //this.mService.queryDatatypeProperties(this.domainName);
+    this.mService.queryDatatypeProperties(this.domainName).subscribe(
+      (data) => {
+        this.datatypeProperties = data;
+      }
+    );
   }
 
   openInsertNewProperty(element: PaletteElementModel) {

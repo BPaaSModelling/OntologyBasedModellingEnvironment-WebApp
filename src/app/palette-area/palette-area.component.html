@@ -1,8 +1,9 @@
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
 
 <div>
+  <!-- Heroku difference -->
   <mat-select class="modelling-language" placeholder="Select" (change)="selectLang($event)">
-    <mat-option *ngFor="let lang of (mService.modelingLanguage$ | async)" [value]="lang.id">{{lang.label}}</mat-option>
+    <mat-option *ngFor="let lang of modelingLanguages" [value]="lang.id">{{lang.label}}</mat-option>
   </mat-select>
 </div>
 
@@ -68,13 +69,15 @@
 
 
 <context-menu #paletteRightClickMenu>
-  <ng-template contextMenuItem (execute)="something">
+  <!-- Heroku difference -->
+  <ng-template contextMenuItem (execute)="addNewPaletteElement()">
     Add new element to the Palette
   </ng-template>
   <ng-template let-element contextMenuItem (execute)="openCreateDomainElementModal($event.item)">
     Create new Domain Ontology Element
   </ng-template>
-  <ng-template contextMenuItem (execute)="something">
+  <!-- Heroku difference -->
+  <ng-template contextMenuItem (execute)="managePaletteElements()">
     Manage Elements
   </ng-template>
 

@@ -42,14 +42,15 @@ export class ModellerService {
     this.options = new RequestOptions({headers: headers });
   }
 
-  queryModelingLanguages(): void {
-    this.http.get(EndpointSettings.getModelingLanguagesEndpoint())
-      .map(response => response.json()).subscribe(
+  queryModelingLanguages() {
+    // Heroku difference
+    return this.http.get(EndpointSettings.getModelingLanguagesEndpoint())
+      .map(response => response.json())/*.subscribe(
       data => {
         //console.log('PaletteElements received: ' + JSON.stringify(data));
         this.modelingLanguage$ = Observable.of(data);
         console.log(this.modelingLanguage$);
-      }, error => console.log('Could not query PaletteElements'));
+      }, error => console.log('Could not query PaletteElements'));*/
   }
 
   queryModelingViews(langId) {

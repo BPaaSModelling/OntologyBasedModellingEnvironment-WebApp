@@ -35,10 +35,13 @@ export class ModalConnectorElementPropertiesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed : ' + result);
     });
-  }
-
-  onCloseCancel() {
-    this.dialogRef.close('Cancel');
   }*/
 
+  // Heroku difference
+  onCloseCancel() {
+    this.dialogRef.close('Cancel');
+  }
+
+  //Heroku difference
+  try() {}
 }

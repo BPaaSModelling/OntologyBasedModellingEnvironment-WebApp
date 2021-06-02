@@ -150,6 +150,9 @@ constructor(private mService: ModellerService, public dialog: MatDialog) {
     );
   }
 
+  //Heroku difference
+  showMessage(msg: string) {}
+
   showInstantiatedElements(element: PaletteElementModel) {
     this.dialog.open(ModalShowLanguageInstances, {data:element});
   }

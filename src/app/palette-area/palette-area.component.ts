@@ -14,6 +14,7 @@ import {ModelingViewModel} from "../_models/ModelingView.model";
 import {PaletteCategoryModel} from "../_models/PaletteCategory.model";
 import {VariablesSettings} from "../_settings/variables.settings";
 import {ModalShowLanguageInstances} from '../modal-show-language-instances/modal-show-language-instances';
+import {ModelingLanguageModel} from '../_models/ModelingLanguage.model';
 
 @Component({
   selector: 'app-palette-area',
@@ -38,11 +39,20 @@ export class PaletteAreaComponent implements OnInit {
   @Output() showEditPaletteElementModal = new EventEmitter();
 
   public modelingViews: ModelingViewModel[] = [];
+  // Heroku difference
+  public modelingLanguages: ModelingLanguageModel[] = [];
   public paletteCategories: PaletteCategoryModel[] = [];
   public imageRoot: string = "";
 
   constructor(private mService: ModellerService, public dialog: MatDialog) {
-    this.mService.queryModelingLanguages()
+    // Heroku difference
+    //this.mService.queryModelingLanguages()
+    this.mService.queryModelingLanguages().subscribe(
+      (response) => {
+        console.log(response);
+        this.modelingLanguages = response;
+      }
+    );
     //this.mService.queryPaletteCategories();
 
 
@@ -195,6 +205,11 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     console.log('Palette categories');
     console.log(this.paletteCategories);
   }
+
+  // Heroku difference
+  addNewPaletteElement() {}
+
+  managePaletteElements() {}
 
   showInstantiatedElements(element: PaletteElementModel) {
     this.dialog.open(ModalShowLanguageInstances, {data:element});

@@ -35,7 +35,8 @@
       <mat-tab label="Bridging Connector">
         <h3>Add Bridging Connector (Object Property)</h3>
         <mat-dialog-actions layout="row">
-          <button mat-raised-button color="accent" (click)="openInsertNewLanguageRelation(element)">Insert new Bridging Connector</button>
+          <!-- Heroku difference -->
+          <button mat-raised-button color="accent" (click)="openInsertNewLanguageRelation(data.paletteElement)">Insert new Bridging Connector</button>
         </mat-dialog-actions>
         <mat-card>
           <mat-accordion *ngFor="let element of bridgingConnectors">
@@ -59,7 +60,8 @@
       <mat-tab label="Semantic Mapping">
         <h3>Add Semantic Mapping (Object Property)</h3>
         <mat-dialog-actions layout="row">
-          <button mat-raised-button color="accent" (click)="openInsertNewDomainRelation(element)">Insert new Semantic Mapping</button>
+          <!-- Heroku difference -->
+          <button mat-raised-button color="accent" (click)="openInsertNewDomainRelation(data.paletteElement)">Insert new Semantic Mapping</button>
         </mat-dialog-actions>
         <mat-card>
           <mat-accordion *ngFor="let element of semanticMappings">
