@@ -2,9 +2,40 @@ import {Component, Inject} from '@angular/core';
 
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
 import {ModelElementDetailAndModel} from '../_models/ModelElementDetailAndModel';
+import {BehaviorSubject, Observable} from "rxjs";
+
+
+export class VisualisationLinksData {
+  modelingLanguageConstructInstanceId: string
+  otherVisualisations: ModelElementDetailAndModel[]
+}
+
+export class VisualisationLinksTableEntry {
+  modelId: string
+  modelLabel: string
+  shape: string
+}
+
+export class VisualisationLinksDataDatasource extends DataSource<VisualisationLinksTableEntry> {
+
+  data: BehaviorSubject<VisualisationLinksTableEntry[]>;
+
+  public constructor(private entries: VisualisationLinksTableEntry[]) {
+    super();
+    this.data = new BehaviorSubject<VisualisationLinksTableEntry[]>(entries);
+  }
+
+  /** Stream of data that is provided to the table. */
+
+
+  /** Connect function called by the table to retrieve one stream containing the data to render. */
+  connect(): Observable<VisualisationLinksTableEntry[]> {
+    return this.data;
+  }
+
+  disconnect() {}
+}
 
 @Component({
   selector: 'modal-modelling-language-construct-instance-link',
@@ -39,35 +70,4 @@ export class ModalModellingLanguageConstructInstanceLink {
   onNoClick(): void {
     this.dialogRef.close();
   }
-}
-
-export class VisualisationLinksData {
-  modelingLanguageConstructInstanceId: string
-  otherVisualisations: ModelElementDetailAndModel[]
-}
-
-export class VisualisationLinksTableEntry {
-  modelId: string
-  modelLabel: string
-  shape: string
-}
-
-export class VisualisationLinksDataDatasource extends DataSource<VisualisationLinksTableEntry> {
-
-  data: BehaviorSubject<VisualisationLinksTableEntry[]>;
-
-  public constructor(private entries: VisualisationLinksTableEntry[]) {
-    super();
-    this.data = new BehaviorSubject<VisualisationLinksTableEntry[]>(entries);
-  }
-
-  /** Stream of data that is provided to the table. */
-
-
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
-  connect(): Observable<VisualisationLinksTableEntry[]> {
-    return this.data;
-  }
-
-  disconnect() {}
 }

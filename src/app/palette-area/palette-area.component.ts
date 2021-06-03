@@ -23,8 +23,8 @@ import {ModelingLanguageModel} from '../_models/ModelingLanguage.model';
 })
 export class PaletteAreaComponent implements OnInit {
 
-  @ViewChild(ContextMenuComponent) public elementRightClickMenu: ContextMenuComponent;
-  @ViewChild(ContextMenuComponent) public paletteRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent;
   // Optional
   @Input() contextMenu: ContextMenuComponent;
   @Input() contextMenuSubject: PaletteElementModel;

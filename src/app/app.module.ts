@@ -53,6 +53,7 @@ import {ModalPaletteVisualisation} from './modal-palette-visualisation/modal-pal
 import {ModalModelEdit} from './modal-model-edit/modal-model-edit.component';
 import {ModalViewElementDetail} from './model-element-detail/model-element-detail.component';
 import {ModalShowLanguageInstances} from './modal-show-language-instances/modal-show-language-instances';
+import {EndpointSettings} from './_settings/endpoint.settings';
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
@@ -120,7 +121,7 @@ const appRoutes: Routes = [
     HttpModule,
     JsonpModule,
     FlexLayoutModule,
-    ContextMenuModule,
+    ContextMenuModule.forRoot(),
     MatListModule,
     MatButtonModule,
     MatToolbarModule,

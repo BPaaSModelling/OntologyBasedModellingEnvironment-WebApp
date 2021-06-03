@@ -1,9 +1,6 @@
 import {DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Relation} from '../_models/Relation.model';
-import {Observable} from 'rxjs/Observable';
-import {ModellerService} from '../modeller.service';
 import {RelationEditorModel} from './RelationEditorModel';
+import {BehaviorSubject, Observable} from "rxjs";
 
 export class RelationDatasource extends DataSource<RelationEditorModel> {
 

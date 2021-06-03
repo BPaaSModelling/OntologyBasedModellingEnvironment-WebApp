@@ -4,10 +4,9 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ModellerService} from '../modeller.service';
 import {ModelElementDetailAndModel} from '../_models/ModelElementDetailAndModel';
 import {DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
 import ModellingLanguageConstructInstance from '../_models/ModellingLanguageConstructInstance.model';
 import {PaletteElementModel} from '../_models/PaletteElement.model';
+import {BehaviorSubject, Observable} from "rxjs";
 
 @Component({
   selector: 'modal-show-language-instances',

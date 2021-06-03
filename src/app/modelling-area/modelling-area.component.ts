@@ -9,7 +9,6 @@ import {Model} from '../_models/Model.model';
 import {ModalModelCreation} from '../modal-model-creation/modal-model-creation.component';
 import {MatDialog} from '@angular/material/dialog';
 import {UUID} from 'angular2-uuid';
-import {toInteger} from '@ng-bootstrap/ng-bootstrap/util/util';
 import * as _ from 'lodash';
 import {InstantiationTargetType} from '../_models/InstantiationTargetType.model';
 import {ModalModelLink} from '../modal-model-link/modal-model-link';
@@ -43,8 +42,8 @@ let cxElement: any;
 })
 export class ModellingAreaComponent implements OnInit {
 
-  @ViewChild(ContextMenuComponent) public elementRightClickMenu: ContextMenuComponent;
-  @ViewChild(ContextMenuComponent) public paletteRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent;
 
   @Input() contextMenu: ContextMenuComponent;
   @Input() contextMenuSubject: PaletteElementModel;
@@ -696,8 +695,8 @@ export class ModellingAreaComponent implements OnInit {
     // resizing should only be affecting one element, we are not interested in the others
     let latestChange = _.last(txn.changes.toArray().filter(change => change.propertyName === 'size'));
     let modelElement = latestChange.object.element;
-    modelElement.width = toInteger(latestChange.newValue.split(" ")[0]);
-    modelElement.height = toInteger(latestChange.newValue.split(" ")[1]);
+    modelElement.width = Math.trunc(Number.parseInt(latestChange.newValue.split(' ')[0], 10));
+    modelElement.height = Math.trunc(Number.parseInt(latestChange.newValue.split(' ')[1], 10));
     latestChange.object.width = modelElement.width;
     latestChange.object.height = modelElement.height;
 
@@ -760,8 +759,8 @@ export class ModellingAreaComponent implements OnInit {
       let nodeData = evt.object;
 
       let modelElement: ModelElementDetail = nodeData.data.element;
-      modelElement.x = toInteger(evt.newValue.x);
-      modelElement.y = toInteger(evt.newValue.y);
+        modelElement.x = Math.trunc(nodeData.location.x);
+        modelElement.y = Math.trunc(nodeData.location.y);
       nodeData.data.loc = new go.Point(modelElement.x, modelElement.y);
 
       lastMovedNodes.set(

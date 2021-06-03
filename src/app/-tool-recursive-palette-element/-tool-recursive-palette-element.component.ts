@@ -17,7 +17,7 @@ import {ModalShowLanguageInstances} from '../modal-show-language-instances/modal
   styleUrls: ['./-tool-recursive-palette-element.component.css']
 })
 export class ToolRecursivePaletteElementComponent implements OnInit {
-  @ViewChild(ContextMenuComponent) public elementRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent;
 
   @Input() child: PaletteElementModel;
   @Input() contextMenu: ContextMenuComponent;
