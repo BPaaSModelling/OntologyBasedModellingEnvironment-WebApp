@@ -1,6 +1,5 @@
 import {BrowserModule } from '@angular/platform-browser';
 import {APP_INITIALIZER, NgModule} from '@angular/core';
-import {HttpModule, JsonpModule} from '@angular/http';
 import {AppComponent } from './app.component';
 import {ModellingEnvironmentComponent } from './modelling-environment/modelling-environment.component';
 import {PaletteAreaComponent } from './palette-area/palette-area.component';
@@ -27,7 +26,6 @@ import {
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToolRecursivePaletteElementComponent} from './-tool-recursive-palette-element/-tool-recursive-palette-element.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ContextMenuModule} from 'ngx-contextmenu';
 import {ModalInstancePropertiesComponent} from './modal-instance-properties/modal-instance-properties.component';
 import {ModalPaletteElementPropertiesComponent} from './modal-palette-element-properties/modal-palette-element-properties.component';
@@ -122,16 +120,13 @@ export function appInit(endpointSettings: EndpointSettings) {
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
-    HttpModule,
     HttpClientModule,
-    JsonpModule,
     FlexLayoutModule,
     ContextMenuModule.forRoot(),
     MatListModule,
     MatButtonModule,
     MatToolbarModule,
     BrowserAnimationsModule,
-    NgbModule,
     MatDialogModule,
     MatTabsModule,
     MatCardModule,
