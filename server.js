@@ -11,23 +11,22 @@ app.get('/api', function (req, res, next) {
   if(url){
     console.log('Using webservice endpoint of ' + url);
   }else{
-    url = 'localhost:8080';
-    console.log('Environment variable WEBSERVICE_ENDPOINT not found. Using default value of ' + url);
+    console.log('Environment variable WEBSERVICE_ENDPOINT not found.');
   }
 
-  res.json({webservice_endpoint: url});
+  res.json({webserviceEndpoint: url});
 
 });
 
 // Serve only the static files form the dist directory
-app.use(express.static(__dirname + '/dist'));
+app.use(express.static(__dirname + '/dist/ontology-based-modelling-environment'));
 
 app.get('/*', function(req,res) {
 
-  res.sendFile(path.join(__dirname+'/dist/index.html'));
+  res.sendFile(path.join(__dirname+'/dist/ontology-based-modelling-environment/index.html'));
 });
 
 // Start the app by listening on the default Heroku port
 let port = process.env.PORT || 4200;
-console.log('Starting the app by listening to the port ' + port);
+console.log('Starting the app by listening on port ' + port);
 app.listen(port);

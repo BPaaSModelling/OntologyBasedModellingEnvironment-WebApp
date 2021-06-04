@@ -1,8 +1,12 @@
-export class EndpointSettings {
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
-  private static ENDPOINT                   : string = 'http://localhost:8080'; // endpoint to locally deployed webservice
-  // private static ENDPOINT                   : string = 'https://ontologybasedmodellingenv.herokuapp.com'; // heroku test endpoint
-  //private static ENDPOINT                   : string = 'https://aoame-webservice.herokuapp.com'; // heroku endpoint
+export interface Config {
+  webserviceEndpoint: string
+}
+
+@Injectable()
+export class EndpointSettings {
 
   private static GETMODELINGLANGUAGES       : string = '/ModEnv/getModelingLanguages';
   private static GETMODELINGVIEWS           : string = '/ModEnv/getModelingViews';
@@ -35,139 +39,163 @@ export class EndpointSettings {
   private static MODELS : string = '/ModEnv/model';
   private static ARROWS : string = '/ModEnv/arrow-structures';
 
-  public static getModelsEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS;
+  private webserviceEndpoint: string = undefined;
+
+  constructor(private http: HttpClient) {
   }
 
-  public static getModelEndpoint(modelId: string): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId;
+  public load(): Promise<any>{
+
+    const defaultEndpoint = 'http://localhost:8080';
+
+    return this.http.get<Config>('/api').toPromise().then((data:Config) =>{
+      if(data.webserviceEndpoint){
+        console.log('Received webservice endpoint: ' + data.webserviceEndpoint);
+        this.webserviceEndpoint = data.webserviceEndpoint;
+      }else{
+        console.log('Using default endpoint of ' + defaultEndpoint);
+        this.webserviceEndpoint = defaultEndpoint;
+      }
+      }).catch(error =>{
+        console.log('Using default endpoint of ' + defaultEndpoint);
+        this.webserviceEndpoint = defaultEndpoint;
+    });
+
   }
 
-  public static getElementEndpoint(modelId: string): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId + '/element';
+  public getModelsEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.MODELS;
   }
 
-  public static getConnectionEndpoint(modelId: string): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId + '/connection';
+  public getModelEndpoint(modelId: string): string {
+    return this.webserviceEndpoint + EndpointSettings.MODELS + '/' + modelId;
   }
 
-  public static getElementDetailEndpoint(modelId: string, id: string): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.MODELS + '/' + modelId + '/element/' + id;
+  public getElementEndpoint(modelId: string): string {
+    return this.webserviceEndpoint + EndpointSettings.MODELS + '/' + modelId + '/element';
   }
 
-  public static getArrowsEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.ARROWS;
+  public getConnectionEndpoint(modelId: string): string {
+    return this.webserviceEndpoint + EndpointSettings.MODELS + '/' + modelId + '/connection';
   }
 
-  public static getModelingLanguagesEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.GETMODELINGLANGUAGES;
+  public getElementDetailEndpoint(modelId: string, id: string): string {
+    return this.webserviceEndpoint + EndpointSettings.MODELS + '/' + modelId + '/element/' + id;
   }
 
-  public static getModelingViewsEndpoint(langId): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.GETMODELINGVIEWS + '/' + langId;
+  public getArrowsEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.ARROWS;
   }
 
-  public static getPaletteElementsEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.PALETTEELEMENTS;
+  public getModelingLanguagesEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.GETMODELINGLANGUAGES;
   }
 
-  public static getPaletteCategoriesEndpoint(viewId): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.PALETTECATEGORIES + '/' + viewId;
+  public getModelingViewsEndpoint(langId): string {
+    return this.webserviceEndpoint + EndpointSettings.GETMODELINGVIEWS + '/' + langId;
   }
 
-  public static getCreateElementEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.CREATEELEMENT;
+  public getPaletteElementsEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.PALETTEELEMENTS;
   }
 
-  public static getCreateInstanceEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.CREATEINSTANCE;
+  public getPaletteCategoriesEndpoint(viewId): string {
+    return this.webserviceEndpoint + EndpointSettings.PALETTECATEGORIES + '/' + viewId;
   }
 
-  public static getCreateDomainElementEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.CREATEDOMAINELEMENT;
+  public getCreateElementEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATEELEMENT;
   }
 
-  public static getDomainClassesEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.GETDOMAINCLASSES;
+  public getCreateInstanceEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATEINSTANCE;
   }
 
-  public static getModelingElementClassesEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.GETMODELINGLANGUAGELASSES;
+  public getCreateDomainElementEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATEDOMAINELEMENT;
   }
 
-  public static getCreateDatatypePropertyEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.CREATEDATATYPEPROPERTY;
+  public getDomainClassesEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.GETDOMAINCLASSES;
   }
 
-  public static getCreateBridgeConnectorEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.CREATEBRIDGECONNECTOR;
+  public getModelingElementClassesEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.GETMODELINGLANGUAGELASSES;
   }
 
-  public static getCreateSemanticMappingEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.CREATESEMANTICMAPPING;
+  public getCreateDatatypePropertyEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATEDATATYPEPROPERTY;
   }
 
-  public static getDatatypePropertyEndpoint(domainName): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.GETDATATYPEPROPERTIES + '/' + domainName;
+  public getCreateBridgeConnectorEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATEBRIDGECONNECTOR;
   }
 
-  public static getBridgeConnectorEndpoint(domainName): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.GETBRIDGECONNECTORS + '/' + domainName;
+  public getCreateSemanticMappingEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATESEMANTICMAPPING;
   }
 
-  public static getSemanticMappingEndpoint(domainName): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.GETSEMANTICMAPPINGS + '/' + domainName;
+  public getDatatypePropertyEndpoint(domainName): string {
+    return this.webserviceEndpoint + EndpointSettings.GETDATATYPEPROPERTIES + '/' + domainName;
   }
 
-  public static getDeletePaletteElementEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.DELETEPALETTEELEMENT;
+  public getBridgeConnectorEndpoint(domainName): string {
+    return this.webserviceEndpoint + EndpointSettings.GETBRIDGECONNECTORS + '/' + domainName;
   }
 
-  public static getHidePaletteElementEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.HIDEPALETTEELEMENT;
+  public getSemanticMappingEndpoint(domainName): string {
+    return this.webserviceEndpoint + EndpointSettings.GETSEMANTICMAPPINGS + '/' + domainName;
   }
 
-  public static getCreateLanguageSubclassesEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.CREATELANGUAGESUBCLASSES;
+  public getDeletePaletteElementEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.DELETEPALETTEELEMENT;
   }
 
-  public static getGetAllNamespacePrefixesEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.GETALLNAMESPACEPREFIXES;
+  public getHidePaletteElementEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.HIDEPALETTEELEMENT;
   }
 
-  public static getNamespaceMapEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.GETNAMESPACEMAP;
+  public getCreateLanguageSubclassesEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATELANGUAGESUBCLASSES;
   }
 
-  public static getModifyElementEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.MODIFYELEMENT;
+  public getGetAllNamespacePrefixesEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.GETALLNAMESPACEPREFIXES;
   }
 
-  public static getEditDatatypePropertyEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.EDITDATATYPEPROPERTY;
+  public getNamespaceMapEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.GETNAMESPACEMAP;
   }
 
-  public static getEditObjectPropertyEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.EDITOBJECTPROPERTY;
+  public getModifyElementEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.MODIFYELEMENT;
   }
 
-  public static getDeleteDatatypePropertyEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.DELETEDATATYPEPROPERTY;
+  public getEditDatatypePropertyEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.EDITDATATYPEPROPERTY;
   }
 
-  public static getDeleteObjectPropertyEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.DELETEOBJECTPROPERTY;
+  public getEditObjectPropertyEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.EDITOBJECTPROPERTY;
   }
 
-  public static getDomainConceptsEndpoint(): string {
-    return EndpointSettings.ENDPOINT + EndpointSettings.GETDOMAINCONCEPTS;
+  public getDeleteDatatypePropertyEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.DELETEDATATYPEPROPERTY;
   }
 
-  public static getRelationOptionsEndpoint(relationid: string) {
-    return EndpointSettings.ENDPOINT + "/ModEnv/relations/" + relationid + "/options";
+  public getDeleteObjectPropertyEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.DELETEOBJECTPROPERTY;
   }
 
-  public static getConceptualElementInstances() {
-    return EndpointSettings.ENDPOINT + "/ModEnv/model-elements/search";
+  public getDomainConceptsEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.GETDOMAINCONCEPTS;
+  }
+
+  public getRelationOptionsEndpoint(relationid: string) {
+    return this.webserviceEndpoint + "/ModEnv/relations/" + relationid + "/options";
+  }
+
+  public getConceptualElementInstances() {
+    return this.webserviceEndpoint + "/ModEnv/model-elements/search";
   }
 }

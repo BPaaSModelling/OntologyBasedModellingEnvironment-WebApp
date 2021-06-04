@@ -925,7 +925,6 @@ export class ModellingAreaComponent implements OnInit {
 
     console.log('shape: ' + element.shape + ' label: ' + element.label + 'bg color: ' + element.backgroundColor);
 
-    var adornment = new $(go.Part);
     this.myDiagram.startTransaction("Add State");
 
     console.log('Palette category: ' + element.paletteCategory);

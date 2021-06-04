@@ -1,5 +1,5 @@
 import {BrowserModule } from '@angular/platform-browser';
-import {NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {HttpModule, JsonpModule} from '@angular/http';
 import {AppComponent } from './app.component';
 import {ModellingEnvironmentComponent } from './modelling-environment/modelling-environment.component';
@@ -54,11 +54,15 @@ import {ModalModelEdit} from './modal-model-edit/modal-model-edit.component';
 import {ModalViewElementDetail} from './model-element-detail/model-element-detail.component';
 import {ModalShowLanguageInstances} from './modal-show-language-instances/modal-show-language-instances';
 import {EndpointSettings} from './_settings/endpoint.settings';
+import {HttpClientModule} from '@angular/common/http';
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
 ];
 
+export function appInit(endpointSettings: EndpointSettings) {
+  return () => endpointSettings.load();
+}
 
 @NgModule({
   declarations: [
@@ -119,6 +123,7 @@ const appRoutes: Routes = [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     HttpModule,
+    HttpClientModule,
     JsonpModule,
     FlexLayoutModule,
     ContextMenuModule.forRoot(),
@@ -143,7 +148,16 @@ const appRoutes: Routes = [
     MatGridListModule,
     MatTableModule
   ],
-  providers: [ModellerService],
+  providers: [
+    ModellerService,
+    EndpointSettings,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInit,
+      multi: true,
+      deps: [EndpointSettings]
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

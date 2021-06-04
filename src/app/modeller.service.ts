@@ -38,13 +38,13 @@ export class ModellerService {
   public namespacePrefixes: string[] = [];
   // public namespaceMap$: Observable<Map<string, string>> = of({});
 
-  constructor(private http: Http, private jsonp: Jsonp) {
+  constructor(private http: Http, private jsonp: Jsonp, private endpointSettings: EndpointSettings) {
     const headers = new Headers({ 'Content-Type': 'application/json'});
     this.options = new RequestOptions('{headers: headers }');
   }
 
   queryModelingLanguages() {
-    return this.http.get(EndpointSettings.getModelingLanguagesEndpoint())
+    return this.http.get(this.endpointSettings.getModelingLanguagesEndpoint())
       .pipe(map(response => response.json())); /*.subscribe(
       data => {
         //console.log('PaletteElements received: ' + JSON.stringify(data));
@@ -54,12 +54,12 @@ export class ModellerService {
   }
 
   queryModelingViews(langId) {
-    return this.http.get(EndpointSettings.getModelingViewsEndpoint(langId))
+    return this.http.get(this.endpointSettings.getModelingViewsEndpoint(langId))
       .pipe(map(response => response.json()));
   }
 
   queryPaletteElements(): void {
-    this.http.get(EndpointSettings.getPaletteElementsEndpoint())
+    this.http.get(this.endpointSettings.getPaletteElementsEndpoint())
       .pipe(map(response => response.json())).subscribe(
       data => {
         // console.log('PaletteElements received: ' + JSON.stringify(data));
@@ -70,7 +70,7 @@ export class ModellerService {
   }
 
   queryPaletteCategories(viewId) {
-    return this.http.get(EndpointSettings.getPaletteCategoriesEndpoint(viewId))
+    return this.http.get(this.endpointSettings.getPaletteCategoriesEndpoint(viewId))
       .pipe(map(response => response.json())); /*.subscribe(
       data => {
         //console.log('PaletteCategories received: ' + JSON.stringify(data));
@@ -84,7 +84,7 @@ export class ModellerService {
     const querySuccess: Boolean = false;
     let returnStr: string;
     console.log(oImg);
-    return this.http.post(EndpointSettings.getCreateElementEndpoint(), oImg)
+    return this.http.post(this.endpointSettings.getCreateElementEndpoint(), oImg)
       .pipe(map(response => response.json()));
   }
 
@@ -92,7 +92,7 @@ export class ModellerService {
     // console.log(JSON.stringify(oImg));
     const querySuccess: Boolean = false;
     console.log(oImg);
-    return this.http.post(EndpointSettings.getDeletePaletteElementEndpoint(), oImg)
+    return this.http.post(this.endpointSettings.getDeletePaletteElementEndpoint(), oImg)
       .pipe(map(response => response.json())); // Do not subscribe here, subscribe where the method is called to make the call synchronous
     /*.subscribe(
       data => {
@@ -106,7 +106,7 @@ export class ModellerService {
     // console.log(JSON.stringify(oImg));
     const querySuccess: Boolean = false;
     console.log(oImg);
-    return this.http.post(EndpointSettings.getHidePaletteElementEndpoint(), oImg)
+    return this.http.post(this.endpointSettings.getHidePaletteElementEndpoint(), oImg)
       .pipe(map(response => response.json())); /*.subscribe(
       data => {
         querySuccess = (data == 'true');
@@ -119,7 +119,7 @@ export class ModellerService {
     // console.log(JSON.stringify(oImg));
     let querySuccess: Boolean = false;
     console.log(oImg);
-    this.http.post(EndpointSettings.getCreateDomainElementEndpoint(), oImg)
+    this.http.post(this.endpointSettings.getCreateDomainElementEndpoint(), oImg)
       .pipe(map(response => response.json())).subscribe(
       data => {
         querySuccess = (data == 'true');
@@ -132,21 +132,21 @@ export class ModellerService {
     // console.log(JSON.stringify(oImg));
     const querySuccess: Boolean = false;
     console.log(oImg);
-    return this.http.post(EndpointSettings.getCreateDatatypePropertyEndpoint(), oImg)
+    return this.http.post(this.endpointSettings.getCreateDatatypePropertyEndpoint(), oImg)
       .pipe(map(response => response.json()));
   }
 
   createNewBridgingConnector(oImg) {
     const querySuccess: Boolean = false;
     console.log(oImg);
-    return this.http.post(EndpointSettings.getCreateBridgeConnectorEndpoint(), oImg)
+    return this.http.post(this.endpointSettings.getCreateBridgeConnectorEndpoint(), oImg)
       .pipe(map(response => response.json()));
   }
 
   createNewSemanticMapping(oImg) {
     const querySuccess: Boolean = false;
     console.log(oImg);
-    return this.http.post(EndpointSettings.getCreateSemanticMappingEndpoint(), oImg)
+    return this.http.post(this.endpointSettings.getCreateSemanticMappingEndpoint(), oImg)
       .pipe(map(response => response.json()));
   }
 
@@ -156,7 +156,7 @@ export class ModellerService {
     params.append('element', JSON.stringify(element));
     params.append('modifiedElement', JSON.stringify(modifiedElement)); // passing multiple parameters in POST
     console.log(element);
-    return this.http.post(EndpointSettings.getModifyElementEndpoint(), params)
+    return this.http.post(this.endpointSettings.getModifyElementEndpoint(), params)
       .pipe(map(response => response.json()));
   }
 
@@ -166,7 +166,7 @@ export class ModellerService {
     const params = new URLSearchParams();
     params.append('property', JSON.stringify(property));
     params.append('editedProperty', JSON.stringify(editedProperty)); // passing multiple parameters in POST
-    return this.http.post(EndpointSettings.getEditDatatypePropertyEndpoint(), params)
+    return this.http.post(this.endpointSettings.getEditDatatypePropertyEndpoint(), params)
       .pipe(map(response => response.json()));
   }
 
@@ -176,21 +176,21 @@ export class ModellerService {
     const params = new URLSearchParams();
     params.append('property', JSON.stringify(property));
     params.append('editedProperty', JSON.stringify(editedProperty)); // passing multiple parameters in POST
-    return this.http.post(EndpointSettings.getEditObjectPropertyEndpoint(), params)
+    return this.http.post(this.endpointSettings.getEditObjectPropertyEndpoint(), params)
       .pipe(map(response => response.json()));
   }
 
   deleteDatatypeProperty(property: DatatypePropertyModel) {
     const querySuccess: Boolean = false;
     console.log(property);
-    return this.http.post(EndpointSettings.getDeleteDatatypePropertyEndpoint(), JSON.stringify(property))
+    return this.http.post(this.endpointSettings.getDeleteDatatypePropertyEndpoint(), JSON.stringify(property))
       .pipe(map(response => response.json()));
   }
 
   deleteObjectProperty(property: ObjectPropertyModel) {
     const querySuccess: Boolean = false;
     console.log(property);
-    return this.http.post(EndpointSettings.getDeleteObjectPropertyEndpoint(), JSON.stringify(property))
+    return this.http.post(this.endpointSettings.getDeleteObjectPropertyEndpoint(), JSON.stringify(property))
       .pipe(map(response => response.json()));
   }
 
@@ -198,14 +198,14 @@ export class ModellerService {
     // console.log(JSON.stringify(oImg));
     const querySuccess: Boolean = false;
     console.log(oImg);
-    return this.http.post(EndpointSettings.getCreateLanguageSubclassesEndpoint(), oImg)
+    return this.http.post(this.endpointSettings.getCreateLanguageSubclassesEndpoint(), oImg)
       .pipe(map(response => response.json()));
   }
 
   queryDomainClasses(): void {
 
 
-    this.http.get(EndpointSettings.getDomainClassesEndpoint())
+    this.http.get(this.endpointSettings.getDomainClassesEndpoint())
       .pipe(map(response => response.json()))
       .subscribe(data => {
         // console.log('PaletteElements received: ' + JSON.stringify(data));
@@ -216,7 +216,7 @@ export class ModellerService {
   }
 
   queryModelingElementClasses(): void {
-    this.http.get(EndpointSettings.getModelingElementClassesEndpoint())
+    this.http.get(this.endpointSettings.getModelingElementClassesEndpoint())
       .pipe(map(response => response.json()))
       .subscribe(data => {
         // console.log('PaletteElements received: ' + JSON.stringify(data));
@@ -226,22 +226,22 @@ export class ModellerService {
   }
 
   queryDatatypeProperties(domainName) {
-    return this.http.get(EndpointSettings.getDatatypePropertyEndpoint(domainName))
+    return this.http.get(this.endpointSettings.getDatatypePropertyEndpoint(domainName))
       .pipe(map(response => response.json()));
   }
 
   queryBridgingConnectors(domainName) {
-    return this.http.get(EndpointSettings.getBridgeConnectorEndpoint(domainName))
+    return this.http.get(this.endpointSettings.getBridgeConnectorEndpoint(domainName))
       .pipe(map(response => response.json()));
   }
 
   querySemanticMappings(domainName) {
-    return this.http.get(EndpointSettings.getSemanticMappingEndpoint(domainName))
+    return this.http.get(this.endpointSettings.getSemanticMappingEndpoint(domainName))
       .pipe(map(response => response.json()));
   }
 
   queryNamespacePrefixes(): void {
-    this.http.get(EndpointSettings.getGetAllNamespacePrefixesEndpoint())
+    this.http.get(this.endpointSettings.getGetAllNamespacePrefixesEndpoint())
       .pipe(map(response => response.json())).subscribe(
       data => {
         // console.log('PaletteCategories received: ' + JSON.stringify(data));
@@ -251,23 +251,23 @@ export class ModellerService {
   }
 
   queryNamespaceMap(): Observable <Map<string, string>> {
-    return this.http.get(EndpointSettings.getNamespaceMapEndpoint())
+    return this.http.get(this.endpointSettings.getNamespaceMapEndpoint())
       .pipe(map(response => response.json()));
   }
 
   /*queryDomainConcepts() {
-    return this.http.get(EndpointSettings.getDomainConceptsEndpoint())
+    return this.http.get(this.endpointSettings.getDomainConceptsEndpoint())
       .map(response => response.json());
   }*/
 
   getArrowStructures(): Promise<ArrowStructures> {
-    return this.http.get(EndpointSettings.getArrowsEndpoint())
+    return this.http.get(this.endpointSettings.getArrowsEndpoint())
       .toPromise()
       .then(response => response.json() as ArrowStructures);
   }
 
   getModels(): Promise<Model[]> {
-    return this.http.get(EndpointSettings.getModelsEndpoint())
+    return this.http.get(this.endpointSettings.getModelsEndpoint())
       .toPromise()
       .then(response => response.json() as Model[]);
   }
@@ -277,7 +277,7 @@ export class ModellerService {
     const dto: Model = new Model();
     dto.label = label;
 
-    return this.http.post(EndpointSettings.getModelsEndpoint(), dto)
+    return this.http.post(this.endpointSettings.getModelsEndpoint(), dto)
       .toPromise()
       .then(response => response.json() as Model);
   }
@@ -292,7 +292,7 @@ export class ModellerService {
       instantiationType: instantiationTargetType
     };
 
-    return this.http.put(EndpointSettings.getElementEndpoint(modelId), payload)
+    return this.http.put(this.endpointSettings.getElementEndpoint(modelId), payload)
       .toPromise()
       .then(response => response.json() as ModelElementDetail);
   }
@@ -311,7 +311,7 @@ export class ModellerService {
       shapeRepresentsModel: existingElement.shapeRepresentsModel
     };
 
-    return this.http.put(EndpointSettings.getElementEndpoint(modelId), payload)
+    return this.http.put(this.endpointSettings.getElementEndpoint(modelId), payload)
       .toPromise()
       .then(response => response.json() as ModelElementDetail);
   }
@@ -327,36 +327,36 @@ export class ModellerService {
       instantiationType: instantiationTargetType
     };
 
-    return this.http.put(EndpointSettings.getConnectionEndpoint(modelId), payload)
+    return this.http.put(this.endpointSettings.getConnectionEndpoint(modelId), payload)
       .toPromise()
       .then(response => response.json() as ModelElementDetail);
   }
 
   getElements(modelId: string): Promise<ModelElementDetail[]> {
-    return this.http.get(EndpointSettings.getElementEndpoint(modelId))
+    return this.http.get(this.endpointSettings.getElementEndpoint(modelId))
       .toPromise()
       .then(response => response.json() as ModelElementDetail[]);
   }
 
   updateElement(elementDetail: ModelElementDetail, modelId: string) {
-    this.http.put(EndpointSettings.getElementDetailEndpoint(modelId, elementDetail.id), elementDetail)
+    this.http.put(this.endpointSettings.getElementDetailEndpoint(modelId, elementDetail.id), elementDetail)
       .toPromise()
       .then(response => console.log(response));
   }
 
   deleteElement(modelId: string, shapeId: string) {
-    this.http.delete(EndpointSettings.getElementDetailEndpoint(modelId, shapeId))
+    this.http.delete(this.endpointSettings.getElementDetailEndpoint(modelId, shapeId))
       .toPromise()
       .then(response => console.log(response));
   }
 
   deleteModel(modelId: string): Promise<Object> {
-    return this.http.delete(EndpointSettings.getModelEndpoint(modelId))
+    return this.http.delete(this.endpointSettings.getModelEndpoint(modelId))
       .toPromise();
   }
 
   updateModel(model: Model) {
-    this.http.put(EndpointSettings.getModelEndpoint(model.id), {
+    this.http.put(this.endpointSettings.getModelEndpoint(model.id), {
       id: model.id,
       label: model.label
     }).toPromise()
@@ -364,13 +364,13 @@ export class ModellerService {
   }
 
   getOptionsForRelation(relationId: string): Promise<RelationOptions> {
-    return this.http.get(EndpointSettings.getRelationOptionsEndpoint(relationId))
+    return this.http.get(this.endpointSettings.getRelationOptionsEndpoint(relationId))
       .toPromise()
       .then(response => response.json() as RelationOptions);
   }
 
   getInstancesOfConceptualElements(id: string): Promise<ModellingLanguageConstructInstance[]> {
-    return this.http.post(EndpointSettings.getConceptualElementInstances(), {
+    return this.http.post(this.endpointSettings.getConceptualElementInstances(), {
       id
     })
       .toPromise()
