@@ -9,7 +9,7 @@ import {Model} from '../_models/Model.model';
 import {ModalModelCreation} from '../modal-model-creation/modal-model-creation.component';
 import {MatDialog} from '@angular/material/dialog';
 import {UUID} from 'angular2-uuid';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import {InstantiationTargetType} from '../_models/InstantiationTargetType.model';
 import {ModalModelLink} from '../modal-model-link/modal-model-link';
 import {ModalElementNote} from '../modal-element-note/modal-element-note.component';

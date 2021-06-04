@@ -2,9 +2,6 @@ import { Component, OnInit, Output, EventEmitter, Inject} from '@angular/core';
 import {ObjectPropertyModel} from '../_models/ObjectProperty.model';
 import {ModellerService} from "../modeller.service";
 import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from "@angular/material";
-import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
-import {PaletteElementModel} from "../_models/PaletteElement.model";
-import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'app-modal-insert-langobject-property',
@@ -55,7 +52,7 @@ export class ModalInsertLangobjectPropertyComponent implements OnInit {
 
   selectionChanged(event) {
     console.log(event);
-    if(!isNullOrUndefined(event.value)) {
+    if(!(event.value === null || event.value === undefined)) {
       this.objectProperty.range = event.value.id;
     }
   }

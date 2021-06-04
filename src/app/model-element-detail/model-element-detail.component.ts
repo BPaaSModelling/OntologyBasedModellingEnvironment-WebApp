@@ -7,7 +7,7 @@ import {ModellerService} from '../modeller.service';
 import {RelationEditorModel} from './RelationEditorModel';
 import {ValueModel} from './ValueModel';
 import {RelationOption} from '../_models/RelationOption.model';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import {ModelElementDetail} from '../_models/ModelElementDetail.model';
 import {ModelElementDetailAndModel} from '../_models/ModelElementDetailAndModel';
 
