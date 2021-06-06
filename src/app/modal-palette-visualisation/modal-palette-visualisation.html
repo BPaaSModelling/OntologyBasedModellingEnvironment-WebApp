@@ -10,7 +10,7 @@
         <div style="height: 4rem">
           <a *ngIf="paletteElement.type != 'PaletteConnector'">
             {{paletteElement.label}}
-            <img class="thumbnail"  src="{{imageRoot}}{{paletteElement.paletteCategory.split('#')[1]}}/{{paletteElement.thumbnailURL}}" />
+            <img class="thumbnail"  src="{{paletteElement.thumbnailURL}}" />
           </a>
           <a *ngIf="paletteElement.type == 'PaletteConnector'">
             {{paletteElement.label}}

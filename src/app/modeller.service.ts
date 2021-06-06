@@ -20,6 +20,7 @@ import {InstantiationTargetType} from './_models/InstantiationTargetType.model';
 import {RelationOptions} from './_models/RelationOptions.model';
 import ModellingLanguageConstructInstance from './_models/ModellingLanguageConstructInstance.model';
 import { Dropbox } from 'dropbox';
+import {List} from 'gojs';
 
 @Injectable()
 export class ModellerService {
@@ -38,6 +39,8 @@ export class ModellerService {
   public namespacePrefixe$: Observable<string[]> = Observable.of([]);
   public namespacePrefixes: string[] = [];
   public namespaceMap$: Observable<Map<string, string>> = Observable.of({});
+
+  public imageUrls: string[] = [];
 
   constructor(private http: Http, private jsonp: Jsonp) {
     const headers = new Headers({ 'Content-Type': 'application/json'});
@@ -388,17 +391,40 @@ console.log(this.paletteElements);
     await this.http.post(EndpointSettings.getCreateNewImageEndpoint(), formData).toPromise().then(response => console.log(response));
   }
 
-  getUploadedImages(currentPalletteCategory: string): Promise<Object[]> {
+  async getUploadedImages(currentPalletteCategory: string): Promise<Object[]> {
     const accessToken = 'AFIKhPLzfVUAAAAAAAAAAfDZSHlPkzk-TevdQ3N0KIWun_q33_xsp3U5PkK_Abk1';
     const dbx = new Dropbox({ accessToken: accessToken });
-    dbx.filesListFolder({ path: '/assets/images/' + currentPalletteCategory})
+    this.imageUrls = [];
+    await dbx.filesListFolder({ path: '/assets/images/' + currentPalletteCategory})
       .then((response: any) => {
-        console.log(response);
+        response.result.entries.forEach(e => console.log(e.path_display));
+        const myUrls = [];
+        response.result.entries.forEach(e => dbx.sharingListSharedLinks({path: e.path_display})
+          .then(function(response2) {
+            let share_link = "";
+            if (response2.result.links[0]) {
+              share_link = response2.result.links[0].url.replace('dl=0', 'raw=1');
+              myUrls.push({"imageURL": share_link, "imageName": share_link, "label": share_link, "thumbnailURL": share_link, "thumbnailName": share_link});
+            } else {
+             dbx.sharingCreateSharedLinkWithSettings({path: e.path_display}).then(function(response3) {
+               share_link = response3.result.url.replace('dl=0', 'raw=1');
+               myUrls.push({"imageURL": share_link, "imageName": share_link, "label": share_link, "thumbnailURL": share_link, "thumbnailName": share_link});
+             });
+            }
+          })
+          .catch(function(error) {
+            const share_link = error;
+            console.log(share_link);
+            console.log(error.message);
+          }));
+        this.imageUrls = myUrls;
       })
       .catch((err: any) => {
         console.log(err);
       });
-    return this.http.get(EndpointSettings.getUploadedImagesEndpoint()).toPromise()
-      .then(response => response.json() as Object[]);
-    }
+
+    return this.imageUrls;
+    /*return this.http.get(EndpointSettings.getUploadedImagesEndpoint()).toPromise()
+      .then(response => response.json() as Object[]);*/
+  }
 }

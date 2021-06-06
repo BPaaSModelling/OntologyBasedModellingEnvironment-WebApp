@@ -19,7 +19,7 @@
       <ul class="element" *ngIf="(element.paletteCategory == category.id && element.hiddenFromPalette == false)">
         <li class="paletteElement" >
           <a *ngIf="element.type != 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element" (click)="addNewShape(element)">
-            <img class="thumbnail"  src="{{imageRoot}}{{category.idSuffix}}/{{element.thumbnailURL}}" />
+            <img class="thumbnail"  src="{{element.thumbnailURL}}" />
           </a>
           <a *ngIf="element.type == 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element" (click)="addNewShape(element)">
             <img *ngIf="element.fromArrow" class="thumbnail-arrow-head" [src]="'../assets/images/Arrows/' + element.fromArrow + '.PNG'" >

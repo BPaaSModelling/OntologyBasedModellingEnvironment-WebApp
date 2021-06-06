@@ -311,69 +311,20 @@ export class ModalEditPaletteElementComponent implements OnInit {
       searchPlaceholder: 'Search'
     };
   }
+  private  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
   private async loadImages() {
     const currentPalletteCategory = this.data.paletteElement.paletteCategory.split('#')[1];
-    await this.mService.getUploadedImages(currentPalletteCategory).then(values => {
-      console.log('getting uploaded images');
-      switch (currentPalletteCategory) {
-        case VariablesSettings.CAT_ACTIVITIES:
-          this.selectedPalletteImageList = this.activityImageList;
-          break;
-        case VariablesSettings.CAT_EVENTS:
-          this.selectedPalletteImageList = this.eventImageList;
-          break;
-        case VariablesSettings.CAT_GATEWAYS:
-          this.selectedPalletteImageList = this.gatewayImageList;
-          break;
-        case VariablesSettings.CAT_DATA:
-          this.selectedPalletteImageList = this.dataObjectImageList;
-          break;
-        case VariablesSettings.CAT_GROUPS:
-          this.selectedPalletteImageList = this.groupImageList;
-          break;
-        case VariablesSettings.CAT_CONNECTORS:
-          this.selectedPalletteImageList = this.activityImageList;
-          break;
-        case VariablesSettings.CAT_SAPSCENES:
-          this.selectedPalletteImageList = this.sapscenesImageList;
-          break;
-        case VariablesSettings.CAT_SAPRELATIONS:
-          this.selectedPalletteImageList = this.sapscenesRelationsList;
-          break;
-        case VariablesSettings.CAT_Document_DSML4PTM:
-          this.selectedPalletteImageList = this.documents4DSML4PTMImageList;
-          break;
-        case VariablesSettings.CAT_Data_DSML4PTM:
-          this.selectedPalletteImageList = this.data4DSML4PTMImageList;
-          break;
-        case VariablesSettings.CAT_Activities_DSML4PTM:
-          this.selectedPalletteImageList = this.activities4DSML4PTMImageList;
-          break;
-        case VariablesSettings.CAT_DocumentConnectors_DSML4PTM:
-          this.selectedPalletteImageList = this.connectors4DSML4PTMDocumentViewImageList;
-          break;
-        case VariablesSettings.CAT_GROUPS4BPaaS:
-          this.selectedPalletteImageList = this.group4BPaaSImageList;
-          break;
-        case VariablesSettings.CAT_OrganizationalUnit:
-          this.selectedPalletteImageList = this.organizationalUnitImageList;
-          break;
-        case VariablesSettings.CAT_Performer:
-          this.selectedPalletteImageList = this.performerImageList;
-          break;
-        case VariablesSettings.CAT_Role:
-          this.selectedPalletteImageList = this.roleImageList;
-          break;
-        case VariablesSettings.CAT_ArchiMate:
-          this.selectedPalletteImageList = this.archiMateList;
-          break;
-      }
+    await this.mService.getUploadedImages(currentPalletteCategory).then(async values => {
       this.uploadedList = values;
-      this.imageList = this.selectedPalletteImageList.concat(this.uploadedList);
-      console.log(this.imageList);
+      await this.sleep(2000);
+      this.imageList = this.uploadedList;
     });
   }
+
+
 
   onCloseCancel() {
     this.dialogRef.close('Cancel');
