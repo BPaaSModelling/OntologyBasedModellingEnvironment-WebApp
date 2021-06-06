@@ -1,0 +1,18 @@
+<!doctype html>
+<div class="flex-container" fxLayout="row">
+  <form>
+    <form class="form">
+      <div layout="row">
+        <label style="height: fit-content; align-self: center">
+          <span style="font-family:Roboto,Helvetica Neue,sans-serif">New Image</span>
+          <input #imageInput
+                 type="file"
+                 accept="image/*"
+                 (change)="processImageUpload(imageInput)">
+        </label>
+      </div>
+    </form>
+  </form>
+</div>
+
+<!-- https://github.com/angular/material2/issues/5269 -->

@@ -53,9 +53,11 @@ import {ModalPaletteVisualisation} from './modal-palette-visualisation/modal-pal
 import {ModalModelEdit} from './modal-model-edit/modal-model-edit.component';
 import {ModalViewElementDetail} from './model-element-detail/model-element-detail.component';
 import {ModalShowLanguageInstances} from './modal-show-language-instances/modal-show-language-instances';
+import {MobileUploadComponent} from './mobile-upload/mobile-upload.component';
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
+  { path: 'upload', component: MobileUploadComponent},
 ];
 
 
@@ -89,7 +91,8 @@ const appRoutes: Routes = [
     ModalModellingLanguageConstructInstanceLink,
     ModalPaletteVisualisation,
     ModalModelEdit,
-    ModalShowLanguageInstances
+    ModalShowLanguageInstances,
+    MobileUploadComponent
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -112,7 +115,8 @@ const appRoutes: Routes = [
     ModalModellingLanguageConstructInstanceLink,
     ModalPaletteVisualisation,
     ModalModelEdit,
-    ModalShowLanguageInstances
+    ModalShowLanguageInstances,
+    MobileUploadComponent
   ],
   imports: [
     BrowserModule,
