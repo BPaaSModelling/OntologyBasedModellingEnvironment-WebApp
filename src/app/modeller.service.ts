@@ -382,13 +382,24 @@ console.log(this.paletteElements);
       .then(response => response.json() as ModellingLanguageConstructInstance[]);
   }
 
-  async uploadNewImageToBackend(image: File, prefix: string) {
-    const formData = new FormData();
+  async uploadNewImageToBackend(image: File, fileName: string,  prefix: string) {
+    const accessToken = 'AFIKhPLzfVUAAAAAAAAAAfDZSHlPkzk-TevdQ3N0KIWun_q33_xsp3U5PkK_Abk1';
+    const dbx = new Dropbox({accessToken: accessToken});
+
+    dbx.filesUpload({path: '/assets/images/' + prefix + '/' + fileName, contents: image})
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((uploadErr) => {
+        console.log(uploadErr);
+      });
+
+    /*const formData = new FormData();
 
     formData.append('image', image);
     formData.append('prefix', prefix);
 
-    await this.http.post(EndpointSettings.getCreateNewImageEndpoint(), formData).toPromise().then(response => console.log(response));
+    await this.http.post(EndpointSettings.getCreateNewImageEndpoint(), formData).toPromise().then(response => console.log(response));*/
   }
 
   async getUploadedImages(currentPalletteCategory: string): Promise<Object[]> {
