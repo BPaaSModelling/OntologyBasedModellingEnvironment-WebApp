@@ -14,102 +14,106 @@
 
             <div layout="row">
               <mat-form-field>
-                <input matInput placeholder="Prefix" name="input_prefix" [(ngModel)]="data.paletteElement.languagePrefix" [value]="data.paletteElement.languagePrefix" disabled>
+                <input matInput placeholder="Prefix" name="input_prefix"
+                       [(ngModel)]="data.paletteElement.languagePrefix" [value]="data.paletteElement.languagePrefix"
+                       disabled>
               </mat-form-field>
 
 
               <mat-form-field>
-                <input matInput placeholder="New Label" name="input_label" [(ngModel)]="currentPaletteElement.label" [value]="currentPaletteElement.label" required>
+                <input matInput placeholder="New Label" name="input_label" [(ngModel)]="currentPaletteElement.label"
+                       [value]="currentPaletteElement.label" required>
               </mat-form-field>
 
             </div>
 
             <div layout="row">
               <mat-form-field class="full-width">
-                <input matInput placeholder="Comment" name="input_comment" [(ngModel)]="currentPaletteElement.comment" [value]="currentPaletteElement.comment">
+                <input matInput placeholder="Comment" name="input_comment" [(ngModel)]="currentPaletteElement.comment"
+                       [value]="currentPaletteElement.comment">
               </mat-form-field>
             </div>
 
             <div layout="row">
-            <label  style="height: fit-content; align-self: center">
-              <span style="font-family:Roboto,Helvetica Neue,sans-serif">New Image</span>
-              <input #imageInput
-                     type="file"
-                     accept="image/*"
-                     (change)="processImageUpload(imageInput)">
-            </label>
+              <label style="height: fit-content; align-self: center">
+                <span style="font-family:Roboto,Helvetica Neue,sans-serif">New Image</span>
+                <input #imageInput
+                       type="file"
+                       accept="image/*"
+                       (change)="processImageUpload(imageInput)">
+              </label>
             </div>
 
             <!--div layout="row"-->
-              <!--<mat-form-field class="full-width">
-                <mat-select placeholder="Semantic Domain Element" name="input_domainOntology" multiple [(ngModel)]="data.paletteElement.representedDomainClass" >
-                  <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id" >{{class.label}}</mat-option>
-                </mat-select>
-              </mat-form-field>-->
-              <!--<ngx-select-dropdown name="select_domainOntology" (change)="selectionChanged($event)" [multiple]="true" [(ngModel)]="data.paletteElement.representedDomainClass" [config]="config1" [options]="mService.domainClasses">
+            <!--<mat-form-field class="full-width">
+              <mat-select placeholder="Semantic Domain Element" name="input_domainOntology" multiple [(ngModel)]="data.paletteElement.representedDomainClass" >
+                <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id" >{{class.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>-->
+            <!--<ngx-select-dropdown name="select_domainOntology" (change)="selectionChanged($event)" [multiple]="true" [(ngModel)]="data.paletteElement.representedDomainClass" [config]="config1" [options]="mService.domainClasses">
 
-              </ngx-select-dropdown>
-              <button mat-raised-button color="primary" (click)="openCreateDomainElementModalFromEdit(data.paletteElement)">Create New Domain Element</button>-->
+            </ngx-select-dropdown>
+            <button mat-raised-button color="primary" (click)="openCreateDomainElementModalFromEdit(data.paletteElement)">Create New Domain Element</button>-->
             <!--/div-->
 
             <div layout="row">
               <mat-form-field>
                 <!--<input type="url" matInput placeholder="Palette Image URL">-->
-                <mat-select [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image.label" required>
+                <mat-select [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image"
+                            name="image.label" required>
                   <mat-option *ngFor="let image of imageList" [value]="image.thumbnailName">
-                    <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label" >
+                    <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label">
                     {{image.label}}</mat-option>
                 </mat-select>
-
               </mat-form-field>
-
               <mat-form-field>
-                <mat-select  [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
+                <mat-select [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label"
+                            required>
                   <mat-option *ngFor="let image of imageList" [value]="image.imageName">
-                    <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
+                    <img class="thumbnail" [src]="image.imageURL" [alt]="image.label">
                     {{image.label}}</mat-option>
                 </mat-select>
-
               </mat-form-field>
-
               <mat-form-field>
                 <mat-select [(ngModel)]="currentPaletteElement.fromArrow" placeholder="From Arrow" name="arrow.from">
                   <mat-option *ngFor="let arrow of arrowHeads" [value]="arrow">
-                    <img class="thumbnail" [src]="'../assets/images/Arrows/' + arrow + '.PNG'"  [alt]="arrow" >
+                    <img class="thumbnail" [src]="'../assets/images/Arrows/' + arrow + '.PNG'" [alt]="arrow">
                     {{arrow}}
                   </mat-option>
                   <mat-option [value]="undefined">None</mat-option>
                 </mat-select>
               </mat-form-field>
-
               <mat-form-field>
                 <mat-select [(ngModel)]="currentPaletteElement.toArrow" placeholder="To Arrow" name="arrow.to">
                   <mat-option *ngFor="let arrow of arrowHeads" [value]="arrow">
-                    <img class="thumbnail" [src]="'../assets/images/Arrows/' + arrow + '.PNG'"  [alt]="arrow" >
+                    <img class="thumbnail" [src]="'../assets/images/Arrows/' + arrow + '.PNG'" [alt]="arrow">
                     {{arrow}}
                   </mat-option>
                   <mat-option [value]="undefined">None</mat-option>
                 </mat-select>
               </mat-form-field>
-
               <mat-form-field>
-                <mat-select [(ngModel)]="currentPaletteElement.arrowStroke" placeholder="Arrow Stroke" name="arrow.stroke">
+                <mat-select [(ngModel)]="currentPaletteElement.arrowStroke" placeholder="Arrow Stroke"
+                            name="arrow.stroke">
                   <mat-option *ngFor="let arrow of arrowStrokes" [value]="arrow">
-                    <img class="thumbnail" [src]="'../assets/images/Strokes/' + arrow + '.PNG'"  [alt]="arrow" >
+                    <img class="thumbnail" [src]="'../assets/images/Strokes/' + arrow + '.PNG'" [alt]="arrow">
                     {{arrow}}
                   </mat-option>
                   <mat-option [value]="undefined">None</mat-option>
                 </mat-select>
               </mat-form-field>
-
             </div>
             <br/>
             <div layout="row">
-              <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
-              <button mat-raised-button color="primary" (click)="editElementInOntology()" style="margin-right:20px;" >Save</button>
+              <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus
+                      (click)="onCloseCancel()">Cancel
+              </button>
+              <button mat-raised-button color="primary" (click)="editElementInOntology()" style="margin-right:20px;">
+                Save
+              </button>
             </div>
 
-            <br />
+            <br/>
 
           </form>
         </mat-card>
@@ -117,7 +121,9 @@
       <mat-tab label="Datatype">
         <h3>Edit Datatype Property</h3>
         <mat-dialog-actions layout="row">
-          <button mat-raised-button color="accent" (click)="openInsertNewProperty(data.paletteElement)">Insert new Datatype Property</button>
+          <button mat-raised-button color="accent" (click)="openInsertNewProperty(data.paletteElement)">Insert new
+            Datatype Property
+          </button>
         </mat-dialog-actions>
         <mat-card>
           <mat-accordion *ngFor="let element of datatypeProperties">
@@ -126,9 +132,12 @@
                 <mat-panel-title>{{element.label}}</mat-panel-title>
                 <mat-panel-description><b>Range</b>: <i>{{element.range}}</i></mat-panel-description>
               </mat-expansion-panel-header>
-              <<mat-action-row>
+              <
+              <mat-action-row>
                 <button mat-raised-button (click)="modifyProperty(data.paletteElement, element)">Modify</button>
-                <button mat-raised-button color="warn" style="margin-right:20px;" (click)="deleteProperty(element)">Delete</button>
+                <button mat-raised-button color="warn" style="margin-right:20px;" (click)="deleteProperty(element)">
+                  Delete
+                </button>
               </mat-action-row>
             </mat-expansion-panel>
 
@@ -158,7 +167,9 @@
 
           </mat-accordion>
           <div layout="row">
-            <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
+            <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus
+                    (click)="onCloseCancel()">Cancel
+            </button>
           </div>
         </mat-card>
       </mat-tab>
@@ -166,7 +177,9 @@
       <mat-tab label="Bridging Connector">
         <h3>Edit Bridging Connector (Object Property)</h3>
         <mat-dialog-actions layout="row">
-          <button mat-raised-button color="accent" (click)="openInsertNewBridgingConnector(data.paletteElement)">Insert new Bridging Connector</button>
+          <button mat-raised-button color="accent" (click)="openInsertNewBridgingConnector(data.paletteElement)">Insert
+            new Bridging Connector
+          </button>
         </mat-dialog-actions>
         <mat-card>
           <mat-accordion *ngFor="let element of bridgingConnectors">
@@ -175,10 +188,14 @@
                 <mat-panel-title>{{element.label}}</mat-panel-title>
                 <mat-panel-description><b>Range</b>: <i>{{element.range}}</i></mat-panel-description>
               </mat-expansion-panel-header>
-              <<mat-action-row>
-              <button mat-raised-button (click)="modifyBridgingConnector(data.paletteElement, element)">Modify</button>
-              <button mat-raised-button color="warn" style="margin-right:20px;" (click)="deleteBridgingConnector(element)">Delete</button>
-            </mat-action-row>
+              <
+              <mat-action-row>
+                <button mat-raised-button (click)="modifyBridgingConnector(data.paletteElement, element)">Modify
+                </button>
+                <button mat-raised-button color="warn" style="margin-right:20px;"
+                        (click)="deleteBridgingConnector(element)">Delete
+                </button>
+              </mat-action-row>
             </mat-expansion-panel>
 
             <!--<mat-expansion-panel>
@@ -207,14 +224,18 @@
 
           </mat-accordion>
           <div layout="row">
-            <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
+            <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus
+                    (click)="onCloseCancel()">Cancel
+            </button>
           </div>
         </mat-card>
       </mat-tab>
       <mat-tab label="Semantic Mapping">
         <h3>Edit Semantic Mapping (Object Property)</h3>
         <mat-dialog-actions layout="row">
-          <button mat-raised-button color="accent" (click)="openInsertNewSemanticMapping(data.paletteElement)">Insert new Semantic Mapping</button>
+          <button mat-raised-button color="accent" (click)="openInsertNewSemanticMapping(data.paletteElement)">Insert
+            new Semantic Mapping
+          </button>
         </mat-dialog-actions>
         <mat-card>
           <mat-accordion *ngFor="let element of semanticMappings">
@@ -223,10 +244,13 @@
                 <mat-panel-title>{{element.label}}</mat-panel-title>
                 <mat-panel-description><b>Range</b>: <i>{{element.range}}</i></mat-panel-description>
               </mat-expansion-panel-header>
-              <<mat-action-row>
-              <button mat-raised-button (click)="modifySemanticMapping(data.paletteElement, element)">Modify</button>
-              <button mat-raised-button color="warn" style="margin-right:20px;" (click)="deleteSemanticMapping(element)">Delete</button>
-            </mat-action-row>
+              <
+              <mat-action-row>
+                <button mat-raised-button (click)="modifySemanticMapping(data.paletteElement, element)">Modify</button>
+                <button mat-raised-button color="warn" style="margin-right:20px;"
+                        (click)="deleteSemanticMapping(element)">Delete
+                </button>
+              </mat-action-row>
             </mat-expansion-panel>
 
             <!--<mat-expansion-panel>
@@ -255,7 +279,9 @@
 
           </mat-accordion>
           <div layout="row">
-            <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
+            <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus
+                    (click)="onCloseCancel()">Cancel
+            </button>
           </div>
         </mat-card>
       </mat-tab>
