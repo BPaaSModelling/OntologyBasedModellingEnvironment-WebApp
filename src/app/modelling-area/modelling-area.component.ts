@@ -177,7 +177,7 @@ export class ModellingAreaComponent implements OnInit {
           text: element.label,
           key: element.id,
           fill: '#0000',
-          source: VariablesSettings.IMG_ROOT + element.imageUrl,
+          source: element.imageUrl,
           size: new go.Size(element.width, element.height),
           width: element.width,
           height: element.height,
@@ -195,7 +195,7 @@ export class ModellingAreaComponent implements OnInit {
           text: element.label,
           key: element.id,
           fill: '#0000',
-          source: VariablesSettings.IMG_ROOT + element.imageUrl,
+          source: element.imageUrl,
           size: new go.Size(element.width, element.height),
           width: element.width,
           height: element.height,
@@ -920,8 +920,8 @@ export class ModellingAreaComponent implements OnInit {
     */
     const elementId = element.uuid;
     const nodeId = '#' + elementId;
-    console.log('icon url is: ' + VariablesSettings.IMG_ROOT + (element.paletteCategory).split("#")[1] + "/" + element.imageURL);
-    var imageURL = VariablesSettings.IMG_ROOT + (element.paletteCategory).split("#")[1] + "/" + element.imageURL;
+    console.log('icon url is: ' + element.imageURL);
+    var imageURL = element.imageURL;
 
     console.log('shape: ' + element.shape + ' label: ' + element.label + 'bg color: ' + element.backgroundColor);
 
