@@ -33,17 +33,6 @@
                        [value]="currentPaletteElement.comment">
               </mat-form-field>
             </div>
-
-            <div layout="row">
-              <label style="height: fit-content; align-self: center">
-                <span style="font-family:Roboto,Helvetica Neue,sans-serif">New Image</span>
-                <input #imageInput
-                       type="file"
-                       accept="image/*"
-                       (change)="processImageUpload(imageInput)">
-              </label>
-            </div>
-
             <!--div layout="row"-->
             <!--<mat-form-field class="full-width">
               <mat-select placeholder="Semantic Domain Element" name="input_domainOntology" multiple [(ngModel)]="data.paletteElement.representedDomainClass" >

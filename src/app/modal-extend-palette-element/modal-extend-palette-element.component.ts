@@ -106,8 +106,7 @@ public imageList: any;
   }
 
   private async loadImages() {
-    const currentPalletteCategory = this.data.paletteElement.paletteCategory.split('#')[1];
-    await this.mService.getUploadedImages(currentPalletteCategory).then(async values => {
+    await this.mService.getUploadedImages().then(async values => {
       this.uploadedList = values;
       await this.sleep(2000);
       this.imageList = this.uploadedList;

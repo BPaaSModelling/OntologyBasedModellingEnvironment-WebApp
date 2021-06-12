@@ -58,9 +58,6 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public arrowStrokes: string[] = [];
 
   public imageList: any;
-  public selectedPalletteImageList: any;
-
-  selectedFile: File;
 
   constructor(public dialogRef: MatDialogRef<ModalEditPaletteElementComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService, public dialog: MatDialog) {
@@ -144,8 +141,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
   }
 
   private async loadImages() {
-    const currentPalletteCategory = this.data.paletteElement.paletteCategory.split('#')[1];
-    await this.mService.getUploadedImages(currentPalletteCategory).then(async values => {
+    await this.mService.getUploadedImages().then(async values => {
       this.uploadedList = values;
       await this.sleep(2000);
       this.imageList = this.uploadedList;
@@ -387,20 +383,5 @@ export class ModalEditPaletteElementComponent implements OnInit {
 
       }
     );
-  }
-  processImageUpload(imageInput: any) {
-    const file: File = imageInput.files[0];
-    const reader = new FileReader();
-
-    reader.addEventListener('load', async (event: any) => {
-
-      this.selectedFile = file;
-      const currentPalletteCategory = this.data.paletteElement.paletteCategory.split('#')[1];
-      await this.mService.uploadNewImageToBackend(file, file.name, currentPalletteCategory);
-      await this.loadImages();
-    });
-
-    reader.readAsDataURL(file);
-    this.loadImages();
   }
 }

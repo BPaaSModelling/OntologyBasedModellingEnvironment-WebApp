@@ -402,11 +402,11 @@ console.log(this.paletteElements);
     await this.http.post(EndpointSettings.getCreateNewImageEndpoint(), formData).toPromise().then(response => console.log(response));*/
   }
 
-  async getUploadedImages(currentPalletteCategory: string): Promise<Object[]> {
+  async getUploadedImages(): Promise<Object[]> {
     const accessToken = 'AFIKhPLzfVUAAAAAAAAAAfDZSHlPkzk-TevdQ3N0KIWun_q33_xsp3U5PkK_Abk1';
     const dbx = new Dropbox({ accessToken: accessToken });
     this.imageUrls = [];
-    await dbx.filesListFolder({ path: '/assets/images/' + currentPalletteCategory})
+    await dbx.filesListFolder({ path: '/assets/images/' + this.selectedModelingLanguage.substring(3)})
       .then((response: any) => {
         response.result.entries.forEach(e => console.log(e.path_display));
         const myUrls = [];

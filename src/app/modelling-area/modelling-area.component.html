@@ -9,14 +9,16 @@
     </mat-form-field>
 
     <button style="height: fit-content; align-self: center" (click)="openModelCreationModel()">Add</button>
-    <button *ngIf="selectedModel" style="height: fit-content; align-self: center" (click)="openModelEditModel()">Edit</button>
+    <button *ngIf="selectedModel" style="height: fit-content; align-self: center" (click)="openModelEditModel()">Edit
+    </button>
     <button style="height: fit-content; align-self: center" (click)="deleteModel()">Delete</button>
 
     <mat-form-field appearance="fill">
       <mat-select
         placeholder="Instantiation as"
         [(ngModel)]="selectedInstantiationType">
-        <mat-option *ngFor="let instantiationType of getInstantiationTypes()" [value]="instantiationType">{{instantiationType}}</mat-option>
+        <mat-option *ngFor="let instantiationType of getInstantiationTypes()"
+                    [value]="instantiationType">{{instantiationType}}</mat-option>
 
       </mat-select>
     </mat-form-field>
@@ -25,10 +27,20 @@
       <mat-card-header>
         <mat-card-title>Current arrow configuration</mat-card-title>
       </mat-card-header>
-      <img *ngIf="selectedConnectorMode.fromArrow" style="max-height: 30px; max-width:30px" [src]="'../assets/images/Arrows/' + selectedConnectorMode.fromArrow + '.PNG'" >
-      <img style="max-height: 30px; max-width:90px" class="thumbnail" [src]="'../assets/images/Strokes/' + selectedConnectorMode.arrowStroke + '.PNG'" >
-      <img *ngIf="selectedConnectorMode.toArrow" style="max-height: 30px; max-width:30px" class="thumbnail" [src]="'../assets/images/Arrows/' + selectedConnectorMode.toArrow + '.PNG'" >
+      <img *ngIf="selectedConnectorMode.fromArrow" style="max-height: 30px; max-width:30px"
+           [src]="'../assets/images/Arrows/' + selectedConnectorMode.fromArrow + '.PNG'">
+      <img style="max-height: 30px; max-width:90px" class="thumbnail"
+           [src]="'../assets/images/Strokes/' + selectedConnectorMode.arrowStroke + '.PNG'">
+      <img *ngIf="selectedConnectorMode.toArrow" style="max-height: 30px; max-width:30px" class="thumbnail"
+           [src]="'../assets/images/Arrows/' + selectedConnectorMode.toArrow + '.PNG'">
     </mat-card>
+    <label style="height: fit-content; align-self: center">
+      <span style="font-family:Roboto,Helvetica Neue,sans-serif">New Image</span>
+      <input #imageInput
+             type="file"
+             accept="image/*"
+             (change)="processImageUpload(imageInput)">
+    </label>
   </div>
   <div style="display: flex; flex-direction: row">
     <div id="myDiagramDiv" style="flex-grow: 1; height: 1000px; "></div>
