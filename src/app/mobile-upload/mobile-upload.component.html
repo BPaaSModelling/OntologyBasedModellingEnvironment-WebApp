@@ -1,18 +1,37 @@
 <!doctype html>
-<div class="flex-container" fxLayout="row">
-  <form>
-    <form class="form">
-      <div layout="row">
-        <label style="height: fit-content; align-self: center">
-          <span style="font-family:Roboto,Helvetica Neue,sans-serif">New Image</span>
-          <input #imageInput
-                 type="file"
-                 accept="image/*"
-                 (change)="processImageUpload(imageInput)">
-        </label>
-      </div>
-    </form>
-  </form>
-</div>
+<form class="flex-container">
+  <div>
+    <mat-select placeholder="Select" (change)="selectLang($event)">
+      <mat-option *ngFor="let lang of (mService.modelingLanguage$ | async)"
+                  [value]="lang.id">{{lang.label}}</mat-option>
+    </mat-select>
+  </div>
 
-<!-- https://github.com/angular/material2/issues/5269 -->
+  <div>
+    <mat-select placeholder="Select" (change)="selectView($event)">
+      <mat-option *ngFor="let view of modelingViews" [value]="view.id">{{view.label}}</mat-option>
+    </mat-select>
+  </div>
+  <mat-form-field>
+    <input matInput placeholder="Image Name" name="image_name" [(ngModel)]="imageName"
+           [value]="imageName" required>
+  </mat-form-field>
+  <br />
+  <label style="height: fit-content; align-self: center">
+    <span style="font-family:Roboto,Helvetica Neue,sans-serif">Upload Canvas Image</span>
+    <input #imageInput1
+           type="file"
+           accept="image/*"
+           (change)="processImageUpload(imageInput1, 'canvas')">
+  </label>
+  <br />
+  <label style="height: fit-content; align-self: center">
+    <span style="font-family:Roboto,Helvetica Neue,sans-serif">Upload Thumbnail Image</span>
+    <input #imageInput2
+           type="file"
+           accept="image/*"
+           (change)="processImageUpload(imageInput2, 'thumbnail')">
+  </label>
+  <br />
+  <div style="height: fit-content; align-self: center">{{ canvasTextBoxText }}</div>
+</form>

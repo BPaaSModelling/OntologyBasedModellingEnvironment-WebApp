@@ -27,9 +27,9 @@
             <img *ngIf="element.toArrow" class="thumbnail-arrow-head" [src]="'../assets/images/Arrows/' + element.toArrow + '.PNG'" >
           </a>
           <app--tool-recursive-palette-element (showActivityElementPropertyModal1)="toggleActivityElementPropertyModal($event)"
-                                               (showExtendPaletteElementModal1)="toggleExtendPaletteElementModal($event)"
+                                                (showExtendPaletteElementModal1)="toggleExtendPaletteElementModal($event)"
                                                (showEditPaletteElementModal1)="toggleEditPaletteElementModal($event)"
-                                               (sendElementFromRecursiveElement)="addNewShape($event)" [child]="element"></app--tool-recursive-palette-element>
+                                              (sendElementFromRecursiveElement)="addNewShape($event)" [child]="element"></app--tool-recursive-palette-element>
         </li>
       </ul>
     </ng-container>

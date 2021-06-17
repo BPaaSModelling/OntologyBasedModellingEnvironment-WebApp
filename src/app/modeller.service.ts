@@ -413,13 +413,16 @@ console.log(this.paletteElements);
         response.result.entries.forEach(e => dbx.sharingListSharedLinks({path: e.path_display})
           .then(function(response2) {
             let share_link = "";
+            let image_name = "";
             if (response2.result.links[0]) {
               share_link = response2.result.links[0].url.replace('dl=0', 'raw=1');
-              myUrls.push({"imageURL": share_link, "imageName": share_link, "label": share_link, "thumbnailURL": share_link, "thumbnailName": share_link});
+              image_name = response2.result.links[0].name;
+              myUrls.push({"imageURL": share_link, "imageName": image_name, "label": image_name, "thumbnailURL": share_link, "thumbnailName": share_link});
             } else {
              dbx.sharingCreateSharedLinkWithSettings({path: e.path_display}).then(function(response3) {
                share_link = response3.result.url.replace('dl=0', 'raw=1');
-               myUrls.push({"imageURL": share_link, "imageName": share_link, "label": share_link, "thumbnailURL": share_link, "thumbnailName": share_link});
+               image_name = response3.result.name;
+               myUrls.push({"imageURL": share_link, "imageName": image_name, "label": image_name, "thumbnailURL": share_link, "thumbnailName": share_link});
              });
             }
           })
