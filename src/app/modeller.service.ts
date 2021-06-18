@@ -417,12 +417,12 @@ console.log(this.paletteElements);
             if (response2.result.links[0]) {
               share_link = response2.result.links[0].url.replace('dl=0', 'raw=1');
               image_name = response2.result.links[0].name;
-              myUrls.push({"imageURL": share_link, "imageName": image_name, "label": image_name, "thumbnailURL": share_link, "thumbnailName": share_link});
+              myUrls.push({"imageURL": share_link, "imageName": image_name, "label": image_name, "thumbnailURL": share_link, "thumbnailName": image_name});
             } else {
              dbx.sharingCreateSharedLinkWithSettings({path: e.path_display}).then(function(response3) {
                share_link = response3.result.url.replace('dl=0', 'raw=1');
                image_name = response3.result.name;
-               myUrls.push({"imageURL": share_link, "imageName": image_name, "label": image_name, "thumbnailURL": share_link, "thumbnailName": share_link});
+               myUrls.push({"imageURL": share_link, "imageName": image_name, "label": image_name, "thumbnailURL": share_link, "thumbnailName": image_name});
              });
             }
           })

@@ -82,21 +82,18 @@
                 <!--<input type="url" matInput placeholder="Palette Image URL">-->
                 <mat-select [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image"
                             name="image.label" required>
-                  <mat-option *ngFor="let image of imageList" [value]="image.thumbnailName">
+                  <mat-option *ngFor="let image of imageList" [value]="image.thumbnailURL">
                     <img class="thumbnail" [src]="image.thumbnailURL" [alt]="image.label">
                     {{image.label}}</mat-option>
                 </mat-select>
-
               </mat-form-field>
-
               <mat-form-field>
                 <mat-select [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label"
                             required>
-                  <mat-option *ngFor="let image of imageList" [value]="image.imageName">
+                  <mat-option *ngFor="let image of imageList" [value]="image.imageURL">
                     <img class="thumbnail" [src]="image.imageURL" [alt]="image.label">
                     {{image.label}}</mat-option>
                 </mat-select>
-
               </mat-form-field>
               <mat-form-field>
                 <mat-select [(ngModel)]="currentPaletteElement.fromArrow" placeholder="From Arrow" name="arrow.from">
