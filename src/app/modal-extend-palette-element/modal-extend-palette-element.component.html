@@ -72,7 +72,7 @@
             </div>
 
             <div layout="row">
-            <mat-form-field>
+            <mat-form-field *ngIf="data.paletteElement.type != 'PaletteConnector'">
               <!--<input type="url" matInput placeholder="Palette Image URL">-->
               <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_ACTIVITIES) !== -1)" [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image.label" required>
                 <mat-option *ngFor="let image of activityImageList" [value]="image.thumbnailName">
@@ -183,7 +183,7 @@
 
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field *ngIf="data.paletteElement.type != 'PaletteConnector'">
               <mat-select *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_ACTIVITIES) !== -1)" [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image.label" required>
               <mat-option *ngFor="let image of activityImageList" [value]="image.imageName">
                 <img class="thumbnail" [src]="image.imageURL" [alt]="image.label" >
@@ -293,16 +293,8 @@
 
             </mat-form-field>
 
-            <mat-form-field>
-              <mat-select [(ngModel)]="currentPaletteElement.fromArrow" placeholder="From Arrow" name="arrow.from">
-                <mat-option *ngFor="let arrow of arrowHeads" [value]="arrow">
-                  {{arrow}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-select [(ngModel)]="currentPaletteElement.toArrow" placeholder="To Arrow" name="arrow.to">
+            <mat-form-field *ngIf="data.paletteElement.type == 'PaletteConnector'">
+              <mat-select [(ngModel)]="currentPaletteElement.fromArrow" placeholder="From Arrow" name="arrow.from" required>
                 <mat-option *ngFor="let arrow of arrowHeads" [value]="arrow">
                   <img class="thumbnail" [src]="'../assets/images/Arrows/' + arrow + '.PNG'"  [alt]="arrow" >
                   {{arrow}}
@@ -310,8 +302,17 @@
               </mat-select>
             </mat-form-field>
 
-            <mat-form-field>
-              <mat-select [(ngModel)]="currentPaletteElement.arrowStroke" placeholder="Arrow Stroke" name="arrow.stroke">
+            <mat-form-field *ngIf="data.paletteElement.type == 'PaletteConnector'">
+              <mat-select [(ngModel)]="currentPaletteElement.toArrow" placeholder="To Arrow" name="arrow.to" required>
+                <mat-option *ngFor="let arrow of arrowHeads" [value]="arrow">
+                  <img class="thumbnail" [src]="'../assets/images/Arrows/' + arrow + '.PNG'"  [alt]="arrow" >
+                  {{arrow}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="data.paletteElement.type == 'PaletteConnector'">
+              <mat-select [(ngModel)]="currentPaletteElement.arrowStroke" placeholder="Arrow Stroke" name="arrow.stroke" required>
                 <mat-option *ngFor="let arrow of arrowStrokes" [value]="arrow">
                   <img class="thumbnail" [src]="'../assets/images/Strokes/' + arrow + '.PNG'"  [alt]="arrow" >
                   {{arrow}}

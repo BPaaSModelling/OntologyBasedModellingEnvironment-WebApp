@@ -1,5 +1,14 @@
 .thumbnail{  height: 35px;  }
 
+.thumbnail-arrow-head{
+  height: 15px;
+  padding: 0px;
+}
+.thumbnail-arrow-stroke{
+  height: 15px;
+  padding: 0px;
+}
+
 ul > li{
   padding: 5px;
   margin: 0px;
