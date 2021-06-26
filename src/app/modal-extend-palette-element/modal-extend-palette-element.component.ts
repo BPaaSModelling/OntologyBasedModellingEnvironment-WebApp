@@ -316,6 +316,7 @@ public arrowStrokes: string[] = [];
     ele.uuid = (this.currentPaletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
     //console.log('uuid:' + ele.uuid);
     ele.label = this.currentPaletteElement.label;
+    ele.type = this.data.paletteElement.type;
     ele.hiddenFromPalette = false;
     ele.usesImages = false;
     //console.log('parent element ' + this.data.paletteElement.id);
@@ -352,6 +353,10 @@ public arrowStrokes: string[] = [];
       ele.width = 70;
       ele.height = 100;
     }
+
+    ele.fromArrow = this.currentPaletteElement.fromArrow;
+    ele.toArrow = this.currentPaletteElement.toArrow;
+    ele.arrowStroke = this.currentPaletteElement.arrowStroke;
 
     console.log('stringified element:' + JSON.stringify(ele));
 
