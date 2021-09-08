@@ -29,6 +29,30 @@
       <img style="max-height: 30px; max-width:90px" class="thumbnail" [src]="'../assets/images/Strokes/' + selectedConnectorMode.arrowStroke + '.PNG'" >
       <img *ngIf="selectedConnectorMode.toArrow" style="max-height: 30px; max-width:30px" class="thumbnail" [src]="'../assets/images/Arrows/' + selectedConnectorMode.toArrow + '.PNG'" >
     </mat-card>
+
+    <label style="height: fit-content; align-self: center">
+      <span style="font-family:Roboto,Helvetica Neue,sans-serif">Upload Canvas Image</span>
+      <input #imageInput1
+             type="file"
+             accept="image/*"
+             (change)="processImageUpload(imageInput1, 'canvas')">
+
+<!--      <form action="/upload" method="post" enctype="multipart/form-data">-->
+<!--        <input type="file" name="test">-->
+<!--        <input type="submit" value="Upload image" class="btn">-->
+<!--      </form>-->
+
+    </label>
+    <label style="height: fit-content; align-self: center">
+      <span style="font-family:Roboto,Helvetica Neue,sans-serif">Upload Thumbnail Image</span>
+      <input #imageInput2
+             type="file"
+             accept="image/*"
+             (change)="processImageUpload(imageInput2, 'thumbnail')">
+    </label>
+<!--    <div style="height: fit-content; align-self: center">{{ canvasTextBoxText }}</div>-->
+
+
   </div>
   <div style="display: flex; flex-direction: row">
     <div id="myDiagramDiv" style="flex-grow: 1; height: 1000px; "></div>

@@ -38,6 +38,8 @@ export class ModellerService {
   public namespacePrefixes: string[] = [];
   // public namespaceMap$: Observable<Map<string, string>> = of({});
 
+  public selectedModelingLanguage;
+
   constructor(private httpClient: HttpClient, private endpointSettings: EndpointSettings) {}
 
   queryModelingLanguages() {
@@ -50,6 +52,8 @@ export class ModellerService {
   }
 
   queryModelingViews(langId) {
+    this.selectedModelingLanguage = langId;
+
     return this.httpClient.get<ModelingViewModel[]>(this.endpointSettings.getModelingViewsEndpoint(langId));
   }
 
@@ -342,4 +346,20 @@ export class ModellerService {
     })
       .toPromise();
   }
+
+  async uploadNewImageToBackend(image: File, fileName: string,  prefix: string) {
+
+    const formData = new FormData();
+
+    formData.append('prefix', prefix);
+    formData.append('fileName', fileName)
+    //Make sure that the other fields are populated first.
+    formData.append('image', image);
+
+    console.log(image.name);
+
+
+    await this.httpClient.post('/upload',formData).toPromise().then(response => console.log(response));
+  }
+
 }

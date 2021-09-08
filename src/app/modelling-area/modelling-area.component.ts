@@ -70,6 +70,9 @@ export class ModellingAreaComponent implements OnInit {
   private pathPatterns: Map<string, string> = new Map();
   private dialog: MatDialog;
 
+  public canvasTextBoxText: string;
+  selectedFile: File;
+
   public constructor(private mService: ModellerService, public matDialog: MatDialog) {
     console.log('Constructor of graph');
     (go as any).licenseKey = "54ff43e7b11c28c702d95d76423d38f919a52e63998449a35a0412f6be086d1d239cef7157d78cc687f84cfb487fc2898fc1697d964f073cb539d08942e786aab63770b3400c40dea71136c5ceaa2ea1fa2b24a5c5b775a2dc718cf3bea1c59808eff4d54fcd5cb92b280735562bac49e7fc8973f950cf4e6b3d9ba3fffbbf4faf3c7184ccb4569aff5a70deb6f2a3417f";
@@ -1108,6 +1111,26 @@ export class ModellingAreaComponent implements OnInit {
           // the link array was created above
           linkDataArray: linkdata
         });
+  }
+
+  processImageUpload(imageInput: any, type: string) {
+    const file: File = imageInput.files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener('load', async (event: any) => {
+
+      this.selectedFile = file;
+      let filename = file.name;
+      if (type === 'thumbnail') {
+        filename = 'Thumbnail_' + file.name;
+      }
+
+      const currentPalletteCategory = this.mService.selectedModelingLanguage.substring(3);
+      await this.mService.uploadNewImageToBackend(file, filename, currentPalletteCategory);
+
+      this.canvasTextBoxText = 'Uploaded ' + type + ' image ' + filename + ' to ' + currentPalletteCategory;
+    });
+    reader.readAsDataURL(file);
   }
 
   getInstantiationTypes(): InstantiationTargetType[] {

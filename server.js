@@ -2,7 +2,58 @@
 const express = require('express');
 const path = require('path');
 
+const multer = require('multer');
+const fs = require('fs');
+
 const app = express();
+
+const storage = multer.diskStorage({
+  destination:function (req,file,cb){
+
+    if(req.body === undefined || req.body.prefix === undefined){
+      console.log('No prefix defined.');
+      return;
+    }
+
+    const directory = 'uploads'+'/'+req.body.prefix;
+
+    if(fs.existsSync(directory)){
+
+      cb(null,directory);
+
+    }else{
+
+      fs.mkdir(directory,function (err){
+
+        if(err){
+          console.log('Failed to create directory.');
+          return;
+        }else{
+          cb(null,directory);
+        }
+      });
+
+    }
+
+  },
+  filename:function (req,file,cb){
+
+    name = req.body.fileName;
+    console.log('Name: '+name);
+    cb(null, name);
+  }
+});
+
+upload = multer({storage:storage})
+
+app.post('/upload', upload.single('image'), function (req, res,next){
+  console.log('Uploading image');
+
+  console.log('FileName: ' + req.body.fileName);
+  console.log('Prefix: ' + req.body.prefix);
+
+});
+
 
 //Intercept requests to '/api' and return the url of the webservice endpoint.
 app.get('/api', function (req, res, next) {
