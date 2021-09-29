@@ -119,6 +119,8 @@ public imageRoot: string = VariablesSettings.IMG_ROOT;
 
       this.imageList = values[category];
 
+      console.log(this.imageList);
+
     });
   }
 
@@ -130,6 +132,8 @@ public imageRoot: string = VariablesSettings.IMG_ROOT;
     const file: File = imageInput.files[0];
     const reader = new FileReader();
 
+    console.log('TEST');
+
     reader.addEventListener('load', async (event: any) => {
 
       let filename = file.name;
@@ -138,9 +142,9 @@ public imageRoot: string = VariablesSettings.IMG_ROOT;
       }
 
       const currentPalletteCategory = this.data.paletteElement.paletteCategory.split('#')[1];
-      await this.mService.uploadNewImageToBackend(file, filename, currentPalletteCategory);
+      this.mService.uploadNewImageToBackend(file, filename, currentPalletteCategory);
 
-      await this.loadImages();
+      this.imageList.push(filename);
 
     });
     reader.readAsDataURL(file);

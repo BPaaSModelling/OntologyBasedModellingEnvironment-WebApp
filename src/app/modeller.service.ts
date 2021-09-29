@@ -348,7 +348,7 @@ export class ModellerService {
       .toPromise();
   }
 
-  async uploadNewImageToBackend(image: File, fileName: string,  prefix: string) {
+  uploadNewImageToBackend(image: File, fileName: string,  prefix: string) {
 
     const formData = new FormData();
 
@@ -357,7 +357,7 @@ export class ModellerService {
     //Make sure that the other fields are populated first.
     formData.append('image', image);
 
-    await this.httpClient.post('/upload',formData).toPromise().then(response => console.log(response));
+    this.httpClient.post('/upload',formData).toPromise().then(response => console.log(response));
   }
 
   async getUploadedImages(): Promise<Object>{

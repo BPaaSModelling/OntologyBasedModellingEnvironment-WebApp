@@ -166,9 +166,9 @@ export class ModalEditPaletteElementComponent implements OnInit {
       }
 
       const currentPalletteCategory = this.data.paletteElement.paletteCategory.split('#')[1];
-      await this.mService.uploadNewImageToBackend(file, filename, currentPalletteCategory);
+      this.mService.uploadNewImageToBackend(file, filename, currentPalletteCategory);
 
-      await this.loadImages();
+      this.imageList.push(filename);
 
     });
     reader.readAsDataURL(file);
