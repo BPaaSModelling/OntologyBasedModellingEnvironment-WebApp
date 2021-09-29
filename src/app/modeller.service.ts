@@ -22,6 +22,7 @@ import ModellingLanguageConstructInstance from './_models/ModellingLanguageConst
 import {HttpClient} from '@angular/common/http';
 import {ModelingViewModel} from './_models/ModelingView.model';
 
+
 @Injectable()
 export class ModellerService {
   public modelingLanguage$: Observable<ModelingLanguageModel[]> = of([]);
@@ -356,10 +357,11 @@ export class ModellerService {
     //Make sure that the other fields are populated first.
     formData.append('image', image);
 
-    console.log(image.name);
-
-
     await this.httpClient.post('/upload',formData).toPromise().then(response => console.log(response));
   }
 
+  async getUploadedImages(): Promise<Object>{
+
+   return await this.httpClient.get('/images').toPromise();
+  }
 }

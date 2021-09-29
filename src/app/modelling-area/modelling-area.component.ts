@@ -1113,25 +1113,25 @@ export class ModellingAreaComponent implements OnInit {
         });
   }
 
-  processImageUpload(imageInput: any, type: string) {
-    const file: File = imageInput.files[0];
-    const reader = new FileReader();
-
-    reader.addEventListener('load', async (event: any) => {
-
-      this.selectedFile = file;
-      let filename = file.name;
-      if (type === 'thumbnail') {
-        filename = 'Thumbnail_' + file.name;
-      }
-
-      const currentPalletteCategory = this.mService.selectedModelingLanguage.substring(3);
-      await this.mService.uploadNewImageToBackend(file, filename, currentPalletteCategory);
-
-      this.canvasTextBoxText = 'Uploaded ' + type + ' image ' + filename + ' to ' + currentPalletteCategory;
-    });
-    reader.readAsDataURL(file);
-  }
+  // processImageUpload(imageInput: any, type: string) {
+  //   const file: File = imageInput.files[0];
+  //   const reader = new FileReader();
+  //
+  //   reader.addEventListener('load', async (event: any) => {
+  //
+  //     this.selectedFile = file;
+  //     let filename = file.name;
+  //     if (type === 'thumbnail') {
+  //       filename = 'Thumbnail_' + file.name;
+  //     }
+  //
+  //     const currentPalletteCategory = this.mService.selectedModelingLanguage.substring(3);
+  //     await this.mService.uploadNewImageToBackend(file, filename, currentPalletteCategory);
+  //
+  //     this.canvasTextBoxText = 'Uploaded ' + type + ' image ' + filename + ' to ' + currentPalletteCategory;
+  //   });
+  //   reader.readAsDataURL(file);
+  // }
 
   getInstantiationTypes(): InstantiationTargetType[] {
     return _.values(InstantiationTargetType);

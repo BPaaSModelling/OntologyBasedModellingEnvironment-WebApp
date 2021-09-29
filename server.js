@@ -7,6 +7,17 @@ const fs = require('fs');
 
 const app = express();
 
+const uploadsDir = __dirname + '/dist/ontology-based-modelling-environment/uploads/';
+
+if(!fs.existsSync(uploadsDir)){
+  fs.mkdir(uploadsDir, function(err){
+    if(err){
+      console.log('Failed to create directory ' + directory + '.');
+      return;
+    }
+  });
+}
+
 const storage = multer.diskStorage({
   destination:function (req,file,cb){
 
@@ -15,7 +26,7 @@ const storage = multer.diskStorage({
       return;
     }
 
-    const directory = 'uploads'+'/'+req.body.prefix;
+    const directory =uploadsDir + req.body.prefix;
 
     if(fs.existsSync(directory)){
 
@@ -26,7 +37,7 @@ const storage = multer.diskStorage({
       fs.mkdir(directory,function (err){
 
         if(err){
-          console.log('Failed to create directory.');
+          console.log('Failed to create directory ' + directory + '.');
           return;
         }else{
           cb(null,directory);
@@ -54,6 +65,64 @@ app.post('/upload', upload.single('image'), function (req, res,next){
 
 });
 
+function getImageURLs(basePath){
+
+  let urls = {};
+
+  let absolutePath = __dirname + '/dist/ontology-based-modelling-environment' + basePath;
+
+  fs.readdirSync(absolutePath, {withFileTypes:true}).filter(file=>file.isDirectory()).forEach(p=>{
+
+    urls[p.name] = [];
+
+    fs.readdirSync(absolutePath + '/' + p.name,{withFileTypes:true}).forEach(file=>{
+
+      urls[p.name].push(file.name);
+
+    });
+
+  });
+
+  return urls;
+}
+
+//Get all images in 'assets/images' and 'uploads'
+app.get('/images',function (req,res,next){
+
+  let urls = getImageURLs('/assets/images');
+
+  let urls2 = getImageURLs('/uploads');
+
+  //Combine the results from the two locations
+  for(let category in urls2){
+    if(urls[category]){
+      urls[category] = urls[category].concat(urls2[category]);
+    }else{
+      urls[category] = urls2[category];
+    }
+  }
+
+  res.json(urls);
+
+});
+
+app.get('/images/*',function(req,res,next){
+  let url = req.url.replace('/images/','');
+
+  let baseDir = __dirname+'/dist/ontology-based-modelling-environment/';
+
+  if(fs.existsSync(path.join(baseDir, 'assets','images', url))){
+    res.sendFile(path.join(baseDir, 'assets','images', url));
+
+  }else if(fs.existsSync(path.join(baseDir, 'uploads', url))){
+    res.sendFile(path.join(baseDir, 'uploads', url));
+
+  }else{
+    console.log('Could not find image: ' + url);
+    next();
+  }
+
+});
 
 //Intercept requests to '/api' and return the url of the webservice endpoint.
 app.get('/api', function (req, res, next) {
