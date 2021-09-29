@@ -55,7 +55,7 @@ public arrowHeads: string[] = [];
 public arrowStrokes: string[] = [];
 
 public uploadedList: any;
-public imageList: any;
+public imageList: string[] = [];
 
 public imageRoot: string = VariablesSettings.IMG_ROOT;
 
@@ -118,9 +118,6 @@ public imageRoot: string = VariablesSettings.IMG_ROOT;
       let category = this.data.paletteElement.paletteCategory.split('#')[1];
 
       this.imageList = values[category];
-
-      console.log(this.imageList);
-
     });
   }
 
@@ -132,17 +129,12 @@ public imageRoot: string = VariablesSettings.IMG_ROOT;
     const file: File = imageInput.files[0];
     const reader = new FileReader();
 
-    console.log('TEST');
-
     reader.addEventListener('load', async (event: any) => {
 
-      let filename = file.name;
-      if (type === 'thumbnail') {
-        filename = 'Thumbnail_' + file.name;
-      }
+      let filename = file.name.replace(/[^a-z0-9.]/gi, '_').toLowerCase();;
 
-      const currentPalletteCategory = this.data.paletteElement.paletteCategory.split('#')[1];
-      this.mService.uploadNewImageToBackend(file, filename, currentPalletteCategory);
+      const currentPaletteCategory = this.data.paletteElement.paletteCategory.split('#')[1];
+      this.mService.uploadNewImageToBackend(file, filename, currentPaletteCategory);
 
       this.imageList.push(filename);
 

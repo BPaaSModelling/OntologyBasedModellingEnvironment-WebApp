@@ -72,31 +72,36 @@
             </div>
 
             <div layout="row">
-              <input #imageInput1
-                     type="file"
-                     accept="image/*"
-                     (change)="processImageUpload(imageInput1, 'canvas')">
+
+              <div *ngIf="data.paletteElement.type != 'PaletteConnector'">
+                <input #imageInput1
+                       type="file"
+                       accept="image/*"
+                       (change)="processImageUpload(imageInput1, 'canvas')">
+              </div>
 
               <mat-form-field *ngIf="data.paletteElement.type != 'PaletteConnector'">
 
-
                 <mat-select [(ngModel)]="currentPaletteElement.thumbnailURL" placeholder="Palette Image" name="image" required>
                   <mat-option *ngFor="let image of imageList" [value]="image">
-                    <img class="thumbnail" src="{{imageRoot}}{{data.paletteElement.paletteCategory.split('#')[1]}}/{{image}}" [alt]="image" >
+                    <img class="thumbnail" src="{{imageRoot}}{{data.paletteElement.paletteCategory.split('#')[1]}}/{{image}}">
                     {{image}}</mat-option>
                 </mat-select>
               </mat-form-field>
 
-              <input #imageInput2
-                     type="file"
-                     accept="image/*"
-                     (change)="processImageUpload(imageInput2, 'thumbnail')">
+              <div *ngIf="data.paletteElement.type != 'PaletteConnector'">
+                <input #imageInput2
+                       type="file"
+                       accept="image/*"
+                       (change)="processImageUpload(imageInput2, 'thumbnail')">
+
+              </div>
 
               <mat-form-field *ngIf="data.paletteElement.type != 'PaletteConnector'">
 
                 <mat-select [(ngModel)]="currentPaletteElement.imageURL" placeholder="Canvas Image" name="image" required>
                   <mat-option *ngFor="let image of imageList" [value]="image">
-                    <img class="thumbnail" src="{{imageRoot}}{{data.paletteElement.paletteCategory.split('#')[1]}}/{{image}}" [alt]="image" >
+                    <img class="thumbnail" src="{{imageRoot}}{{data.paletteElement.paletteCategory.split('#')[1]}}/{{image}}">
                     {{image}}
                   </mat-option>
                 </mat-select>

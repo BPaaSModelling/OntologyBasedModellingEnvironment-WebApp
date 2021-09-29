@@ -147,7 +147,7 @@ export class ModellerService {
     const params = new URLSearchParams();
     params.append('element', JSON.stringify(element));
     params.append('modifiedElement', JSON.stringify(modifiedElement)); // passing multiple parameters in POST
-    console.log(element);
+
     return this.httpClient.post(this.endpointSettings.getModifyElementEndpoint(), params);
   }
 
