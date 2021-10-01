@@ -22,6 +22,7 @@ import ModellingLanguageConstructInstance from './_models/ModellingLanguageConst
 import {HttpClient} from '@angular/common/http';
 import {ModelingViewModel} from './_models/ModelingView.model';
 
+
 @Injectable()
 export class ModellerService {
   public modelingLanguage$: Observable<ModelingLanguageModel[]> = of([]);
@@ -38,6 +39,8 @@ export class ModellerService {
   public namespacePrefixes: string[] = [];
   // public namespaceMap$: Observable<Map<string, string>> = of({});
 
+  public selectedModelingLanguage;
+
   constructor(private httpClient: HttpClient, private endpointSettings: EndpointSettings) {}
 
   queryModelingLanguages() {
@@ -50,6 +53,8 @@ export class ModellerService {
   }
 
   queryModelingViews(langId) {
+    this.selectedModelingLanguage = langId;
+
     return this.httpClient.get<ModelingViewModel[]>(this.endpointSettings.getModelingViewsEndpoint(langId));
   }
 
@@ -142,7 +147,7 @@ export class ModellerService {
     const params = new URLSearchParams();
     params.append('element', JSON.stringify(element));
     params.append('modifiedElement', JSON.stringify(modifiedElement)); // passing multiple parameters in POST
-    console.log(element);
+
     return this.httpClient.post(this.endpointSettings.getModifyElementEndpoint(), params);
   }
 
@@ -341,5 +346,22 @@ export class ModellerService {
       id
     })
       .toPromise();
+  }
+
+  uploadNewImageToBackend(image: File, fileName: string,  prefix: string) {
+
+    const formData = new FormData();
+
+    formData.append('prefix', prefix);
+    formData.append('fileName', fileName)
+    //Make sure that the other fields are populated first.
+    formData.append('image', image);
+
+    this.httpClient.post('/upload',formData).toPromise().then(response => console.log(response));
+  }
+
+  async getUploadedImages(): Promise<Object>{
+
+   return await this.httpClient.get('/images').toPromise();
   }
 }
