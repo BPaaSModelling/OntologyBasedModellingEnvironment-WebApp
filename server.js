@@ -127,6 +127,7 @@ app.get('/images/*',function(req,res,next){
 //Intercept requests to '/api' and return the url of the webservice endpoint.
 app.get('/api', function (req, res, next) {
 
+  //Read the environment variable WEBSERVICE_ENDPOINT
   let url = process.env.WEBSERVICE_ENDPOINT;
   if(url){
     console.log('Using webservice endpoint of ' + url);

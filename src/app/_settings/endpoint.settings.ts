@@ -39,6 +39,8 @@ export class EndpointSettings {
   private static MODELS : string = '/ModEnv/model';
   private static ARROWS : string = '/ModEnv/arrow-structures';
 
+  // The URL of the webservice. This gets read on the server side from the environment variable WEBSERVICE_ENDPOINT.
+  // http://localhost:8080 is use if this environment variable does not exist.
   private webserviceEndpoint: string = undefined;
 
   constructor(private http: HttpClient) {
@@ -46,8 +48,10 @@ export class EndpointSettings {
 
   public load(): Promise<any>{
 
+    //Use localhost as a default endpoint.
     const defaultEndpoint = 'http://localhost:8080';
 
+    // Make a request to the server to retrieve an URL that points to the webservice.
     return this.http.get<Config>('/api').toPromise().then((data:Config) =>{
       if(data.webserviceEndpoint){
         console.log('Received webservice endpoint: ' + data.webserviceEndpoint);
