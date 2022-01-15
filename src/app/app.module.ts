@@ -23,6 +23,7 @@ import {
   MatExpansionModule,
   MatGridListModule,
   MatTableModule
+
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToolRecursivePaletteElementComponent} from './-tool-recursive-palette-element/-tool-recursive-palette-element.component';
@@ -53,6 +54,8 @@ import {ModalViewElementDetail} from './model-element-detail/model-element-detai
 import {ModalShowLanguageInstances} from './modal-show-language-instances/modal-show-language-instances';
 import {EndpointSettings} from './_settings/endpoint.settings';
 import {HttpClientModule} from '@angular/common/http';
+import {ModalModelExport} from './modal-model-export/modal-model-export-component';
+
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
@@ -92,7 +95,8 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModalModellingLanguageConstructInstanceLink,
     ModalPaletteVisualisation,
     ModalModelEdit,
-    ModalShowLanguageInstances
+    ModalShowLanguageInstances,
+    ModalModelExport
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -115,7 +119,8 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModalModellingLanguageConstructInstanceLink,
     ModalPaletteVisualisation,
     ModalModelEdit,
-    ModalShowLanguageInstances
+    ModalShowLanguageInstances,
+    ModalModelExport
   ],
   imports: [
     BrowserModule,
@@ -141,7 +146,9 @@ export function appInit(endpointSettings: EndpointSettings) {
     ReactiveFormsModule,
     SelectDropDownModule,
     MatGridListModule,
-    MatTableModule
+    MatTableModule,
+    MatSelectModule,
+    MatFormFieldModule
   ],
   providers: [
     ModellerService,
