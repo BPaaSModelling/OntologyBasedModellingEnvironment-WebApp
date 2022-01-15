@@ -1155,7 +1155,7 @@ export class ModellingAreaComponent implements OnInit {
 
 
     const dialogRef = this.dialog.open(ModalModelExport);
-   // this.mService.queryModelsAndLanguageADVANCEDwithDistinction("bpmn");
+   // this.mService.queryModelsAndLanguageADVANCEDwithDistinction("BPMN");
 
   }
 
