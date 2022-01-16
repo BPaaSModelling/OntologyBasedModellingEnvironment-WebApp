@@ -420,7 +420,7 @@ export class ModellerService {
 
     }
 
-  queryModelsAndLanguageADVANCED(): void {
+  /*queryModelsAndLanguageADVANCED(): void {
     this.httpClient.get<string>(this.endpointSettings.getModelAndLanguageFromFusekiAdvanced()).subscribe(
       data => {
         this.modelAndLanguageAdvanced$ = of(data);
@@ -445,6 +445,6 @@ export class ModellerService {
 
 
 
-  }
+  }*/
 
   }

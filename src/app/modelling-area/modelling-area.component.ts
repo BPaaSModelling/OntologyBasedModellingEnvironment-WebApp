@@ -1144,12 +1144,12 @@ export class ModellingAreaComponent implements OnInit {
 
   }
 
-  getModelsAndLanguagesADVANCED() {
+ /* getModelsAndLanguagesADVANCED() {
 
     console.log('Export button selected');
     this.mService.queryModelsAndLanguageADVANCED();
 
-  }
+  }*/
 
   getModelsAndLanguagesADVANCEDwithDistinction() {
 
