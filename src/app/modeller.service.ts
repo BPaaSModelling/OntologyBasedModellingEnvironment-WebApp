@@ -382,7 +382,7 @@ export class ModellerService {
         this.modelAndLanguage = data;
         console.log(this.modelAndLanguage);
         //var FileSaver = require('file-saver');
-        const filename = "exportino.ttl";
+        const filename = "Export.ttl";
         var myblob = new Blob([this.modelAndLanguage], {
           type: 'text/trig'
         });
@@ -400,7 +400,8 @@ export class ModellerService {
           this.modelAndLanguageAdvanced = data;
           console.log(this.modelAndLanguageAdvanced);
           //var FileSaver = require('file-saver');
-          const filename = "cmmnadvancedwithDistinction.ttl";
+          //const filename = "cmmnadvancedwithDistinction.ttl";
+          const filename = "AOAME_"+sPrefix+".ttl";
           var myblob = new Blob([this.modelAndLanguageAdvanced], {
             type: 'text/trig'
           });
