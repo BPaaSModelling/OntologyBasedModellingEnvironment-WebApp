@@ -16,6 +16,18 @@
 
 </mat-select>
 </mat-form-field>
+<!--FOR MULTISELECTION ATTEMPT -->
+<ng-multiselect-dropdown
+  [placeholder]="'Select a prefix'"
+  [settings]="dropdownSettings"
+  [data]="dropdownList"
+  [(ngModel)]="selectedItems"
+  (onSelect)="onItemSelect($event)"
+  (onSelectAll)="onSelectAll($event)"
+>
+</ng-multiselect-dropdown>
+
+
 <mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
   <button mat-button (click)="getLanguage()">Export</button>

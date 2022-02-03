@@ -1154,7 +1154,11 @@ export class ModellingAreaComponent implements OnInit {
   getModelsAndLanguagesADVANCEDwithDistinction() {
 
 
-    const dialogRef = this.dialog.open(ModalModelExport);
+    const dialogRef = this.dialog.open(ModalModelExport, {
+      height: '70%',
+      width: '30%'
+
+    });
    // this.mService.queryModelsAndLanguageADVANCEDwithDistinction("BPMN");
 
   }

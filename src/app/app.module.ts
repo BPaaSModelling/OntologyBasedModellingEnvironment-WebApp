@@ -8,6 +8,8 @@ import {RouterModule, Routes} from '@angular/router';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import {ModellerService} from './modeller.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 import {
   MatListModule,
   MatButtonModule,
@@ -55,10 +57,12 @@ import {ModalShowLanguageInstances} from './modal-show-language-instances/modal-
 import {EndpointSettings} from './_settings/endpoint.settings';
 import {HttpClientModule} from '@angular/common/http';
 import {ModalModelExport} from './modal-model-export/modal-model-export-component';
+import {UploadEnvironmentComponent} from './upload-environment/upload-environment.component';
 
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
+  { path: 'upload', component: UploadEnvironmentComponent},
 ];
 
 export function appInit(endpointSettings: EndpointSettings) {
@@ -67,6 +71,7 @@ export function appInit(endpointSettings: EndpointSettings) {
 
 @NgModule({
   declarations: [
+    UploadEnvironmentComponent,
     AppComponent,
     ModellingEnvironmentComponent,
     PaletteAreaComponent,
@@ -148,7 +153,9 @@ export function appInit(endpointSettings: EndpointSettings) {
     MatGridListModule,
     MatTableModule,
     MatSelectModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    NgMultiSelectDropDownModule.forRoot()
+
   ],
   providers: [
     ModellerService,
