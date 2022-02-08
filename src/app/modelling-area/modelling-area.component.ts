@@ -23,6 +23,7 @@ import {ModelElementDetail} from '../_models/ModelElementDetail.model';
 import {ModelElementDetailAndModel} from '../_models/ModelElementDetailAndModel';
 import {ModalViewElementDetail} from '../model-element-detail/model-element-detail.component';
 import {ModalModelExport} from '../modal-model-export/modal-model-export-component';
+import {ModalModelMultipleExport} from '../modal-model-multiple-export/modal-model-mutiple-export.component';
 
 let $: any;
 let myDiagram: any;
@@ -1144,22 +1145,19 @@ export class ModellingAreaComponent implements OnInit {
 
   }
 
- /* getModelsAndLanguagesADVANCED() {
-
-    console.log('Export button selected');
-    this.mService.queryModelsAndLanguageADVANCED();
-
-  }*/
-
   getModelsAndLanguagesADVANCEDwithDistinction() {
 
+    const dialogRef = this.dialog.open(ModalModelExport);
 
-    const dialogRef = this.dialog.open(ModalModelExport, {
+  }
+
+  getModelsAndLanguagesMultipleSelection() {
+
+    const dialogRef = this.dialog.open(ModalModelMultipleExport, {
       height: '70%',
       width: '30%'
 
     });
-   // this.mService.queryModelsAndLanguageADVANCEDwithDistinction("BPMN");
 
   }
 

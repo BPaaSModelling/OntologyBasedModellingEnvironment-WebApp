@@ -215,5 +215,8 @@ export class EndpointSettings {
     return this.webserviceEndpoint + "/ModEnv/getTTLAdwithDistinction"   ;
 
   }
+  public getModelAndLanguageFromFusekiAdvancedwithDistinction2(){
+    return this.webserviceEndpoint + "/ModEnv/getTTLAdwithDistinction2"   ;
 
+  }
 }

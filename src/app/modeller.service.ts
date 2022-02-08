@@ -20,7 +20,7 @@ import { ArrowStructures } from './_models/ArrowStructures.model';
 import {InstantiationTargetType} from './_models/InstantiationTargetType.model';
 import {RelationOptions} from './_models/RelationOptions.model';
 import ModellingLanguageConstructInstance from './_models/ModellingLanguageConstructInstance.model';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ModelingViewModel} from './_models/ModelingView.model';
 //import { saveAs } from  'file-saver';
 import * as fileSaver from 'file-saver';
@@ -411,15 +411,28 @@ export class ModellerService {
         }, error => console.log(error)
       )
 
-
-
-
-
-
-
-
-
     }
+
+  queryModelsAndLanguageADVANCEDwithDistinctionMultipleSelection(sPrefix: string []) {
+
+
+    this.httpClient.post<string>("http://localhost:8080/ModEnv/getTTLAdwithDistinction2",sPrefix).subscribe(
+      data => {
+        this.modelAndLanguageAdvanced$ = of(data);
+        this.modelAndLanguageAdvanced = data;
+        console.log(this.modelAndLanguageAdvanced);
+
+        const filename = "AOAME_.ttl";
+        var myblob = new Blob([this.modelAndLanguageAdvanced], {
+          type: 'text/trig'
+        });
+        saveAs(myblob, filename);
+        // FileSaver.saveAs(myblob, "hello world.txt");
+
+      }, error => console.log(error)
+    )
+
+  }
 
   /*queryModelsAndLanguageADVANCED(): void {
     this.httpClient.get<string>(this.endpointSettings.getModelAndLanguageFromFusekiAdvanced()).subscribe(

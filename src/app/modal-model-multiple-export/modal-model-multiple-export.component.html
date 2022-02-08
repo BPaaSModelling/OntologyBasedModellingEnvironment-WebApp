@@ -1,0 +1,27 @@
+<mat-toolbar>
+  <div class="mat-toolbar-tools">
+    <h2>Select language</h2>
+  </div>
+</mat-toolbar>
+<br>
+<!--FOR MULTISELECTION ATTEMPT -->
+<div><ng-multiselect-dropdown
+  [placeholder]="'Select a prefix'"
+  [settings]="dropdownSettings"
+  [data]="dropdownList"
+  [(ngModel)]="selectedItems"
+  (onSelect)="onItemSelect($event)"
+  (onSelectAll)="onSelectAll($event)"
+>
+</ng-multiselect-dropdown>
+</div>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+   <button mat-button (click)="getLanguageMultipleSelection()">Multiple selection</button>
+</mat-dialog-actions>
+
+
+<!-- <h2>Random text to divide</h2>-->
+
+

@@ -58,6 +58,7 @@ import {EndpointSettings} from './_settings/endpoint.settings';
 import {HttpClientModule} from '@angular/common/http';
 import {ModalModelExport} from './modal-model-export/modal-model-export-component';
 import {UploadEnvironmentComponent} from './upload-environment/upload-environment.component';
+import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-model-mutiple-export.component';
 
 
 const appRoutes: Routes = [
@@ -101,7 +102,8 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModalPaletteVisualisation,
     ModalModelEdit,
     ModalShowLanguageInstances,
-    ModalModelExport
+    ModalModelExport,
+    ModalModelMultipleExport
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -125,7 +127,8 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModalPaletteVisualisation,
     ModalModelEdit,
     ModalShowLanguageInstances,
-    ModalModelExport
+    ModalModelExport,
+    ModalModelMultipleExport
   ],
   imports: [
     BrowserModule,
