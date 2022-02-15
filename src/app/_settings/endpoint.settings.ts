@@ -219,4 +219,9 @@ export class EndpointSettings {
     return this.webserviceEndpoint + "/ModEnv/getTTLAdwithDistinction2"   ;
 
   }
+
+  public getPrefixFromFuseki(){
+    return this.webserviceEndpoint + "/ModEnv/getPrefixesFromFuseki"   ;
+
+  }
 }

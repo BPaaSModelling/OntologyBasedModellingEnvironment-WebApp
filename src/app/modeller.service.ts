@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {EndpointSettings} from './_settings/endpoint.settings';
+//import {ModalModelMultipleExport} from './modal-model-multiple-export';
 import { Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -25,6 +26,8 @@ import {ModelingViewModel} from './_models/ModelingView.model';
 //import { saveAs } from  'file-saver';
 import * as fileSaver from 'file-saver';
 import { saveAs } from 'file-saver';
+import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-model-mutiple-export.component';
+import {promise} from 'protractor';
 
 
 @Injectable()
@@ -45,6 +48,7 @@ export class ModellerService {
   public modelAndLanguage: string ;
   public modelAndLanguageAdvanced$: Observable<string> = of ();
   public modelAndLanguageAdvanced: string ;
+  public modalModelMultipleExport: ModalModelMultipleExport ;
 
   // public namespaceMap$: Observable<Map<string, string>> = of({});
 
@@ -416,7 +420,7 @@ export class ModellerService {
   queryModelsAndLanguageADVANCEDwithDistinctionMultipleSelection(sPrefix: string []) {
 
 
-    this.httpClient.post<string>("http://localhost:8080/ModEnv/getTTLAdwithDistinction2",sPrefix).subscribe(
+    this.httpClient.post<string>(this.endpointSettings.getModelAndLanguageFromFusekiAdvancedwithDistinction2(),sPrefix).subscribe(
       data => {
         this.modelAndLanguageAdvanced$ = of(data);
         this.modelAndLanguageAdvanced = data;
@@ -433,7 +437,21 @@ export class ModellerService {
     )
 
   }
+  queryLanguagesFromFuseki() : void {
 
+
+    this.httpClient.get<string>(this.endpointSettings.getPrefixFromFuseki()).subscribe(
+      data => {
+        this.modelAndLanguageAdvanced$ = of(data);
+        this.modelAndLanguageAdvanced = data;
+        //console.log(this.modelAndLanguageAdvanced);
+        this.modalModelMultipleExport.getLanguagesFromFusekiHtml();
+        //return this.modelAndLanguageAdvanced;
+
+      },error => console.log(error)
+    )
+
+  }
   /*queryModelsAndLanguageADVANCED(): void {
     this.httpClient.get<string>(this.endpointSettings.getModelAndLanguageFromFusekiAdvanced()).subscribe(
       data => {

@@ -10,6 +10,8 @@ import {VariablesSettings} from "../_settings/variables.settings";
 import {ModalConnectorElementPropertiesComponent} from "../modal-connector-element-properties/modal-connector-element-properties.component";
 import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
 import {ModalEditPaletteElementComponent} from "../modal-edit-palette-element/modal-edit-palette-element.component";
+import {ModalModelExport} from '../modal-model-export/modal-model-export-component';
+import {ModalModelMultipleExport} from '../modal-model-multiple-export/modal-model-mutiple-export.component';
 
 
 @Component({
@@ -27,6 +29,9 @@ export class UploadEnvironmentComponent implements OnInit {
   }
 
   ngOnInit() {
+
+
+    this.LoadModelsAndLanguagesMultipleSelection();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -132,6 +137,39 @@ export class UploadEnvironmentComponent implements OnInit {
   goToLink(url: string){
     window.open(url, "_blank");
   }
+
+
+
+
+  getModelsAndLanguages() {
+
+    console.log('Export button selected');
+    this.uploadService.queryModelsAndLanguage();
+
+  }
+
+  getModelsAndLanguagesADVANCEDwithDistinction() {
+
+    const dialogRef = this.dialog.open(ModalModelExport);
+
+  }
+
+  getModelsAndLanguagesMultipleSelection() {
+
+    // this.mService.queryLanguagesFromFuseki();
+
+    const dialogRef = this.dialog.open(ModalModelMultipleExport, {
+      height: '80%',
+      width: '80%'
+
+    });
+
+  }
+  LoadModelsAndLanguagesMultipleSelection() {
+
+    this.uploadService.queryLanguagesFromFuseki();
+  }
+
 }
 
 // https://github.com/shlomiassaf/ngx-modialog

@@ -12,6 +12,9 @@ import { saveAs } from 'file-saver';
 import {element} from 'protractor';
 import {PaletteElementModel} from '../_models/PaletteElement.model';
 import {delay} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
+import {ModellingAreaComponent} from '../modelling-area/modelling-area.component';
 
 
 
@@ -30,6 +33,7 @@ export class ModalModelMultipleExport {
   endpointSettings: EndpointSettings;
   service: ModellerService;
   ttlResult: string;
+  modellingareacomponent: ModellingAreaComponent;
 
   /*
     @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService, public dialog: MatDialog, private changeDetection: ChangeDetectorRef) {
@@ -39,32 +43,38 @@ export class ModalModelMultipleExport {
     */
 
   constructor( public matDialog: MatDialog,public mService: ModellerService,
-
+               private router: Router,
+               private route : ActivatedRoute,
                public dialogRef: MatDialogRef<ModalModelMultipleExport>,
                @Inject(MAT_DIALOG_DATA) public model: Model) {}
+
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
+
+  //load languages into multiple selection
+  public getLanguagesFromFusekiHtml(): void{
+
+    var array = this.mService.modelAndLanguageAdvanced.split(',');
+
+   for(let i=1;i<array.length;i++){
+     this.dropdownList.push({ item_id: i, item_text: array[i-1] });
+   }
+
+
+  }
+
+
   //MULTIPLE SELECTION
   getLanguageMultipleSelection(): void{
-
-
-   // this.ttlResult="";
-    //aSelectedItemsArray: string[]=[];
-
 
 //WORKS
     /*
     var aSelectedItemsArray :string[]=[];
     var idea= this.selectedItems[0].item_text;
     var idea2 = this.selectedItems[1].item_text;
-
-
-
-    let fruits: string[] = [idea,idea2]
-    this.mService.queryModelsAndLanguageADVANCEDwithDistinctionMultipleSelection(fruits);
 */
 //Test with a for
     var aSelectedLangArray :string[]=[];
@@ -73,50 +83,24 @@ export class ModalModelMultipleExport {
     }
     this.mService.queryModelsAndLanguageADVANCEDwithDistinctionMultipleSelection(aSelectedLangArray);
 
-    /*
-        var count=0;
-        this.selectedItems.forEach(function (item_text) {
-
-          aSelectedItemsArray.splice(count,0,item_text);
-          count++
-        });
-        count=0;
-    */
-
-//
-
-
-    // };
-
-    //for download
-   /* const filename = "AOAME.ttl";
-    var myblob = new Blob([this.ttlResult], {
-      type: 'text/trig'
-    });
-    saveAs(myblob, filename);
-*/
-
-
-
-
-
-   /* var myblob2 = new Blob([this.mService.modelAndLanguageAdvanced], {
-      type: 'text/trig'
-    });
-    saveAs(myblob2, filename);*/
   }
 
+  //for multiple selection
+  ngOnInit() : void{
 
 
-//for multiple selection
-  ngOnInit() {
-    this.dropdownList = [
-      { item_id: 1, item_text: 'mod' },
-      { item_id: 2, item_text: 'bpmn' },
-      { item_id: 3, item_text: 'cmmn' },
-      { item_id: 4, item_text: 'apqc' },
-      { item_id: 5, item_text: 'archi' }
-    ];
+    if(this.mService.modelAndLanguageAdvanced!==undefined){
+
+      this.getLanguagesFromFusekiHtml();
+    }
+
+
+
+    if(this.dropdownList.length===0){
+
+      var x = document.getElementById("myDIV");
+      x.style.display ="block";
+      this.mService.queryLanguagesFromFuseki()}
 
     this.dropdownSettings = {
       singleSelection: false,
@@ -126,6 +110,10 @@ export class ModalModelMultipleExport {
       unSelectAllText: 'UnSelect All',
       allowSearchFilter: true
     };
+
+
+
+
   }
   onItemSelect(item: any) {
     console.log(item);
