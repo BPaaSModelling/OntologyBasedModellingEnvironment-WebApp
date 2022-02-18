@@ -8,6 +8,8 @@ import {RouterModule, Routes} from '@angular/router';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import {ModellerService} from './modeller.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 import {
   MatListModule,
   MatButtonModule,
@@ -23,6 +25,7 @@ import {
   MatExpansionModule,
   MatGridListModule,
   MatTableModule
+
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToolRecursivePaletteElementComponent} from './-tool-recursive-palette-element/-tool-recursive-palette-element.component';
@@ -53,9 +56,14 @@ import {ModalViewElementDetail} from './model-element-detail/model-element-detai
 import {ModalShowLanguageInstances} from './modal-show-language-instances/modal-show-language-instances';
 import {EndpointSettings} from './_settings/endpoint.settings';
 import {HttpClientModule} from '@angular/common/http';
+import {ModalModelExport} from './modal-model-export/modal-model-export-component';
+import {UploadEnvironmentComponent} from './upload-environment/upload-environment.component';
+import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-model-mutiple-export.component';
+
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
+  { path: 'upload', component: UploadEnvironmentComponent},
 ];
 
 export function appInit(endpointSettings: EndpointSettings) {
@@ -64,6 +72,7 @@ export function appInit(endpointSettings: EndpointSettings) {
 
 @NgModule({
   declarations: [
+    UploadEnvironmentComponent,
     AppComponent,
     ModellingEnvironmentComponent,
     PaletteAreaComponent,
@@ -92,7 +101,9 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModalModellingLanguageConstructInstanceLink,
     ModalPaletteVisualisation,
     ModalModelEdit,
-    ModalShowLanguageInstances
+    ModalShowLanguageInstances,
+    ModalModelExport,
+    ModalModelMultipleExport
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -115,7 +126,9 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModalModellingLanguageConstructInstanceLink,
     ModalPaletteVisualisation,
     ModalModelEdit,
-    ModalShowLanguageInstances
+    ModalShowLanguageInstances,
+    ModalModelExport,
+    ModalModelMultipleExport
   ],
   imports: [
     BrowserModule,
@@ -141,7 +154,11 @@ export function appInit(endpointSettings: EndpointSettings) {
     ReactiveFormsModule,
     SelectDropDownModule,
     MatGridListModule,
-    MatTableModule
+    MatTableModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    NgMultiSelectDropDownModule.forRoot()
+
   ],
   providers: [
     ModellerService,

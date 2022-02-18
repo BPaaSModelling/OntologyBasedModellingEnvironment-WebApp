@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import {EndpointSettings} from './_settings/endpoint.settings';
+//import {ModalModelMultipleExport} from './modal-model-multiple-export';
 import { Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
 import { of } from 'rxjs';
 // import 'rxjs/operator/delay';
 // import 'rxjs/operator/mergeMap';
 // import 'rxjs/operator/switchMap';
+
 import {PaletteCategoryModel} from './_models/PaletteCategory.model';
 import {PaletteElementModel} from './_models/PaletteElement.model';
 import {QueryAnswerModel} from './_models/QueryAnswer.model';
@@ -19,8 +21,13 @@ import { ArrowStructures } from './_models/ArrowStructures.model';
 import {InstantiationTargetType} from './_models/InstantiationTargetType.model';
 import {RelationOptions} from './_models/RelationOptions.model';
 import ModellingLanguageConstructInstance from './_models/ModellingLanguageConstructInstance.model';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ModelingViewModel} from './_models/ModelingView.model';
+//import { saveAs } from  'file-saver';
+import * as fileSaver from 'file-saver';
+import { saveAs } from 'file-saver';
+import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-model-mutiple-export.component';
+import {promise} from 'protractor';
 
 
 @Injectable()
@@ -37,6 +44,12 @@ export class ModellerService {
   public datatypeProperties$: Observable<DatatypePropertyModel[]> = of([]);
   public namespacePrefixe$: Observable<string[]> = of([]);
   public namespacePrefixes: string[] = [];
+  public modelAndLanguage$: Observable<string> = of ();
+  public modelAndLanguage: string ;
+  public modelAndLanguageAdvanced$: Observable<string> = of ();
+  public modelAndLanguageAdvanced: string ;
+  public modalModelMultipleExport: ModalModelMultipleExport ;
+
   // public namespaceMap$: Observable<Map<string, string>> = of({});
 
   public selectedModelingLanguage;
@@ -364,4 +377,106 @@ export class ModellerService {
 
    return await this.httpClient.get('/images').toPromise();
   }
-}
+
+
+  queryModelsAndLanguage(): void {
+    this.httpClient.get<string>(this.endpointSettings.getModelAndLanguageFromFuseki()).subscribe(
+      data => {
+        this.modelAndLanguage$ = of(data);
+        this.modelAndLanguage = data;
+        console.log(this.modelAndLanguage);
+        //var FileSaver = require('file-saver');
+        const filename = "Export.ttl";
+        var myblob = new Blob([this.modelAndLanguage], {
+          type: 'text/trig'
+        });
+        saveAs(myblob, filename);
+        // FileSaver.saveAs(myblob, "hello world.txt");
+
+      }, error => console.log('Could not query models and language from endpoint fuseki')
+    )
+  }
+
+      queryModelsAndLanguageADVANCEDwithDistinction(sPrefix: string) {
+      this.httpClient.post<string>(this.endpointSettings.getModelAndLanguageFromFusekiAdvancedwithDistinction(),sPrefix).subscribe(
+        data => {
+          this.modelAndLanguageAdvanced$ = of(data);
+          this.modelAndLanguageAdvanced = data;
+          console.log(this.modelAndLanguageAdvanced);
+          //var FileSaver = require('file-saver');
+          //const filename = "cmmnadvancedwithDistinction.ttl";
+          const filename = "AOAME_"+sPrefix+".ttl";
+          var myblob = new Blob([this.modelAndLanguageAdvanced], {
+            type: 'text/trig'
+          });
+          saveAs(myblob, filename);
+          // FileSaver.saveAs(myblob, "hello world.txt");
+
+        }, error => console.log(error)
+      )
+
+    }
+
+  queryModelsAndLanguageADVANCEDwithDistinctionMultipleSelection(sPrefix: string []) {
+
+
+    this.httpClient.post<string>(this.endpointSettings.getModelAndLanguageFromFusekiAdvancedwithDistinction2(),sPrefix).subscribe(
+      data => {
+        this.modelAndLanguageAdvanced$ = of(data);
+        this.modelAndLanguageAdvanced = data;
+        console.log(this.modelAndLanguageAdvanced);
+
+        const filename = "AOAME_.ttl";
+        var myblob = new Blob([this.modelAndLanguageAdvanced], {
+          type: 'text/trig'
+        });
+        saveAs(myblob, filename);
+        // FileSaver.saveAs(myblob, "hello world.txt");
+
+      }, error => console.log(error)
+    )
+
+  }
+  queryLanguagesFromFuseki() : void {
+
+
+    this.httpClient.get<string>(this.endpointSettings.getPrefixFromFuseki()).subscribe(
+      data => {
+        this.modelAndLanguageAdvanced$ = of(data);
+        this.modelAndLanguageAdvanced = data;
+        //console.log(this.modelAndLanguageAdvanced);
+        this.modalModelMultipleExport.getLanguagesFromFusekiHtml();
+        //return this.modelAndLanguageAdvanced;
+
+      },error => console.log(error)
+    )
+
+  }
+  /*queryModelsAndLanguageADVANCED(): void {
+    this.httpClient.get<string>(this.endpointSettings.getModelAndLanguageFromFusekiAdvanced()).subscribe(
+      data => {
+        this.modelAndLanguageAdvanced$ = of(data);
+        this.modelAndLanguageAdvanced = data;
+        console.log(this.modelAndLanguageAdvanced);
+        //var FileSaver = require('file-saver');
+        const filename = "cmmnadvanced.ttl";
+        var myblob = new Blob([this.modelAndLanguageAdvanced], {
+          type: 'text/trig'
+        });
+        saveAs(myblob, filename);
+        // FileSaver.saveAs(myblob, "hello world.txt");
+
+      }, error => console.log(error)
+    )
+
+
+
+
+
+
+
+
+
+  }*/
+
+  }

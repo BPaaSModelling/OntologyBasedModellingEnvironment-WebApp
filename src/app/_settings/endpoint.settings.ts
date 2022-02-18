@@ -202,4 +202,26 @@ export class EndpointSettings {
   public getConceptualElementInstances() {
     return this.webserviceEndpoint + "/ModEnv/model-elements/search";
   }
+  public getModelAndLanguageFromFuseki(){
+    return this.webserviceEndpoint + "/ModEnv/getTTL"   ;
+
+  }
+  public getModelAndLanguageFromFusekiAdvanced(){
+    return this.webserviceEndpoint + "/ModEnv/getTTLAd"   ;
+
+  }
+
+  public getModelAndLanguageFromFusekiAdvancedwithDistinction(){
+    return this.webserviceEndpoint + "/ModEnv/getTTLAdwithDistinction"   ;
+
+  }
+  public getModelAndLanguageFromFusekiAdvancedwithDistinction2(){
+    return this.webserviceEndpoint + "/ModEnv/getTTLAdwithDistinction2"   ;
+
+  }
+
+  public getPrefixFromFuseki(){
+    return this.webserviceEndpoint + "/ModEnv/getPrefixesFromFuseki"   ;
+
+  }
 }
