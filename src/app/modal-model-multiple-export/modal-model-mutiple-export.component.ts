@@ -70,13 +70,6 @@ export class ModalModelMultipleExport {
   //MULTIPLE SELECTION
   getLanguageMultipleSelection(): void{
 
-//WORKS
-    /*
-    var aSelectedItemsArray :string[]=[];
-    var idea= this.selectedItems[0].item_text;
-    var idea2 = this.selectedItems[1].item_text;
-*/
-//Test with a for
     var aSelectedLangArray :string[]=[];
     for (let i = 0; i < this.selectedItems.length; i++) {
       aSelectedLangArray[i]=this.selectedItems[i].item_text;
@@ -90,8 +83,8 @@ export class ModalModelMultipleExport {
 
 
     if(this.mService.modelAndLanguageAdvanced!==undefined){
-
       this.getLanguagesFromFusekiHtml();
+      //this.getLanguagesFromFusekiHtml();
     }
 
 
@@ -100,7 +93,10 @@ export class ModalModelMultipleExport {
 
       var x = document.getElementById("myDIV");
       x.style.display ="block";
-      this.mService.queryLanguagesFromFuseki()}
+      this.getLanguagesFromFusekiHtml();
+
+
+    }
 
     this.dropdownSettings = {
       singleSelection: false,
@@ -115,6 +111,9 @@ export class ModalModelMultipleExport {
 
 
   }
+
+
+
   onItemSelect(item: any) {
     console.log(item);
   }

@@ -1138,34 +1138,7 @@ export class ModellingAreaComponent implements OnInit {
   getInstantiationTypes(): InstantiationTargetType[] {
     return _.values(InstantiationTargetType);
   }
-  getModelsAndLanguages() {
 
-    console.log('Export button selected');
-    this.mService.queryModelsAndLanguage();
-
-  }
-
-  getModelsAndLanguagesADVANCEDwithDistinction() {
-
-    const dialogRef = this.dialog.open(ModalModelExport);
-
-  }
-
-  getModelsAndLanguagesMultipleSelection() {
-
-   // this.mService.queryLanguagesFromFuseki();
-
-    const dialogRef = this.dialog.open(ModalModelMultipleExport, {
-      height: '70%',
-      width: '30%'
-
-    });
-
-  }
-  LoadModelsAndLanguagesMultipleSelection() {
-
-    this.mService.queryLanguagesFromFuseki();
-  }
 
 
 }

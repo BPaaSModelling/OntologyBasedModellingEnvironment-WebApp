@@ -12,6 +12,7 @@ import {ModalCreateDomainElementsComponent} from "../modal-create-domain-element
 import {ModalEditPaletteElementComponent} from "../modal-edit-palette-element/modal-edit-palette-element.component";
 import {ModalModelExport} from '../modal-model-export/modal-model-export-component';
 import {ModalModelMultipleExport} from '../modal-model-multiple-export/modal-model-mutiple-export.component';
+import {delay} from 'rxjs/operators';
 
 
 @Component({
@@ -31,7 +32,7 @@ export class UploadEnvironmentComponent implements OnInit {
   ngOnInit() {
 
 
-    this.LoadModelsAndLanguagesMultipleSelection();
+    this.LoadModelsAndLanguagesMultipleSelectionATTEMPT();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -157,7 +158,7 @@ export class UploadEnvironmentComponent implements OnInit {
   getModelsAndLanguagesMultipleSelection() {
 
     // this.mService.queryLanguagesFromFuseki();
-
+    //this.LoadModelsAndLanguagesMultipleSelectionATTEMPT();
     const dialogRef = this.dialog.open(ModalModelMultipleExport, {
       height: '80%',
       width: '80%'
@@ -165,10 +166,12 @@ export class UploadEnvironmentComponent implements OnInit {
     });
 
   }
-  LoadModelsAndLanguagesMultipleSelection() {
+  async LoadModelsAndLanguagesMultipleSelectionATTEMPT() {
 
-    this.uploadService.queryLanguagesFromFuseki();
+    await this.uploadService.queryLanguagesFromFuseki();
+
   }
+
 
 }
 

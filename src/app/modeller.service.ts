@@ -437,16 +437,19 @@ export class ModellerService {
     )
 
   }
-  queryLanguagesFromFuseki() : void {
+ async queryLanguagesFromFuseki() : Promise<void> {
 
 
     this.httpClient.get<string>(this.endpointSettings.getPrefixFromFuseki()).subscribe(
       data => {
+
         this.modelAndLanguageAdvanced$ = of(data);
         this.modelAndLanguageAdvanced = data;
         //console.log(this.modelAndLanguageAdvanced);
-        this.modalModelMultipleExport.getLanguagesFromFusekiHtml();
+        //this.modalModelMultipleExport.getLanguagesFromFusekiHtml();
         //return this.modelAndLanguageAdvanced;
+
+
 
       },error => console.log(error)
     )
