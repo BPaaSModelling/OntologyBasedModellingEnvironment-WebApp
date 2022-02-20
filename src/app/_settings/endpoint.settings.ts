@@ -221,7 +221,7 @@ export class EndpointSettings {
   }
 
   public getPrefixFromFuseki(){
-    return this.webserviceEndpoint + "/ModEnv/getPrefixesFromFuseki"   ;
+    return this.webserviceEndpoint + "/ModEnv/getPrefixesFromFuseki2"   ;
 
   }
 }
