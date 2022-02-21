@@ -165,7 +165,7 @@ export class UploadEnvironmentComponent implements OnInit {
 
       () => {console.log("Task Complete!");
 
-       
+
         const dialogRef = this.dialog.open(ModalModelMultipleExport, {
           height: '80%',
           width: '80%'

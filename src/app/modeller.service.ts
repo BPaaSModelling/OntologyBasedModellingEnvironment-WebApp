@@ -48,7 +48,14 @@ export class ModellerService {
   public modelAndLanguage: string ;
   public modelAndLanguageAdvanced$: Observable<string> = of ();
   public modelAndLanguageAdvanced: string ;
+
+  public prefixAdvanced$: Observable<string> = of ();
+  public prefixAdvanced: string ;
+
+
+
   public modalModelMultipleExport: ModalModelMultipleExport ;
+
 
   // public namespaceMap$: Observable<Map<string, string>> = of({});
 
@@ -396,7 +403,7 @@ export class ModellerService {
       }, error => console.log('Could not query models and language from endpoint fuseki')
     )
   }
-
+//not used
       queryModelsAndLanguageADVANCEDwithDistinction(sPrefix: string) {
       this.httpClient.post<string>(this.endpointSettings.getModelAndLanguageFromFusekiAdvancedwithDistinction(),sPrefix).subscribe(
         data => {
@@ -443,8 +450,8 @@ export class ModellerService {
     this.httpClient.get<string>(this.endpointSettings.getPrefixFromFuseki()).subscribe(
       data => {
 
-        this.modelAndLanguageAdvanced$ = of(data);
-        this.modelAndLanguageAdvanced = data;
+        this.prefixAdvanced$ = of(data);
+        this.prefixAdvanced = data;
         //console.log(this.modelAndLanguageAdvanced);
         //this.modalModelMultipleExport.getLanguagesFromFusekiHtml();
         //return this.modelAndLanguageAdvanced;

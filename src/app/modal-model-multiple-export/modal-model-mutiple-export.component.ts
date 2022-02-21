@@ -56,8 +56,8 @@ export class ModalModelMultipleExport {
 
   //load languages into multiple selection
   public getLanguagesFromFusekiHtml(): void{
-    if (this.mService.modelAndLanguageAdvanced !== undefined){
-    var array = this.mService.modelAndLanguageAdvanced.split(',');
+    if (this.mService.prefixAdvanced !== undefined){
+    var array = this.mService.prefixAdvanced.split(',');
 
    for(let i=1;i<array.length;i++){
      this.dropdownList.push({ item_id: i, item_text: array[i-1] });
