@@ -95,8 +95,15 @@ export class ModalModelMultipleExport {
       x.style.display ="block";
       this.getLanguagesFromFusekiHtml();
 
+    }else{
+
+      var x = document.getElementById("myDIV");
+      x.style.display ="none";
 
     }
+
+
+
 
     this.dropdownSettings = {
       singleSelection: false,
