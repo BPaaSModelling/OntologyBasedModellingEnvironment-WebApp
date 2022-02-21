@@ -158,18 +158,21 @@ export class UploadEnvironmentComponent implements OnInit {
   getModelsAndLanguagesMultipleSelection() {
 
     // this.mService.queryLanguagesFromFuseki();
-    let dialogRef;
+    //let dialogRef;
 
     //try waiting for the response before open dialog box
     this.LoadModelsAndLanguagesMultipleSelectionATTEMPT().then(
 
-      () => console.log("Task Complete!"),
-      () =>  dialogRef = this.dialog.open(ModalModelMultipleExport, {
-      height: '80%',
-      width: '80%'
+      () => {console.log("Task Complete!");
 
-    })
-  );
+       
+        const dialogRef = this.dialog.open(ModalModelMultipleExport, {
+          height: '80%',
+          width: '80%'
+        });
+
+
+      })
     }
 
 //this work but with bug.
