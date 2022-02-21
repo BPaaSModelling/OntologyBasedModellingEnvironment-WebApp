@@ -82,7 +82,7 @@ export class ModalModelMultipleExport {
   ngOnInit() : void{
 
 
-    if(this.mService.modelAndLanguageAdvanced!==undefined){
+    if(this.mService.prefixAdvanced!==undefined){
       this.getLanguagesFromFusekiHtml();
       //this.getLanguagesFromFusekiHtml();
     }
@@ -91,14 +91,9 @@ export class ModalModelMultipleExport {
 
     if(this.dropdownList.length===0){
 
-      var x = document.getElementById("myDIV");
-      x.style.display ="block";
-      this.getLanguagesFromFusekiHtml();
-
-    }else{
-
-      var x = document.getElementById("myDIV");
-      x.style.display ="none";
+     var x = document.getElementById("myDIV");
+       x.style.display ="block";
+      //this.getLanguagesFromFusekiHtml();
 
     }
 
