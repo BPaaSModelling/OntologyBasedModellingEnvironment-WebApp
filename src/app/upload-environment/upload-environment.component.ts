@@ -1,15 +1,17 @@
+//rename folder and file with the new name , is not upload
+
 import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
-import {ModellerService} from "../modeller.service";
-import {MetamodelElementModel} from "../_models/MetamodelElement.model";
-import {PaletteElementModel} from "../_models/PaletteElement.model";
-import {ModalInstancePropertiesComponent,} from "../modal-instance-properties/modal-instance-properties.component";
-import {MatDialog} from "@angular/material";
-import {ModalPaletteElementPropertiesComponent} from "../modal-palette-element-properties/modal-palette-element-properties.component";
-import {ModalExtendPaletteElementComponent} from "../modal-extend-palette-element/modal-extend-palette-element.component";
-import {VariablesSettings} from "../_settings/variables.settings";
-import {ModalConnectorElementPropertiesComponent} from "../modal-connector-element-properties/modal-connector-element-properties.component";
-import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
-import {ModalEditPaletteElementComponent} from "../modal-edit-palette-element/modal-edit-palette-element.component";
+import {ModellerService} from '../modeller.service';
+import {MetamodelElementModel} from '../_models/MetamodelElement.model';
+import {PaletteElementModel} from '../_models/PaletteElement.model';
+import {ModalInstancePropertiesComponent,} from '../modal-instance-properties/modal-instance-properties.component';
+import {MatDialog} from '@angular/material';
+import {ModalPaletteElementPropertiesComponent} from '../modal-palette-element-properties/modal-palette-element-properties.component';
+import {ModalExtendPaletteElementComponent} from '../modal-extend-palette-element/modal-extend-palette-element.component';
+import {VariablesSettings} from '../_settings/variables.settings';
+import {ModalConnectorElementPropertiesComponent} from '../modal-connector-element-properties/modal-connector-element-properties.component';
+import {ModalCreateDomainElementsComponent} from '../modal-create-domain-elements/modal-create-domain-elements.component';
+import {ModalEditPaletteElementComponent} from '../modal-edit-palette-element/modal-edit-palette-element.component';
 import {ModalModelExport} from '../modal-model-export/modal-model-export-component';
 import {ModalModelMultipleExport} from '../modal-model-multiple-export/modal-model-mutiple-export.component';
 import {delay} from 'rxjs/operators';
@@ -30,9 +32,8 @@ export class UploadEnvironmentComponent implements OnInit {
   }
 
   ngOnInit() {
-
-
-    this.LoadModelsAndLanguagesMultipleSelectionATTEMPT();
+    //ask for prefixes to the database when the component is initalized
+    this.loadPrefixesPreparation();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -43,32 +44,33 @@ export class UploadEnvironmentComponent implements OnInit {
     this.new_element = new_element;
   }
 
-  toggleInstancePropertiesModal(element: Object){
-    console.log("ricevuto elemento " + element);
+  toggleInstancePropertiesModal(element: Object) {
+    console.log('ricevuto elemento ' + element);
 
     let dialogRef = this.dialog.open(ModalInstancePropertiesComponent, {
-      height:'80%',
+      height: '80%',
       width: '800px',
       disableClose: true,
     });
 
   }
-  togglePaletteElementPropertiesModal(element: PaletteElementModel){
+
+  togglePaletteElementPropertiesModal(element: PaletteElementModel) {
     //console.log(element)
     console.log(element.paletteCategory);
     console.log(VariablesSettings.paletteCategoryConnectorsURI);
     if (element.paletteCategory === VariablesSettings.paletteCategoryConnectorsURI) {
       //Here i call another modal for defining connectors
       let dialogRef = this.dialog.open(ModalConnectorElementPropertiesComponent, {
-        data: { paletteElement: element},
-        height:'80%',
+        data: {paletteElement: element},
+        height: '80%',
         width: '800px',
         disableClose: true,
       });
     } else {
       let dialogRef = this.dialog.open(ModalPaletteElementPropertiesComponent, {
-        data: { paletteElement: element},
-        height:'80%',
+        data: {paletteElement: element},
+        height: '80%',
         width: '800px',
         disableClose: true,
       });
@@ -78,11 +80,11 @@ export class UploadEnvironmentComponent implements OnInit {
 
   }
 
-  toggleExtendPaletteElementModal(element: PaletteElementModel){
+  toggleExtendPaletteElementModal(element: PaletteElementModel) {
     //console.log(element)
     let dialogRef = this.dialog.open(ModalExtendPaletteElementComponent, {
-      data: { paletteElement: element},
-      height:'80%',
+      data: {paletteElement: element},
+      height: '80%',
       width: '800px',
       disableClose: false,
     });
@@ -96,10 +98,10 @@ export class UploadEnvironmentComponent implements OnInit {
     });
   }
 
-  toggleEditPaletteElementModal(element: PaletteElementModel){
+  toggleEditPaletteElementModal(element: PaletteElementModel) {
     let dialogRef = this.dialog.open(ModalEditPaletteElementComponent, {
-      data: { paletteElement: element},
-      height:'80%',
+      data: {paletteElement: element},
+      height: '80%',
       width: '800px',
       disableClose: false,
     });
@@ -111,8 +113,8 @@ export class UploadEnvironmentComponent implements OnInit {
 
   toggleCreateDomainElementModal(element: PaletteElementModel) {
     let dialogRef = this.dialog.open(ModalCreateDomainElementsComponent, {
-      data: {paletteElement: element },
-      height:'80%',
+      data: {paletteElement: element},
+      height: '80%',
       width: '800px',
       disableClose: false,
     });
@@ -124,8 +126,8 @@ export class UploadEnvironmentComponent implements OnInit {
 
   toggleActivityElementPropertyModal(element: PaletteElementModel) {
     let dialogRef = this.dialog.open(ModalPaletteElementPropertiesComponent, {
-      data: {paletteElement: element },
-      height:'80%',
+      data: {paletteElement: element},
+      height: '80%',
       width: '800px',
       disableClose: false,
     });
@@ -135,11 +137,9 @@ export class UploadEnvironmentComponent implements OnInit {
     });
   }
 
-  goToLink(url: string){
-    window.open(url, "_blank");
+  goToLink(url: string) {
+    window.open(url, '_blank');
   }
-
-
 
 
   getModelsAndLanguages() {
@@ -149,21 +149,21 @@ export class UploadEnvironmentComponent implements OnInit {
 
   }
 
+
+  //Old function for single prefix export
   getModelsAndLanguagesADVANCEDwithDistinction() {
 
     const dialogRef = this.dialog.open(ModalModelExport);
 
   }
 
+
+//open dialog box for multiple selection
   getModelsAndLanguagesMultipleSelection() {
-
-    // this.mService.queryLanguagesFromFuseki();
-    //let dialogRef;
-
-    //try waiting for the response before open dialog box
-    this.LoadModelsAndLanguagesMultipleSelectionATTEMPT().then(
-
-      () => {console.log("Task Complete!");
+    //Open the dialog box only when the prefixes are stored in the variable prefixesAdvaced
+    this.loadPrefixesPreparation().then(
+      () => {
+        console.log('Task Complete!');
 
 
         const dialogRef = this.dialog.open(ModalModelMultipleExport, {
@@ -172,18 +172,11 @@ export class UploadEnvironmentComponent implements OnInit {
         });
 
 
-      })
-    }
+      });
+  }
 
-//this work but with bug.
-/*    const dialogRef = this.dialog.open(ModalModelMultipleExport, {
-      height: '80%',
-      width: '80%'
-
-    });
-*/
-
-  async LoadModelsAndLanguagesMultipleSelectionATTEMPT() {
+  // Ask for data to the server
+  async loadPrefixesPreparation() {
 
     await this.uploadService.queryLanguagesFromFuseki();
 

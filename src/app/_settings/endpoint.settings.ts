@@ -206,11 +206,12 @@ export class EndpointSettings {
     return this.webserviceEndpoint + "/ModEnv/getTTL"   ;
 
   }
+  //not used method
   public getModelAndLanguageFromFusekiAdvanced(){
     return this.webserviceEndpoint + "/ModEnv/getTTLAd"   ;
 
   }
-
+//old endpoint not used anymore
   public getModelAndLanguageFromFusekiAdvancedwithDistinction(){
     return this.webserviceEndpoint + "/ModEnv/getTTLAdwithDistinction"   ;
 
