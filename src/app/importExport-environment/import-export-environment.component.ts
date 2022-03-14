@@ -13,16 +13,17 @@ import {ModalConnectorElementPropertiesComponent} from '../modal-connector-eleme
 import {ModalCreateDomainElementsComponent} from '../modal-create-domain-elements/modal-create-domain-elements.component';
 import {ModalEditPaletteElementComponent} from '../modal-edit-palette-element/modal-edit-palette-element.component';
 import {ModalModelExport} from '../modal-model-export/modal-model-export-component';
-import {ModalModelMultipleExport} from '../modal-model-multiple-export/modal-model-mutiple-export.component';
+import {ModalModelMultipleExport} from '../modal-model-multiple-export/modal-model-multiple-export.component';
 import {delay} from 'rxjs/operators';
+import {ModalModelMultipleImport} from '../modal-model-multiple-import/modal-model-multiple-import.component';
 
 
 @Component({
   selector: 'app-modelling-environment',
-  templateUrl: './upload-environment.component.html',
-  styleUrls: ['./upload-environment.component.css']
+  templateUrl: './import-export-environment.component.html',
+  styleUrls: ['./import-export-environment.component.css']
 })
-export class UploadEnvironmentComponent implements OnInit {
+export class ImportExportEnvironmentComponent implements OnInit {
   propElement: Object;
   new_element: PaletteElementModel;
   showProp: boolean;
@@ -33,7 +34,8 @@ export class UploadEnvironmentComponent implements OnInit {
 
   ngOnInit() {
     //ask for prefixes to the database when the component is initalized
-    this.loadPrefixesPreparation();
+      this.loadPrefixesPreparationFromGithub();
+      this.loadPrefixesPreparation();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -175,13 +177,37 @@ export class UploadEnvironmentComponent implements OnInit {
       });
   }
 
+  getModelsAndLanguagesMultipleSelectionFromGithub() {
+    //Open the dialog box only when the prefixes are stored in the variable prefixesAdvaced
+    this.loadPrefixesPreparationFromGithub().then(
+      () => {
+        console.log('Task Complete!');
+
+
+        const dialogRef = this.dialog.open(ModalModelMultipleImport, {
+          height: '80%',
+          width: '80%'
+        });
+
+
+      });
+  }
+
   // Ask for data to the server
+
+
+
+
   async loadPrefixesPreparation() {
 
     await this.uploadService.queryLanguagesFromFuseki();
 
   }
+  async loadPrefixesPreparationFromGithub() {
 
+    await this.uploadService.queryLanguagesFromGithub();
+
+  }
 
 }
 

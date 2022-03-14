@@ -26,7 +26,7 @@ import {ModelingViewModel} from './_models/ModelingView.model';
 //import { saveAs } from  'file-saver';
 import * as fileSaver from 'file-saver';
 import {saveAs} from 'file-saver';
-import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-model-mutiple-export.component';
+import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-model-multiple-export.component';
 import {promise} from 'protractor';
 
 
@@ -51,6 +51,9 @@ export class ModellerService {
 
   public prefixAdvanced$: Observable<string> = of();
   public prefixAdvanced: string;
+
+  public prefixAdvancedGithub$: Observable<string> = of();
+  public prefixAdvancedGithub: string;
 
 
   public modalModelMultipleExport: ModalModelMultipleExport;
@@ -445,6 +448,17 @@ export class ModellerService {
 
   }
 
+  queryUploadLanguagesSelectedOnFuseki(sPrefix: string []) {
+    this.httpClient.post(this.endpointSettings.postLanguagesToFuseki(), sPrefix).subscribe(
+      data => {
+
+      }, error =>console.log (error)
+
+    );
+  }
+
+
+
   //Get prefixes from fuseki
   async queryLanguagesFromFuseki(): Promise<void> {
     this.httpClient.get<string>(this.endpointSettings.getPrefixFromFuseki()).subscribe(
@@ -454,5 +468,16 @@ export class ModellerService {
       }, error => console.log(error)
     );
   }
+
+  async queryLanguagesFromGithub(): Promise<void> {
+    this.httpClient.get<string>(this.endpointSettings.getPrefixFromGithub()).subscribe(
+      data => {
+        this.prefixAdvancedGithub$ = of(data);
+        this.prefixAdvancedGithub = data;
+      }, error => console.log(error)
+    );
+  }
+
+
 
 }

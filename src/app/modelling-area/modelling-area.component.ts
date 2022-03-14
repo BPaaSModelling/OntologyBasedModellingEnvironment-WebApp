@@ -23,7 +23,7 @@ import {ModelElementDetail} from '../_models/ModelElementDetail.model';
 import {ModelElementDetailAndModel} from '../_models/ModelElementDetailAndModel';
 import {ModalViewElementDetail} from '../model-element-detail/model-element-detail.component';
 import {ModalModelExport} from '../modal-model-export/modal-model-export-component';
-import {ModalModelMultipleExport} from '../modal-model-multiple-export/modal-model-mutiple-export.component';
+import {ModalModelMultipleExport} from '../modal-model-multiple-export/modal-model-multiple-export.component';
 
 let $: any;
 let myDiagram: any;

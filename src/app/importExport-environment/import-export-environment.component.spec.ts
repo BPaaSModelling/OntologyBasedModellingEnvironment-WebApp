@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UploadEnvironmentComponent } from './upload-environment.component';
+import { ImportExportEnvironmentComponent } from './import-export-environment.component';
 
 describe('ModellingEnvironmentComponent', () => {
-  let component: UploadEnvironmentComponent;
-  let fixture: ComponentFixture<UploadEnvironmentComponent>;
+  let component: ImportExportEnvironmentComponent;
+  let fixture: ComponentFixture<ImportExportEnvironmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UploadEnvironmentComponent ]
+      declarations: [ ImportExportEnvironmentComponent ]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UploadEnvironmentComponent);
+    fixture = TestBed.createComponent(ImportExportEnvironmentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

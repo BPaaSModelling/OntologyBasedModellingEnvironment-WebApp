@@ -221,8 +221,18 @@ export class EndpointSettings {
 
   }
 
+  public postLanguagesToFuseki(){
+    return this.webserviceEndpoint + "/ModEnv/postLanguagesSelectedtoFuseki"   ;
+
+  }
+
+
   public getPrefixFromFuseki(){
     return this.webserviceEndpoint + "/ModEnv/getPrefixesFromFuseki2"   ;
+
+  }
+  public getPrefixFromGithub(){
+    return this.webserviceEndpoint + "/ModEnv/getLanguagesFromGithub"   ;
 
   }
 }
