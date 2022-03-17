@@ -235,4 +235,9 @@ export class EndpointSettings {
     return this.webserviceEndpoint + "/ModEnv/getLanguagesFromGithub"   ;
 
   }
+
+  public uploadTtlFromDesktop(){
+    return this.webserviceEndpoint + "/ModEnv/postTtlFromDesktop"   ;
+
+  }
 }

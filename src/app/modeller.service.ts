@@ -478,6 +478,14 @@ export class ModellerService {
     );
   }
 
+  uploadFromDesktop(sTtlFromDesktop: string){
+
+      this.httpClient.post(this.endpointSettings.uploadTtlFromDesktop(), sTtlFromDesktop).subscribe();
+
+  }
+
+
+
 
 
 }

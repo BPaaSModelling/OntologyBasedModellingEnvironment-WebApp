@@ -60,7 +60,7 @@ import {ModalModelExport} from './modal-model-export/modal-model-export-componen
 import {ImportExportEnvironmentComponent} from './importExport-environment/import-export-environment.component';
 import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-model-multiple-export.component';
 import {ModalModelMultipleImport} from './modal-model-multiple-import/modal-model-multiple-import.component';
-
+import { FileUploadComponent } from    './file-upload/file-upload.component';
 
 
 const appRoutes: Routes = [
@@ -106,7 +106,8 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModalShowLanguageInstances,
     ModalModelExport,
     ModalModelMultipleExport,
-    ModalModelMultipleImport
+    ModalModelMultipleImport,
+    FileUploadComponent
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
