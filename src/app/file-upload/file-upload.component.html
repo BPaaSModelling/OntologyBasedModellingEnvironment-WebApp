@@ -26,7 +26,7 @@
   <input class="form-control" type="file"
          (change)="onChange($event)">
 
-  <button (click)="onUpload()"
+  <button  class="button7" (click)="onUpload()"
           class="btn btn-success">
     Upload
   </button>
@@ -35,8 +35,9 @@
 <!-- Shareable short link of  uoloaded file -->
 <div class="container text-center jumbotron"
      *ngIf="shortLink">
-  <h2> Visit Here</h2>
-  <a href="{{shortLink}}">{{shortLink}}</a>
+  <!--ATTENTION: The commented code below allow to show realtime the link when it's retrieved from file.io-->
+  <!--<h2> Visit Here</h2>
+  <a href="{{shortLink}}">{{shortLink}}</a>-->
 </div>
 
 <!--Flag variable is used here-->

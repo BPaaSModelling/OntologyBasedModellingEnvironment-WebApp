@@ -480,8 +480,7 @@ export class ModellerService {
 
   uploadFromDesktop(sTtlFromDesktop: string){
 
-      this.httpClient.post(this.endpointSettings.uploadTtlFromDesktop(), sTtlFromDesktop).subscribe();
-
+      this.httpClient.post(this.endpointSettings.uploadTtlFromDesktop(), sTtlFromDesktop).subscribe(data=>{},error => console.log(error));
   }
 
 
