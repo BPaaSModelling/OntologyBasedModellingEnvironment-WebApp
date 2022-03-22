@@ -86,3 +86,13 @@
     margin:0.4em auto;
   }
 }
+mat-grid-tile {
+  background: lightblue;
+}
+.import{
+  background: lightblue;
+}
+
+.export{
+  background: lightsalmon;
+}

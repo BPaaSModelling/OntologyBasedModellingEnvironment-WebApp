@@ -107,7 +107,8 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModalModelExport,
     ModalModelMultipleExport,
     ModalModelMultipleImport,
-    FileUploadComponent
+    FileUploadComponent,
+
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
