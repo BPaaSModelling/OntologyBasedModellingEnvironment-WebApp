@@ -1,38 +1,19 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <!-- <div style="text-align:center"> -->
-
-
+<html><head>
+<title>Home</title>
+</head>
+<body>
 <mat-toolbar color="primary" class="mat-elevation-z8">
-  <span><img width="350" src=".\assets\images\AOAME_crop.png"></span>
+  <span><a mat-button routerLink="/home"><img width="350" src=".\assets\images\AOAME_crop.png"></a></span>
 
   <div class="spacer"></div>
 
-  <a mat-button routerLink="/modeller">Modeller</a>
-  <a mat-button routerLink="importExport">Import and Export</a>
+  <a mat-button routerLink="/home"routerLinkActive="active-link" [routerLinkActiveOptions]={exact:true} >Home</a>
+  <a mat-button routerLink="/modeller"routerLinkActive="active-link">Modeller</a>
+  <a mat-button routerLink="importExport" routerLinkActive="active-link">Import and Export</a>
 </mat-toolbar>
 
-
-
-
- <!-- <nav>
-  <a class="button" routerLink="/modeller">Modeller</a>
-    <a class="button" routerLink="/importExport">Import and Export</a>
-
-</nav>-->
-
- <!--</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
-
--->
 <router-outlet></router-outlet>
+</body>
+</html>

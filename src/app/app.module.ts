@@ -61,11 +61,16 @@ import {ImportExportEnvironmentComponent} from './importExport-environment/impor
 import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-model-multiple-export.component';
 import {ModalModelMultipleImport} from './modal-model-multiple-import/modal-model-multiple-import.component';
 import { FileUploadComponent } from    './file-upload/file-upload.component';
+import {HomeComponent} from './home/home.component';
 
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
   { path: 'importExport', component: ImportExportEnvironmentComponent},
+  { path: 'home', component: HomeComponent},
+  { path: '', component: HomeComponent},
+
+
 ];
 
 export function appInit(endpointSettings: EndpointSettings) {
@@ -108,6 +113,7 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModalModelMultipleExport,
     ModalModelMultipleImport,
     FileUploadComponent,
+    HomeComponent
 
   ],
   entryComponents: [
