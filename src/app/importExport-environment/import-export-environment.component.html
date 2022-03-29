@@ -11,16 +11,18 @@
   <mat-grid-tile class="import">
     <mat-card-content>-->
 <div class="row">
+
 <div class="col-md-6">
   <div class="import">
+    <div class="transbox">
       <h1 style="text-align:center">Import</h1>
       <div><h2>Select the button below to load an ontology file from the AOAME database</h2></div>
 
 
-    <div class="centered"><button class="button7" style="background-color:#2979FF" (click)="getModelsAndLanguagesMultipleSelectionFromGithub()">Import</button></div><br><br>
+    <div class="centered"><button class="button10" style="background-color:#2979FF" (click)="getModelsAndLanguagesMultipleSelectionFromGithub()">Import</button></div><br><br>
       <div><h2>Select the button below to load an ontology file from your computer</h2></div>
       <app-file-upload></app-file-upload>
-
+    </div>
     </div>
 </div>
 
@@ -34,12 +36,14 @@
     <mat-card-content>-->
   <div class="col-md-6">
     <div class="export">
+      <div class="transbox">
       <h1 style="text-align:center">Export</h1>
       <div><h2>Select the button "Full Export" to download the complete model with all the ontology.</h2></div>
-      <div class="centered"><button class="button7" style="background-color:#2979FF" (click)="getModelsAndLanguages()">Full Export</button></div><br><br>
+      <div class="centered"><button class="button10" style="background-color:#2979FF" (click)="getModelsAndLanguages()">Full Export</button></div><br><br>
       <div><h2>Select the button "Advanced Export" to download a selection of the model and ontology</h2></div>
-        <div class="centered"><button class="button7" style="background-color:#2979FF" (click)="getModelsAndLanguagesMultipleSelection()">Advanced Export</button></div>
+        <div class="centered"><button class="button10" style="background-color:#2979FF" (click)="getModelsAndLanguagesMultipleSelection()">Advanced Export</button></div>
     </div>
+      </div>
   </div>
 
 </div>
