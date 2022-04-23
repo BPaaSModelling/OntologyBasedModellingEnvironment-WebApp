@@ -78,8 +78,6 @@ export class FileUploadComponent implements OnInit {
           this.loading = false; // Flag variable
           this.uploadService.uploadFromDesktop(this.shortLink);
           console.log("Fine upload!")
-          var x = document.getElementById('myDIV');
-          x.style.display = 'block';
         }
       }
     );

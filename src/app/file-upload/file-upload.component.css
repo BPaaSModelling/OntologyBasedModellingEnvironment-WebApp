@@ -37,6 +37,7 @@
   display: inline-block;
   z-index: 2;
 
+
 }
 
 .button6{
@@ -86,19 +87,6 @@
   .button7{
     display:block;
     margin:0.4em auto;
-    background-color: blue; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 12px;
   }
-
-
-
-
 }
 
