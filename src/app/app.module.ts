@@ -57,13 +57,20 @@ import {ModalShowLanguageInstances} from './modal-show-language-instances/modal-
 import {EndpointSettings} from './_settings/endpoint.settings';
 import {HttpClientModule} from '@angular/common/http';
 import {ModalModelExport} from './modal-model-export/modal-model-export-component';
-import {UploadEnvironmentComponent} from './upload-environment/upload-environment.component';
-import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-model-mutiple-export.component';
+import {ImportExportEnvironmentComponent} from './importExport-environment/import-export-environment.component';
+import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-model-multiple-export.component';
+import {ModalModelMultipleImport} from './modal-model-multiple-import/modal-model-multiple-import.component';
+import { FileUploadComponent } from    './file-upload/file-upload.component';
+import {HomeComponent} from './home/home.component';
 
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
-  { path: 'upload', component: UploadEnvironmentComponent},
+  { path: 'importExport', component: ImportExportEnvironmentComponent},
+  { path: 'home', component: HomeComponent},
+  { path: '', component: HomeComponent},
+
+
 ];
 
 export function appInit(endpointSettings: EndpointSettings) {
@@ -72,7 +79,7 @@ export function appInit(endpointSettings: EndpointSettings) {
 
 @NgModule({
   declarations: [
-    UploadEnvironmentComponent,
+    ImportExportEnvironmentComponent,
     AppComponent,
     ModellingEnvironmentComponent,
     PaletteAreaComponent,
@@ -103,7 +110,11 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModalModelEdit,
     ModalShowLanguageInstances,
     ModalModelExport,
-    ModalModelMultipleExport
+    ModalModelMultipleExport,
+    ModalModelMultipleImport,
+    FileUploadComponent,
+    HomeComponent
+
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -128,7 +139,8 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModalModelEdit,
     ModalShowLanguageInstances,
     ModalModelExport,
-    ModalModelMultipleExport
+    ModalModelMultipleExport,
+    ModalModelMultipleImport
   ],
   imports: [
     BrowserModule,

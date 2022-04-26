@@ -23,7 +23,7 @@ import {ModelElementDetail} from '../_models/ModelElementDetail.model';
 import {ModelElementDetailAndModel} from '../_models/ModelElementDetailAndModel';
 import {ModalViewElementDetail} from '../model-element-detail/model-element-detail.component';
 import {ModalModelExport} from '../modal-model-export/modal-model-export-component';
-import {ModalModelMultipleExport} from '../modal-model-multiple-export/modal-model-mutiple-export.component';
+import {ModalModelMultipleExport} from '../modal-model-multiple-export/modal-model-multiple-export.component';
 
 let $: any;
 let myDiagram: any;
@@ -1138,34 +1138,7 @@ export class ModellingAreaComponent implements OnInit {
   getInstantiationTypes(): InstantiationTargetType[] {
     return _.values(InstantiationTargetType);
   }
-  getModelsAndLanguages() {
 
-    console.log('Export button selected');
-    this.mService.queryModelsAndLanguage();
-
-  }
-
-  getModelsAndLanguagesADVANCEDwithDistinction() {
-
-    const dialogRef = this.dialog.open(ModalModelExport);
-
-  }
-
-  getModelsAndLanguagesMultipleSelection() {
-
-   // this.mService.queryLanguagesFromFuseki();
-
-    const dialogRef = this.dialog.open(ModalModelMultipleExport, {
-      height: '70%',
-      width: '30%'
-
-    });
-
-  }
-  LoadModelsAndLanguagesMultipleSelection() {
-
-    this.mService.queryLanguagesFromFuseki();
-  }
 
 
 }

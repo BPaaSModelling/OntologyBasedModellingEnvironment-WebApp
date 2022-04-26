@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {EndpointSettings} from './_settings/endpoint.settings';
 //import {ModalModelMultipleExport} from './modal-model-multiple-export';
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import { of } from 'rxjs';
+import {of} from 'rxjs';
 // import 'rxjs/operator/delay';
 // import 'rxjs/operator/mergeMap';
 // import 'rxjs/operator/switchMap';
@@ -17,7 +17,7 @@ import {ModelingLanguageModel} from './_models/ModelingLanguage.model';
 import {ObjectPropertyModel} from './_models/ObjectProperty.model';
 import {Model} from './_models/Model.model';
 import {ModelElementDetail} from './_models/ModelElementDetail.model';
-import { ArrowStructures } from './_models/ArrowStructures.model';
+import {ArrowStructures} from './_models/ArrowStructures.model';
 import {InstantiationTargetType} from './_models/InstantiationTargetType.model';
 import {RelationOptions} from './_models/RelationOptions.model';
 import ModellingLanguageConstructInstance from './_models/ModellingLanguageConstructInstance.model';
@@ -25,8 +25,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ModelingViewModel} from './_models/ModelingView.model';
 //import { saveAs } from  'file-saver';
 import * as fileSaver from 'file-saver';
-import { saveAs } from 'file-saver';
-import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-model-mutiple-export.component';
+import {saveAs} from 'file-saver';
+import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-model-multiple-export.component';
 import {promise} from 'protractor';
 
 
@@ -44,17 +44,27 @@ export class ModellerService {
   public datatypeProperties$: Observable<DatatypePropertyModel[]> = of([]);
   public namespacePrefixe$: Observable<string[]> = of([]);
   public namespacePrefixes: string[] = [];
-  public modelAndLanguage$: Observable<string> = of ();
-  public modelAndLanguage: string ;
-  public modelAndLanguageAdvanced$: Observable<string> = of ();
-  public modelAndLanguageAdvanced: string ;
-  public modalModelMultipleExport: ModalModelMultipleExport ;
+  public modelAndLanguage$: Observable<string> = of();
+  public modelAndLanguage: string;
+  public modelAndLanguageAdvanced$: Observable<string> = of();
+  public modelAndLanguageAdvanced: string;
+
+  public prefixAdvanced$: Observable<string> = of();
+  public prefixAdvanced: string;
+
+  public prefixAdvancedGithub$: Observable<string> = of();
+  public prefixAdvancedGithub: string;
+
+
+  public modalModelMultipleExport: ModalModelMultipleExport;
+
 
   // public namespaceMap$: Observable<Map<string, string>> = of({});
 
   public selectedModelingLanguage;
 
-  constructor(private httpClient: HttpClient, private endpointSettings: EndpointSettings) {}
+  constructor(private httpClient: HttpClient, private endpointSettings: EndpointSettings) {
+  }
 
   queryModelingLanguages() {
     return this.httpClient.get<ModelingLanguageModel[]>(this.endpointSettings.getModelingLanguagesEndpoint()); /*.subscribe(
@@ -129,10 +139,10 @@ export class ModellerService {
     console.log(oImg);
     this.httpClient.post(this.endpointSettings.getCreateDomainElementEndpoint(), oImg)
       .subscribe(
-      data => {
-        querySuccess = (data == 'true');
-      }
-    );
+        data => {
+          querySuccess = (data == 'true');
+        }
+      );
     return querySuccess;
   }
 
@@ -161,8 +171,12 @@ export class ModellerService {
     params.append('element', JSON.stringify(element));
     params.append('modifiedElement', JSON.stringify(modifiedElement)); // passing multiple parameters in POST
 
-    return this.httpClient.post(this.endpointSettings.getModifyElementEndpoint(), params);
-  }
+    //url encoding headers added
+    const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
+
+    return this.httpClient.post(this.endpointSettings.getModifyElementEndpoint(), params.toString(), {headers: headers})
+
+    }
 
   editDatatypeProperty(property: DatatypePropertyModel, editedProperty: DatatypePropertyModel) {
     const querySuccess: Boolean = false;
@@ -170,7 +184,12 @@ export class ModellerService {
     const params = new URLSearchParams();
     params.append('property', JSON.stringify(property));
     params.append('editedProperty', JSON.stringify(editedProperty)); // passing multiple parameters in POST
-    return this.httpClient.post(this.endpointSettings.getEditDatatypePropertyEndpoint(), params);
+
+
+    //url encoding headers added
+    const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
+
+    return this.httpClient.post(this.endpointSettings.getModifyElementEndpoint(), params.toString(), {headers: headers})
   }
 
   editObjectProperty(property: ObjectPropertyModel, editedProperty: ObjectPropertyModel) {
@@ -179,7 +198,10 @@ export class ModellerService {
     const params = new URLSearchParams();
     params.append('property', JSON.stringify(property));
     params.append('editedProperty', JSON.stringify(editedProperty)); // passing multiple parameters in POST
-    return this.httpClient.post(this.endpointSettings.getEditObjectPropertyEndpoint(), params);
+
+
+    const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
+    return this.httpClient.post(this.endpointSettings.getModifyElementEndpoint(), params.toString(), {headers: headers})
   }
 
   deleteDatatypeProperty(property: DatatypePropertyModel) {
@@ -223,7 +245,7 @@ export class ModellerService {
   }
 
   queryDatatypeProperties(domainName) {
-    return this.httpClient.get<DatatypePropertyModel[]>(this.endpointSettings.getDatatypePropertyEndpoint(domainName))
+    return this.httpClient.get<DatatypePropertyModel[]>(this.endpointSettings.getDatatypePropertyEndpoint(domainName));
   }
 
   queryBridgingConnectors(domainName) {
@@ -231,20 +253,20 @@ export class ModellerService {
   }
 
   querySemanticMappings(domainName) {
-    return this.httpClient.get<ObjectPropertyModel[]>(this.endpointSettings.getSemanticMappingEndpoint(domainName))
+    return this.httpClient.get<ObjectPropertyModel[]>(this.endpointSettings.getSemanticMappingEndpoint(domainName));
   }
 
   queryNamespacePrefixes(): void {
     this.httpClient.get<string[]>(this.endpointSettings.getGetAllNamespacePrefixesEndpoint())
       .subscribe(
-      data => {
-        // console.log('PaletteCategories received: ' + JSON.stringify(data));
-        this.namespacePrefixe$ = of(data);
-        this.namespacePrefixes = data;
-      }, error => console.log('Could not query Namespace prefixes'));
+        data => {
+          // console.log('PaletteCategories received: ' + JSON.stringify(data));
+          this.namespacePrefixe$ = of(data);
+          this.namespacePrefixes = data;
+        }, error => console.log('Could not query Namespace prefixes'));
   }
 
-  queryNamespaceMap(): Observable <Map<string, string>> {
+  queryNamespaceMap(): Observable<Map<string, string>> {
     return this.httpClient.get<Map<string, string>>(this.endpointSettings.getNamespaceMapEndpoint());
   }
 
@@ -361,24 +383,24 @@ export class ModellerService {
       .toPromise();
   }
 
-  uploadNewImageToBackend(image: File, fileName: string,  prefix: string) {
+  uploadNewImageToBackend(image: File, fileName: string, prefix: string) {
 
     const formData = new FormData();
 
     formData.append('prefix', prefix);
-    formData.append('fileName', fileName)
+    formData.append('fileName', fileName);
     //Make sure that the other fields are populated first.
     formData.append('image', image);
 
-    this.httpClient.post('/upload',formData).toPromise().then(response => console.log(response));
+    this.httpClient.post('/upload', formData).toPromise().then(response => console.log(response));
   }
 
-  async getUploadedImages(): Promise<Object>{
+  async getUploadedImages(): Promise<Object> {
 
-   return await this.httpClient.get('/images').toPromise();
+    return await this.httpClient.get('/images').toPromise();
   }
 
-
+//Full export : get all data from fuseki and download
   queryModelsAndLanguage(): void {
     this.httpClient.get<string>(this.endpointSettings.getModelAndLanguageFromFuseki()).subscribe(
       data => {
@@ -386,7 +408,7 @@ export class ModellerService {
         this.modelAndLanguage = data;
         console.log(this.modelAndLanguage);
         //var FileSaver = require('file-saver');
-        const filename = "Export.ttl";
+        const filename = 'Export.ttl';
         var myblob = new Blob([this.modelAndLanguage], {
           type: 'text/trig'
         });
@@ -394,72 +416,19 @@ export class ModellerService {
         // FileSaver.saveAs(myblob, "hello world.txt");
 
       }, error => console.log('Could not query models and language from endpoint fuseki')
-    )
+    );
   }
 
-      queryModelsAndLanguageADVANCEDwithDistinction(sPrefix: string) {
-      this.httpClient.post<string>(this.endpointSettings.getModelAndLanguageFromFusekiAdvancedwithDistinction(),sPrefix).subscribe(
-        data => {
-          this.modelAndLanguageAdvanced$ = of(data);
-          this.modelAndLanguageAdvanced = data;
-          console.log(this.modelAndLanguageAdvanced);
-          //var FileSaver = require('file-saver');
-          //const filename = "cmmnadvancedwithDistinction.ttl";
-          const filename = "AOAME_"+sPrefix+".ttl";
-          var myblob = new Blob([this.modelAndLanguageAdvanced], {
-            type: 'text/trig'
-          });
-          saveAs(myblob, filename);
-          // FileSaver.saveAs(myblob, "hello world.txt");
-
-        }, error => console.log(error)
-      )
-
-    }
-
-  queryModelsAndLanguageADVANCEDwithDistinctionMultipleSelection(sPrefix: string []) {
-
-
-    this.httpClient.post<string>(this.endpointSettings.getModelAndLanguageFromFusekiAdvancedwithDistinction2(),sPrefix).subscribe(
-      data => {
-        this.modelAndLanguageAdvanced$ = of(data);
-        this.modelAndLanguageAdvanced = data;
-        console.log(this.modelAndLanguageAdvanced);
-
-        const filename = "AOAME_.ttl";
-        var myblob = new Blob([this.modelAndLanguageAdvanced], {
-          type: 'text/trig'
-        });
-        saveAs(myblob, filename);
-        // FileSaver.saveAs(myblob, "hello world.txt");
-
-      }, error => console.log(error)
-    )
-
-  }
-  queryLanguagesFromFuseki() : void {
-
-
-    this.httpClient.get<string>(this.endpointSettings.getPrefixFromFuseki()).subscribe(
-      data => {
-        this.modelAndLanguageAdvanced$ = of(data);
-        this.modelAndLanguageAdvanced = data;
-        //console.log(this.modelAndLanguageAdvanced);
-        this.modalModelMultipleExport.getLanguagesFromFusekiHtml();
-        //return this.modelAndLanguageAdvanced;
-
-      },error => console.log(error)
-    )
-
-  }
-  /*queryModelsAndLanguageADVANCED(): void {
-    this.httpClient.get<string>(this.endpointSettings.getModelAndLanguageFromFusekiAdvanced()).subscribe(
+//Not used: Old function to retrieve only one data from one prefix
+  queryModelsAndLanguageADVANCEDwithDistinction(sPrefix: string) {
+    this.httpClient.post<string>(this.endpointSettings.getModelAndLanguageFromFusekiAdvancedwithDistinction(), sPrefix).subscribe(
       data => {
         this.modelAndLanguageAdvanced$ = of(data);
         this.modelAndLanguageAdvanced = data;
         console.log(this.modelAndLanguageAdvanced);
         //var FileSaver = require('file-saver');
-        const filename = "cmmnadvanced.ttl";
+        //const filename = "cmmnadvancedwithDistinction.ttl";
+        const filename = 'AOAME_' + sPrefix + '.ttl';
         var myblob = new Blob([this.modelAndLanguageAdvanced], {
           type: 'text/trig'
         });
@@ -467,16 +436,67 @@ export class ModellerService {
         // FileSaver.saveAs(myblob, "hello world.txt");
 
       }, error => console.log(error)
-    )
-
-
-
-
-
-
-
-
-
-  }*/
+    );
 
   }
+
+  //Get data from fuseki based on the prefix provided in the dropdownlist and then download as a .ttl
+  queryModelsAndLanguageADVANCEDwithDistinctionMultipleSelection(sPrefix: string []) {
+    this.httpClient.post<string>(this.endpointSettings.getModelAndLanguageFromFusekiAdvancedwithDistinction2(), sPrefix).subscribe(
+      data => {
+        this.modelAndLanguageAdvanced$ = of(data);
+        this.modelAndLanguageAdvanced = data;
+        console.log(this.modelAndLanguageAdvanced);
+
+        const filename = 'AOAME_.ttl';
+        var myblob = new Blob([this.modelAndLanguageAdvanced], {
+          type: 'text/trig'
+        });
+        saveAs(myblob, filename);
+        // FileSaver.saveAs(myblob, "hello world.txt");
+
+      }, error => console.log(error)
+    );
+
+  }
+
+  queryUploadLanguagesSelectedOnFuseki(sPrefix: string []) {
+    this.httpClient.post(this.endpointSettings.postLanguagesToFuseki(), sPrefix).subscribe(
+      data => {
+
+      }, error =>console.log (error)
+
+    );
+  }
+
+
+
+  //Get prefixes from fuseki
+  async queryLanguagesFromFuseki(): Promise<void> {
+    this.httpClient.get<string>(this.endpointSettings.getPrefixFromFuseki()).subscribe(
+      data => {
+        this.prefixAdvanced$ = of(data);
+        this.prefixAdvanced = data;
+      }, error => console.log(error)
+    );
+  }
+
+  async queryLanguagesFromGithub(): Promise<void> {
+    this.httpClient.get<string>(this.endpointSettings.getPrefixFromGithub()).subscribe(
+      data => {
+        this.prefixAdvancedGithub$ = of(data);
+        this.prefixAdvancedGithub = data;
+      }, error => console.log(error)
+    );
+  }
+
+  uploadFromDesktop(sTtlFromDesktop: string){
+
+      this.httpClient.post(this.endpointSettings.uploadTtlFromDesktop(), sTtlFromDesktop).subscribe(data=>{},error => console.log(error));
+  }
+
+
+
+
+
+}
