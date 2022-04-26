@@ -171,8 +171,12 @@ export class ModellerService {
     params.append('element', JSON.stringify(element));
     params.append('modifiedElement', JSON.stringify(modifiedElement)); // passing multiple parameters in POST
 
-    return this.httpClient.post(this.endpointSettings.getModifyElementEndpoint(), params);
-  }
+    //url encoding headers added
+    const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
+
+    return this.httpClient.post(this.endpointSettings.getModifyElementEndpoint(), params.toString(), {headers: headers})
+
+    }
 
   editDatatypeProperty(property: DatatypePropertyModel, editedProperty: DatatypePropertyModel) {
     const querySuccess: Boolean = false;
@@ -180,7 +184,12 @@ export class ModellerService {
     const params = new URLSearchParams();
     params.append('property', JSON.stringify(property));
     params.append('editedProperty', JSON.stringify(editedProperty)); // passing multiple parameters in POST
-    return this.httpClient.post(this.endpointSettings.getEditDatatypePropertyEndpoint(), params);
+
+
+    //url encoding headers added
+    const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
+
+    return this.httpClient.post(this.endpointSettings.getModifyElementEndpoint(), params.toString(), {headers: headers})
   }
 
   editObjectProperty(property: ObjectPropertyModel, editedProperty: ObjectPropertyModel) {
@@ -189,7 +198,10 @@ export class ModellerService {
     const params = new URLSearchParams();
     params.append('property', JSON.stringify(property));
     params.append('editedProperty', JSON.stringify(editedProperty)); // passing multiple parameters in POST
-    return this.httpClient.post(this.endpointSettings.getEditObjectPropertyEndpoint(), params);
+
+
+    const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
+    return this.httpClient.post(this.endpointSettings.getModifyElementEndpoint(), params.toString(), {headers: headers})
   }
 
   deleteDatatypeProperty(property: DatatypePropertyModel) {
