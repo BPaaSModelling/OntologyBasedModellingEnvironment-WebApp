@@ -47,8 +47,8 @@ import { ModalEditBCObjectPropertyComponent } from './modal-edit-bc-object-prope
 import { ModalInsertLangobjectPropertyComponent } from './modal-insert-langobject-property/modal-insert-langobject-property.component';
 import { ModalEditSMObjectPropertyComponent } from './modal-edit-sm-object-property/modal-edit-sm-object-property.component';
 import { ModalModelCreation } from './modal-model-creation/modal-model-creation.component';
-import { ModalModelLink } from "./modal-model-link/modal-model-link";
-import { ModalElementNote } from "./modal-element-note/modal-element-note.component";
+import { ModalModelLink } from './modal-model-link/modal-model-link';
+import { ModalElementNote } from './modal-element-note/modal-element-note.component';
 import {ModalModellingLanguageConstructInstanceLink} from './modal-modelling-language-construct-instance-link/modal-modelling-language-construct-instance-link';
 import {ModalPaletteVisualisation} from './modal-palette-visualisation/modal-palette-visualisation';
 import {ModalModelEdit} from './modal-model-edit/modal-model-edit.component';
@@ -59,10 +59,12 @@ import {HttpClientModule} from '@angular/common/http';
 import {ModalModelExport} from './modal-model-export/modal-model-export-component';
 import {UploadEnvironmentComponent} from './upload-environment/upload-environment.component';
 import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-model-mutiple-export.component';
+import { DiagramComponent } from './diagram/diagram.component';
 
 
 const appRoutes: Routes = [
   { path: 'modeller', component: ModellingEnvironmentComponent},
+  { path: 'demo-modeller', component: DiagramComponent},
   { path: 'upload', component: UploadEnvironmentComponent},
 ];
 
@@ -103,7 +105,8 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModalModelEdit,
     ModalShowLanguageInstances,
     ModalModelExport,
-    ModalModelMultipleExport
+    ModalModelMultipleExport,
+    DiagramComponent
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,

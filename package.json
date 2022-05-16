@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "heroku-start": "node server.js",
+    "heroku-start": "ng build && node server.js",
     "heroku-postbuild": "ng build --prod"
   },
   "private": true,
@@ -27,6 +27,8 @@
     "@angular/platform-browser-dynamic": "^10.2.5",
     "@angular/router": "^10.2.5",
     "angular2-uuid": "^1.1.1",
+    "bpmn-js": "^9.0.3",
+    "diagram-js": "^8.2.1",
     "express": "^4.17.1",
     "file-saver": "^2.0.5",
     "gojs": "^1.8.21",

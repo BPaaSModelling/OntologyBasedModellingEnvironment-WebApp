@@ -7,12 +7,12 @@ const fs = require('fs');
 
 const app = express();
 
-const uploadsDir = __dirname + '/dist/ontology-based-modelling-environment/uploads/';
+const uploadsDir = __dirname + '\\dist\\ontology-based-modelling-environment\\uploads';
 
 if(!fs.existsSync(uploadsDir)){
   fs.mkdir(uploadsDir, function(err){
     if(err){
-      console.log('Failed to create directory ' + directory + '.');
+      console.log('Failed to create directory ' + uploadsDir + '.');
       return;
     }
   });
@@ -69,7 +69,7 @@ function getImageURLs(basePath){
 
   let urls = {};
 
-  let absolutePath = __dirname + '/dist/ontology-based-modelling-environment' + basePath;
+  let absolutePath = __dirname + '\\dist\\ontology-based-modelling-environment' + basePath;
 
   fs.readdirSync(absolutePath, {withFileTypes:true}).filter(file=>file.isDirectory()).forEach(p=>{
 
