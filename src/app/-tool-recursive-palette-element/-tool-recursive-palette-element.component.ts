@@ -5,7 +5,7 @@ import {ContextMenuComponent} from 'ngx-contextmenu';
 import {ModellerService} from '../modeller.service';
 import {ModalExtendPaletteElementComponent} from "../modal-extend-palette-element/modal-extend-palette-element.component";
 import {ModalPaletteElementPropertiesComponent} from "../modal-palette-element-properties/modal-palette-element-properties.component";
-import {MatDialog} from "@angular/material";
+import { MatDialog } from "@angular/material/dialog";
 import {ModalEditPaletteElementComponent} from "../modal-edit-palette-element/modal-edit-palette-element.component";
 import {VariablesSettings} from "../_settings/variables.settings";
 import {ModalShowLanguageInstances} from '../modal-show-language-instances/modal-show-language-instances';

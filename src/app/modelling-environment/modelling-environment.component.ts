@@ -3,7 +3,7 @@ import {ModellerService} from "../modeller.service";
 import {MetamodelElementModel} from "../_models/MetamodelElement.model";
 import {PaletteElementModel} from "../_models/PaletteElement.model";
 import {ModalInstancePropertiesComponent,} from "../modal-instance-properties/modal-instance-properties.component";
-import {MatDialog} from "@angular/material";
+import { MatDialog } from "@angular/material/dialog";
 import {ModalPaletteElementPropertiesComponent} from "../modal-palette-element-properties/modal-palette-element-properties.component";
 import {ModalExtendPaletteElementComponent} from "../modal-extend-palette-element/modal-extend-palette-element.component";
 import {VariablesSettings} from "../_settings/variables.settings";

@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {DataSource} from '@angular/cdk/collections';
 import {ModelElementDetailAndModel} from '../_models/ModelElementDetailAndModel';
 import {BehaviorSubject, Observable} from "rxjs";

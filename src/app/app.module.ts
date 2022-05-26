@@ -10,23 +10,20 @@ import {ModellerService} from './modeller.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
-import {
-  MatListModule,
-  MatButtonModule,
-  MatToolbarModule,
-  MatDialogModule,
-  MatTabsModule,
-  MatCardModule,
-  MatSelectModule,
-  MatOptionModule,
-  MatInputModule,
-  MatFormFieldModule,
-  MatCheckboxModule,
-  MatExpansionModule,
-  MatGridListModule,
-  MatTableModule
-
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToolRecursivePaletteElementComponent} from './-tool-recursive-palette-element/-tool-recursive-palette-element.component';
 import {ContextMenuModule} from 'ngx-contextmenu';

@@ -1,6 +1,6 @@
 import {Component, Inject, SimpleChanges} from '@angular/core';
 
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {RelationDatasource} from './RelationDatasource.model';
 import {Relation} from '../_models/Relation.model';
 import {ModellerService} from '../modeller.service';

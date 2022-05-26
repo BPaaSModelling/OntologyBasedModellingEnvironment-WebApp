@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Inject} from '@angular/core';
 import {ObjectPropertyModel} from '../_models/ObjectProperty.model';
 import {ModellerService} from "../modeller.service";
-import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from "@angular/material";
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from "@angular/material/dialog";
 
 @Component({
   selector: 'app-modal-insert-langobject-property',
