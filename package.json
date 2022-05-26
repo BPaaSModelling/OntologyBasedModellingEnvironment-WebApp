@@ -32,6 +32,7 @@
     "file-saver": "^2.0.5",
     "gojs": "^2.2.10",
     "gojs-angular": "^2.0.4",
+    "immer": "^9.0.14",
     "lodash-es": "^4.17.21",
     "multer": "^1.4.3",
     "ng-multiselect-dropdown": "^0.3.8",
