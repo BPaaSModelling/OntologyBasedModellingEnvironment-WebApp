@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ModalInsertLangobjectPropertyComponent } from './modal-insert-langobject-property.component';
 
@@ -6,7 +6,7 @@ describe('ModalInsertLangobjectPropertyComponent', () => {
   let component: ModalInsertLangobjectPropertyComponent;
   let fixture: ComponentFixture<ModalInsertLangobjectPropertyComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ModalInsertLangobjectPropertyComponent ]
     })

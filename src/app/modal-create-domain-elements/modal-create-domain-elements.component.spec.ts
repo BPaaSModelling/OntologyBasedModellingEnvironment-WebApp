@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ModalCreateDomainElementsComponent } from './modal-create-domain-elements.component';
 
@@ -6,7 +6,7 @@ describe('ModalCreateDomainElementsComponent', () => {
   let component: ModalCreateDomainElementsComponent;
   let fixture: ComponentFixture<ModalCreateDomainElementsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ModalCreateDomainElementsComponent ]
     })

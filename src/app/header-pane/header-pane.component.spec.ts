@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { HeaderPaneComponent } from './header-pane.component';
 
@@ -6,7 +6,7 @@ describe('HeaderPaneComponent', () => {
   let component: HeaderPaneComponent;
   let fixture: ComponentFixture<HeaderPaneComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ HeaderPaneComponent ]
     })

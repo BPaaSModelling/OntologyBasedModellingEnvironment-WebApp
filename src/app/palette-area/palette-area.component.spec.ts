@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PaletteAreaComponent } from './palette-area.component';
 
@@ -6,7 +6,7 @@ describe('PaletteAreaComponent', () => {
   let component: PaletteAreaComponent;
   let fixture: ComponentFixture<PaletteAreaComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PaletteAreaComponent ]
     })
