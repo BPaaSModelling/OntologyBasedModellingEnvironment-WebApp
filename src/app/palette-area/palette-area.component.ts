@@ -2,9 +2,8 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angula
 import {MetamodelElementModel} from '../_models/MetamodelElement.model';
 import {ModellerService} from '../modeller.service';
 import {PaletteElementModel} from '../_models/PaletteElement.model';
-import {ContextMenuComponent} from 'ngx-contextmenu';
+import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
 import {UUID} from 'angular2-uuid';
-import { ContextMenuService } from 'ngx-contextmenu';
 import {ModalExtendPaletteElementComponent} from "../modal-extend-palette-element/modal-extend-palette-element.component";
 import { MatDialog } from "@angular/material/dialog";
 import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
@@ -23,10 +22,10 @@ import {ModelingLanguageModel} from '../_models/ModelingLanguage.model';
 })
 export class PaletteAreaComponent implements OnInit {
 
-  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent;
-  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent<any>;
+  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent<any>;
   // Optional
-  @Input() contextMenu: ContextMenuComponent;
+  @Input() contextMenu: ContextMenuComponent<any>;
   @Input() contextMenuSubject: PaletteElementModel;
 
 

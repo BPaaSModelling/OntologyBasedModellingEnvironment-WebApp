@@ -4,7 +4,7 @@ import {ChangedEvent} from 'gojs';
 import {PaletteElementModel} from '../_models/PaletteElement.model';
 import {VariablesSettings} from '../_settings/variables.settings';
 import {ModellerService} from '../modeller.service';
-import {ContextMenuComponent} from 'ngx-contextmenu';
+import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
 import {Model} from '../_models/Model.model';
 import {ModalModelCreation} from '../modal-model-creation/modal-model-creation.component';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
@@ -53,10 +53,10 @@ export class ModellingAreaComponent implements OnInit {
     this.dialog = matDialog;
   }
 
-  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent;
-  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent<any>;
+  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent<any>;
 
-  @Input() contextMenu: ContextMenuComponent;
+  @Input() contextMenu: ContextMenuComponent<any>;
   @Input() contextMenuSubject: PaletteElementModel;
 
   @Input() public elements: any;

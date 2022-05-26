@@ -26,7 +26,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToolRecursivePaletteElementComponent} from './-tool-recursive-palette-element/-tool-recursive-palette-element.component';
-import {ContextMenuModule} from 'ngx-contextmenu';
 import {ModalInstancePropertiesComponent} from './modal-instance-properties/modal-instance-properties.component';
 import {ModalPaletteElementPropertiesComponent} from './modal-palette-element-properties/modal-palette-element-properties.component';
 import { ModalExtendPaletteElementComponent } from './modal-extend-palette-element/modal-extend-palette-element.component';
@@ -44,8 +43,8 @@ import { ModalEditBCObjectPropertyComponent } from './modal-edit-bc-object-prope
 import { ModalInsertLangobjectPropertyComponent } from './modal-insert-langobject-property/modal-insert-langobject-property.component';
 import { ModalEditSMObjectPropertyComponent } from './modal-edit-sm-object-property/modal-edit-sm-object-property.component';
 import { ModalModelCreation } from './modal-model-creation/modal-model-creation.component';
-import { ModalModelLink } from "./modal-model-link/modal-model-link";
-import { ModalElementNote } from "./modal-element-note/modal-element-note.component";
+import { ModalModelLink } from './modal-model-link/modal-model-link';
+import { ModalElementNote } from './modal-element-note/modal-element-note.component';
 import {ModalModellingLanguageConstructInstanceLink} from './modal-modelling-language-construct-instance-link/modal-modelling-language-construct-instance-link';
 import {ModalPaletteVisualisation} from './modal-palette-visualisation/modal-palette-visualisation';
 import {ModalModelEdit} from './modal-model-edit/modal-model-edit.component';
@@ -57,8 +56,9 @@ import {ModalModelExport} from './modal-model-export/modal-model-export-componen
 import {ImportExportEnvironmentComponent} from './importExport-environment/import-export-environment.component';
 import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-model-multiple-export.component';
 import {ModalModelMultipleImport} from './modal-model-multiple-import/modal-model-multiple-import.component';
-import { FileUploadComponent } from    './file-upload/file-upload.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
 import {HomeComponent} from './home/home.component';
+import {ContextMenuModule} from '@perfectmemory/ngx-contextmenu';
 
 
 const appRoutes: Routes = [
@@ -112,35 +112,36 @@ export function appInit(endpointSettings: EndpointSettings) {
         FileUploadComponent,
         HomeComponent
     ],
-    imports: [
-        BrowserModule,
-        RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
-        HttpClientModule,
-        FlexLayoutModule,
-        ContextMenuModule.forRoot(),
-        MatListModule,
-        MatButtonModule,
-        MatToolbarModule,
-        BrowserAnimationsModule,
-        MatDialogModule,
-        MatTabsModule,
-        MatCardModule,
-        MatSelectModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatOptionModule,
-        MatOptionModule,
-        MatCheckboxModule,
-        MatExpansionModule,
-        FormsModule,
-        ReactiveFormsModule,
-        SelectDropDownModule,
-        MatGridListModule,
-        MatTableModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        NgMultiSelectDropDownModule.forRoot()
-    ],
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(appRoutes, {relativeLinkResolution: 'legacy'}),
+    HttpClientModule,
+    FlexLayoutModule,
+    ContextMenuModule,
+    MatListModule,
+    MatButtonModule,
+    MatToolbarModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatTabsModule,
+    MatCardModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatOptionModule,
+    MatOptionModule,
+    MatCheckboxModule,
+    MatExpansionModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SelectDropDownModule,
+    MatGridListModule,
+    MatTableModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    NgMultiSelectDropDownModule.forRoot(),
+    ContextMenuModule
+  ],
     providers: [
         ModellerService,
         EndpointSettings,
