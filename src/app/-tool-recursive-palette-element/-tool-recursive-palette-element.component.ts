@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {PaletteElementModel} from "../_models/PaletteElement.model";
 import {GraphicalElementModel} from "../_models/GraphicalElement.model";
-import {ContextMenuComponent} from 'ngx-contextmenu';
+import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
 import {ModellerService} from '../modeller.service';
 import {ModalExtendPaletteElementComponent} from "../modal-extend-palette-element/modal-extend-palette-element.component";
 import {ModalPaletteElementPropertiesComponent} from "../modal-palette-element-properties/modal-palette-element-properties.component";
@@ -17,10 +17,10 @@ import {ModalShowLanguageInstances} from '../modal-show-language-instances/modal
   styleUrls: ['./-tool-recursive-palette-element.component.css']
 })
 export class ToolRecursivePaletteElementComponent implements OnInit {
-  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent<any>;
 
   @Input() child: PaletteElementModel;
-  @Input() contextMenu: ContextMenuComponent;
+  @Input() contextMenu: ContextMenuComponent<any>;
   @Input() contextMenuSubject: PaletteElementModel;
 
   @Output() sendElementFromRecursiveElement = new EventEmitter();

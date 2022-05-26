@@ -20,10 +20,10 @@
     <ng-container *ngFor="let element of mService.paletteElements">
       <ul class="element" *ngIf="(element.paletteCategory == category.id && element.hiddenFromPalette == false)">
         <li class="paletteElement" >
-          <a *ngIf="element.type != 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element" (click)="addNewShape(element)">
+          <a *ngIf="element.type != 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuValue]="element"  (click)="addNewShape(element)">
             <img class="thumbnail"  src="{{imageRoot}}{{category.idSuffix}}/{{element.thumbnailURL}}" />
           </a>
-          <a *ngIf="element.type == 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element" (click)="addNewShape(element)">
+          <a *ngIf="element.type == 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuValue]="element"  (click)="addNewShape(element)">
             <img *ngIf="element.fromArrow" class="thumbnail-arrow-head" [src]="'../assets/images/Arrows/' + element.fromArrow + '.PNG'" >
             <img class="thumbnail-arrow-stroke" [src]="'../assets/images/Strokes/' + element.arrowStroke + '.PNG'" >
             <img *ngIf="element.toArrow" class="thumbnail-arrow-head" [src]="'../assets/images/Arrows/' + element.toArrow + '.PNG'" >
@@ -40,10 +40,10 @@
 
 
 <context-menu #elementRightClickMenu>
-  <ng-template let-element contextMenuItem (execute)="openExtendPaletteElementModal($event.item)">
+  <ng-template let-element contextMenuItem (execute)="openExtendPaletteElementModal($event.value)">
     Extend {{element.label}}
   </ng-template>
-  <ng-template let-element contextMenuItem (execute)="openEditPaletteElementModal($event.item)">
+  <ng-template let-element contextMenuItem (execute)="openEditPaletteElementModal($event.value)">
     Edit {{element.label}}
   </ng-template>
   <!-- <ng-template contextMenuItem [subMenu]="saySubMenu">
@@ -57,13 +57,13 @@
       Edit {{element.label}}
     </ng-template>
   </context-menu> -->
-  <ng-template let-element contextMenuItem (execute)="hideFromPalette($event.item)">
+  <ng-template let-element contextMenuItem (execute)="hideFromPalette($event.value)">
     Hide
   </ng-template>
   <!--<ng-template let-element contextMenuItem (execute)="removeFromPalette($event.item)">
     Delete {{element.label}}
   </ng-template>-->
-  <ng-template let-element contextMenuItem (execute)="showInstantiatedElements($event.item)">
+  <ng-template let-element contextMenuItem (execute)="showInstantiatedElements($event.value)">
     Show Instances
   </ng-template>
 </context-menu>
@@ -74,7 +74,7 @@
   <ng-template contextMenuItem (execute)="addNewPaletteElement()">
     Add new element to the Palette
   </ng-template>
-  <ng-template let-element contextMenuItem (execute)="openCreateDomainElementModal($event.item)">
+  <ng-template let-element contextMenuItem (execute)="openCreateDomainElementModal($event.value)">
     Create new Domain Ontology Element
   </ng-template>
   <!-- Heroku difference -->

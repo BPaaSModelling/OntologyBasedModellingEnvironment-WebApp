@@ -108,7 +108,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
     //this.mService.queryPaletteCategories();
     this.mService.queryNamespacePrefixes();
 
-    await this.loadImages();
+    this.loadImages();
 
     this.currentPaletteElement.label = this.data.paletteElement.label;
     this.currentPaletteElement.thumbnailURL = this.data.paletteElement.thumbnailURL;

@@ -26,7 +26,6 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToolRecursivePaletteElementComponent} from './-tool-recursive-palette-element/-tool-recursive-palette-element.component';
-import {ContextMenuModule} from 'ngx-contextmenu';
 import {ModalInstancePropertiesComponent} from './modal-instance-properties/modal-instance-properties.component';
 import {ModalPaletteElementPropertiesComponent} from './modal-palette-element-properties/modal-palette-element-properties.component';
 import {ModalExtendPaletteElementComponent} from './modal-extend-palette-element/modal-extend-palette-element.component';
@@ -36,21 +35,19 @@ import {
   ModalConnectorManageCombinationsComponent
 } from './modal-connector-manage-combinations/modal-connector-manage-combinations.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ModalCreateDomainElementsComponent} from './modal-create-domain-elements/modal-create-domain-elements.component';
-import {ModalEditPaletteElementComponent} from './modal-edit-palette-element/modal-edit-palette-element.component';
-import {ModalEditPropertiesComponent} from './modal-edit-datatype-property/modal-edit-datatype-property.component';
-import {ModalAddPropertiesComponent} from './modal-add-properties/modal-add-properties.component';
-import {ModalInsertObjectPropertyComponent} from './modal-insert-object-property/modal-insert-object-property.component';
-import {HeaderPaneComponent} from './header-pane/header-pane.component';
-import {ModalEditBCObjectPropertyComponent} from './modal-edit-bc-object-property/modal-edit-bc-object-property.component';
-import {ModalInsertLangobjectPropertyComponent} from './modal-insert-langobject-property/modal-insert-langobject-property.component';
-import {ModalEditSMObjectPropertyComponent} from './modal-edit-sm-object-property/modal-edit-sm-object-property.component';
-import {ModalModelCreation} from './modal-model-creation/modal-model-creation.component';
-import {ModalModelLink} from './modal-model-link/modal-model-link';
-import {ModalElementNote} from './modal-element-note/modal-element-note.component';
-import {
-  ModalModellingLanguageConstructInstanceLink
-} from './modal-modelling-language-construct-instance-link/modal-modelling-language-construct-instance-link';
+import { ModalCreateDomainElementsComponent } from './modal-create-domain-elements/modal-create-domain-elements.component';
+import { ModalEditPaletteElementComponent } from './modal-edit-palette-element/modal-edit-palette-element.component';
+import { ModalEditPropertiesComponent } from './modal-edit-datatype-property/modal-edit-datatype-property.component';
+import { ModalAddPropertiesComponent } from './modal-add-properties/modal-add-properties.component';
+import { ModalInsertObjectPropertyComponent } from './modal-insert-object-property/modal-insert-object-property.component';
+import { HeaderPaneComponent } from './header-pane/header-pane.component';
+import { ModalEditBCObjectPropertyComponent } from './modal-edit-bc-object-property/modal-edit-bc-object-property.component';
+import { ModalInsertLangobjectPropertyComponent } from './modal-insert-langobject-property/modal-insert-langobject-property.component';
+import { ModalEditSMObjectPropertyComponent } from './modal-edit-sm-object-property/modal-edit-sm-object-property.component';
+import { ModalModelCreation } from './modal-model-creation/modal-model-creation.component';
+import { ModalModelLink } from "./modal-model-link/modal-model-link";
+import { ModalElementNote } from "./modal-element-note/modal-element-note.component";
+import {ModalModellingLanguageConstructInstanceLink} from './modal-modelling-language-construct-instance-link/modal-modelling-language-construct-instance-link';
 import {ModalPaletteVisualisation} from './modal-palette-visualisation/modal-palette-visualisation';
 import {ModalModelEdit} from './modal-model-edit/modal-model-edit.component';
 import {ModalViewElementDetail} from './model-element-detail/model-element-detail.component';
@@ -61,8 +58,9 @@ import {ModalModelExport} from './modal-model-export/modal-model-export-componen
 import {ImportExportEnvironmentComponent} from './importExport-environment/import-export-environment.component';
 import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-model-multiple-export.component';
 import {ModalModelMultipleImport} from './modal-model-multiple-import/modal-model-multiple-import.component';
-import {FileUploadComponent} from './file-upload/file-upload.component';
+import { FileUploadComponent } from    './file-upload/file-upload.component';
 import {HomeComponent} from './home/home.component';
+import {ContextMenuModule} from '@perfectmemory/ngx-contextmenu';
 import {ModellingAreaNewComponent} from './modelling-area-new/modelling-area-new.component';
 
 
@@ -80,50 +78,50 @@ export function appInit(endpointSettings: EndpointSettings) {
 }
 
 @NgModule({
-  declarations: [
-    ImportExportEnvironmentComponent,
-    AppComponent,
-    ModellingEnvironmentComponent,
-    PaletteAreaComponent,
-    HeaderPaneComponent,
-    ModellingAreaComponent,
-    ModellingAreaNewComponent,
-    ToolRecursivePaletteElementComponent,
-    ModalInstancePropertiesComponent,
-    ModalPaletteElementPropertiesComponent,
-    ModalExtendPaletteElementComponent,
-    ModalConnectorElementPropertiesComponent,
-    ModalInsertPropertyComponent,
-    ModalConnectorManageCombinationsComponent,
-    ModalCreateDomainElementsComponent,
-    ModalEditPaletteElementComponent,
-    ModalEditPropertiesComponent,
-    ModalAddPropertiesComponent,
-    ModalInsertObjectPropertyComponent,
-    HeaderPaneComponent,
-    ModalEditBCObjectPropertyComponent,
-    ModalInsertLangobjectPropertyComponent,
-    ModalEditSMObjectPropertyComponent,
-    ModalModelCreation,
-    ModalViewElementDetail,
-    ModalModelLink,
-    ModalElementNote,
-    ModalModellingLanguageConstructInstanceLink,
-    ModalPaletteVisualisation,
-    ModalModelEdit,
-    ModalShowLanguageInstances,
-    ModalModelExport,
-    ModalModelMultipleExport,
-    ModalModelMultipleImport,
-    FileUploadComponent,
-    HomeComponent
-  ],
+    declarations: [
+        ImportExportEnvironmentComponent,
+        AppComponent,
+        ModellingEnvironmentComponent,
+        PaletteAreaComponent,
+        HeaderPaneComponent,
+        ModellingAreaComponent,
+	ModellingAreaNewComponent,
+        ToolRecursivePaletteElementComponent,
+        ModalInstancePropertiesComponent,
+        ModalPaletteElementPropertiesComponent,
+        ModalExtendPaletteElementComponent,
+        ModalConnectorElementPropertiesComponent,
+        ModalInsertPropertyComponent,
+        ModalConnectorManageCombinationsComponent,
+        ModalCreateDomainElementsComponent,
+        ModalEditPaletteElementComponent,
+        ModalEditPropertiesComponent,
+        ModalAddPropertiesComponent,
+        ModalInsertObjectPropertyComponent,
+        HeaderPaneComponent,
+        ModalEditBCObjectPropertyComponent,
+        ModalInsertLangobjectPropertyComponent,
+        ModalEditSMObjectPropertyComponent,
+        ModalModelCreation,
+        ModalViewElementDetail,
+        ModalModelLink,
+        ModalElementNote,
+        ModalModellingLanguageConstructInstanceLink,
+        ModalPaletteVisualisation,
+        ModalModelEdit,
+        ModalShowLanguageInstances,
+        ModalModelExport,
+        ModalModelMultipleExport,
+        ModalModelMultipleImport,
+        FileUploadComponent,
+        HomeComponent
+    ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes, {relativeLinkResolution: 'legacy'}),
     HttpClientModule,
     FlexLayoutModule,
-    ContextMenuModule.forRoot(),
+    ContextMenuModule,
     MatListModule,
     MatButtonModule,
     MatToolbarModule,
@@ -145,19 +143,20 @@ export function appInit(endpointSettings: EndpointSettings) {
     MatTableModule,
     MatSelectModule,
     MatFormFieldModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    ContextMenuModule
   ],
-  providers: [
-    ModellerService,
-    EndpointSettings,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: appInit,
-      multi: true,
-      deps: [EndpointSettings]
-    }
-  ],
-  bootstrap: [AppComponent]
+    providers: [
+        ModellerService,
+        EndpointSettings,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: appInit,
+            multi: true,
+            deps: [EndpointSettings]
+        }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }
