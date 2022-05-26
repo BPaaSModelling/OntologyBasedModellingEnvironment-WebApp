@@ -61,8 +61,6 @@ import {ModalModelMultipleImport} from './modal-model-multiple-import/modal-mode
 import { FileUploadComponent } from    './file-upload/file-upload.component';
 import {HomeComponent} from './home/home.component';
 import {ContextMenuModule} from '@perfectmemory/ngx-contextmenu';
-import {ModellingAreaNewComponent} from './modelling-area-new/modelling-area-new.component';
-
 
 const appRoutes: Routes = [
   {path: 'modeller', component: ModellingEnvironmentComponent},
@@ -85,7 +83,6 @@ export function appInit(endpointSettings: EndpointSettings) {
         PaletteAreaComponent,
         HeaderPaneComponent,
         ModellingAreaComponent,
-	ModellingAreaNewComponent,
         ToolRecursivePaletteElementComponent,
         ModalInstancePropertiesComponent,
         ModalPaletteElementPropertiesComponent,
