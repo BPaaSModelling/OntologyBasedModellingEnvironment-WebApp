@@ -135,7 +135,7 @@ app--tool-recursive-palette-element:hover {
   background-repeat: repeat-x;
 }
 
-/deep/ .ngx-contextmenu .dropdown-menu {
+::ng-deep .ngx-contextmenu .dropdown-menu {
   border: solid 1px grey;
   background-color: white;
   padding: 0;
@@ -143,19 +143,19 @@ app--tool-recursive-palette-element:hover {
   border-radius: 4px;
   box-shadow: 5px 5px 2px grey;
 }
-/deep/ .ngx-contextmenu li {
+::ng-deep .ngx-contextmenu li {
   display: block;
 }
-/deep/ .ngx-contextmenu li:first-child {
+::ng-deep .ngx-contextmenu li:first-child {
   border-top:none;
 }
-/deep/ .ngx-contextmenu a {
+::ng-deep .ngx-contextmenu a {
   color:black;
   display: block;
   padding: 0.3em 0.3em;
   text-decoration: none;
 }
-/deep/ .ngx-contextmenu a:hover {
+::ng-deep .ngx-contextmenu a:hover {
   color:black;
   background-color:lightgrey;
   border-radius: 4px;
