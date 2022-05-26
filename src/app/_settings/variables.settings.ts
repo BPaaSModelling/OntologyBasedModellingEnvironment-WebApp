@@ -6,7 +6,7 @@ export class VariablesSettings{
   public static iconLocation: string = '../assets/images/';
 
   /* Set the following property to the root of the images folder */
-  public static IMG_ROOT: string = '../images/';
+  public static IMG_ROOT: string = '../assets/images/';
 
   /* START - BPMN Properties to the names of the categories in the PaletteOntology */
   public static CAT_ACTIVITIES: string = 'Category_Activities4BPMNProcessModelingView';
