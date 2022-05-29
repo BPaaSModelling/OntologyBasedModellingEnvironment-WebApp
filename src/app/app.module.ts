@@ -60,6 +60,8 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 import {HomeComponent} from './home/home.component';
 import {ContextMenuModule} from '@perfectmemory/ngx-contextmenu';
 import { DiagramManagementComponent } from './diagram-management/diagram-management.component';
+import {MatIconModule} from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
 
 
 const appRoutes: Routes = [
@@ -144,7 +146,9 @@ export function appInit(endpointSettings: EndpointSettings) {
     MatFormFieldModule,
     NgMultiSelectDropDownModule.forRoot(),
     ContextMenuModule,
-    MatRippleModule
+    MatRippleModule,
+    MatIconModule,
+    MatMenuModule
   ],
     providers: [
         ModellerService,
