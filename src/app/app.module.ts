@@ -66,6 +66,7 @@ import {ContextMenuModule} from '@perfectmemory/ngx-contextmenu';
 import {ModellingEnvironmentNewComponent} from './modelling-environment-new/modelling-environment-new.component';
 import {InspectorComponent} from './modelling-environment-new/inspector/inspector.component';
 import {GojsAngularModule} from 'gojs-angular';
+import {InspectorRowComponent} from './modelling-environment-new/inspector/inspector-row.component';
 
 const appRoutes: Routes = [
   {path: 'modeller', component: ModellingEnvironmentComponent},
@@ -89,6 +90,7 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModellingEnvironmentNewComponent,
     PaletteAreaComponent,
     InspectorComponent,
+    InspectorRowComponent,
     HeaderPaneComponent,
     ModellingAreaComponent,
     ToolRecursivePaletteElementComponent,

@@ -1,36 +1,42 @@
-.flex-container{
-  border: 2px solid #000000;
-  height: 100%;
-  width: 100%;
-}
-.palette-area{
-  //background-color: #dddddd;
-  border-width: 4px;
-  border-style: ridge;
-  width: 170px;
-  min-width: 170px;
-  display: inline-block;
-  z-index: 2;
-  overflow: visible;
-}
-.modelling-area{
-  border-right: 1px solid #333333;
-  min-height: 100%;
-  width: 97%;
-  z-index: 1;
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic,900,900italic,300italic,300,100italic,100);
+
+body {
+  font-family: 'Roboto', sans-serif;
 }
 
-.header-pane {
-  background-color: #dddddd;
-  border-width: 4px;
-  border-style: ridge;
-  width: 99%;
-  height: 90px;
-  display: flex;
-  flex-flow: row wrap;
-  /* This aligns items to the end line on main-axis */
-  justify-content: flex-end;
-  display: inline-block;
-  z-index: 2;
+.myDiagramDiv {
+  background: whitesmoke;
+  width: 700px;
+  height: 300px;
+  border: 1px solid black;
 }
 
+.myPaletteDiv {
+  background: lightcyan;
+  border: 1px solid navy;
+  width: 125px;
+  height: 300px;
+}
+
+.myOverviewDiv {
+  width: 200px;
+  height: 150px;
+  background: whitesmoke;
+  border: 1px solid black;
+}
+
+.left {
+  float: left;
+  padding: 5px;
+  margin: 5px;
+}
+
+.box {
+  border: solid 1px black;
+  background: whitesmoke;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.clear {
+  clear: both;
+}

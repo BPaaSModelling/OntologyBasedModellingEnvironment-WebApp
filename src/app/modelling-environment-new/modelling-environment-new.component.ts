@@ -6,23 +6,31 @@ import produce from 'immer';
 @Component({
   selector: 'app-modelling-environment',
   templateUrl: './modelling-environment-new.component.html',
-  styleUrls: ['./modelling-environment-new.component.css']
+  styleUrls: ['./modelling-environment-new.component.css'],
+  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class ModellingEnvironmentNewComponent {
 
   @ViewChild('myDiagram', { static: true }) public myDiagramComponent: DiagramComponent;
   @ViewChild('myPalette', { static: true }) public myPaletteComponent: PaletteComponent;
+  public oDivClassName = 'myOverviewDiv';
+
+  public observedDiagram = null;
+
+  // currently selected node; for inspector
+  public selectedNodeData: go.ObjectData = null;
 
   // Big object that holds app-level state data
   // As of gojs-angular 2.0, immutability is expected and required of state for ease of change detection.
-  // Whenever updating state, immutability must be preserved. It is recommended to use immer for this, a small package that makes working with immutable data easy.
+  // Whenever updating state, immutability must be preserved.
+  // It is recommended to use immer for this, a small package that makes working with immutable data easy.
   public state = {
     // Diagram state props
     diagramNodeData: [
-      { id: 'Alpha', text: 'Alpha', color: 'lightblue', loc: "0 0" },
-      { id: 'Beta', text: "Beta", color: 'orange', loc: "100 0" },
-      { id: 'Gamma', text: "Gamma", color: 'lightgreen', loc: "0 100" },
-      { id: 'Delta', text: "Delta", color: 'pink', loc: "100 100" }
+      { id: 'Alpha', text: 'Alpha', color: 'lightblue', loc: '0 0' },
+      { id: 'Beta', text: 'Beta', color: 'orange', loc: '100 0' },
+      { id: 'Gamma', text: 'Gamma', color: 'lightgreen', loc: '0 100' },
+      { id: 'Delta', text: 'Delta', color: 'pink', loc: '100 100' }
     ],
     diagramLinkData: [
       { key: -1, from: 'Alpha', to: 'Beta', fromPort: 'r', toPort: '1' },
@@ -37,7 +45,7 @@ export class ModellingEnvironmentNewComponent {
 
     // Palette state props
     paletteNodeData: [
-      { key: 'Epsilon', text: 'Epsilon', color: 'red' },
+      { key: 'Epsilon', text: 'Epsilon', color: 'red', source: '/assets/images/Category_Activities4BPMNProcessModelingView/Thumbnail_Manual_Task.png' },
       { key: 'Kappa', text: 'Kappa', color: 'purple' }
     ],
     paletteModelData: { prop: 'val' }
@@ -74,7 +82,7 @@ export class ModellingEnvironmentNewComponent {
           fromLinkable: true, toLinkable: true
         }
       );
-    }
+    };
 
     // define the Node template
     dia.nodeTemplate =
@@ -143,12 +151,15 @@ export class ModellingEnvironmentNewComponent {
 
     // define the Node template
     palette.nodeTemplate =
-      $(go.Node, 'Auto',
-        $(go.Shape, 'RoundedRectangle',
+      $(go.Part, 'Auto',
+        $(go.Picture,
           {
-            stroke: null
+            name: 'Picture',
+            source: '',
+            margin: 12, // increase margin if text alignment is changed to bottom
+            stretch: go.GraphObject.Fill // stretch image to fill whole area of shape
           },
-          new go.Binding('fill', 'color')
+          new go.Binding('source'),
         ),
         $(go.TextBlock, { margin: 8 },
           new go.Binding('text', 'key'))
@@ -161,16 +172,15 @@ export class ModellingEnvironmentNewComponent {
   constructor(private cdr: ChangeDetectorRef) { }
 
   // Overview Component testing
-  public oDivClassName = 'myOverviewDiv';
+
   public initOverview(): go.Overview {
     const $ = go.GraphObject.make;
     const overview = $(go.Overview);
     return overview;
   }
-  public observedDiagram = null;
 
-  // currently selected node; for inspector
-  public selectedNodeData: go.ObjectData = null;
+
+
 
   public ngAfterViewInit() {
     if (this.observedDiagram) { return; }
