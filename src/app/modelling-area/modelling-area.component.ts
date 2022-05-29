@@ -24,6 +24,8 @@ import {ModelElementDetailAndModel} from '../_models/ModelElementDetailAndModel'
 import {ModalViewElementDetail} from '../model-element-detail/model-element-detail.component';
 import {ModalModelExport} from '../modal-model-export/modal-model-export-component';
 import {ModalModelMultipleExport} from '../modal-model-multiple-export/modal-model-multiple-export.component';
+import {ActivatedRoute} from '@angular/router';
+import {take} from 'rxjs/operators';
 
 let $: any;
 let myDiagram: any;
@@ -44,7 +46,7 @@ let cxElement: any;
 })
 export class ModellingAreaComponent implements OnInit {
 
-  public constructor(public mService: ModellerService, public matDialog: MatDialog) {
+  public constructor(public mService: ModellerService, public matDialog: MatDialog, private activatedRoute: ActivatedRoute) {
     console.log('Constructor of graph');
     (go as any).licenseKey = '54ff43e7b11c28c702d95d76423d38f919a52e63998449a35a0412f6be086d1d239cef7157d78cc687f84cfb487fc2898fc1697d964f073cb539d08942e786aab63770b3400c40dea71136c5ceaa2ea1fa2b24a5c5b775a2dc718cf3bea1c59808eff4d54fcd5cb92b280735562bac49e7fc8973f950cf4e6b3d9ba3fffbbf4faf3c7184ccb4569aff5a70deb6f2a3417f';
     // this.mService.queryPaletteCategories();
@@ -151,6 +153,7 @@ export class ModellingAreaComponent implements OnInit {
 
         this.mService.getElements(model.id).then(value => {
           this.prepareModelElements(model, value);
+          this.setQueryParams();
         });
       });
 
@@ -861,21 +864,6 @@ export class ModellingAreaComponent implements OnInit {
     }
   }
 
-  openModelCreationModel() {
-    const dialogRef = this.dialog.open(ModalModelCreation, {
-      data: new Model()
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.mService.createModel(result)
-          .then(model => {
-            this.models = [...this.models, model];
-          });
-      }
-    });
-  }
-
   openModelEditModel() {
     const dialogRef = this.dialog.open(ModalModelEdit, {
       data: this.selectedModel
@@ -1140,6 +1128,20 @@ export class ModellingAreaComponent implements OnInit {
   }
 
 
-
+  private setQueryParams() {
+    this.activatedRoute.queryParams
+      .pipe(take(1))
+      .subscribe(params => {
+        if (params.id && this.models.length > 0) {
+          const paramsModel = this.models.find(m => m.id === params.id);
+          if (paramsModel) {
+            this.selectedModel = paramsModel;
+            this.selectionChanged();
+          }
+        }
+        console.log(this.selectedModel);
+        }
+      );
+  }
 }
 // https://github.com/shlomiassaf/ngx-modialog

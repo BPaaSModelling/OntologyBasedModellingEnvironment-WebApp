@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {EndpointSettings} from './_settings/endpoint.settings';
 //import {ModalModelMultipleExport} from './modal-model-multiple-export';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import {of} from 'rxjs';
 // import 'rxjs/operator/delay';
 // import 'rxjs/operator/mergeMap';
@@ -62,8 +62,10 @@ export class ModellerService {
   // public namespaceMap$: Observable<Map<string, string>> = of({});
 
   public selectedModelingLanguage;
+  private models: Model[];
 
   constructor(private httpClient: HttpClient, private endpointSettings: EndpointSettings) {
+    this.models = [];
   }
 
   queryModelingLanguages() {
@@ -285,13 +287,15 @@ export class ModellerService {
       .toPromise();
   }
 
-  createModel(label: string): Promise<Model> {
-
+  createModel(label: string): Observable<Model> {
     const dto: Model = new Model();
     dto.label = label;
 
-    return this.httpClient.post<Model>(this.endpointSettings.getModelsEndpoint(), dto)
-      .toPromise();
+    return this.httpClient.post<Model>(this.endpointSettings.getModelsEndpoint(), dto).pipe(
+      tap(model => {
+        this.models.push(model);
+      })
+    )
   }
 
   createElement(modelId: string, shapeId: string, label: string, x: number, y: number, paletteConstruct: string, instantiationTargetType: InstantiationTargetType): Promise<ModelElementDetail> {

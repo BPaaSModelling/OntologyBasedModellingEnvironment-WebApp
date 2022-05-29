@@ -63,7 +63,8 @@ import { DiagramManagementComponent } from './diagram-management/diagram-managem
 
 
 const appRoutes: Routes = [
-  { path: 'modeller', component: DiagramManagementComponent},
+  { path: 'diagramManagement', component: DiagramManagementComponent},
+  { path: 'modeller', component: ModellingEnvironmentComponent},
   { path: 'importExport', component: ImportExportEnvironmentComponent},
   { path: 'home', component: HomeComponent},
   { path: '', component: HomeComponent},

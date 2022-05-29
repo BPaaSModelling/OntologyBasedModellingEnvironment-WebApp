@@ -9,6 +9,6 @@
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="model.label">Create</button>
+  <button mat-button (click)="closeDiagram()">Cancel</button>
+  <button mat-button (click)="createDiagram()">Create</button>
 </mat-dialog-actions>

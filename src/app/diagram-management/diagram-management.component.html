@@ -1,18 +1,20 @@
 <div class="outer-padding">
-  <button mat-raised-button color="primary">Create +</button>
+  <button mat-raised-button color="primary" (click)="createNewDiagram()">Create +</button>
   <mat-divider class="horizontal-margin"></mat-divider>
 
   <mat-grid-list cols="5" rowHeight="16rem" gutterSize="1rem">
     <mat-grid-tile [colspan]="1" [rowspan]="1" >
       <mat-card class="diagram-card">
-        <mat-card-title>BPMN Diagram 1</mat-card-title>
+        <mat-card-title>
+          BPMN Diagram 1
+        </mat-card-title>
 
 
         <!--  <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Empty background">-->
         <div class="empty-blue-div"></div>
         <mat-card-actions>
-          <button mat-button>LIKE</button>
-          <button mat-button>SHARE</button>
+          <button mat-button>EDIT</button>
+          <button mat-button>DELETE</button>
         </mat-card-actions>
       </mat-card>
 
