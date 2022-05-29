@@ -6,10 +6,12 @@
     <mat-grid-tile [colspan]="1" [rowspan]="1" *ngFor="let model of models; index as i">
       <mat-card class="diagram-card" mat-ripple [matRippleDisabled]="rippleDisabled" (click)="openModel(model.id)">
         <md-card-header (click)="openModel(model.id)">
-          <md-card-title >{{model.label}} </md-card-title>
+          <md-card-title>{{model.label}} </md-card-title>
           <div fxFlex></div>
-          <button mat-icon-button aria-label="action menu button" >
-            <mat-icon [matMenuTriggerFor]="menu" (menuClosed)="toggleRipple()" (click)="$event.stopPropagation();" (mousedown)="toggleRipple()">more_vert</mat-icon>
+          <button mat-icon-button aria-label="action menu button">
+            <mat-icon [matMenuTriggerFor]="menu" [matMenuTriggerData]="{ model: model }" (menuClosed)="toggleRipple()"
+                      (click)="$event.stopPropagation();" (mousedown)="toggleRipple()">more_vert
+            </mat-icon>
           </button>
         </md-card-header>
 
@@ -24,12 +26,14 @@
 </div>
 
 <mat-menu #menu="matMenu">
-  <button mat-menu-item>
-    <mat-icon>edit</mat-icon>
-    <span>Edit</span>
-  </button>
-  <button mat-menu-item>
-    <mat-icon>delete</mat-icon>
-    <span>Delete</span>
-  </button>
+  <ng-template matMenuContent let-model="model">
+    <button mat-menu-item (click)="editDiagram(model)">
+      <mat-icon>edit</mat-icon>
+      <span>Edit</span>
+    </button>
+    <button mat-menu-item (click)="deleteDiagram(model)">
+      <mat-icon>delete</mat-icon>
+      <span>Delete</span>
+    </button>
+  </ng-template>
 </mat-menu>

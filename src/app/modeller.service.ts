@@ -361,9 +361,8 @@ export class ModellerService {
       .then(response => console.log(response));
   }
 
-  deleteModel(modelId: string): Promise<Object> {
-    return this.httpClient.delete(this.endpointSettings.getModelEndpoint(modelId))
-      .toPromise();
+  deleteModel(modelId: string): Observable<Object> {
+    return this.httpClient.delete(this.endpointSettings.getModelEndpoint(modelId));
   }
 
   updateModel(model: Model) {

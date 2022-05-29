@@ -5,6 +5,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ModellerService} from '../modeller.service';
 import {take} from 'rxjs/operators';
 import {NavigationExtras, Router} from '@angular/router';
+import {ModalModelEdit} from '../modal-model-edit/modal-model-edit.component';
 
 @Component({
   selector: 'app-diagram-management',
@@ -30,11 +31,23 @@ export class DiagramManagementComponent implements OnInit {
   }
 
   editDiagram(model: Model): void {
-
+    const dialogRef = this.matDialog.open(ModalModelEdit, {
+      data: { ...model }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        model.label = result.label;
+      }
+    });
   }
 
-  deleteDiagram(id: string): void {
-
+  deleteDiagram(model: Model): void {
+    this.modellerService.deleteModel(model.id).pipe(take(1)).subscribe(response => {
+      const index = this.models.findIndex(m => m.id === model.id);
+      if (index >= 0) {
+        this.models.splice(index, 1);
+      }
+    });
   }
 
 

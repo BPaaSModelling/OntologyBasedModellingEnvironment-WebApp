@@ -991,7 +991,7 @@ export class ModellingAreaComponent implements OnInit {
 
   deleteModel() {
     if (this.selectedModel !== undefined) {
-      this.mService.deleteModel(this.selectedModel.id).then(response => {
+      this.mService.deleteModel(this.selectedModel.id).pipe(take(1)).subscribe(response => {
         this.selectedModel = undefined;
         this.prepareModels();
         this.myDiagram.model.nodeDataArray = [];
