@@ -2,7 +2,7 @@ import {Component, OnInit } from '@angular/core';
 import {ModalModelCreation} from '../modal-model-creation/modal-model-creation.component';
 import {Model} from '../_models/Model.model';
 import {MatDialog} from '@angular/material/dialog';
-import {ModellerService} from '../modeller.service';
+import {ModellerService} from '../core/modeller/modeller.service';
 import {take} from 'rxjs/operators';
 import {NavigationExtras, Router} from '@angular/router';
 import {ModalModelEdit} from '../modal-model-edit/modal-model-edit.component';
@@ -51,10 +51,11 @@ export class DiagramManagementComponent implements OnInit {
   }
 
 
-  openModel(id: string) {
+  openModel(model: Model) {
     const navExtras = {
       queryParams: {
-        id
+        id: model.id,
+        label: model.label
       }
     } as NavigationExtras;
     this.router.navigate(['/modeller'], navExtras);

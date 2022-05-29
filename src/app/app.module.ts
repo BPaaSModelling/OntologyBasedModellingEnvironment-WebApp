@@ -6,7 +6,7 @@ import {PaletteAreaComponent } from './palette-area/palette-area.component';
 import {ModellingAreaComponent } from './modelling-area/modelling-area.component';
 import {RouterModule, Routes} from '@angular/router';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
-import {ModellerService} from './modeller.service';
+import {ModellerService} from './core/modeller/modeller.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 

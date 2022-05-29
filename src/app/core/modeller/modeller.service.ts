@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {EndpointSettings} from './_settings/endpoint.settings';
+import {EndpointSettings} from '../../_settings/endpoint.settings';
 //import {ModalModelMultipleExport} from './modal-model-multiple-export';
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
@@ -8,25 +8,25 @@ import {of} from 'rxjs';
 // import 'rxjs/operator/mergeMap';
 // import 'rxjs/operator/switchMap';
 
-import {PaletteCategoryModel} from './_models/PaletteCategory.model';
-import {PaletteElementModel} from './_models/PaletteElement.model';
-import {QueryAnswerModel} from './_models/QueryAnswer.model';
-import {DatatypePropertyModel} from './_models/DatatypeProperty.model';
-import {DomainElementModel} from './_models/DomainElement.model';
-import {ModelingLanguageModel} from './_models/ModelingLanguage.model';
-import {ObjectPropertyModel} from './_models/ObjectProperty.model';
-import {Model} from './_models/Model.model';
-import {ModelElementDetail} from './_models/ModelElementDetail.model';
-import {ArrowStructures} from './_models/ArrowStructures.model';
-import {InstantiationTargetType} from './_models/InstantiationTargetType.model';
-import {RelationOptions} from './_models/RelationOptions.model';
-import ModellingLanguageConstructInstance from './_models/ModellingLanguageConstructInstance.model';
+import {PaletteCategoryModel} from '../../_models/PaletteCategory.model';
+import {PaletteElementModel} from '../../_models/PaletteElement.model';
+import {QueryAnswerModel} from '../../_models/QueryAnswer.model';
+import {DatatypePropertyModel} from '../../_models/DatatypeProperty.model';
+import {DomainElementModel} from '../../_models/DomainElement.model';
+import {ModelingLanguageModel} from '../../_models/ModelingLanguage.model';
+import {ObjectPropertyModel} from '../../_models/ObjectProperty.model';
+import {Model} from '../../_models/Model.model';
+import {ModelElementDetail} from '../../_models/ModelElementDetail.model';
+import {ArrowStructures} from '../../_models/ArrowStructures.model';
+import {InstantiationTargetType} from '../../_models/InstantiationTargetType.model';
+import {RelationOptions} from '../../_models/RelationOptions.model';
+import ModellingLanguageConstructInstance from '../../_models/ModellingLanguageConstructInstance.model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {ModelingViewModel} from './_models/ModelingView.model';
+import {ModelingViewModel} from '../../_models/ModelingView.model';
 //import { saveAs } from  'file-saver';
 import * as fileSaver from 'file-saver';
 import {saveAs} from 'file-saver';
-import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-model-multiple-export.component';
+import {ModalModelMultipleExport} from '../../modal-model-multiple-export/modal-model-multiple-export.component';
 import {promise} from 'protractor';
 
 

@@ -4,16 +4,7 @@
 <title>Home</title>
 </head>
 <body>
-<mat-toolbar color="primary" class="mat-elevation-z8">
-  <span><a mat-button routerLink="/home"><img width="350" src=".\assets\images\AOAME_crop.png"></a></span>
-
-  <div class="spacer"></div>
-
-  <a mat-button routerLink="/home"routerLinkActive="active-link" [routerLinkActiveOptions]={exact:true} >Home</a>
-  <a mat-button routerLink="/diagramManagement"routerLinkActive="active-link">Modeller</a>
-  <a mat-button routerLink="/importExport" routerLinkActive="active-link">Import and Export</a>
-</mat-toolbar>
-<br>
+<app-header-pane></app-header-pane>
 <router-outlet></router-outlet>
 </body>
 </html>

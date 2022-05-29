@@ -1,11 +1,11 @@
-<div class="outer-padding">
+<div class="outer-margin">
   <button mat-raised-button color="primary" (click)="createNewDiagram()">Create +</button>
   <mat-divider class="horizontal-margin"></mat-divider>
 
   <mat-grid-list cols="5" rowHeight="16rem" gutterSize="1rem">
     <mat-grid-tile [colspan]="1" [rowspan]="1" *ngFor="let model of models; index as i">
-      <mat-card class="diagram-card" mat-ripple [matRippleDisabled]="rippleDisabled" (click)="openModel(model.id)">
-        <md-card-header (click)="openModel(model.id)">
+      <mat-card class="diagram-card" mat-ripple [matRippleDisabled]="rippleDisabled" (click)="openModel(model)">
+        <md-card-header>
           <md-card-title>{{model.label}} </md-card-title>
           <div fxFlex></div>
           <button mat-icon-button aria-label="action menu button">

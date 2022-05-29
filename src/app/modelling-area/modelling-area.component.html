@@ -2,23 +2,6 @@
   <div style="display: flex; flex-direction: row">
     <mat-form-field appearance="fill">
       <mat-select
-        (selectionChange)="selectionChanged()"
-        [(ngModel)]="selectedModel">
-        <mat-option *ngFor="let model of models" [value]="model">{{model.label}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <button style="height: fit-content; align-self: center">Add</button>
-    <button *ngIf="selectedModel" style="height: fit-content; align-self: center" (click)="openModelEditModel()">Edit</button>
-    <button style="height: fit-content; align-self: center" (click)="deleteModel()">Delete</button>
-  <!--  <button style="height: fit-content; align-self: center" (click)="getModelsAndLanguages()">Export</button>
-     <button style="height: fit-content; align-self: center" (click)="getModelsAndLanguagesADVANCEDwithDistinction()">Advanced Export</button>
-    <button style="height: fit-content; align-self: center" (click)="getModelsAndLanguagesMultipleSelection()">Multiple Selection Export</button>
-    <button style="height: fit-content; align-self: center" (click)="LoadModelsAndLanguagesMultipleSelection()">Load languages into multiple selection</button>
--->
-
-    <mat-form-field appearance="fill">
-      <mat-select
         placeholder="Instantiation as"
         [(ngModel)]="selectedInstantiationType">
         <mat-option *ngFor="let instantiationType of getInstantiationTypes()" [value]="instantiationType">{{instantiationType}}</mat-option>
@@ -54,6 +37,6 @@
 
   </div>
   <div style="display: flex; flex-direction: row">
-    <div id="myDiagramDiv" style="flex-grow: 1; height: 1000px; "></div>
+    <div id="myDiagramDiv" style="flex-grow: 1; height: 500px; "></div>
   </div>
 </div>

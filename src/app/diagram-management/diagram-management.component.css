@@ -24,3 +24,7 @@ md-card-title {
   cursor: pointer;
   padding: 0;
 }
+
+.outer-margin {
+  margin: 1rem;
+}

@@ -2,7 +2,7 @@ import {Component, Inject} from '@angular/core';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {Model} from '../_models/Model.model';
-import {ModellerService} from '../modeller.service';
+import {ModellerService} from '../core/modeller/modeller.service';
 import {take} from 'rxjs/operators';
 import {NavigationExtras, Router} from '@angular/router';
 
@@ -33,7 +33,8 @@ export class ModalModelCreation {
   private navigateToModellingCanvas(model: Model) {
     const navExtras = {
       queryParams: {
-        id: model.id
+        id: model.id,
+        label: model.label
       }
     } as NavigationExtras;
     this.router.navigate(['/modeller'], navExtras);

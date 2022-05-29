@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import {ModellerService} from "../modeller.service";
+import {ModellerService} from "../core/modeller/modeller.service";
 import {DomainElementModel} from "../_models/DomainElement.model";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FormControl,FormGroup} from '@angular/forms';

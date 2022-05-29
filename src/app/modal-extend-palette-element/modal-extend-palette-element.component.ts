@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit, Output, EventEmitter, ChangeDetectorRef} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from "@angular/material/dialog";
 import {DomainElementModel} from "../_models/DomainElement.model";
-import {ModellerService} from "../modeller.service";
+import {ModellerService} from "../core/modeller/modeller.service";
 import {PaletteElementModel} from "../_models/PaletteElement.model";
 import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
 import {ModalAddPropertiesComponent} from "../modal-add-properties/modal-add-properties.component";

@@ -39,7 +39,7 @@ export class FileUploadComponent {
 
 import { Component, OnInit } from '@angular/core';
 import { FileUploadService } from './file-upload.service';
-import {ModellerService} from '../modeller.service';
+import {ModellerService} from '../core/modeller/modeller.service';
 
 @Component({
   selector: 'app-file-upload',

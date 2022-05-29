@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {MetamodelElementModel} from '../_models/MetamodelElement.model';
-import {ModellerService} from '../modeller.service';
+import {ModellerService} from '../core/modeller/modeller.service';
 import {PaletteElementModel} from '../_models/PaletteElement.model';
 import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
 import {UUID} from 'angular2-uuid';

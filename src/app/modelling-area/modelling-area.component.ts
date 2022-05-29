@@ -3,7 +3,7 @@ import * as go from 'gojs';
 import {ChangedEvent} from 'gojs';
 import {PaletteElementModel} from '../_models/PaletteElement.model';
 import {VariablesSettings} from '../_settings/variables.settings';
-import {ModellerService} from '../modeller.service';
+import {ModellerService} from '../core/modeller/modeller.service';
 import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
 import {Model} from '../_models/Model.model';
 import {ModalModelCreation} from '../modal-model-creation/modal-model-creation.component';

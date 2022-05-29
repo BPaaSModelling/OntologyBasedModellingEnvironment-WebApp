@@ -2,7 +2,7 @@ import {ChangeDetectorRef, Component, Inject} from '@angular/core';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {Model} from '../_models/Model.model';
-import {ModellerService} from '../modeller.service';
+import {ModellerService} from '../core/modeller/modeller.service';
 import {HttpClient} from '@angular/common/http';
 import {EndpointSettings} from '../_settings/endpoint.settings';
 import {MatDialog} from '@angular/material/dialog';

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
-import {ModellerService} from "../modeller.service";
+import {ModellerService} from "../core/modeller/modeller.service";
 import {MetamodelElementModel} from "../_models/MetamodelElement.model";
 import {PaletteElementModel} from "../_models/PaletteElement.model";
 import {ModalInstancePropertiesComponent,} from "../modal-instance-properties/modal-instance-properties.component";

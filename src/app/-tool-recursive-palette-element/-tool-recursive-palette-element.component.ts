@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angula
 import {PaletteElementModel} from "../_models/PaletteElement.model";
 import {GraphicalElementModel} from "../_models/GraphicalElement.model";
 import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
-import {ModellerService} from '../modeller.service';
+import {ModellerService} from '../core/modeller/modeller.service';
 import {ModalExtendPaletteElementComponent} from "../modal-extend-palette-element/modal-extend-palette-element.component";
 import {ModalPaletteElementPropertiesComponent} from "../modal-palette-element-properties/modal-palette-element-properties.component";
 import { MatDialog } from "@angular/material/dialog";

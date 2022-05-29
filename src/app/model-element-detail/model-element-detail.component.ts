@@ -3,7 +3,7 @@ import {Component, Inject, SimpleChanges} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {RelationDatasource} from './RelationDatasource.model';
 import {Relation} from '../_models/Relation.model';
-import {ModellerService} from '../modeller.service';
+import {ModellerService} from '../core/modeller/modeller.service';
 import {RelationEditorModel} from './RelationEditorModel';
 import {ValueModel} from './ValueModel';
 import {RelationOption} from '../_models/RelationOption.model';
