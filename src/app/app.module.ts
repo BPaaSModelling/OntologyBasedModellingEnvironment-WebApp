@@ -59,10 +59,11 @@ import {ModalModelMultipleImport} from './modal-model-multiple-import/modal-mode
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import {HomeComponent} from './home/home.component';
 import {ContextMenuModule} from '@perfectmemory/ngx-contextmenu';
+import { DiagramManagementComponent } from './diagram-management/diagram-management.component';
 
 
 const appRoutes: Routes = [
-  { path: 'modeller', component: ModellingEnvironmentComponent},
+  { path: 'modeller', component: DiagramManagementComponent},
   { path: 'importExport', component: ImportExportEnvironmentComponent},
   { path: 'home', component: HomeComponent},
   { path: '', component: HomeComponent},
@@ -110,7 +111,8 @@ export function appInit(endpointSettings: EndpointSettings) {
         ModalModelMultipleExport,
         ModalModelMultipleImport,
         FileUploadComponent,
-        HomeComponent
+        HomeComponent,
+        DiagramManagementComponent
     ],
   imports: [
     BrowserModule,
