@@ -3,33 +3,20 @@
   <mat-divider class="horizontal-margin"></mat-divider>
 
   <mat-grid-list cols="5" rowHeight="16rem" gutterSize="1rem">
-    <mat-grid-tile [colspan]="1" [rowspan]="1" >
-      <mat-card class="diagram-card">
-        <mat-card-title>
-          BPMN Diagram 1
+    <mat-grid-tile [colspan]="1" [rowspan]="1" *ngFor="let model of models">
+      <mat-card class="diagram-card" matRipple>
+        <mat-card-title (click)="openModel(model.id)">
+          {{model.label}}
         </mat-card-title>
 
-
         <!--  <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Empty background">-->
-        <div class="empty-blue-div"></div>
+        <div class="empty-blue-div" (click)="openModel(model.id)"></div>
         <mat-card-actions>
-          <button mat-button>EDIT</button>
-          <button mat-button>DELETE</button>
+          <button mat-button (click)="editDiagram(model)">EDIT</button>
+          <button mat-button (click)="deleteDiagram(model.id)">DELETE</button>
         </mat-card-actions>
-      </mat-card>
 
-    </mat-grid-tile>
-    <mat-grid-tile [colspan]="1" [rowspan]="1" class="outer-padding">
-      <mat-card class="diagram-card">
-        <mat-card-title>BPMN Diagram 1</mat-card-title>
-
-
-        <!--  <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Empty background">-->
-        <div class="empty-blue-div"></div>
-        <mat-card-actions>
-          <button mat-button>LIKE</button>
-          <button mat-button>SHARE</button>
-        </mat-card-actions>
+        <mat-card-footer></mat-card-footer>
       </mat-card>
 
     </mat-grid-tile>

@@ -145,7 +145,7 @@ export class ModellingAreaComponent implements OnInit {
   }
 
   private prepareModels() {
-    this.mService.getModels().then(models => {
+    this.mService.getModels().pipe(take(1)).subscribe(models => {
       this.models = models;
 
       this.models.forEach(model => {
@@ -156,7 +156,6 @@ export class ModellingAreaComponent implements OnInit {
           this.setQueryParams();
         });
       });
-
     });
   }
   private prepareModelElements(model: Model, value: ModelElementDetail[]) {

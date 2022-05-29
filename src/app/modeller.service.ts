@@ -282,9 +282,8 @@ export class ModellerService {
       .toPromise();
   }
 
-  getModels(): Promise<Model[]> {
-    return this.httpClient.get<Model[]>(this.endpointSettings.getModelsEndpoint())
-      .toPromise();
+  getModels(): Observable<Model[]> {
+    return this.httpClient.get<Model[]>(this.endpointSettings.getModelsEndpoint());
   }
 
   createModel(label: string): Observable<Model> {
@@ -295,7 +294,7 @@ export class ModellerService {
       tap(model => {
         this.models.push(model);
       })
-    )
+    );
   }
 
   createElement(modelId: string, shapeId: string, label: string, x: number, y: number, paletteConstruct: string, instantiationTargetType: InstantiationTargetType): Promise<ModelElementDetail> {

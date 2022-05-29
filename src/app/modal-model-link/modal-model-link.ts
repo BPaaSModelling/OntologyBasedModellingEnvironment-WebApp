@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {Model} from '../_models/Model.model';
 import {ModellerService} from '../modeller.service';
 import {ModelElementDetailAndModel} from '../_models/ModelElementDetailAndModel';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'modal-model-link',
@@ -20,7 +21,7 @@ export class ModalModelLink {
     @Inject(MAT_DIALOG_DATA) public data: ModelElementDetailAndModel) {}
 
   ngOnInit(): void {
-    this.modellerService.getModels().then(value => {
+    this.modellerService.getModels().pipe(take(1)).subscribe(value => {
       this.models = value;
       if (this.data.elementDetail.shapeRepresentsModel != undefined) {
         this.selectedModel = this.models.find(value1 => value1.id == this.data.elementDetail.shapeRepresentsModel);

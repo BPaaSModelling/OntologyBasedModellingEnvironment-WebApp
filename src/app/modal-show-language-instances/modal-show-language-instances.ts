@@ -7,6 +7,7 @@ import {DataSource} from '@angular/cdk/collections';
 import ModellingLanguageConstructInstance from '../_models/ModellingLanguageConstructInstance.model';
 import {PaletteElementModel} from '../_models/PaletteElement.model';
 import {BehaviorSubject, Observable} from "rxjs";
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'modal-show-language-instances',
@@ -21,7 +22,7 @@ export class ModalShowLanguageInstances {
     public dialogRef: MatDialogRef<PaletteElementModel>,
     private modellerService: ModellerService,
     @Inject(MAT_DIALOG_DATA) public data: PaletteElementModel) {
-    this.modellerService.getModels().then(models => {
+    this.modellerService.getModels().pipe(take(1)).subscribe(models => {
       this.modellerService.getInstancesOfConceptualElements(data.id).then(values => {
         const data = values.map(value => {
           const label = models.find(model => model.id === value.modelId).label;

@@ -13,7 +13,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatOptionModule } from '@angular/material/core';
+import {MatOptionModule, MatRippleModule} from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -143,7 +143,8 @@ export function appInit(endpointSettings: EndpointSettings) {
     MatSelectModule,
     MatFormFieldModule,
     NgMultiSelectDropDownModule.forRoot(),
-    ContextMenuModule
+    ContextMenuModule,
+    MatRippleModule
   ],
     providers: [
         ModellerService,
