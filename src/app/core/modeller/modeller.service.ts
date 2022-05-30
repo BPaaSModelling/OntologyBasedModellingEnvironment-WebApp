@@ -52,8 +52,7 @@ export class ModellerService {
   public prefixAdvanced$: Observable<string> = of();
   public prefixAdvanced: string;
 
-  public prefixAdvancedGithub$: Observable<string> = of();
-  public prefixAdvancedGithub: string;
+  public prefixAdvancedGithub: string[];
 
 
   public modalModelMultipleExport: ModalModelMultipleExport;
@@ -462,13 +461,8 @@ export class ModellerService {
 
   }
 
-  queryUploadLanguagesSelectedOnFuseki(sPrefix: string []) {
-    this.httpClient.post(this.endpointSettings.postLanguagesToFuseki(), sPrefix).subscribe(
-      data => {
-
-      }, error =>console.log (error)
-
-    );
+  queryUploadLanguagesSelectedOnFuseki(sPrefix: string []): Observable<any> {
+    return this.httpClient.post(this.endpointSettings.postLanguagesToFuseki(), sPrefix);
   }
 
 
@@ -483,13 +477,12 @@ export class ModellerService {
     );
   }
 
-  async queryLanguagesFromGithub(): Promise<void> {
-    this.httpClient.get<string>(this.endpointSettings.getPrefixFromGithub()).subscribe(
+  queryLanguagesFromGithub(): Observable<string[]> {
+    return this.httpClient.get<string[]>(this.endpointSettings.getPrefixFromGithub()).pipe(tap(
       data => {
-        this.prefixAdvancedGithub$ = of(data);
         this.prefixAdvancedGithub = data;
-      }, error => console.log(error)
-    );
+      },
+    ));
   }
 
   uploadFromDesktop(sTtlFromDesktop: string){

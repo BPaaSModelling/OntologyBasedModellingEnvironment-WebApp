@@ -14,7 +14,7 @@ import {ModalCreateDomainElementsComponent} from '../modal-create-domain-element
 import {ModalEditPaletteElementComponent} from '../modal-edit-palette-element/modal-edit-palette-element.component';
 import {ModalModelExport} from '../modal-model-export/modal-model-export-component';
 import {ModalModelMultipleExport} from '../modal-model-multiple-export/modal-model-multiple-export.component';
-import {delay} from 'rxjs/operators';
+import {delay, take} from 'rxjs/operators';
 import {ModalModelMultipleImport} from '../modal-model-multiple-import/modal-model-multiple-import.component';
 
 
@@ -205,7 +205,7 @@ export class ImportExportEnvironmentComponent implements OnInit {
   }
   async loadPrefixesPreparationFromGithub() {
 
-    await this.uploadService.queryLanguagesFromGithub();
+    this.uploadService.queryLanguagesFromGithub().pipe(take(1)).subscribe();
 
   }
 

@@ -11,7 +11,7 @@ import {IDropdownSettings} from 'ng-multiselect-dropdown';
 import {saveAs} from 'file-saver';
 import {element} from 'protractor';
 import {PaletteElementModel} from '../_models/PaletteElement.model';
-import {delay} from 'rxjs/operators';
+import {delay, take} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {ActivatedRoute} from '@angular/router';
 import {ModellingAreaComponent} from '../modelling-area/modelling-area.component';
@@ -49,34 +49,21 @@ export class ModalModelMultipleImport {
 
 
   public getLanguagesFromGithub(): void {
-    if (this.mService.prefixAdvancedGithub !== undefined) {
-      let sArray = this.mService.prefixAdvancedGithub.toString();
-      var array = sArray.split(',');
-
-      for (let i = 1; i-1 < array.length; i++) {
-        this.dropdownList.push({item_id: i, item_text: array[i - 1]});
-      }
+    if (this.mService.prefixAdvancedGithub !== undefined && this.mService.prefixAdvancedGithub.length > 0) {
+      this.dropdownList.push(...this.mService.prefixAdvancedGithub);
     }
-
-
   }
 
 
   postLanguagesSelectedOnFuseki(): void {
-
-    var aSelectedLangArray: string[] = [];
-    for (let i = 0; i < this.selectedItems.length; i++) {
-      aSelectedLangArray[i] = this.selectedItems[i].item_text;
-    }
-    this.mService.queryUploadLanguagesSelectedOnFuseki(aSelectedLangArray);
-
+    this.mService.queryUploadLanguagesSelectedOnFuseki(this.selectedItems).pipe(take(1)).subscribe();
   }
 
 
 
   ngOnInit(): void {
     //Check if prefixes are stored in the variable prefixAdvanced
-    if (this.mService.prefixAdvancedGithub !== undefined) {
+    if (this.mService.prefixAdvancedGithub !== undefined && this.mService.prefixAdvancedGithub.length > 0) {
       this.getLanguagesFromGithub();
       //this.getLanguagesFromFusekiHtml();
     }
