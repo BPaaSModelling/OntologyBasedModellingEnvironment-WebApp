@@ -37,7 +37,8 @@ export class HeaderPaneComponent implements OnInit {
   }
 
   navigateBack(): void {
-    this.navigation.back();
+    //this.navigation.back();
+    this.router.navigate(['/diagramManagement']);
   }
 
 }

@@ -343,9 +343,8 @@ export class ModellerService {
       .toPromise();
   }
 
-  getElements(modelId: string): Promise<ModelElementDetail[]> {
-    return this.httpClient.get<ModelElementDetail[]>(this.endpointSettings.getElementEndpoint(modelId))
-      .toPromise();
+  getElements(modelId: string): Observable<ModelElementDetail[]> {
+    return this.httpClient.get<ModelElementDetail[]>(this.endpointSettings.getElementEndpoint(modelId));
   }
 
   updateElement(elementDetail: ModelElementDetail, modelId: string) {

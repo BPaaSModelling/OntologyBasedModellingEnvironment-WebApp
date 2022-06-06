@@ -1,4 +1,4 @@
-import {Component, HostListener, Input, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, HostListener, Input, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import * as go from 'gojs';
 import {ChangedEvent} from 'gojs';
 import {PaletteElementModel} from '../_models/PaletteElement.model';
@@ -6,8 +6,7 @@ import {VariablesSettings} from '../_settings/variables.settings';
 import {ModellerService} from '../core/modeller/modeller.service';
 import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
 import {Model} from '../_models/Model.model';
-import {ModalModelCreation} from '../modal-model-creation/modal-model-creation.component';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {UUID} from 'angular2-uuid';
 import * as _ from 'lodash-es';
 import {InstantiationTargetType} from '../_models/InstantiationTargetType.model';
@@ -18,39 +17,26 @@ import {
   VisualisationLinksData
 } from '../modal-modelling-language-construct-instance-link/modal-modelling-language-construct-instance-link';
 import {ModalPaletteVisualisation} from '../modal-palette-visualisation/modal-palette-visualisation';
-import {ModalModelEdit} from '../modal-model-edit/modal-model-edit.component';
 import {ModelElementDetail} from '../_models/ModelElementDetail.model';
 import {ModelElementDetailAndModel} from '../_models/ModelElementDetailAndModel';
 import {ModalViewElementDetail} from '../model-element-detail/model-element-detail.component';
-import {ModalModelExport} from '../modal-model-export/modal-model-export-component';
-import {ModalModelMultipleExport} from '../modal-model-multiple-export/modal-model-multiple-export.component';
-import {ActivatedRoute} from '@angular/router';
-import {take} from 'rxjs/operators';
+import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
+import {take, takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs/internal/Subject';
 
 let $: any;
-let myDiagram: any;
-let myModel: any;
-let myPalette: any;
-let model: any;
-let nodeArray: any;
-let nodeDataArray: any;
-let linkDataArray: any;
-let myContextMenu: any;
-let cxElement: any;
 
 @Component({
   selector: 'app-modelling-area',
   templateUrl: './modelling-area.component.html',
-  // template: '<div id="cy"></div>',
   styleUrls: ['./modelling-area.component.css']
 })
-export class ModellingAreaComponent implements OnInit {
+export class ModellingAreaComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
 
-  public constructor(public mService: ModellerService, public matDialog: MatDialog, private activatedRoute: ActivatedRoute) {
+  public constructor(public mService: ModellerService, public matDialog: MatDialog, private activatedRoute: ActivatedRoute, private router: Router) {
     console.log('Constructor of graph');
     (go as any).licenseKey = '54ff43e7b11c28c702d95d76423d38f919a52e63998449a35a0412f6be086d1d239cef7157d78cc687f84cfb487fc2898fc1697d964f073cb539d08942e786aab63770b3400c40dea71136c5ceaa2ea1fa2b24a5c5b775a2dc718cf3bea1c59808eff4d54fcd5cb92b280735562bac49e7fc8973f950cf4e6b3d9ba3fffbbf4faf3c7184ccb4569aff5a70deb6f2a3417f';
-    // this.mService.queryPaletteCategories();
-    // this.mService.queryPaletteElements();
 
     this.dialog = matDialog;
   }
@@ -66,16 +52,8 @@ export class ModellingAreaComponent implements OnInit {
   @Input() public layout: any;
   @Input() public zoom: any;
   @Input() new_element: PaletteElementModel;
-  private elementCnt = 0;
-  private node1;
-  private node2;
-  private key;
 
   private myDiagram: any;
-  private connectorModeOn = false;
-  private connectorId;
-  // private palletteElement_Observable: Observable<PaletteElementModel[]>;
-  private palletteElements: any;
 
   public models: Model[] = [];
   public selectedModel: Model;
@@ -83,17 +61,8 @@ export class ModellingAreaComponent implements OnInit {
   private pathPatterns: Map<string, string> = new Map();
   private dialog: MatDialog;
 
-  public canvasTextBoxText: string;
   selectedFile: File;
 
-  /*getPalletteElements(): void {
-        this.palletteElement_Observable = this.mService.queryPaletteElements();
-        this.palletteElement_Observable.subscribe(palletteElement => {
-          this.palletteElements = palletteElement;
-          console.log('Inside getPalletteElements');
-          console.log(this.palletteElements);
-        });
-      }*/
   selectedInstantiationType: InstantiationTargetType = InstantiationTargetType.INSTANCE;
 
   private static convertGeometryToShape(geometry: string) {
@@ -147,17 +116,23 @@ export class ModellingAreaComponent implements OnInit {
   private prepareModels() {
     this.mService.getModels().pipe(take(1)).subscribe(models => {
       this.models = models;
+      let counter = 0;
 
       this.models.forEach(model => {
         model.goJsModel = new go.GraphLinksModel();
 
-        this.mService.getElements(model.id).then(value => {
+        this.mService.getElements(model.id).pipe(take(1)).subscribe(value => {
           this.prepareModelElements(model, value);
-          this.setQueryParams();
+          counter += 1;
+          // slightly hacky solution to ensure only one subscription takes place
+          if (counter === this.models.length) {
+            this.setQueryParams();
+          }
         });
       });
     });
   }
+
   private prepareModelElements(model: Model, value: ModelElementDetail[]) {
     model.elements = value;
     model.elements.forEach(element => {
@@ -325,7 +300,8 @@ export class ModellingAreaComponent implements OnInit {
             alignmentFocus: go.Spot.TopLeft,
             width: 12, height: 12, fill: 'orange',
             visible: false,
-            figure: 'Arrow'
+            figure: 'Arrow',
+            click: this.navigateToLinkedModel()
           },
           new go.Binding('visible', 'shapeRepresentsModel', convertFieldExistenceToLinkVisibility)
         )
@@ -392,7 +368,8 @@ export class ModellingAreaComponent implements OnInit {
               alignmentFocus: go.Spot.TopLeft,
               width: 12, height: 12, fill: 'orange',
               visible: false,
-              figure: 'Arrow'
+              figure: 'Arrow',
+              click: this.navigateToLinkedModel()
             },
             new go.Binding('visible', 'shapeRepresentsModel', convertFieldExistenceToLinkVisibility)
           ),
@@ -464,7 +441,8 @@ export class ModellingAreaComponent implements OnInit {
             alignmentFocus: go.Spot.TopLeft,
             width: 12, height: 12, fill: 'orange',
             visible: false,
-            figure: 'Arrow'
+            figure: 'Arrow',
+            click: this.navigateToLinkedModel()
           },
           new go.Binding('visible', 'shapeRepresentsModel', convertFieldExistenceToLinkVisibility)
         ),
@@ -517,7 +495,7 @@ export class ModellingAreaComponent implements OnInit {
                   data: modelElementDetailAndModel
                 });
 
-                dialogRef.afterClosed().subscribe(result => {
+                dialogRef.afterClosed().pipe(take(1)).subscribe(result => {
 
                   if (result === undefined) { return; }
 
@@ -612,7 +590,7 @@ export class ModellingAreaComponent implements OnInit {
                   data: modelElementDetailAndModel
                 });
 
-                dialogRef.afterClosed().subscribe(result => {
+                dialogRef.afterClosed().pipe(take(1)).subscribe(result => {
                   if (result !== 'Cancel') {
                     element.paletteConstruct = result.paletteConstruct;
                     this.mService.updateElement(element, this.selectedModel.id);
@@ -661,6 +639,28 @@ export class ModellingAreaComponent implements OnInit {
         this.handleNodePaste(txn);
       }
     });
+  }
+
+  private navigateToLinkedModel() {
+    return (e, obj) => {
+      const node = obj.part;
+      if (node != null) {
+        console.log(node);
+        const element = node.data.element;
+        const foundModel = this.models.find(e => e.id === element.shapeRepresentsModel);
+
+        if (!foundModel) {
+          return;
+        }
+        const navExtras = {
+          queryParams: {
+            id: foundModel.id,
+            label: foundModel.label
+          }
+        } as NavigationExtras;
+        this.router.navigate(['/modeller'], navExtras);
+      }
+    };
   }
 
   private handleNodePaste(txn: any) {
@@ -863,19 +863,6 @@ export class ModellingAreaComponent implements OnInit {
     }
   }
 
-  openModelEditModel() {
-    const dialogRef = this.dialog.open(ModalModelEdit, {
-      data: this.selectedModel
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.selectedModel.label = result.label;
-        this.models = [...this.models];
-      }
-    });
-  }
-
   ngOnChanges(changes: SimpleChanges) {
 
     if (changes && changes.new_element && changes.new_element.currentValue && this.selectedModel) {
@@ -960,11 +947,6 @@ export class ModellingAreaComponent implements OnInit {
     });
   }
 
-  @HostListener('document:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-
-  }
-
   makePort(name, spot, output, input) {
     // the port is basically just a small transparent square
     return $(go.Shape, 'Circle',
@@ -987,17 +969,6 @@ export class ModellingAreaComponent implements OnInit {
         port.fill = show ? 'rgba(0,0,0,.3)' : null;
       }
     });
-  }
-
-  deleteModel() {
-    if (this.selectedModel !== undefined) {
-      this.mService.deleteModel(this.selectedModel.id).pipe(take(1)).subscribe(response => {
-        this.selectedModel = undefined;
-        this.prepareModels();
-        this.myDiagram.model.nodeDataArray = [];
-        this.myDiagram.model.linkDataArray = [];
-      });
-    }
   }
 
   private prepareStrokeDemoModel() {
@@ -1129,7 +1100,7 @@ export class ModellingAreaComponent implements OnInit {
 
   private setQueryParams() {
     this.activatedRoute.queryParams
-      .pipe(take(1))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
         if (params.id && this.models.length > 0) {
           const paramsModel = this.models.find(m => m.id === params.id);
@@ -1141,6 +1112,11 @@ export class ModellingAreaComponent implements OnInit {
         console.log(this.selectedModel);
         }
       );
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
 // https://github.com/shlomiassaf/ngx-modialog
