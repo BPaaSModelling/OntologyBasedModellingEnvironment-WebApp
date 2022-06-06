@@ -21,8 +21,10 @@ import {ModelElementDetail} from '../_models/ModelElementDetail.model';
 import {ModelElementDetailAndModel} from '../_models/ModelElementDetailAndModel';
 import {ModalViewElementDetail} from '../model-element-detail/model-element-detail.component';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
-import {take, takeUntil} from 'rxjs/operators';
+import {filter, switchMap, take, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs/internal/Subject';
+import {combineLatest} from 'rxjs/internal/observable/combineLatest';
+import {of} from 'rxjs/internal/observable/of';
 
 let $: any;
 
@@ -82,7 +84,8 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.mService.queryPaletteElements();
-    this.prepareModels();
+    this.loadModels();
+    this.prepareModel();
     this.prepareCustomRelations();
   }
 
@@ -113,24 +116,26 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
     this.pathPatterns.set('Sawtooth', 'M0 3 L4 0 2 6 6 3');
   }
 
-  private prepareModels() {
-    this.mService.getModels().pipe(take(1)).subscribe(models => {
-      this.models = models;
-      let counter = 0;
-
-      this.models.forEach(model => {
-        model.goJsModel = new go.GraphLinksModel();
-
-        this.mService.getElements(model.id).pipe(take(1)).subscribe(value => {
-          this.prepareModelElements(model, value);
-          counter += 1;
-          // slightly hacky solution to ensure only one subscription takes place
-          if (counter === this.models.length) {
-            this.setQueryParams();
+  private prepareModel() {
+    this.activatedRoute.queryParams
+      .pipe(filter(params => !!params && params.id),
+        switchMap((params) => {
+          if (params.id) {
+            this.selectedModel = new Model();
+            this.selectedModel.id = params.id;
+            this.selectedModel.label = params.label;
+            return this.mService.getElements(params.id);
           }
-        });
-      });
-    });
+          return of(null);
+        }),
+        takeUntil(this.destroy$))
+      .subscribe(elements => {
+        this.selectedModel.goJsModel = new go.GraphLinksModel();
+        this.prepareModelElements(this.selectedModel, elements);
+        console.log(this.selectedModel);
+        this.selectionChanged();
+        }
+      );
   }
 
   private prepareModelElements(model: Model, value: ModelElementDetail[]) {
@@ -1097,26 +1102,15 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
     return _.values(InstantiationTargetType);
   }
 
-
-  private setQueryParams() {
-    this.activatedRoute.queryParams
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(params => {
-        if (params.id && this.models.length > 0) {
-          const paramsModel = this.models.find(m => m.id === params.id);
-          if (paramsModel) {
-            this.selectedModel = paramsModel;
-            this.selectionChanged();
-          }
-        }
-        console.log(this.selectedModel);
-        }
-      );
-  }
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private loadModels() {
+    this.mService.getModels().pipe(take(1)).subscribe(models => {
+      this.models = models;
+    });
   }
 }
 // https://github.com/shlomiassaf/ngx-modialog
