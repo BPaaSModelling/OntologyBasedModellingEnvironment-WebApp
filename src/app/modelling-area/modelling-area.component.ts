@@ -1,4 +1,4 @@
-import {Component, HostListener, Input, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import * as go from 'gojs';
 import {ChangedEvent} from 'gojs';
 import {PaletteElementModel} from '../_models/PaletteElement.model';
@@ -23,7 +23,6 @@ import {ModalViewElementDetail} from '../model-element-detail/model-element-deta
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {filter, switchMap, take, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs/internal/Subject';
-import {combineLatest} from 'rxjs/internal/observable/combineLatest';
 import {of} from 'rxjs/internal/observable/of';
 
 let $: any;
