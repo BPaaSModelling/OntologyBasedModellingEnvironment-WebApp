@@ -86,7 +86,7 @@ export class ModellerService {
   queryPaletteElements(): void {
     this.httpClient.get<PaletteElementModel[]>(this.endpointSettings.getPaletteElementsEndpoint()).pipe(tap(paletteElements => {
       paletteElements.filter(e => e.type === 'PaletteConnector').map(p => {
-        p.routing = go.Link.Orthogonal;
+        p.routing = go.Link.AvoidsNodes;
         return p;
       });
     })).subscribe(

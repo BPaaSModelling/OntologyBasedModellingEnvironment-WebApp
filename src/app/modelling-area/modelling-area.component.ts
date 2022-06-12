@@ -154,7 +154,7 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
           pathPattern: this.pathPatterns.get(element.arrowStroke),
           shapeRepresentsModel: element.shapeRepresentsModel,
           otherVisualisationsOfSameLanguageConstruct: element.otherVisualisationsOfSameLanguageConstruct,
-          routing: go.Link.Orthogonal
+          routing: go.Link.AvoidsNodes
         };
 
         if (element.fromArrow !== undefined) {
@@ -350,7 +350,7 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
             {
               name: 'Picture',
               source: '/assets/images/BPMN-CMMN/Collapsed_Subprocess.png',
-              margin: 12, // increase margin if text alignment is changed to bottom
+              margin: 4, // increase margin if text alignment is changed to bottom
               stretch: go.GraphObject.Fill // stretch image to fill whole area of shape
               // imageStretch: go.GraphObject.Fill //do not distort the image
             },
@@ -375,6 +375,8 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
               width: 12, height: 12, fill: 'orange',
               visible: false,
               figure: 'Arrow',
+              margin: 8,
+              cursor: 'pointer',
               click: this.navigateToLinkedModel()
             },
             new go.Binding('visible', 'shapeRepresentsModel', convertFieldExistenceToLinkVisibility)
@@ -385,6 +387,7 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
               alignmentFocus: go.Spot.BottomLeft,
               width: 12, height: 12, fill: 'orange',
               visible: false,
+              margin: 8,
               figure: 'MultiDocument'
             },
             new go.Binding('visible', 'otherVisualisationsOfSameLanguageConstruct', convertFieldExistenceToLinkVisibility)
@@ -423,7 +426,7 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
           {
             name: 'Picture',
             source: '/assets/images/BPMN-CMMN/Collapsed_Subprocess.png',
-            margin: 12, // increase margin if text alignment is changed to bottom
+            margin: 4, // increase margin if text alignment is changed to bottom
             stretch: go.GraphObject.Fill // stretch image to fill whole area of shape
             // imageStretch: go.GraphObject.Fill //do not distort the image
           },
@@ -448,6 +451,8 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
             width: 12, height: 12, fill: 'orange',
             visible: false,
             figure: 'Arrow',
+            margin: 8,
+            cursor: 'pointer',
             click: this.navigateToLinkedModel()
           },
           new go.Binding('visible', 'shapeRepresentsModel', convertFieldExistenceToLinkVisibility)
@@ -458,6 +463,7 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
             alignmentFocus: go.Spot.BottomLeft,
             width: 12, height: 12, fill: 'orange',
             visible: false,
+            margin: 8,
             figure: 'MultiDocument'
           },
           new go.Binding('visible', 'otherVisualisationsOfSameLanguageConstruct', convertFieldExistenceToLinkVisibility)
