@@ -1,26 +1,20 @@
 import * as go from 'gojs';
+import {Helpers} from './helpers';
 
 // define a custom ResizingTool to limit how far one can shrink a lane Grou
-class LaneResizingTool extends go.ResizingTool {
+export class LaneResizingTool extends go.ResizingTool {
   private relayoutDiagram: Function;
   private computeMinLaneSize: Function;
-  private computeMinPoolSize: Function;
   private computeLaneSize: Function;
 
   constructor(private relayoutDiagramHandler: Function,
               private computeMinLaneSizeHandler: Function,
-              private computeMinPoolSizeHandler: Function,
               private computeLaneSizeHandler: Function,
-              private MINLENGTH: number,
-              private MINBREADTH: number
               ) {
     super();
     this.relayoutDiagram = relayoutDiagramHandler;
     this.computeMinLaneSize = computeMinLaneSizeHandler;
-    this.computeMinPoolSize = computeMinPoolSizeHandler;
     this.computeLaneSize = computeLaneSizeHandler;
-    this.MINLENGTH = MINLENGTH;
-    this.MINBREADTH = MINBREADTH;
   }
 
   public isLengthening() {
@@ -29,7 +23,7 @@ class LaneResizingTool extends go.ResizingTool {
 
   public computeMinSize(): go.Size {
     if (this.adornedObject === null) {
-      return new go.Size(this.MINLENGTH, this.MINBREADTH);
+      return new go.Size(Helpers.MINLENGTH, Helpers.MINBREADTH);
     }
     const lane = this.adornedObject.part;
     if (!(lane instanceof go.Group)) {
@@ -39,7 +33,7 @@ class LaneResizingTool extends go.ResizingTool {
     // assert(lane instanceof go.Group && lane.category !== "Pool");
     const msz = this.computeMinLaneSize(lane);  // get the absolute minimum size
     if (lane.containingGroup !== null && this.isLengthening()) {  // compute the minimum length of all lanes
-      const sz = this.computeMinPoolSize(lane.containingGroup);
+      const sz = Helpers.computeMinPoolSize(lane.containingGroup);
       msz.width = Math.max(msz.width, sz.width);
     } else {  // find the minimum size of this single lane
       const sz = this.computeLaneSize(lane);

@@ -2,7 +2,7 @@ import * as go from 'gojs';
 
 // define a custom grid layout that makes sure the length of each lane is the same
 // and that each lane is broad enough to hold its subgraph
-class PoolLayout extends go.GridLayout {
+export class PoolLayout extends go.GridLayout {
   public cellSize = new go.Size(1, 1);
   public wrappingColumn = 1;
   public wrappingWidth = Infinity;
