@@ -154,7 +154,7 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
           pathPattern: this.pathPatterns.get(element.arrowStroke),
           shapeRepresentsModel: element.shapeRepresentsModel,
           otherVisualisationsOfSameLanguageConstruct: element.otherVisualisationsOfSameLanguageConstruct,
-          routing: go.Link.AvoidsNodes
+          routing: go.Link.Orthogonal
         };
 
         if (element.fromArrow !== undefined) {
