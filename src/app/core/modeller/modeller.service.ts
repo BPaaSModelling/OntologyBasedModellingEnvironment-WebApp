@@ -28,6 +28,7 @@ import * as fileSaver from 'file-saver';
 import {saveAs} from 'file-saver';
 import {ModalModelMultipleExport} from '../../modal-model-multiple-export/modal-model-multiple-export.component';
 import {promise} from 'protractor';
+import * as go from 'gojs';
 
 
 @Injectable()
@@ -83,7 +84,12 @@ export class ModellerService {
   }
 
   queryPaletteElements(): void {
-    this.httpClient.get<PaletteElementModel[]>(this.endpointSettings.getPaletteElementsEndpoint()).subscribe(
+    this.httpClient.get<PaletteElementModel[]>(this.endpointSettings.getPaletteElementsEndpoint()).pipe(tap(paletteElements => {
+      paletteElements.filter(e => e.type === 'PaletteConnector').map(p => {
+        p.routing = go.Link.Orthogonal;
+        return p;
+      });
+    })).subscribe(
       data => {
         // console.log('PaletteElements received: ' + JSON.stringify(data));
         this.paletteElement$ = of(data);

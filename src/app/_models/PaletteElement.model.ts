@@ -1,5 +1,5 @@
-import {DomainElementModel} from "./DomainElement.model";
 import {QueryAnswerModel} from "./QueryAnswer.model";
+import * as go from 'gojs';
 
 export class PaletteElementModel {
   id: string;
@@ -38,4 +38,5 @@ export class PaletteElementModel {
 
   tempLabel;
   tempUuid;
+  routing: go.EnumValue;
 }

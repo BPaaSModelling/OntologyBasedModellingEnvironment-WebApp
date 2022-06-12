@@ -153,7 +153,8 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
           to: this.findShapeById(model.elements, element.toShape),
           pathPattern: this.pathPatterns.get(element.arrowStroke),
           shapeRepresentsModel: element.shapeRepresentsModel,
-          otherVisualisationsOfSameLanguageConstruct: element.otherVisualisationsOfSameLanguageConstruct
+          otherVisualisationsOfSameLanguageConstruct: element.otherVisualisationsOfSameLanguageConstruct,
+          routing: go.Link.Orthogonal
         };
 
         if (element.fromArrow !== undefined) {
@@ -274,6 +275,7 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
 
     this.myDiagram.linkTemplate =
       $(go.Link,  // the whole link panel
+        new go.Binding('routing', 'routing'),
         $(go.Shape,  // the link shape
         {
           stroke: 'transparent',
@@ -739,6 +741,7 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
 
     link.data.toArrow = this.selectedConnectorMode.toArrow || '';
     link.data.fromArrow = this.selectedConnectorMode.fromArrow || '';
+    link.data.routing = this.selectedConnectorMode.routing || '';
     link.data.pathPattern = this.pathPatterns.get(this.selectedConnectorMode.arrowStroke);
 
     const fromElement = change.newValue.from;
