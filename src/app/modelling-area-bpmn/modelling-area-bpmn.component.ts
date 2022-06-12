@@ -32,6 +32,7 @@ import {Helpers} from './helpers/helpers';
 import {PoolLink} from './helpers/bpmn-classes/pool-link.class';
 import {BPMNLinkingTool} from './helpers/bpmn-classes/bpmn-linking-tool.class';
 import {BPMNRelinkingTool} from './helpers/bpmn-classes/bpmn-relinking-tool.class';
+import {Mappers} from './helpers/mappers';
 
 
 const $ = go.GraphObject.make;
@@ -42,6 +43,14 @@ const $ = go.GraphObject.make;
   styleUrls: ['./modelling-area-bpmn.component.css']
 })
 export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
+  public constructor(public mService: ModellerService, public matDialog: MatDialog, private activatedRoute: ActivatedRoute, private router: Router) {
+    console.log('Constructor of graph');
+    (go as any).licenseKey = '54ff43e7b11c28c702d95d76423d38f919a52e63998449a35a0412f6be086d1d239cef7157d78cc687f84cfb487fc2898fc1697d964f073cb539d08942e786aab63770b3400c40dea71136c5ceaa2ea1fa2b24a5c5b775a2dc718cf3bea1c59808eff4d54fcd5cb92b280735562bac49e7fc8973f950cf4e6b3d9ba3fffbbf4faf3c7184ccb4569aff5a70deb6f2a3417f';
+
+    this.dialog = matDialog;
+  }
+
+  static myDiagram: go.Diagram;
   // constants for design choices
   private GradientYellow = $(go.Brush, 'Linear', { 0: 'LightGoldenRodYellow', 1: '#FFFF66' });
   private GradientLightGreen = $(go.Brush, 'Linear', { 0: '#E0FEE0', 1: 'PaleGreen' });
@@ -78,12 +87,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   private GatewayNodeSymbolStrokeWidth = 3;
 
   private DataFill = this.GradientLightGray;
-  public constructor(public mService: ModellerService, public matDialog: MatDialog, private activatedRoute: ActivatedRoute, private router: Router) {
-    console.log('Constructor of graph');
-    (go as any).licenseKey = '54ff43e7b11c28c702d95d76423d38f919a52e63998449a35a0412f6be086d1d239cef7157d78cc687f84cfb487fc2898fc1697d964f073cb539d08942e786aab63770b3400c40dea71136c5ceaa2ea1fa2b24a5c5b775a2dc718cf3bea1c59808eff4d54fcd5cb92b280735562bac49e7fc8973f950cf4e6b3d9ba3fffbbf4faf3c7184ccb4569aff5a70deb6f2a3417f';
-
-    this.dialog = matDialog;
-  }
   private destroy$ = new Subject<void>();
 
   @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent<any>;
@@ -98,8 +101,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   @Input() public zoom: any;
   @Input() new_element: PaletteElementModel;
 
-  private myDiagram: go.Diagram;
-
   public models: Model[] = [];
   public selectedModel: Model;
   public selectedConnectorMode: PaletteElementModel;
@@ -109,6 +110,20 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   selectedFile: File;
 
   selectedInstantiationType: InstantiationTargetType = InstantiationTargetType.INSTANCE;
+
+  // conversion functions used by data Bindings
+  static nodeActivityTaskTypeConverter(s: number): Array<string> | string {
+    const tasks = ['Empty',
+      'BpmnTaskMessage',
+      'BpmnTaskUser',
+      'BpmnTaskManual',   // Custom hand symbol
+      'BpmnTaskScript',
+      'BpmnTaskMessage',  // should be black on white
+      'BpmnTaskService',  // Custom gear symbol
+      'InternalStorage'];
+    if (s < tasks.length) { console.log(tasks[s]); return tasks[s]; }
+    return 'NotAllowed'; // error
+  }
 
 
   ngOnInit(): void {
@@ -171,6 +186,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         model.goJsModel.addLinkData(linkData);
 
       } else if (element.modelElementType === 'ModelingElement') {
+        console.log(Mappers.dictionaryAOAMEBPMNElementToGoJsTaskType.get(element.modellingLanguageConstruct));
 
         const nodeData = {
           text: element.label,
@@ -184,7 +200,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           loc: new go.Point(element.x, element.y),
           element: element,
           shapeRepresentsModel: element.shapeRepresentsModel,
-          otherVisualisationsOfSameLanguageConstruct: element.otherVisualisationsOfSameLanguageConstruct
+          otherVisualisationsOfSameLanguageConstruct: element.otherVisualisationsOfSameLanguageConstruct,
+          taskType: Mappers.dictionaryAOAMEBPMNElementToGoJsTaskType.get(element.modellingLanguageConstruct),
+          category: Mappers.dictionaryAOAMEBPMNElementToGoJsCategory.get(element.modellingLanguageConstruct),
         };
 
         model.goJsModel.addNodeData(nodeData);
@@ -268,26 +286,26 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   //   const paletteConstructName = element.paletteConstruct.split(':')[1];
   //   const key = paletteConstructName + '_Shape_' + UUID.UUID();
   //
-  //   this.myDiagram.model.setKeyForNodeData(data, key);
+  //   ModellingAreaBPMNComponent.myDiagram.model.setKeyForNodeData(data, key);
   //   const newElement = Object.assign({}, element); // apparently copying leads to referencing the same element from both data objects...
   //   newElement.id = key;
-  //   const newNodeData = this.myDiagram.model.findNodeDataForKey(key);
+  //   const newNodeData = ModellingAreaBPMNComponent.myDiagram.model.findNodeDataForKey(key);
   //   newNodeData.element = newElement;
   //
   //   this.mService.copyElement(
   //     newElement,
   //     this.selectedModel.id
   //   ).then(response => {
-  //     const nodeToManipulate = this.myDiagram.model.findNodeDataForKey(key);
-  //     this.myDiagram.model.setDataProperty(nodeToManipulate, 'otherVisualisationsOfSameLanguageConstruct', response.otherVisualisationsOfSameLanguageConstruct);
+  //     const nodeToManipulate = ModellingAreaBPMNComponent.myDiagram.model.findNodeDataForKey(key);
+  //     ModellingAreaBPMNComponent.myDiagram.model.setDataProperty(nodeToManipulate, 'otherVisualisationsOfSameLanguageConstruct', response.otherVisualisationsOfSameLanguageConstruct);
   //     nodeToManipulate.element = response;
   //
   //     response.otherVisualisationsOfSameLanguageConstruct.forEach(otherElementDataKey => {
-  //       const otherNodeData = this.myDiagram.model.findNodeDataForKey(otherElementDataKey);
+  //       const otherNodeData = ModellingAreaBPMNComponent.myDiagram.model.findNodeDataForKey(otherElementDataKey);
   //       if (otherNodeData) {
   //         const otherElements = otherNodeData.element.otherVisualisationsOfSameLanguageConstruct && otherNodeData.element.otherVisualisationsOfSameLanguageConstruct.slice() || [];
   //         otherElements.push(response.id);
-  //         this.myDiagram.model.setDataProperty(otherNodeData, 'otherVisualisationsOfSameLanguageConstruct', otherElements);
+  //         ModellingAreaBPMNComponent.myDiagram.model.setDataProperty(otherNodeData, 'otherVisualisationsOfSameLanguageConstruct', otherElements);
   //         otherNodeData.element.otherVisualisationsOfSameLanguageConstruct = otherElements;
   //       }
   //     });
@@ -323,10 +341,10 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   //
   // private handleNodeLinking(txn) {
   //   const change = txn.changes.toArray().find(element => element.propertyName === 'data');
-  //   const link = this.myDiagram.findLinkForData(change.object.data);
+  //   const link = ModellingAreaBPMNComponent.myDiagram.findLinkForData(change.object.data);
   //
   //   if (this.selectedConnectorMode === undefined || this.selectedConnectorMode.arrowStroke === undefined) {
-  //     this.myDiagram.model.removeLinkData(link.data);
+  //     ModellingAreaBPMNComponent.myDiagram.model.removeLinkData(link.data);
   //     return;
   //   }
   //
@@ -351,7 +369,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   //     link.data.element = response;
   //   });
   //
-  //   this.myDiagram.rebuildParts();
+  //   ModellingAreaBPMNComponent.myDiagram.rebuildParts();
   // }
   //
   // private handleNodeMove(txn) {
@@ -384,7 +402,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   //     }
   //   });
   //
-  //   this.myDiagram.rebuildParts();
+  //   ModellingAreaBPMNComponent.myDiagram.rebuildParts();
   // }
 
   // private updateContainerInformationIfNeeded(nodeInfo) {
@@ -393,7 +411,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   //   // check if element has been moved inside any of the containers and update those
   //   const overlappedContainers: ModelElementDetail[] = [];
   //
-  //   this.myDiagram.model.nodeDataArray.forEach(containerNode => {
+  //   ModellingAreaBPMNComponent.myDiagram.model.nodeDataArray.forEach(containerNode => {
   //     if (
   //       containerNode.element.modelElementType === 'ModelingContainer' &&
   //       nodeInfo.modelElementDetail.id != containerNode.element.id &&
@@ -433,7 +451,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   // }
   //
   // private removeElementFromContainer(groupKey, elementKey) {
-  //   const containerNode = this.myDiagram.model.findNodeDataForKey(groupKey);
+  //   const containerNode = ModellingAreaBPMNComponent.myDiagram.model.findNodeDataForKey(groupKey);
   //   _.remove(containerNode.element.containedShapes, s => s === elementKey);
   //   this.mService.updateElement(containerNode.element, this.selectedModel.id);
   // }
@@ -447,16 +465,16 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
   selectionChanged() {
 
-    if (this.myDiagram === undefined) {
+    if (ModellingAreaBPMNComponent.myDiagram === undefined) {
       this.initDiagramCanvas();
     }
 
     if (this.selectedModel !== undefined) {
       if (this.selectedModel.goJsModel !== undefined) {
-        this.myDiagram.model = new go.GraphLinksModel(this.selectedModel.goJsModel.nodeDataArray, this.selectedModel.goJsModel.linkDataArray);
+        ModellingAreaBPMNComponent.myDiagram.model = new go.GraphLinksModel(this.selectedModel.goJsModel.nodeDataArray, this.selectedModel.goJsModel.linkDataArray);
       } else {
-        this.myDiagram.model = new go.GraphLinksModel();
-        this.selectedModel.goJsModel = this.myDiagram.model;
+        ModellingAreaBPMNComponent.myDiagram.model = new go.GraphLinksModel();
+        this.selectedModel.goJsModel = ModellingAreaBPMNComponent.myDiagram.model;
       }
     }
   }
@@ -501,7 +519,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
     console.log('shape: ' + element.shape + ' label: ' + element.label + 'bg color: ' + element.backgroundColor);
 
-    this.myDiagram.startTransaction('Add State');
+    ModellingAreaBPMNComponent.myDiagram.startTransaction('Add State');
 
     console.log('Palette category: ' + element.paletteCategory);
 
@@ -520,11 +538,11 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     };
 
     // add the new node data to the model
-    const model = this.myDiagram.model;
+    const model = ModellingAreaBPMNComponent.myDiagram.model;
     model.addNodeData(toData);
 
-    const newnode = this.myDiagram.findNodeForData(toData);
-    this.myDiagram.select(newnode);
+    const newnode = ModellingAreaBPMNComponent.myDiagram.findNodeForData(toData);
+    ModellingAreaBPMNComponent.myDiagram.select(newnode);
 
     this.mService.createElement(
       this.selectedModel.id,
@@ -540,7 +558,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         newnode.part.data.isGroup = true;
       }
 
-      this.myDiagram.commitTransaction('Add State');
+      ModellingAreaBPMNComponent.myDiagram.commitTransaction('Add State');
     });
   }
 
@@ -773,7 +791,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
                 width: 22, height: 22
               },
               new go.Binding('fill', 'taskType', this.nodeActivityTaskTypeColorConverter),
-              new go.Binding('figure', 'taskType', this.nodeActivityTaskTypeConverter)
+              new go.Binding('figure', 'taskType', ModellingAreaBPMNComponent.nodeActivityTaskTypeConverter)
             ), // end Task Icon
             this.makeMarkerPanel(false, 1) // sub-process,  loop, parallel, sequential, ad doc and compensation markers
           ),  // end main body rectangles spot panel
@@ -825,7 +843,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               width: 22 / palscale, height: 22 / palscale
             },
             new go.Binding('fill', 'taskType', this.nodeActivityTaskTypeColorConverter),
-            new go.Binding('figure', 'taskType', this.nodeActivityTaskTypeConverter)),
+            new go.Binding('figure', 'taskType', ModellingAreaBPMNComponent.nodeActivityTaskTypeConverter)),
           this.makeMarkerPanel(false, palscale) // sub-process,  loop, parallel, sequential, ad doc and compensation markers
         ), // End Spot panel
         $(go.TextBlock,  // the center text
@@ -1129,9 +1147,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           isSubGraphExpanded: false,
           subGraphExpandedChanged: function(grp: go.Group) {
             if (grp.isSubGraphExpanded) { grp.isSelected = true; }
-            this.assignGroupLayer(grp);
+            Helpers.assignGroupLayer(grp);
           },
-          selectionChanged: this.assignGroupLayer,
+          selectionChanged: Helpers.assignGroupLayer,
           computesBoundsAfterDrag: true,
           memberValidation: function (group: go.Group, part: go.Part) {
             return !(part instanceof go.Group) ||
@@ -1141,7 +1159,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             if (e.shift || !(grp instanceof go.Group) || grp.diagram === null) { return; }
             const ok = grp.addMembers(grp.diagram.selection, true);
             if (!ok) { grp.diagram.currentTool.doCancel(); }
-            else { this.assignGroupLayer(grp); }
+            else { Helpers.assignGroupLayer(grp); }
           },
           contextMenu: activityNodeMenu,
           itemTemplate: boundaryEventItemTemplate,
@@ -1267,7 +1285,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       );  // end swimLanesGroupTemplate
 
     // define a custom resize adornment that has two resize handles if the group is expanded
-    // this.myDiagram.groupTemplate.resizeAdornmentTemplate =
+    // ModellingAreaBPMNComponent.myDiagram.groupTemplate.resizeAdornmentTemplate =
     swimLanesGroupTemplate.resizeAdornmentTemplate =
       $(go.Adornment, 'Spot',
         $(go.Placeholder),
@@ -1442,8 +1460,8 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
     // ------------------------------------------the main Diagram----------------------------------------------
 
-    this.myDiagram =
-      $(go.Diagram, 'this.myDiagramDiv',
+    ModellingAreaBPMNComponent.myDiagram =
+      $(go.Diagram, 'myDiagramDiv',
         {
           nodeTemplateMap: nodeTemplateMap,
           linkTemplateMap: linkTemplateMap,
@@ -1453,22 +1471,17 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           // default to having arrow keys move selected nodes
           'commandHandler.arrowKeyBehavior': 'move',
 
-          mouseDrop: function (e: go.InputEvent) {
-            // when the selection is dropped in the diagram's background,
-            // make sure the selected Parts no longer belong to any Group
-            const ok = this.myDiagram.commandHandler.addTopLevelParts(this.myDiagram.selection, true);
-            if (!ok) { this.myDiagram.currentTool.doCancel(); }
-          },
+          mouseDrop: this.diagramOnMouseDrop,
           resizingTool: new LaneResizingTool(this.relayoutDiagram, this.computeMinLaneSize, this.computeLaneSize),
           linkingTool: new BPMNLinkingTool(), // defined in BPMNClasses.js
           relinkingTool: new BPMNRelinkingTool(), // defined in BPMNClasses.js
           'SelectionMoved': this.relayoutDiagram,  // defined below
           'SelectionCopied': this.relayoutDiagram,
-          'LinkDrawn': function(e) { this.assignGroupLayer(e.subject.containingGroup); },
-          'LinkRelinked': function(e) { this.assignGroupLayer(e.subject.containingGroup); }
+          'LinkDrawn': function(e) { Helpers.assignGroupLayer(e.subject.containingGroup); },
+          'LinkRelinked': function(e) { Helpers.assignGroupLayer(e.subject.containingGroup); }
         });
 
-    this.myDiagram.addDiagramListener('LinkDrawn', function (e) {
+    ModellingAreaBPMNComponent.myDiagram.addDiagramListener('LinkDrawn', function (e) {
       if (e.subject.fromNode.category === 'annotation') {
         e.subject.category = 'annotation'; // annotation association
       } else if (e.subject.fromNode.category === 'dataobject' || e.subject.toNode.category === 'dataobject') {
@@ -1479,27 +1492,22 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     });
   }
 
-  // location of event on boundary of Activity is based on the index of the event in the boundaryEventArray
+  private diagramOnMouseDrop(e: go.InputEvent) {
+    // when the selection is dropped in the diagram's background,
+    // make sure the selected Parts no longer belong to any Group
+    const ok = ModellingAreaBPMNComponent.myDiagram.commandHandler.addTopLevelParts(ModellingAreaBPMNComponent.myDiagram.selection, true);
+    if (!ok) {
+      ModellingAreaBPMNComponent.myDiagram.currentTool.doCancel();
+    }
+  }
+
+// location of event on boundary of Activity is based on the index of the event in the boundaryEventArray
   private nodeActivityBESpotConverter(s: number) {
     const x = 10 + (this.EventNodeSize / 2);
     if (s === 0) { return new go.Spot(0, 1, x, 0); }    // bottom left
     if (s === 1) { return new go.Spot(1, 1, -x, 0); }   // bottom right
     if (s === 2) { return new go.Spot(1, 0, -x, 0); }   // top right
     return new go.Spot(1, 0, -x - (s - 2) * this.EventNodeSize, 0);    // top ... right-to-left-ish spread
-  }
-
-  // conversion functions used by data Bindings
-  private nodeActivityTaskTypeConverter(s: number): Array<string> | string {
-    const tasks = ['Empty',
-      'BpmnTaskMessage',
-      'BpmnTaskUser',
-      'BpmnTaskManual',   // Custom hand symbol
-      'BpmnTaskScript',
-      'BpmnTaskMessage',  // should be black on white
-      'BpmnTaskService',  // Custom gear symbol
-      'InternalStorage'];
-    if (s < tasks.length) { return tasks[s]; }
-    return 'NotAllowed'; // error
   }
 
   private nodeActivityTaskTypeColorConverter(s: number) {
@@ -1539,16 +1547,16 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   // just reassigning alignmentIndex in remaining BE would do that.
   private removeActivityNodeBoundaryEvent(obj: go.GraphObject | null) {
     if (obj === null || obj.panel === null || obj.panel.itemArray === null) { return; }
-    this.myDiagram.startTransaction('removeBoundaryEvent');
+    ModellingAreaBPMNComponent.myDiagram.startTransaction('removeBoundaryEvent');
     const pid = obj.portId;
     const arr = obj.panel.itemArray;
     for (let i = 0; i < arr.length; i++) {
       if (arr[i].portId === pid) {
-        this.myDiagram.model.removeArrayItem(arr, i);
+        ModellingAreaBPMNComponent.myDiagram.model.removeArrayItem(arr, i);
         break;
       }
     }
-    this.myDiagram.commitTransaction('removeBoundaryEvent');
+    ModellingAreaBPMNComponent.myDiagram.commitTransaction('removeBoundaryEvent');
   }
 
   // sub-process,  loop, parallel, sequential, ad doc and compensation markers in horizontal array
@@ -1617,13 +1625,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     return size;
   }
 
-  private assignGroupLayer(grp: go.Part): void {
-    if (!(grp instanceof go.Group)) { return; }
-    let lay = grp.isSelected ? 'Foreground' : '';
-    grp.layerName = lay;
-    grp.findSubGraphParts().each(function(m: go.Part) { m.layerName = lay; });
-  }
-
   private groupStyle() {  // common settings for both Lane and Pool Groups
     return [
       {
@@ -1646,7 +1647,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
   // Add a lane to pool (lane parameter is lane above new lane)
   private addLaneEvent(lane: go.Node) {
-    this.myDiagram.startTransaction('addLane');
+    ModellingAreaBPMNComponent.myDiagram.startTransaction('addLane');
     if (lane != null && lane.data.category === 'Lane') {
       // create a new lane data object
       const shape = lane.findObject('SHAPE');
@@ -1661,16 +1662,16 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         group: lane.data.group
       };
       // and add it to the model
-      this.myDiagram.model.addNodeData(newlanedata);
+      ModellingAreaBPMNComponent.myDiagram.model.addNodeData(newlanedata);
     }
-    this.myDiagram.commitTransaction('addLane');
+    ModellingAreaBPMNComponent.myDiagram.commitTransaction('addLane');
   }
 
 
   // set Default Sequence Flow (backslash From Arrow)
   private setSequenceLinkDefaultFlow(obj: go.Link) {
-    this.myDiagram.startTransaction('setSequenceLinkDefaultFlow');
-    const model = this.myDiagram.model;
+    ModellingAreaBPMNComponent.myDiagram.startTransaction('setSequenceLinkDefaultFlow');
+    const model = ModellingAreaBPMNComponent.myDiagram.model;
     model.setDataProperty(obj.data, 'isDefault', true);
     // Set all other links from the fromNode to be isDefault=null
     if (obj.fromNode !== null) {
@@ -1680,22 +1681,22 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         }
       });
     }
-    this.myDiagram.commitTransaction('setSequenceLinkDefaultFlow');
+    ModellingAreaBPMNComponent.myDiagram.commitTransaction('setSequenceLinkDefaultFlow');
   }
 
   // set Conditional Sequence Flow (diamond From Arrow)
   private setSequenceLinkConditionalFlow(obj: go.Link) {
-    this.myDiagram.startTransaction('setSequenceLinkConditionalFlow');
-    const model = this.myDiagram.model;
+    ModellingAreaBPMNComponent.myDiagram.startTransaction('setSequenceLinkConditionalFlow');
+    const model = ModellingAreaBPMNComponent.myDiagram.model;
     model.setDataProperty(obj.data, 'isDefault', false);
-    this.myDiagram.commitTransaction('setSequenceLinkConditionalFlow');
+    ModellingAreaBPMNComponent.myDiagram.commitTransaction('setSequenceLinkConditionalFlow');
   }
 
   // this is called after nodes have been moved or lanes resized, to layout all of the Pool Groups again
   private relayoutDiagram() {
-    this.myDiagram.layout.invalidateLayout();
-    this.myDiagram.findTopLevelGroups().each(function (g) { if (g.category === 'Pool' && g.layout !== null) { g.layout.invalidateLayout(); } });
-    this.myDiagram.layoutDiagram();
+    ModellingAreaBPMNComponent.myDiagram.layout.invalidateLayout();
+    ModellingAreaBPMNComponent.myDiagram.findTopLevelGroups().each(function (g) { if (g.category === 'Pool' && g.layout !== null) { g.layout.invalidateLayout(); } });
+    ModellingAreaBPMNComponent.myDiagram.layoutDiagram();
   }
 
 
@@ -1727,7 +1728,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
   // const myOverview =
   //   $(go.Overview, 'myOverviewDiv',
-  //     { observed: this.myDiagram, maxScale: 0.5, contentAlignment: go.Spot.Center });
+  //     { observed: ModellingAreaBPMNComponent.myDiagram, maxScale: 0.5, contentAlignment: go.Spot.Center });
   // // change color of viewport border in Overview
   // (myOverview.box.elt(0) as go.Shape).stroke = 'dodgerblue';
 
@@ -1737,8 +1738,8 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   // Add a port to the specified side of the selected nodes.   name is beN  (be0, be1)
   // evDim is 5 for Interrupting, 6 for non-Interrupting
   public addActivityNodeBoundaryEvent(evType: number, evDim: number) {
-    this.myDiagram.startTransaction('addBoundaryEvent');
-    this.myDiagram.selection.each(function (node) {
+    ModellingAreaBPMNComponent.myDiagram.startTransaction('addBoundaryEvent');
+    ModellingAreaBPMNComponent.myDiagram.selection.each(function (node) {
       // skip any selected Links
       if (!(node instanceof go.Node)) { return; }
       if (node.data && (node.data.category === 'activity' || node.data.category === 'subprocess')) {
@@ -1748,7 +1749,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         // tslint:disable-next-line:max-line-length
         while (node.findPort('be' + i.toString()) !== defaultPort) { i++; }           // now this new port name is unique within the whole Node because of the side prefix
         const name = 'be' + i.toString();
-        if (!node.data.boundaryEventArray) { this.myDiagram.model.setDataProperty(node.data, 'boundaryEventArray', []); }       // initialize the Array of port data if necessary
+        if (!node.data.boundaryEventArray) { ModellingAreaBPMNComponent.myDiagram.model.setDataProperty(node.data, 'boundaryEventArray', []); }       // initialize the Array of port data if necessary
         // create a new port data object
         const newportdata = {
           portId: name,
@@ -1759,28 +1760,28 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           // if you add port data properties here, you should copy them in copyPortData above  ** BUG...  we don't do that.
         };
         // and add it to the Array of port data
-        this.myDiagram.model.insertArrayItem(node.data.boundaryEventArray, -1, newportdata);
+        ModellingAreaBPMNComponent.myDiagram.model.insertArrayItem(node.data.boundaryEventArray, -1, newportdata);
       }
     });
-    this.myDiagram.commitTransaction('addBoundaryEvent');
+    ModellingAreaBPMNComponent.myDiagram.commitTransaction('addBoundaryEvent');
   }
 
   // changes the item of the object
   public rename(obj: go.GraphObject) {
     if (obj === null || obj.part === null || obj.part.data === null) { return; }
-    this.myDiagram.startTransaction('rename');
+    ModellingAreaBPMNComponent.myDiagram.startTransaction('rename');
     const newName = prompt('Rename ' + obj.part.data.item + ' to:');
-    this.myDiagram.model.setDataProperty(obj.part.data, 'item', newName);
-    this.myDiagram.commitTransaction('rename');
+    ModellingAreaBPMNComponent.myDiagram.model.setDataProperty(obj.part.data, 'item', newName);
+    ModellingAreaBPMNComponent.myDiagram.commitTransaction('rename');
   }
 
   // shows/hides gridlines
   // to be implemented onclick of a button
   public updateGridOption() {
-    this.myDiagram.startTransaction('grid');
+    ModellingAreaBPMNComponent.myDiagram.startTransaction('grid');
     const grid = document.getElementById('grid') as any;
-    this.myDiagram.grid.visible = grid.checked;
-    this.myDiagram.commitTransaction('grid');
+    ModellingAreaBPMNComponent.myDiagram.grid.visible = grid.checked;
+    ModellingAreaBPMNComponent.myDiagram.commitTransaction('grid');
   }
 
   // enables/disables snapping tools, to be implemented by buttons
@@ -1788,11 +1789,11 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     // no transaction needed, because we are modifying tools for future use
     const snap = document.getElementById('snap') as any;
     if (snap.checked) {
-      this.myDiagram.toolManager.draggingTool.isGridSnapEnabled = true;
-      this.myDiagram.toolManager.resizingTool.isGridSnapEnabled = true;
+      ModellingAreaBPMNComponent.myDiagram.toolManager.draggingTool.isGridSnapEnabled = true;
+      ModellingAreaBPMNComponent.myDiagram.toolManager.resizingTool.isGridSnapEnabled = true;
     } else {
-      this.myDiagram.toolManager.draggingTool.isGridSnapEnabled = false;
-      this.myDiagram.toolManager.resizingTool.isGridSnapEnabled = false;
+      ModellingAreaBPMNComponent.myDiagram.toolManager.draggingTool.isGridSnapEnabled = false;
+      ModellingAreaBPMNComponent.myDiagram.toolManager.resizingTool.isGridSnapEnabled = false;
     }
   }
 
@@ -1802,41 +1803,41 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     return space;
   }
 
-  public undo() { this.myDiagram.commandHandler.undo(); }
-  public redo() { this.myDiagram.commandHandler.redo(); }
-  public cutSelection() { this.myDiagram.commandHandler.cutSelection(); }
-  public copySelection() { this.myDiagram.commandHandler.copySelection(); }
-  public pasteSelection() { this.myDiagram.commandHandler.pasteSelection(); }
-  public deleteSelection() { this.myDiagram.commandHandler.deleteSelection(); }
-  public selectAll() { this.myDiagram.commandHandler.selectAll(); }
-  public alignLeft() { (this.myDiagram.commandHandler as DrawCommandHandler).alignLeft(); }
-  public alignRight() { (this.myDiagram.commandHandler as DrawCommandHandler).alignRight(); }
-  public alignTop() { (this.myDiagram.commandHandler as DrawCommandHandler).alignTop(); }
-  public alignBottom() { (this.myDiagram.commandHandler as DrawCommandHandler).alignBottom(); }
-  public alignCemterX() { (this.myDiagram.commandHandler as DrawCommandHandler).alignCenterX(); }
-  public alignCenterY() { (this.myDiagram.commandHandler as DrawCommandHandler).alignCenterY(); }
-  public alignRows() { (this.myDiagram.commandHandler as DrawCommandHandler).alignRow(this.askSpace()); }
-  public alignColumns() { (this.myDiagram.commandHandler as DrawCommandHandler).alignColumn(this.askSpace()); }
+  public undo() { ModellingAreaBPMNComponent.myDiagram.commandHandler.undo(); }
+  public redo() { ModellingAreaBPMNComponent.myDiagram.commandHandler.redo(); }
+  public cutSelection() { ModellingAreaBPMNComponent.myDiagram.commandHandler.cutSelection(); }
+  public copySelection() { ModellingAreaBPMNComponent.myDiagram.commandHandler.copySelection(); }
+  public pasteSelection() { ModellingAreaBPMNComponent.myDiagram.commandHandler.pasteSelection(); }
+  public deleteSelection() { ModellingAreaBPMNComponent.myDiagram.commandHandler.deleteSelection(); }
+  public selectAll() { ModellingAreaBPMNComponent.myDiagram.commandHandler.selectAll(); }
+  public alignLeft() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignLeft(); }
+  public alignRight() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignRight(); }
+  public alignTop() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignTop(); }
+  public alignBottom() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignBottom(); }
+  public alignCemterX() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignCenterX(); }
+  public alignCenterY() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignCenterY(); }
+  public alignRows() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignRow(this.askSpace()); }
+  public alignColumns() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignColumn(this.askSpace()); }
 
 }
 
 //  uncomment this if you want a subprocess to expand on drop.  We decided we didn't like this behavior
-//  this.myDiagram.addDiagramListener("ExternalObjectsDropped", function(e) {
+//  ModellingAreaBPMNComponent.myDiagram.addDiagramListener("ExternalObjectsDropped", function(e) {
 //    // e.subject is the collection that was just dropped
 //    e.subject.each(function(part) {
 //        if (part instanceof go.Node && part.data.item === "end") {
 //          part.move(new go.Point(part.location.x  + 350, part.location.y))
 //        }
-// this.myDiagram.addDiagramListener('Modified', function (e) {
+// ModellingAreaBPMNComponent.myDiagram.addDiagramListener('Modified', function (e) {
 //   const currentFile = document.getElementById('currentFile') as HTMLDivElement;
 //   const idx = currentFile.textContent!.indexOf('*');
-//   if (this.myDiagram.isModified) {
+//   if (ModellingAreaBPMNComponent.myDiagram.isModified) {
 //     if (idx < 0) { currentFile.textContent = currentFile.textContent + '*'; }
 //   } else {
 //     if (idx >= 0) { currentFile.textContent = currentFile.textContent!.slice(0, idx); }
 //   }
 // }); //      });
-//    this.myDiagram.commandHandler.expandSubGraph();
+//    ModellingAreaBPMNComponent.myDiagram.commandHandler.expandSubGraph();
 //  });
 
 // change the title to indicate that the diagram has been modified
