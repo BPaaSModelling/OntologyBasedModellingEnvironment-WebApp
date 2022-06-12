@@ -11,11 +11,18 @@
     </app-palette-area>
   </div>
 
-  <div class="modelling-area">
+  <!--<div class="modelling-area">
     <app-modelling-area [new_element] = "new_element"
                         (showElementPropertyModal)="toggleInstancePropertiesModal($event)">
 
     </app-modelling-area>
+  </div>-->
+
+  <div class="modelling-area">
+    <app-modelling-area-bpmn [new_element] = "new_element"
+                        (showElementPropertyModal)="toggleInstancePropertiesModal($event)">
+
+    </app-modelling-area-bpmn>
   </div>
 
 </div>

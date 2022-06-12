@@ -62,6 +62,7 @@ import {ContextMenuModule} from '@perfectmemory/ngx-contextmenu';
 import { DiagramManagementComponent } from './diagram-management/diagram-management.component';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
+import {ModellingAreaBPMNComponent} from './modelling-area-bpmn/modelling-area-bpmn.component';
 
 
 const appRoutes: Routes = [
@@ -115,7 +116,8 @@ export function appInit(endpointSettings: EndpointSettings) {
         ModalModelMultipleImport,
         FileUploadComponent,
         HomeComponent,
-        DiagramManagementComponent
+        DiagramManagementComponent,
+      ModellingAreaBPMNComponent
     ],
   imports: [
     BrowserModule,
