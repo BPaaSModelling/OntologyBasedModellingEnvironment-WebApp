@@ -25,7 +25,7 @@ import {filter, switchMap, take, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs/internal/Subject';
 import {of} from 'rxjs/internal/observable/of';
 
-import { DrawCommandHandler } from './helpers/DrawCommandHandler';
+import {DrawCommandHandler} from './helpers/DrawCommandHandler';
 import {LaneResizingTool} from './helpers/lane-resizing-tool.class';
 import {PoolLayout} from './helpers/pool-layout.class';
 import {Helpers} from './helpers/helpers';
@@ -43,6 +43,7 @@ const $ = go.GraphObject.make;
   styleUrls: ['./modelling-area-bpmn.component.css']
 })
 export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
+  // tslint:disable-next-line:max-line-length
   public constructor(public mService: ModellerService, public matDialog: MatDialog, private activatedRoute: ActivatedRoute, private router: Router) {
     console.log('Constructor of graph');
     (go as any).licenseKey = '54ff43e7b11c28c702d95d76423d38f919a52e63998449a35a0412f6be086d1d239cef7157d78cc687f84cfb487fc2898fc1697d964f073cb539d08942e786aab63770b3400c40dea71136c5ceaa2ea1fa2b24a5c5b775a2dc718cf3bea1c59808eff4d54fcd5cb92b280735562bac49e7fc8973f950cf4e6b3d9ba3fffbbf4faf3c7184ccb4569aff5a70deb6f2a3417f';
@@ -52,11 +53,11 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
   static myDiagram: go.Diagram;
   // constants for design choices
-  static GradientYellow = $(go.Brush, 'Linear', { 0: 'LightGoldenRodYellow', 1: '#FFFF66' });
-  static GradientLightGreen = $(go.Brush, 'Linear', { 0: '#E0FEE0', 1: 'PaleGreen' });
-  static GradientLightGray = $(go.Brush, 'Linear', { 0: 'White', 1: '#DADADA' });
+  static GradientYellow = $(go.Brush, 'Linear', {0: 'LightGoldenRodYellow', 1: '#FFFF66'});
+  static GradientLightGreen = $(go.Brush, 'Linear', {0: '#E0FEE0', 1: 'PaleGreen'});
+  static GradientLightGray = $(go.Brush, 'Linear', {0: 'White', 1: '#DADADA'});
 
-  static ActivityNodeFill = $(go.Brush, 'Linear', { 0: 'OldLace', 1: 'PapayaWhip' });
+  static ActivityNodeFill = $(go.Brush, 'Linear', {0: 'OldLace', 1: 'PapayaWhip'});
   static ActivityNodeStroke = '#CDAA7D';
   static ActivityMarkerStrokeWidth = 1.5;
   static ActivityNodeWidth = 120;
@@ -89,8 +90,8 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   static DataFill = ModellingAreaBPMNComponent.GradientLightGray;
   private destroy$ = new Subject<void>();
 
-  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent<any>;
-  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent<any>;
+  @ViewChild(ContextMenuComponent, {static: true}) public elementRightClickMenu: ContextMenuComponent<any>;
+  @ViewChild(ContextMenuComponent, {static: true}) public paletteRightClickMenu: ContextMenuComponent<any>;
 
   @Input() contextMenu: ContextMenuComponent<any>;
   @Input() contextMenuSubject: PaletteElementModel;
@@ -121,8 +122,39 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       'BpmnTaskMessage',  // should be black on white
       'BpmnTaskService',  // Custom gear symbol
       'InternalStorage'];
-    if (s < tasks.length) { console.log(tasks[s]); return tasks[s]; }
+    if (s < tasks.length) {
+      console.log(tasks[s]);
+      return tasks[s];
+    }
     return 'NotAllowed'; // error
+  }
+
+  // removing a boundary event doesn't not reposition other BE circles on the node
+  // just reassigning alignmentIndex in remaining BE would do that.
+  static removeActivityNodeBoundaryEvent(obj: go.GraphObject | null) {
+    if (obj === null || obj.panel === null || obj.panel.itemArray === null) {
+      return;
+    }
+    ModellingAreaBPMNComponent.myDiagram.startTransaction('removeBoundaryEvent');
+    const pid = obj.portId;
+    const arr = obj.panel.itemArray;
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].portId === pid) {
+        ModellingAreaBPMNComponent.myDiagram.model.removeArrayItem(arr, i);
+        break;
+      }
+    }
+    ModellingAreaBPMNComponent.myDiagram.commitTransaction('removeBoundaryEvent');
+  }
+
+  // sub-process,  loop, parallel, sequential, ad doc and compensation markers in horizontal array
+  static makeSubButton(sub: boolean) {
+    if (sub) {
+      return [$('SubGraphExpanderButton'),
+        {margin: 2, visible: false},
+        new go.Binding('visible', 'isSubProcess')];
+    }
+    return [];
   }
 
 
@@ -147,10 +179,10 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         }),
         takeUntil(this.destroy$))
       .subscribe(elements => {
-        this.selectedModel.goJsModel = new go.GraphLinksModel();
-        this.prepareModelElements(this.selectedModel, elements);
-        console.log(this.selectedModel);
-        this.selectionChanged();
+          this.selectedModel.goJsModel = new go.GraphLinksModel();
+          this.prepareModelElements(this.selectedModel, elements);
+          console.log(this.selectedModel);
+          this.selectionChanged();
         }
       );
   }
@@ -528,14 +560,14 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
     const toData = {
       text: element.label,
-       key: elementKey,
-       fill: '#0000',
-       source: imageURL,
-       size: new go.Size(element.width, element.height),
-       width: element.width,
-       height: element.height,
-       alignment: go.Spot.Center,
-       shapeRepresentsModel: undefined
+      key: elementKey,
+      fill: '#0000',
+      source: imageURL,
+      size: new go.Size(element.width, element.height),
+      width: element.width,
+      height: element.height,
+      alignment: go.Spot.Center,
+      shapeRepresentsModel: undefined
     };
 
     // add the new node data to the model
@@ -665,9 +697,11 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     const tooltiptemplate =
       $('ToolTip',
         $(go.TextBlock,
-          { margin: 3, editable: true },
+          {margin: 3, editable: true},
           new go.Binding('text', '', function (data) {
-            if (data.item !== undefined) { return data.item; }
+            if (data.item !== undefined) {
+              return data.item;
+            }
             return '(unnamed item)';
           }))
       );
@@ -679,7 +713,11 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $('ContextMenuButton',
           $(go.TextBlock, 'Remove event'),
           // in the click event handler, the obj.part is the Adornment; its adornedObject is the port
-          { click: function (e: go.InputEvent, obj: go.GraphObject) { ModellingAreaBPMNComponent.removeActivityNodeBoundaryEvent((obj.part as go.Adornment).adornedObject); } })
+          {
+            click: function (e: go.InputEvent, obj: go.GraphObject) {
+              ModellingAreaBPMNComponent.removeActivityNodeBoundaryEvent((obj.part as go.Adornment).adornedObject);
+            }
+          })
       );
 
     const boundaryEventItemTemplate =
@@ -691,28 +729,36 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           fromMaxLinks: 1, toMaxLinks: 0
         },
         new go.Binding('portId', 'portId'),
-        new go.Binding('alignment', 'alignmentIndex', this.nodeActivityBESpotConverter),
+        new go.Binding('alignment', 'alignmentIndex', ModellingAreaBPMNComponent.nodeActivityBESpotConverter),
         $(go.Shape, 'Circle',
-          { desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeSize, ModellingAreaBPMNComponent.EventNodeSize) },
-          new go.Binding('strokeDashArray', 'eventDimension', function (s) { return (s === 6) ? [4, 2] : null; }),
+          {desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeSize, ModellingAreaBPMNComponent.EventNodeSize)},
+          new go.Binding('strokeDashArray', 'eventDimension', function (s) {
+            return (s === 6) ? [4, 2] : null;
+          }),
           new go.Binding('fromSpot', 'alignmentIndex',
             function (s) {
               //  nodeActivityBEFromSpotConverter, 0 & 1 go on bottom, all others on top of activity
-              if (s < 2) { return go.Spot.Bottom; }
+              if (s < 2) {
+                return go.Spot.Bottom;
+              }
               return go.Spot.Top;
             }),
           new go.Binding('fill', 'color')),
         $(go.Shape, 'Circle',
           {
             alignment: go.Spot.Center,
-            desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeInnerSize, ModellingAreaBPMNComponent.EventNodeInnerSize), fill: null
+            desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeInnerSize, ModellingAreaBPMNComponent.EventNodeInnerSize),
+            fill: null
           },
-          new go.Binding('strokeDashArray', 'eventDimension', function (s) { return (s === 6) ? [4, 2] : null; })
+          new go.Binding('strokeDashArray', 'eventDimension', function (s) {
+            return (s === 6) ? [4, 2] : null;
+          })
         ),
         $(go.Shape, 'NotAllowed',
           {
             alignment: go.Spot.Center,
-            desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeSymbolSize, ModellingAreaBPMNComponent.EventNodeSymbolSize), fill: 'white'
+            desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeSymbolSize, ModellingAreaBPMNComponent.EventNodeSymbolSize),
+            fill: 'white'
           },
           new go.Binding('figure', 'eventType', this.nodeEventTypeConverter)
         )
@@ -723,26 +769,54 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     const activityNodeMenu =
       $('ContextMenu',
         $('ContextMenuButton',
-          $(go.TextBlock, 'Add Email Event', { margin: 3 }),
-          { click: function (e: go.InputEvent, obj: go.GraphObject) { ModellingAreaBPMNComponent.addActivityNodeBoundaryEvent(2, 5); } }),
+          $(go.TextBlock, 'Add Email Event', {margin: 3}),
+          {
+            click: function (e: go.InputEvent, obj: go.GraphObject) {
+              ModellingAreaBPMNComponent.addActivityNodeBoundaryEvent(2, 5);
+            }
+          }),
         $('ContextMenuButton',
-          $(go.TextBlock, 'Add Timer Event', { margin: 3 }),
-          { click: function (e: go.InputEvent, obj: go.GraphObject) { ModellingAreaBPMNComponent.addActivityNodeBoundaryEvent(3, 5); } }),
+          $(go.TextBlock, 'Add Timer Event', {margin: 3}),
+          {
+            click: function (e: go.InputEvent, obj: go.GraphObject) {
+              ModellingAreaBPMNComponent.addActivityNodeBoundaryEvent(3, 5);
+            }
+          }),
         $('ContextMenuButton',
-          $(go.TextBlock, 'Add Escalation Event', { margin: 3 }),
-          { click: function (e: go.InputEvent, obj: go.GraphObject) { ModellingAreaBPMNComponent.addActivityNodeBoundaryEvent(4, 5); } }),
+          $(go.TextBlock, 'Add Escalation Event', {margin: 3}),
+          {
+            click: function (e: go.InputEvent, obj: go.GraphObject) {
+              ModellingAreaBPMNComponent.addActivityNodeBoundaryEvent(4, 5);
+            }
+          }),
         $('ContextMenuButton',
-          $(go.TextBlock, 'Add Error Event', { margin: 3 }),
-          { click: function (e: go.InputEvent, obj: go.GraphObject) { ModellingAreaBPMNComponent.addActivityNodeBoundaryEvent(7, 5); } }),
+          $(go.TextBlock, 'Add Error Event', {margin: 3}),
+          {
+            click: function (e: go.InputEvent, obj: go.GraphObject) {
+              ModellingAreaBPMNComponent.addActivityNodeBoundaryEvent(7, 5);
+            }
+          }),
         $('ContextMenuButton',
-          $(go.TextBlock, 'Add Signal Event', { margin: 3 }),
-          { click: function (e: go.InputEvent, obj: go.GraphObject) { ModellingAreaBPMNComponent.addActivityNodeBoundaryEvent(10, 5); } }),
+          $(go.TextBlock, 'Add Signal Event', {margin: 3}),
+          {
+            click: function (e: go.InputEvent, obj: go.GraphObject) {
+              ModellingAreaBPMNComponent.addActivityNodeBoundaryEvent(10, 5);
+            }
+          }),
         $('ContextMenuButton',
-          $(go.TextBlock, 'Add N-I Escalation Event', { margin: 3 }),
-          { click: function (e: go.InputEvent, obj: go.GraphObject) { ModellingAreaBPMNComponent.addActivityNodeBoundaryEvent(4, 6); } }),
+          $(go.TextBlock, 'Add N-I Escalation Event', {margin: 3}),
+          {
+            click: function (e: go.InputEvent, obj: go.GraphObject) {
+              ModellingAreaBPMNComponent.addActivityNodeBoundaryEvent(4, 6);
+            }
+          }),
         $('ContextMenuButton',
-          $(go.TextBlock, 'Rename', { margin: 3 }),
-          { click: function (e: go.InputEvent, obj: go.GraphObject) { this.rename(obj); } }));
+          $(go.TextBlock, 'Rename', {margin: 3}),
+          {
+            click: function (e: go.InputEvent, obj: go.GraphObject) {
+              this.rename(obj);
+            }
+          }));
 
 
     const activityNodeTemplate =
@@ -775,7 +849,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               },
               new go.Binding('fill', 'color'),
               new go.Binding('strokeWidth', 'isCall',
-                function (s) { return s ? ModellingAreaBPMNComponent.ActivityNodeStrokeWidthIsCall : ModellingAreaBPMNComponent.ActivityNodeStrokeWidth; })
+                function (s) {
+                  return s ? ModellingAreaBPMNComponent.ActivityNodeStrokeWidthIsCall : ModellingAreaBPMNComponent.ActivityNodeStrokeWidth;
+                })
             ),
             //        $(go.Shape, "RoundedRectangle",  // the inner "Transaction" rounded rectangle
             //          { margin: 3,
@@ -819,6 +895,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $(go.Panel, 'Spot',
           {
             name: 'PANEL',
+            // tslint:disable-next-line:max-line-length
             desiredSize: new go.Size(ModellingAreaBPMNComponent.ActivityNodeWidth / palscale, ModellingAreaBPMNComponent.ActivityNodeHeight / palscale)
           },
           $(go.Shape, 'RoundedRectangle',  // the outside rounded rectangle
@@ -828,7 +905,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               parameter1: 10 / palscale  // corner size (default 10)
             },
             new go.Binding('strokeWidth', 'isCall',
-              function (s) { return s ? ModellingAreaBPMNComponent.ActivityNodeStrokeWidthIsCall : ModellingAreaBPMNComponent.ActivityNodeStrokeWidth; })),
+              function (s) {
+                return s ? ModellingAreaBPMNComponent.ActivityNodeStrokeWidthIsCall : ModellingAreaBPMNComponent.ActivityNodeStrokeWidth;
+              })),
           $(go.Shape, 'RoundedRectangle',  // the inner "Transaction" rounded rectangle
             {
               margin: 3,
@@ -848,7 +927,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           this.makeMarkerPanel(false, palscale) // sub-process,  loop, parallel, sequential, ad doc and compensation markers
         ), // End Spot panel
         $(go.TextBlock,  // the center text
-          { alignment: go.Spot.Center, textAlign: 'center', margin: 2 },
+          {alignment: go.Spot.Center, textAlign: 'center', margin: 2},
           new go.Binding('text'))
       );  // End Node
 
@@ -871,7 +950,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               fill: ModellingAreaBPMNComponent.ActivityNodeFill, stroke: ModellingAreaBPMNComponent.ActivityNodeStroke,
               parameter1: 10 / palscale  // corner size (default 10)
             },
-            new go.Binding('strokeWidth', 'isCall', function (s) { return s ? ModellingAreaBPMNComponent.ActivityNodeStrokeWidthIsCall : ModellingAreaBPMNComponent.ActivityNodeStrokeWidth; })
+            new go.Binding('strokeWidth', 'isCall', function (s) {
+              return s ? ModellingAreaBPMNComponent.ActivityNodeStrokeWidthIsCall : ModellingAreaBPMNComponent.ActivityNodeStrokeWidth;
+            })
           ),
           $(go.Shape, 'RoundedRectangle',  // the inner "Transaction" rounded rectangle
             {
@@ -884,7 +965,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           this.makeMarkerPanel(true, palscale) // sub-process,  loop, parallel, sequential, ad doc and compensation markers
         ), // end main body rectangles spot panel
         $(go.TextBlock,  // the center text
-          { alignment: go.Spot.Center, textAlign: 'center', margin: 2 },
+          {alignment: go.Spot.Center, textAlign: 'center', margin: 2},
           new go.Binding('text'))
       );  // end go.Group
 
@@ -899,7 +980,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         },
         new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
         // can be resided according to the user's desires
-        { resizable: false, resizeObjectName: 'SHAPE' },
+        {resizable: false, resizeObjectName: 'SHAPE'},
         $(go.Panel, 'Spot',
           $(go.Shape, 'Circle',  // Outer circle
             {
@@ -910,29 +991,46 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               fromSpot: go.Spot.RightSide, toSpot: go.Spot.LeftSide
             },
             // allows the color to be determined by the node data
-            new go.Binding('fill', 'eventDimension', function (s) { return (s === 8) ? ModellingAreaBPMNComponent.EventEndOuterFillColor : ModellingAreaBPMNComponent.EventBackgroundColor; }),
-            new go.Binding('strokeWidth', 'eventDimension', function (s) { return s === 8 ? ModellingAreaBPMNComponent.EventNodeStrokeWidthIsEnd : 1; }),
+            new go.Binding('fill', 'eventDimension', function (s) {
+              return (s === 8) ? ModellingAreaBPMNComponent.EventEndOuterFillColor : ModellingAreaBPMNComponent.EventBackgroundColor;
+            }),
+            new go.Binding('strokeWidth', 'eventDimension', function (s) {
+              return s === 8 ? ModellingAreaBPMNComponent.EventNodeStrokeWidthIsEnd : 1;
+            }),
             new go.Binding('stroke', 'eventDimension', this.nodeEventDimensionStrokeColorConverter),
-            new go.Binding('strokeDashArray', 'eventDimension', function (s) { return (s === 3 || s === 6) ? [4, 2] : null; }),
+            new go.Binding('strokeDashArray', 'eventDimension', function (s) {
+              return (s === 3 || s === 6) ? [4, 2] : null;
+            }),
             new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)
           ),  // end main shape
           $(go.Shape, 'Circle',  // Inner circle
-            { alignment: go.Spot.Center, desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeInnerSize, ModellingAreaBPMNComponent.EventNodeInnerSize), fill: null },
+            {
+              alignment: go.Spot.Center,
+              desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeInnerSize, ModellingAreaBPMNComponent.EventNodeInnerSize),
+              fill: null
+            },
             new go.Binding('stroke', 'eventDimension', this.nodeEventDimensionStrokeColorConverter),
             // tslint:disable-next-line:max-line-length
-            new go.Binding('strokeDashArray', 'eventDimension', function (s) { return (s === 3 || s === 6) ? [4, 2] : null; }), // dashes for non-interrupting
-            new go.Binding('visible', 'eventDimension', function (s) { return s > 3 && s <= 7; }) // inner  only visible for 4 thru 7
+            new go.Binding('strokeDashArray', 'eventDimension', function (s) {
+              return (s === 3 || s === 6) ? [4, 2] : null;
+            }), // dashes for non-interrupting
+            new go.Binding('visible', 'eventDimension', function (s) {
+              return s > 3 && s <= 7;
+            }) // inner  only visible for 4 thru 7
           ),
           $(go.Shape, 'NotAllowed',
-            { alignment: go.Spot.Center, desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeSymbolSize, ModellingAreaBPMNComponent.EventNodeSymbolSize), stroke: 'black' },
+            {
+              alignment: go.Spot.Center,
+              desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeSymbolSize, ModellingAreaBPMNComponent.EventNodeSymbolSize),
+              stroke: 'black'
+            },
             new go.Binding('figure', 'eventType', this.nodeEventTypeConverter),
             new go.Binding('fill', 'eventDimension', this.nodeEventDimensionSymbolFillConverter)
           )
         ),  // end Auto Panel
         $(go.TextBlock,
-          { alignment: go.Spot.Center, textAlign: 'center', margin: 5, editable: true },
+          {alignment: go.Spot.Center, textAlign: 'center', margin: 5, editable: true},
           new go.Binding('text').makeTwoWay())
-
       ); // end go.Node Vertical
 
     // ------------------------------------------  Gateway Node Template   ----------------------------------------------
@@ -945,7 +1043,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         },
         new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
         // can be resided according to the user's desires
-        { resizable: false, resizeObjectName: 'SHAPE' },
+        {resizable: false, resizeObjectName: 'SHAPE'},
         $(go.Panel, 'Spot',
           $(go.Shape, 'Diamond',
             {
@@ -957,17 +1055,28 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             },
             new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)),  // end main shape
           $(go.Shape, 'NotAllowed',
-            { alignment: go.Spot.Center, stroke: ModellingAreaBPMNComponent.GatewayNodeSymbolStroke, fill: ModellingAreaBPMNComponent.GatewayNodeSymbolFill },
+            {
+              alignment: go.Spot.Center,
+              stroke: ModellingAreaBPMNComponent.GatewayNodeSymbolStroke,
+              fill: ModellingAreaBPMNComponent.GatewayNodeSymbolFill
+            },
             new go.Binding('figure', 'gatewayType', this.nodeGatewaySymbolTypeConverter),
             // new go.Binding("visible", "gatewayType", function(s) { return s !== 4; }),   // comment out if you want exclusive gateway to be X instead of blank.
-            new go.Binding('strokeWidth', 'gatewayType', function (s) { return (s <= 4) ? ModellingAreaBPMNComponent.GatewayNodeSymbolStrokeWidth : 1; }),
+            new go.Binding('strokeWidth', 'gatewayType', function (s) {
+              return (s <= 4) ? ModellingAreaBPMNComponent.GatewayNodeSymbolStrokeWidth : 1;
+            }),
             new go.Binding('desiredSize', 'gatewayType', this.nodeGatewaySymbolSizeConverter)),
           // the next 2 circles only show up for event gateway
           $(go.Shape, 'Circle',  // Outer circle
             {
-              strokeWidth: 1, stroke: ModellingAreaBPMNComponent.GatewayNodeSymbolStroke, fill: null, desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeSize, ModellingAreaBPMNComponent.EventNodeSize)
+              strokeWidth: 1,
+              stroke: ModellingAreaBPMNComponent.GatewayNodeSymbolStroke,
+              fill: null,
+              desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeSize, ModellingAreaBPMNComponent.EventNodeSize)
             },
-            new go.Binding('visible', 'gatewayType', function (s) { return s >= 5; }) // only visible for > 5
+            new go.Binding('visible', 'gatewayType', function (s) {
+              return s >= 5;
+            }) // only visible for > 5
           ),  // end main shape
           $(go.Shape, 'Circle',  // Inner circle
             {
@@ -975,11 +1084,13 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeInnerSize, ModellingAreaBPMNComponent.EventNodeInnerSize),
               fill: null
             },
-            new go.Binding('visible', 'gatewayType', function (s) { return s === 5; }) // inner  only visible for == 5
+            new go.Binding('visible', 'gatewayType', function (s) {
+              return s === 5;
+            }) // inner  only visible for == 5
           )
         ),
         $(go.TextBlock,
-          { alignment: go.Spot.Center, textAlign: 'center', margin: 5, editable: true },
+          {alignment: go.Spot.Center, textAlign: 'center', margin: 5, editable: true},
           new go.Binding('text').makeTwoWay())
       ); // end go.Node Vertical
 
@@ -998,22 +1109,37 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $(go.Panel, 'Spot',
           $(go.Shape, 'Diamond',
             {
-              strokeWidth: 1, fill: ModellingAreaBPMNComponent.GatewayNodeFill, stroke: ModellingAreaBPMNComponent.GatewayNodeStroke, name: 'SHAPE',
+              strokeWidth: 1,
+              fill: ModellingAreaBPMNComponent.GatewayNodeFill,
+              stroke: ModellingAreaBPMNComponent.GatewayNodeStroke,
+              name: 'SHAPE',
               desiredSize: new go.Size(ModellingAreaBPMNComponent.GatewayNodeSize / 2, ModellingAreaBPMNComponent.GatewayNodeSize / 2)
             }),
           $(go.Shape, 'NotAllowed',
-            { alignment: go.Spot.Center, stroke: ModellingAreaBPMNComponent.GatewayNodeSymbolStroke, strokeWidth: ModellingAreaBPMNComponent.GatewayNodeSymbolStrokeWidth, fill: ModellingAreaBPMNComponent.GatewayNodeSymbolFill },
+            {
+              alignment: go.Spot.Center,
+              stroke: ModellingAreaBPMNComponent.GatewayNodeSymbolStroke,
+              strokeWidth: ModellingAreaBPMNComponent.GatewayNodeSymbolStrokeWidth,
+              fill: ModellingAreaBPMNComponent.GatewayNodeSymbolFill
+            },
             new go.Binding('figure', 'gatewayType', this.nodeGatewaySymbolTypeConverter),
             // new go.Binding("visible", "gatewayType", function(s) { return s !== 4; }),   // comment out if you want exclusive gateway to be X instead of blank.
-            new go.Binding('strokeWidth', 'gatewayType', function (s) { return (s <= 4) ? ModellingAreaBPMNComponent.GatewayNodeSymbolStrokeWidth : 1; }),
+            new go.Binding('strokeWidth', 'gatewayType', function (s) {
+              return (s <= 4) ? ModellingAreaBPMNComponent.GatewayNodeSymbolStrokeWidth : 1;
+            }),
             new go.Binding('desiredSize', 'gatewayType', this.nodePalGatewaySymbolSizeConverter)),
           // the next 2 circles only show up for event gateway
           $(go.Shape, 'Circle',  // Outer circle
             {
-              strokeWidth: 1, stroke: ModellingAreaBPMNComponent.GatewayNodeSymbolStroke, fill: null, desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeSize / 2, ModellingAreaBPMNComponent.EventNodeSize / 2)
+              strokeWidth: 1,
+              stroke: ModellingAreaBPMNComponent.GatewayNodeSymbolStroke,
+              fill: null,
+              desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeSize / 2, ModellingAreaBPMNComponent.EventNodeSize / 2)
             },
             // new go.Binding("desiredSize", "gatewayType", new go.Size(ModellingAreaBPMNComponent.EventNodeSize/2, ModellingAreaBPMNComponent.EventNodeSize/2)),
-            new go.Binding('visible', 'gatewayType', function (s) { return s >= 5; }) // only visible for > 5
+            new go.Binding('visible', 'gatewayType', function (s) {
+              return s >= 5;
+            }) // only visible for > 5
           ),  // end main shape
           $(go.Shape, 'Circle',  // Inner circle
             {
@@ -1021,11 +1147,13 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeInnerSize / 2, ModellingAreaBPMNComponent.EventNodeInnerSize / 2),
               fill: null
             },
-            new go.Binding('visible', 'gatewayType', function (s) { return s === 5; }) // inner  only visible for == 5
+            new go.Binding('visible', 'gatewayType', function (s) {
+              return s === 5;
+            }) // inner  only visible for == 5
           )),
 
         $(go.TextBlock,
-          { alignment: go.Spot.Center, textAlign: 'center', margin: 5, editable: false },
+          {alignment: go.Spot.Center, textAlign: 'center', margin: 5, editable: false},
           new go.Binding('text'))
       );
 
@@ -1034,7 +1162,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
     const annotationNodeTemplate =
       $(go.Node, 'Auto',
-        { background: ModellingAreaBPMNComponent.GradientLightGray, locationSpot: go.Spot.Center },
+        {background: ModellingAreaBPMNComponent.GradientLightGray, locationSpot: go.Spot.Center},
         new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
         $(go.Shape, 'Annotation', // A left bracket shape
           {
@@ -1042,18 +1170,23 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             strokeWidth: 2, stroke: 'gray', fill: 'transparent'
           }),
         $(go.TextBlock,
-          { margin: 5, editable: true },
+          {margin: 5, editable: true},
           new go.Binding('text').makeTwoWay())
       );
 
     const dataObjectNodeTemplate =
       $(go.Node, 'Vertical',
-        { locationObjectName: 'SHAPE', locationSpot: go.Spot.Center },
+        {locationObjectName: 'SHAPE', locationSpot: go.Spot.Center},
         new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
         $(go.Shape, 'File',
           {
-            name: 'SHAPE', portId: '', fromLinkable: true, toLinkable: true, cursor: 'pointer',
-            fill: ModellingAreaBPMNComponent.DataFill, desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeSize * 0.8, ModellingAreaBPMNComponent.EventNodeSize)
+            name: 'SHAPE',
+            portId: '',
+            fromLinkable: true,
+            toLinkable: true,
+            cursor: 'pointer',
+            fill: ModellingAreaBPMNComponent.DataFill,
+            desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeSize * 0.8, ModellingAreaBPMNComponent.EventNodeSize)
           }),
         $(go.TextBlock,
           {
@@ -1065,15 +1198,20 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
     const dataStoreNodeTemplate =
       $(go.Node, 'Vertical',
-        { locationObjectName: 'SHAPE', locationSpot: go.Spot.Center },
+        {locationObjectName: 'SHAPE', locationSpot: go.Spot.Center},
         new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
         $(go.Shape, 'Database',
           {
-            name: 'SHAPE', portId: '', fromLinkable: true, toLinkable: true, cursor: 'pointer',
-            fill: ModellingAreaBPMNComponent.DataFill, desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeSize, ModellingAreaBPMNComponent.EventNodeSize)
+            name: 'SHAPE',
+            portId: '',
+            fromLinkable: true,
+            toLinkable: true,
+            cursor: 'pointer',
+            fill: ModellingAreaBPMNComponent.DataFill,
+            desiredSize: new go.Size(ModellingAreaBPMNComponent.EventNodeSize, ModellingAreaBPMNComponent.EventNodeSize)
           }),
         $(go.TextBlock,
-          { margin: 5, editable: true },
+          {margin: 5, editable: true},
           new go.Binding('text').makeTwoWay())
       );
 
@@ -1081,14 +1219,16 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
     const privateProcessNodeTemplate =
       $(go.Node, 'Auto',
-        { layerName: 'Background', resizable: true, resizeObjectName: 'LANE' },
+        {layerName: 'Background', resizable: true, resizeObjectName: 'LANE'},
         new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
         $(go.Shape, 'Rectangle',
-          { fill: null }),
+          {fill: null}),
         $(go.Panel, 'Table',     // table with 2 cells to hold header and lane
           {
             desiredSize: new go.Size(ModellingAreaBPMNComponent.ActivityNodeWidth * 6, ModellingAreaBPMNComponent.ActivityNodeHeight),
-            background: ModellingAreaBPMNComponent.DataFill, name: 'LANE', minSize: new go.Size(ModellingAreaBPMNComponent.ActivityNodeWidth, ModellingAreaBPMNComponent.ActivityNodeHeight * 0.667)
+            background: ModellingAreaBPMNComponent.DataFill,
+            name: 'LANE',
+            minSize: new go.Size(ModellingAreaBPMNComponent.ActivityNodeWidth, ModellingAreaBPMNComponent.ActivityNodeHeight * 0.667)
           },
           new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify),
           $(go.TextBlock,
@@ -1098,7 +1238,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               editable: true, textAlign: 'center'
             },
             new go.Binding('text').makeTwoWay()),
-          $(go.RowColumnDefinition, { column: 1, separatorStrokeWidth: 1, separatorStroke: 'black' }),
+          $(go.RowColumnDefinition, {column: 1, separatorStrokeWidth: 1, separatorStroke: 'black'}),
           $(go.Shape, 'Rectangle',
             {
               row: 0, column: 1,
@@ -1112,11 +1252,14 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
     const privateProcessNodeTemplateForPalette =
       $(go.Node, 'Vertical',
-        { locationSpot: go.Spot.Center },
+        {locationSpot: go.Spot.Center},
         $(go.Shape, 'Process',
-          { fill: ModellingAreaBPMNComponent.DataFill, desiredSize: new go.Size(ModellingAreaBPMNComponent.GatewayNodeSize / 2, ModellingAreaBPMNComponent.GatewayNodeSize / 4) }),
+          {
+            fill: ModellingAreaBPMNComponent.DataFill,
+            desiredSize: new go.Size(ModellingAreaBPMNComponent.GatewayNodeSize / 2, ModellingAreaBPMNComponent.GatewayNodeSize / 4)
+          }),
         $(go.TextBlock,
-          { margin: 5, editable: true },
+          {margin: 5, editable: true},
           new go.Binding('text'))
       );
 
@@ -1128,11 +1271,17 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           isSubGraphExpanded: false
         },
         $(go.Shape, 'Process',
-          { fill: 'white', desiredSize: new go.Size(ModellingAreaBPMNComponent.GatewayNodeSize / 2, ModellingAreaBPMNComponent.GatewayNodeSize / 4) }),
+          {
+            fill: 'white',
+            desiredSize: new go.Size(ModellingAreaBPMNComponent.GatewayNodeSize / 2, ModellingAreaBPMNComponent.GatewayNodeSize / 4)
+          }),
         $(go.Shape, 'Process',
-          { fill: 'white', desiredSize: new go.Size(ModellingAreaBPMNComponent.GatewayNodeSize / 2, ModellingAreaBPMNComponent.GatewayNodeSize / 4) }),
+          {
+            fill: 'white',
+            desiredSize: new go.Size(ModellingAreaBPMNComponent.GatewayNodeSize / 2, ModellingAreaBPMNComponent.GatewayNodeSize / 4)
+          }),
         $(go.TextBlock,
-          { margin: 5, editable: true },
+          {margin: 5, editable: true},
           new go.Binding('text'))
       );
 
@@ -1146,8 +1295,10 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           locationObjectName: 'PH',
           // locationSpot: go.Spot.Center,
           isSubGraphExpanded: false,
-          subGraphExpandedChanged: function(grp: go.Group) {
-            if (grp.isSubGraphExpanded) { grp.isSelected = true; }
+          subGraphExpandedChanged: function (grp: go.Group) {
+            if (grp.isSubGraphExpanded) {
+              grp.isSelected = true;
+            }
             Helpers.assignGroupLayer(grp);
           },
           selectionChanged: Helpers.assignGroupLayer,
@@ -1157,10 +1308,15 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               (part.category !== 'Pool' && part.category !== 'Lane');
           },
           mouseDrop: function (e: go.InputEvent, grp: go.GraphObject) {
-            if (e.shift || !(grp instanceof go.Group) || grp.diagram === null) { return; }
+            if (e.shift || !(grp instanceof go.Group) || grp.diagram === null) {
+              return;
+            }
             const ok = grp.addMembers(grp.diagram.selection, true);
-            if (!ok) { grp.diagram.currentTool.doCancel(); }
-            else { Helpers.assignGroupLayer(grp); }
+            if (!ok) {
+              grp.diagram.currentTool.doCancel();
+            } else {
+              Helpers.assignGroupLayer(grp);
+            }
           },
           contextMenu: activityNodeMenu,
           itemTemplate: boundaryEventItemTemplate,
@@ -1176,19 +1332,23 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               portId: '', fromLinkable: true, toLinkable: true, cursor: 'pointer',
               fromSpot: go.Spot.RightSide, toSpot: go.Spot.LeftSide
             },
-            new go.Binding('strokeWidth', 'isCall', function (s) { return s ? ModellingAreaBPMNComponent.ActivityNodeStrokeWidthIsCall : ModellingAreaBPMNComponent.ActivityNodeStrokeWidth; })
+            new go.Binding('strokeWidth', 'isCall', function (s) {
+              return s ? ModellingAreaBPMNComponent.ActivityNodeStrokeWidthIsCall : ModellingAreaBPMNComponent.ActivityNodeStrokeWidth;
+            })
           ),
           $(go.Panel, 'Vertical',
-            { defaultAlignment: go.Spot.Left },
+            {defaultAlignment: go.Spot.Left},
             $(go.TextBlock,  // label
-              { margin: 3, editable: true },
+              {margin: 3, editable: true},
               new go.Binding('text', 'text').makeTwoWay(),
-              new go.Binding('alignment', 'isSubGraphExpanded', function (s) { return s ? go.Spot.TopLeft : go.Spot.Center; })),
+              new go.Binding('alignment', 'isSubGraphExpanded', function (s) {
+                return s ? go.Spot.TopLeft : go.Spot.Center;
+              })),
             // create a placeholder to represent the area where the contents of the group are
             $(go.Panel, 'Auto',
-              $(go.Shape, { opacity: 0.0 }),
+              $(go.Shape, {opacity: 0.0}),
               $(go.Placeholder,
-                { padding: new go.Margin(5, 5) })
+                {padding: new go.Margin(5, 5)})
             ),  // end nested Auto Panel
             this.makeMarkerPanel(true, 1)  // sub-process,  loop, parallel, sequential, ad doc and compensation markers
           )  // end Vertical Panel
@@ -1201,11 +1361,15 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $('ContextMenuButton',
           $(go.TextBlock, 'Add Lane'),
           // in the click event handler, the obj.part is the Adornment; its adornedObject is the port
-          { click: function (e: go.InputEvent, obj: go.GraphObject) { this.addLaneEvent((obj.part as go.Adornment).adornedObject as go.Node); } })
+          {
+            click: function (e: go.InputEvent, obj: go.GraphObject) {
+              ModellingAreaBPMNComponent.addLaneEvent((obj.part as go.Adornment).adornedObject as go.Node);
+            }
+          })
       );
 
     const swimLanesGroupTemplate =
-      $(go.Group, 'Spot', this.groupStyle(),
+      $(go.Group, 'Spot', ModellingAreaBPMNComponent.groupStyle(),
         {
           name: 'Lane',
           contextMenu: laneEventMenu,
@@ -1228,33 +1392,41 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           mouseDrop: function (e: go.InputEvent, grp: go.GraphObject) {  // dropping a copy of some Nodes and Links onto this Group adds them to this Group
             // don't allow drag-and-dropping a mix of regular Nodes and Groups
             if (!e.diagram.selection.any((n) => (n instanceof go.Group && n.category !== 'subprocess') || n.category === 'privateProcess')) {
-              if (!(grp instanceof go.Group) || grp.diagram === null) { return; }
+              if (!(grp instanceof go.Group) || grp.diagram === null) {
+                return;
+              }
               const ok = grp.addMembers(grp.diagram.selection, true);
               if (ok) {
-                this.updateCrossLaneLinks(grp);
-                this.relayoutDiagram();
+                ModellingAreaBPMNComponent.updateCrossLaneLinks(grp);
+                ModellingAreaBPMNComponent.relayoutDiagram();
               } else {
                 grp.diagram.currentTool.doCancel();
               }
             }
           },
           subGraphExpandedChanged: function (grp: go.Group) {
-            if (grp.diagram === null) { return; }
-            if (grp.diagram.undoManager.isUndoingRedoing) { return; }
+            if (grp.diagram === null) {
+              return;
+            }
+            if (grp.diagram.undoManager.isUndoingRedoing) {
+              return;
+            }
             const shp = grp.resizeObject;
             if (grp.isSubGraphExpanded) {
               shp.height = grp.data.savedBreadth;
             } else {
-              if (!isNaN(shp.height)) { grp.diagram.model.set(grp.data, 'savedBreadth', shp.height); }
+              if (!isNaN(shp.height)) {
+                grp.diagram.model.set(grp.data, 'savedBreadth', shp.height);
+              }
               shp.height = NaN;
             }
-            this.updateCrossLaneLinks(grp);
+            ModellingAreaBPMNComponent.updateCrossLaneLinks(grp);
           }
         },
         // new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay(),
 
         $(go.Shape, 'Rectangle',  // this is the resized object
-          { name: 'SHAPE', fill: 'white', stroke: null },  // need stroke null here or you gray out some of pool border.
+          {name: 'SHAPE', fill: 'white', stroke: null},  // need stroke null here or you gray out some of pool border.
           new go.Binding('fill', 'color'),
           new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)),
 
@@ -1266,21 +1438,23 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             alignment: go.Spot.LeftCenter, alignmentFocus: go.Spot.LeftCenter
           },
           $(go.TextBlock,  // the lane label
-            { editable: true, margin: new go.Margin(2, 0, 0, 8) },
+            {editable: true, margin: new go.Margin(2, 0, 0, 8)},
             new go.Binding('visible', 'isSubGraphExpanded').ofObject(),
             new go.Binding('text', 'text').makeTwoWay()),
-          $('SubGraphExpanderButton', { margin: 4, angle: -270 })  // but this remains always visible!
+          $('SubGraphExpanderButton', {margin: 4, angle: -270})  // but this remains always visible!
         ),  // end Horizontal Panel
         $(go.Placeholder,
-          { padding: 12, alignment: go.Spot.TopLeft, alignmentFocus: go.Spot.TopLeft }),
-        $(go.Panel, 'Horizontal', { alignment: go.Spot.TopLeft, alignmentFocus: go.Spot.TopLeft },
+          {padding: 12, alignment: go.Spot.TopLeft, alignmentFocus: go.Spot.TopLeft}),
+        $(go.Panel, 'Horizontal', {alignment: go.Spot.TopLeft, alignmentFocus: go.Spot.TopLeft},
           $(go.TextBlock,  // this TextBlock is only seen when the swimlane is collapsed
             {
               name: 'LABEL',
               editable: true, visible: false,
               angle: 0, margin: new go.Margin(6, 0, 0, 20)
             },
-            new go.Binding('visible', 'isSubGraphExpanded', function (e) { return !e; }).ofObject(),
+            new go.Binding('visible', 'isSubGraphExpanded', function (e) {
+              return !e;
+            }).ofObject(),
             new go.Binding('text', 'text').makeTwoWay())
         )
       );  // end swimLanesGroupTemplate
@@ -1298,7 +1472,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             cursor: 'col-resize'
           },
           new go.Binding('visible', '', function (ad) {
-            if (ad.adornedPart === null) { return false; }
+            if (ad.adornedPart === null) {
+              return false;
+            }
             return ad.adornedPart.isSubGraphExpanded;
           }).ofObject()),
         $(go.Shape,  // for changing the breadth of a lane
@@ -1309,32 +1485,34 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             cursor: 'row-resize'
           },
           new go.Binding('visible', '', function (ad) {
-            if (ad.adornedPart === null) { return false; }
+            if (ad.adornedPart === null) {
+              return false;
+            }
             return ad.adornedPart.isSubGraphExpanded;
           }).ofObject())
       );
 
     const poolGroupTemplate =
-      $(go.Group, 'Auto', this.groupStyle(),
+      $(go.Group, 'Auto', ModellingAreaBPMNComponent.groupStyle(),
         {
           computesBoundsIncludingLinks: false,
           // use a simple layout that ignores links to stack the "lane" Groups on top of each other
-          layout: $(PoolLayout, { spacing: new go.Size(0, 0) })  // no space between lanes
+          layout: $(PoolLayout, {spacing: new go.Size(0, 0)})  // no space between lanes
         },
         new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
         $(go.Shape,
-          { fill: 'white' },
+          {fill: 'white'},
           new go.Binding('fill', 'color')),
         $(go.Panel, 'Table',
-          { defaultColumnSeparatorStroke: 'black' },
+          {defaultColumnSeparatorStroke: 'black'},
           $(go.Panel, 'Horizontal',
-            { column: 0, angle: 270 },
+            {column: 0, angle: 270},
             $(go.TextBlock,
-              { editable: true, margin: new go.Margin(5, 0, 5, 0) },  // margin matches private process (black box pool)
+              {editable: true, margin: new go.Margin(5, 0, 5, 0)},  // margin matches private process (black box pool)
               new go.Binding('text').makeTwoWay())
           ),
           $(go.Placeholder,
-            { background: 'darkgray', column: 1 })
+            {background: 'darkgray', column: 1})
         )
       ); // end poolGroupTemplate
 
@@ -1383,22 +1561,32 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               $('ContextMenuButton',
                 $(go.TextBlock, 'Default Flow'),
                 // in the click event handler, the obj.part is the Adornment; its adornedObject is the port
-                { click: function (e: go.InputEvent, obj: go.GraphObject) { this.setSequenceLinkDefaultFlow((obj.part as go.Adornment).adornedObject as go.Link); } }),
+                {
+                  click: function (e: go.InputEvent, obj: go.GraphObject) {
+                    ModellingAreaBPMNComponent.setSequenceLinkDefaultFlow((obj.part as go.Adornment).adornedObject as go.Link);
+                  }
+                }),
               $('ContextMenuButton',
                 $(go.TextBlock, 'Conditional Flow'),
                 // in the click event handler, the obj.part is the Adornment; its adornedObject is the port
-                { click: function (e: go.InputEvent, obj: go.GraphObject) { this.setSequenceLinkConditionalFlow((obj.part as go.Adornment).adornedObject as go.Link); } })
+                {
+                  click: function (e: go.InputEvent, obj: go.GraphObject) {
+                    ModellingAreaBPMNComponent.setSequenceLinkConditionalFlow((obj.part as go.Adornment).adornedObject as go.Link);
+                  }
+                })
             ),
           routing: go.Link.AvoidsNodes, curve: go.Link.JumpGap, corner: 10,
           // fromSpot: go.Spot.RightSide, toSpot: go.Spot.LeftSide,
           reshapable: true, relinkableFrom: true, relinkableTo: true, toEndSegmentLength: 20
         },
         new go.Binding('points').makeTwoWay(),
-        $(go.Shape, { stroke: 'black', strokeWidth: 1 }),
-        $(go.Shape, { toArrow: 'Triangle', scale: 1.2, fill: 'black', stroke: null }),
-        $(go.Shape, { fromArrow: '', scale: 1.5, stroke: 'black', fill: 'white' },
+        $(go.Shape, {stroke: 'black', strokeWidth: 1}),
+        $(go.Shape, {toArrow: 'Triangle', scale: 1.2, fill: 'black', stroke: null}),
+        $(go.Shape, {fromArrow: '', scale: 1.5, stroke: 'black', fill: 'white'},
           new go.Binding('fromArrow', 'isDefault', function (s) {
-            if (s === null) { return ''; }
+            if (s === null) {
+              return '';
+            }
             return s ? 'BackSlash' : 'StretchedDiamond';
           }),
           new go.Binding('segmentOffset', 'isDefault', function (s) {
@@ -1420,9 +1608,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           reshapable: true, relinkableTo: true, toEndSegmentLength: 20
         },
         new go.Binding('points').makeTwoWay(),
-        $(go.Shape, { stroke: 'black', strokeWidth: 1, strokeDashArray: [6, 2] }),
-        $(go.Shape, { toArrow: 'Triangle', scale: 1, fill: 'white', stroke: 'black' }),
-        $(go.Shape, { fromArrow: 'Circle', scale: 1, visible: true, stroke: 'black', fill: 'white' }),
+        $(go.Shape, {stroke: 'black', strokeWidth: 1, strokeDashArray: [6, 2]}),
+        $(go.Shape, {toArrow: 'Triangle', scale: 1, fill: 'white', stroke: 'black'}),
+        $(go.Shape, {fromArrow: 'Circle', scale: 1, visible: true, stroke: 'black', fill: 'white'}),
         $(go.TextBlock, {
             editable: true, text: 'label'
           }, // Link label
@@ -1437,8 +1625,8 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           reshapable: true, relinkableFrom: true, relinkableTo: true
         },
         new go.Binding('points').makeTwoWay(),
-        $(go.Shape, { stroke: 'black', strokeWidth: 1, strokeDashArray: [1, 3] }),
-        $(go.Shape, { toArrow: 'OpenTriangle', scale: 1, fill: null, stroke: 'blue' })
+        $(go.Shape, {stroke: 'black', strokeWidth: 1, strokeDashArray: [1, 3]}),
+        $(go.Shape, {toArrow: 'OpenTriangle', scale: 1, fill: null, stroke: 'blue'})
       );
 
     const annotationAssociationLinkTemplate =
@@ -1449,8 +1637,8 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           toEndSegmentLength: 20, fromEndSegmentLength: 40
         },
         new go.Binding('points').makeTwoWay(),
-        $(go.Shape, { stroke: 'black', strokeWidth: 1, strokeDashArray: [1, 3] }),
-        $(go.Shape, { toArrow: 'OpenTriangle', scale: 1, stroke: 'black' })
+        $(go.Shape, {stroke: 'black', strokeWidth: 1, strokeDashArray: [1, 3]}),
+        $(go.Shape, {toArrow: 'OpenTriangle', scale: 1, stroke: 'black'})
       );
 
     const linkTemplateMap = new go.Map<string, go.Link>();
@@ -1472,14 +1660,18 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           // default to having arrow keys move selected nodes
           'commandHandler.arrowKeyBehavior': 'move',
 
-          mouseDrop: this.diagramOnMouseDrop,
-          resizingTool: new LaneResizingTool(this.relayoutDiagram),
+          mouseDrop: ModellingAreaBPMNComponent.diagramOnMouseDrop,
+          resizingTool: new LaneResizingTool(ModellingAreaBPMNComponent.relayoutDiagram),
           linkingTool: new BPMNLinkingTool(), // defined in BPMNClasses.js
           relinkingTool: new BPMNRelinkingTool(), // defined in BPMNClasses.js
-          'SelectionMoved': this.relayoutDiagram,  // defined below
-          'SelectionCopied': this.relayoutDiagram,
-          'LinkDrawn': function(e) { Helpers.assignGroupLayer(e.subject.containingGroup); },
-          'LinkRelinked': function(e) { Helpers.assignGroupLayer(e.subject.containingGroup); }
+          'SelectionMoved': ModellingAreaBPMNComponent.relayoutDiagram,  // defined below
+          'SelectionCopied': ModellingAreaBPMNComponent.relayoutDiagram,
+          'LinkDrawn': function (e) {
+            Helpers.assignGroupLayer(e.subject.containingGroup);
+          },
+          'LinkRelinked': function (e) {
+            Helpers.assignGroupLayer(e.subject.containingGroup);
+          }
         });
 
     ModellingAreaBPMNComponent.myDiagram.addDiagramListener('LinkDrawn', function (e) {
@@ -1493,7 +1685,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     });
   }
 
-  private diagramOnMouseDrop(e: go.InputEvent) {
+  static diagramOnMouseDrop(e: go.InputEvent) {
     // when the selection is dropped in the diagram's background,
     // make sure the selected Parts no longer belong to any Group
     const ok = ModellingAreaBPMNComponent.myDiagram.commandHandler.addTopLevelParts(ModellingAreaBPMNComponent.myDiagram.selection, true);
@@ -1503,11 +1695,17 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   }
 
 // location of event on boundary of Activity is based on the index of the event in the boundaryEventArray
-  private nodeActivityBESpotConverter(s: number) {
+  static nodeActivityBESpotConverter(s: number) {
     const x = 10 + (ModellingAreaBPMNComponent.EventNodeSize / 2);
-    if (s === 0) { return new go.Spot(0, 1, x, 0); }    // bottom left
-    if (s === 1) { return new go.Spot(1, 1, -x, 0); }   // bottom right
-    if (s === 2) { return new go.Spot(1, 0, -x, 0); }   // top right
+    if (s === 0) {
+      return new go.Spot(0, 1, x, 0);
+    }    // bottom left
+    if (s === 1) {
+      return new go.Spot(1, 1, -x, 0);
+    }   // bottom right
+    if (s === 2) {
+      return new go.Spot(1, 0, -x, 0);
+    }   // top right
     return new go.Spot(1, 0, -x - (s - 2) * ModellingAreaBPMNComponent.EventNodeSize, 0);    // top ... right-to-left-ish spread
   }
 
@@ -1530,64 +1728,75 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       'Pentagon',
       'ThinCross',
       'Circle'];
-    if (s < tasks.length) { return tasks[s]; }
+    if (s < tasks.length) {
+      return tasks[s];
+    }
     return 'NotAllowed'; // error
   }
 
   private nodeEventDimensionStrokeColorConverter(s: number) {
-    if (s === 8) { return ModellingAreaBPMNComponent.EventDimensionStrokeEndColor; }
+    if (s === 8) {
+      return ModellingAreaBPMNComponent.EventDimensionStrokeEndColor;
+    }
     return ModellingAreaBPMNComponent.EventDimensionStrokeColor;
   }
 
   private nodeEventDimensionSymbolFillConverter(s: number) {
-    if (s <= 6) { return ModellingAreaBPMNComponent.EventSymbolLightFill; }
+    if (s <= 6) {
+      return ModellingAreaBPMNComponent.EventSymbolLightFill;
+    }
     return ModellingAreaBPMNComponent.EventSymbolDarkFill;
-  }
-
-  // removing a boundary event doesn't not reposition other BE circles on the node
-  // just reassigning alignmentIndex in remaining BE would do that.
-  static removeActivityNodeBoundaryEvent(obj: go.GraphObject | null) {
-    if (obj === null || obj.panel === null || obj.panel.itemArray === null) { return; }
-    ModellingAreaBPMNComponent.myDiagram.startTransaction('removeBoundaryEvent');
-    const pid = obj.portId;
-    const arr = obj.panel.itemArray;
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i].portId === pid) {
-        ModellingAreaBPMNComponent.myDiagram.model.removeArrayItem(arr, i);
-        break;
-      }
-    }
-    ModellingAreaBPMNComponent.myDiagram.commitTransaction('removeBoundaryEvent');
-  }
-
-  // sub-process,  loop, parallel, sequential, ad doc and compensation markers in horizontal array
-  static makeSubButton(sub: boolean) {
-    if (sub) {
-      return [$('SubGraphExpanderButton'),
-        { margin: 2, visible: false },
-        new go.Binding('visible', 'isSubProcess')];
-    }
-    return [];
   }
 
   // sub-process,  loop, parallel, sequential, ad doc and compensation markers in horizontal array
   private makeMarkerPanel(sub: boolean, scale: number) {
     return $(go.Panel, 'Horizontal',
-      { alignment: go.Spot.MiddleBottom, alignmentFocus: go.Spot.MiddleBottom },
+      {alignment: go.Spot.MiddleBottom, alignmentFocus: go.Spot.MiddleBottom},
       $(go.Shape, 'BpmnActivityLoop',
-        { width: 12 / scale, height: 12 / scale, margin: 2, visible: false, strokeWidth: ModellingAreaBPMNComponent.ActivityMarkerStrokeWidth },
+        {
+          width: 12 / scale,
+          height: 12 / scale,
+          margin: 2,
+          visible: false,
+          strokeWidth: ModellingAreaBPMNComponent.ActivityMarkerStrokeWidth
+        },
         new go.Binding('visible', 'isLoop')),
       $(go.Shape, 'BpmnActivityParallel',
-        { width: 12 / scale, height: 12 / scale, margin: 2, visible: false, strokeWidth: ModellingAreaBPMNComponent.ActivityMarkerStrokeWidth },
+        {
+          width: 12 / scale,
+          height: 12 / scale,
+          margin: 2,
+          visible: false,
+          strokeWidth: ModellingAreaBPMNComponent.ActivityMarkerStrokeWidth
+        },
         new go.Binding('visible', 'isParallel')),
       $(go.Shape, 'BpmnActivitySequential',
-        { width: 12 / scale, height: 12 / scale, margin: 2, visible: false, strokeWidth: ModellingAreaBPMNComponent.ActivityMarkerStrokeWidth },
+        {
+          width: 12 / scale,
+          height: 12 / scale,
+          margin: 2,
+          visible: false,
+          strokeWidth: ModellingAreaBPMNComponent.ActivityMarkerStrokeWidth
+        },
         new go.Binding('visible', 'isSequential')),
       $(go.Shape, 'BpmnActivityAdHoc',
-        { width: 12 / scale, height: 12 / scale, margin: 2, visible: false, strokeWidth: ModellingAreaBPMNComponent.ActivityMarkerStrokeWidth },
+        {
+          width: 12 / scale,
+          height: 12 / scale,
+          margin: 2,
+          visible: false,
+          strokeWidth: ModellingAreaBPMNComponent.ActivityMarkerStrokeWidth
+        },
         new go.Binding('visible', 'isAdHoc')),
       $(go.Shape, 'BpmnActivityCompensation',
-        { width: 12 / scale, height: 12 / scale, margin: 2, visible: false, strokeWidth: ModellingAreaBPMNComponent.ActivityMarkerStrokeWidth, fill: null },
+        {
+          width: 12 / scale,
+          height: 12 / scale,
+          margin: 2,
+          visible: false,
+          strokeWidth: ModellingAreaBPMNComponent.ActivityMarkerStrokeWidth,
+          fill: null
+        },
         new go.Binding('visible', 'isCompensation')),
       ModellingAreaBPMNComponent.makeSubButton(sub)
     ); // end activity markers horizontal panel
@@ -1601,8 +1810,10 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       'ThinX',          // 4 - Exclusive  (exclusive can also be no symbol, just bind to visible=false for no symbol)
       'Pentagon',       // 5 - double cicle event based gateway
       'Pentagon',       // 6 - exclusive event gateway to start a process (single circle)
-      'ThinCross'] ;   // 7 - parallel event gateway to start a process (single circle)
-    if (s < tasks.length) { return tasks[s]; }
+      'ThinCross'];   // 7 - parallel event gateway to start a process (single circle)
+    if (s < tasks.length) {
+      return tasks[s];
+    }
     return 'NotAllowed'; // error
   }
 
@@ -1626,7 +1837,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     return size;
   }
 
-  private groupStyle() {  // common settings for both Lane and Pool Groups
+  static groupStyle() {  // common settings for both Lane and Pool Groups
     return [
       {
         layerName: 'Background',  // all pools and lanes are always behind all nodes and links
@@ -1640,14 +1851,14 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   }
 
   // hide links between lanes when either lane is collapsed
-  private updateCrossLaneLinks(group: go.Group) {
+  static updateCrossLaneLinks(group: go.Group) {
     group.findExternalLinksConnected().each((l) => {
       l.visible = (l.fromNode !== null && l.fromNode.isVisible() && l.toNode !== null && l.toNode.isVisible());
     });
   }
 
   // Add a lane to pool (lane parameter is lane above new lane)
-  private addLaneEvent(lane: go.Node) {
+  static addLaneEvent(lane: go.Node) {
     ModellingAreaBPMNComponent.myDiagram.startTransaction('addLane');
     if (lane != null && lane.data.category === 'Lane') {
       // create a new lane data object
@@ -1670,7 +1881,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
 
   // set Default Sequence Flow (backslash From Arrow)
-  private setSequenceLinkDefaultFlow(obj: go.Link) {
+  static setSequenceLinkDefaultFlow(obj: go.Link) {
     ModellingAreaBPMNComponent.myDiagram.startTransaction('setSequenceLinkDefaultFlow');
     const model = ModellingAreaBPMNComponent.myDiagram.model;
     model.setDataProperty(obj.data, 'isDefault', true);
@@ -1686,7 +1897,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   }
 
   // set Conditional Sequence Flow (diamond From Arrow)
-  private setSequenceLinkConditionalFlow(obj: go.Link) {
+  static setSequenceLinkConditionalFlow(obj: go.Link) {
     ModellingAreaBPMNComponent.myDiagram.startTransaction('setSequenceLinkConditionalFlow');
     const model = ModellingAreaBPMNComponent.myDiagram.model;
     model.setDataProperty(obj.data, 'isDefault', false);
@@ -1694,9 +1905,13 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   }
 
   // this is called after nodes have been moved or lanes resized, to layout all of the Pool Groups again
-  private relayoutDiagram() {
+  static relayoutDiagram() {
     ModellingAreaBPMNComponent.myDiagram.layout.invalidateLayout();
-    ModellingAreaBPMNComponent.myDiagram.findTopLevelGroups().each(function (g) { if (g.category === 'Pool' && g.layout !== null) { g.layout.invalidateLayout(); } });
+    ModellingAreaBPMNComponent.myDiagram.findTopLevelGroups().each(function (g) {
+      if (g.category === 'Pool' && g.layout !== null) {
+        g.layout.invalidateLayout();
+      }
+    });
     ModellingAreaBPMNComponent.myDiagram.layoutDiagram();
   }
 
@@ -1717,15 +1932,21 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     ModellingAreaBPMNComponent.myDiagram.startTransaction('addBoundaryEvent');
     ModellingAreaBPMNComponent.myDiagram.selection.each(function (node) {
       // skip any selected Links
-      if (!(node instanceof go.Node)) { return; }
+      if (!(node instanceof go.Node)) {
+        return;
+      }
       if (node.data && (node.data.category === 'activity' || node.data.category === 'subprocess')) {
         // compute the next available index number for the side
         let i = 0;
         const defaultPort = node.findPort('');
         // tslint:disable-next-line:max-line-length
-        while (node.findPort('be' + i.toString()) !== defaultPort) { i++; }           // now this new port name is unique within the whole Node because of the side prefix
+        while (node.findPort('be' + i.toString()) !== defaultPort) {
+          i++;
+        }           // now this new port name is unique within the whole Node because of the side prefix
         const name = 'be' + i.toString();
-        if (!node.data.boundaryEventArray) { ModellingAreaBPMNComponent.myDiagram.model.setDataProperty(node.data, 'boundaryEventArray', []); }       // initialize the Array of port data if necessary
+        if (!node.data.boundaryEventArray) {
+          ModellingAreaBPMNComponent.myDiagram.model.setDataProperty(node.data, 'boundaryEventArray', []);
+        }       // initialize the Array of port data if necessary
         // create a new port data object
         const newportdata = {
           portId: name,
@@ -1744,7 +1965,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
   // changes the item of the object
   public rename(obj: go.GraphObject) {
-    if (obj === null || obj.part === null || obj.part.data === null) { return; }
+    if (obj === null || obj.part === null || obj.part.data === null) {
+      return;
+    }
     ModellingAreaBPMNComponent.myDiagram.startTransaction('rename');
     const newName = prompt('Rename ' + obj.part.data.item + ' to:');
     ModellingAreaBPMNComponent.myDiagram.model.setDataProperty(obj.part.data, 'item', newName);
@@ -1779,21 +2002,65 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     return space;
   }
 
-  public undo() { ModellingAreaBPMNComponent.myDiagram.commandHandler.undo(); }
-  public redo() { ModellingAreaBPMNComponent.myDiagram.commandHandler.redo(); }
-  public cutSelection() { ModellingAreaBPMNComponent.myDiagram.commandHandler.cutSelection(); }
-  public copySelection() { ModellingAreaBPMNComponent.myDiagram.commandHandler.copySelection(); }
-  public pasteSelection() { ModellingAreaBPMNComponent.myDiagram.commandHandler.pasteSelection(); }
-  public deleteSelection() { ModellingAreaBPMNComponent.myDiagram.commandHandler.deleteSelection(); }
-  public selectAll() { ModellingAreaBPMNComponent.myDiagram.commandHandler.selectAll(); }
-  public alignLeft() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignLeft(); }
-  public alignRight() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignRight(); }
-  public alignTop() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignTop(); }
-  public alignBottom() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignBottom(); }
-  public alignCemterX() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignCenterX(); }
-  public alignCenterY() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignCenterY(); }
-  public alignRows() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignRow(this.askSpace()); }
-  public alignColumns() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignColumn(this.askSpace()); }
+  public undo() {
+    ModellingAreaBPMNComponent.myDiagram.commandHandler.undo();
+  }
+
+  public redo() {
+    ModellingAreaBPMNComponent.myDiagram.commandHandler.redo();
+  }
+
+  public cutSelection() {
+    ModellingAreaBPMNComponent.myDiagram.commandHandler.cutSelection();
+  }
+
+  public copySelection() {
+    ModellingAreaBPMNComponent.myDiagram.commandHandler.copySelection();
+  }
+
+  public pasteSelection() {
+    ModellingAreaBPMNComponent.myDiagram.commandHandler.pasteSelection();
+  }
+
+  public deleteSelection() {
+    ModellingAreaBPMNComponent.myDiagram.commandHandler.deleteSelection();
+  }
+
+  public selectAll() {
+    ModellingAreaBPMNComponent.myDiagram.commandHandler.selectAll();
+  }
+
+  public alignLeft() {
+    (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignLeft();
+  }
+
+  public alignRight() {
+    (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignRight();
+  }
+
+  public alignTop() {
+    (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignTop();
+  }
+
+  public alignBottom() {
+    (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignBottom();
+  }
+
+  public alignCemterX() {
+    (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignCenterX();
+  }
+
+  public alignCenterY() {
+    (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignCenterY();
+  }
+
+  public alignRows() {
+    (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignRow(this.askSpace());
+  }
+
+  public alignColumns() {
+    (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignColumn(this.askSpace());
+  }
 
   private addGoJsBPMNNodeFields(nodeData: any, modellingLanguageConstruct: string) {
     const dicEntry = Mappers.dictionaryAOAMEBPMNElementToGoJsNode.get(modellingLanguageConstruct);
@@ -1848,7 +2115,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 //  });
 
 // change the title to indicate that the diagram has been modified
-
 
 
 // ------------------------------------------  Palette   ----------------------------------------------
