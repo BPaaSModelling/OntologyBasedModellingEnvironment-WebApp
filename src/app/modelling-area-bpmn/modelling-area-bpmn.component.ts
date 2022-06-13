@@ -572,6 +572,13 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
     // add the new node data to the model
     const model = ModellingAreaBPMNComponent.myDiagram.model;
+
+    if (PaletteElementModel.getProbableElementType(element) === 'ModelingElement') {
+      this.addGoJsBPMNNodeFields(toData, PaletteElementModel.getProbableModellingConstruct(element));
+    } else if (PaletteElementModel.getProbableElementType(element) === 'ModelingContainer') {
+      this.addGoJsBPMNGroupFields(toData, PaletteElementModel.getProbableModellingConstruct(element));
+    }
+
     model.addNodeData(toData);
 
     const newnode = ModellingAreaBPMNComponent.myDiagram.findNodeForData(toData);
@@ -587,11 +594,10 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       this.selectedInstantiationType
     ).then(response => {
       newnode.part.data.element = response;
-      if (response.modelElementType === 'ModelingContainer') {
-        newnode.part.data.isGroup = true;
-      }
+
 
       ModellingAreaBPMNComponent.myDiagram.commitTransaction('Add State');
+      ModellingAreaBPMNComponent.relayoutDiagram();
     });
   }
 

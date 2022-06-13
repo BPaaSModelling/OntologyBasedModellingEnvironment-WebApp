@@ -39,4 +39,19 @@ export class PaletteElementModel {
   tempLabel;
   tempUuid;
   routing: go.EnumValue;
+
+  static getProbableElementType(element: PaletteElementModel): string {
+    if (element.id.includes('Lane') || element.id.includes('Pool')) {
+      return 'ModelingContainer';
+    }
+    if (element.id.includes('Association') || element.id.includes('MessageFlow') || element.id.includes('SequenceFlow')) {
+      return 'ModelingRelation';
+    }
+    return 'ModelingElement';
+  }
+
+  static getProbableModellingConstruct(element: PaletteElementModel): string {
+    const segments = element.representedLanguageClass.split('#');
+    return segments[segments.length - 1];
+  }
 }
