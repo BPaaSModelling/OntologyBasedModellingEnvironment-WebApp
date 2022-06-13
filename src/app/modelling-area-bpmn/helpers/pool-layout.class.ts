@@ -1,4 +1,5 @@
 import * as go from 'gojs';
+import {Helpers} from './helpers';
 
 // define a custom grid layout that makes sure the length of each lane is the same
 // and that each lane is broad enough to hold its subgraph
@@ -8,12 +9,7 @@ export class PoolLayout extends go.GridLayout {
   public wrappingWidth = Infinity;
   public isRealtime = false;  // don't continuously layout while dragging
   public alignment = go.GridLayout.Position;
-  private computeMinPoolSize: Function;
 
-  constructor(private computeMinPoolSizeHandler: Function) {
-    super();
-    this.computeMinPoolSize = computeMinPoolSizeHandler;
-  }
   // This sorts based on the location of each Group.
   // This is useful when Groups can be moved up and down in order to change their order.
   public comparer = function (a: go.Part, b: go.Part) {
@@ -31,13 +27,13 @@ export class PoolLayout extends go.GridLayout {
     const pool = this.group;
     if (pool !== null && pool.category === 'Pool') {
       // make sure all of the Group Shapes are big enough
-      const minsize = this.computeMinPoolSize(pool);
+      const minsize = Helpers.computeMinPoolSize(pool);
       pool.memberParts.each(function (lane) {
         if (!(lane instanceof go.Group)) { return; }
         if (lane.category !== 'Pool') {
           const shape = lane.resizeObject;
           if (shape !== null) {  // change the desiredSize to be big enough in both directions
-            const sz = this.computeLaneSize(lane);
+            const sz = Helpers.computeLaneSize(lane);
             shape.width = (isNaN(shape.width) ? minsize.width : Math.max(shape.width, minsize.width));
             shape.height = (!isNaN(shape.height)) ? Math.max(shape.height, sz.height) : sz.height;
             const cell = lane.resizeCellSize;

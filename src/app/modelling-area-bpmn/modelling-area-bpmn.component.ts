@@ -186,7 +186,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         model.goJsModel.addLinkData(linkData);
 
       } else if (element.modelElementType === 'ModelingElement') {
-        console.log(Mappers.dictionaryAOAMEBPMNElementToGoJsTaskType.get(element.modellingLanguageConstruct));
+        console.log(Mappers.dictionaryAOAMEBPMNGroupToGoJsGroup.get(element.modellingLanguageConstruct));
 
         const nodeData = {
           text: element.label,
@@ -200,10 +200,10 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           loc: new go.Point(element.x, element.y),
           element: element,
           shapeRepresentsModel: element.shapeRepresentsModel,
-          otherVisualisationsOfSameLanguageConstruct: element.otherVisualisationsOfSameLanguageConstruct,
-          taskType: Mappers.dictionaryAOAMEBPMNElementToGoJsTaskType.get(element.modellingLanguageConstruct),
-          category: Mappers.dictionaryAOAMEBPMNElementToGoJsCategory.get(element.modellingLanguageConstruct),
+          otherVisualisationsOfSameLanguageConstruct: element.otherVisualisationsOfSameLanguageConstruct
         };
+
+        this.addGoJsBPMNNodeFields(nodeData, element.modellingLanguageConstruct);
 
         model.goJsModel.addNodeData(nodeData);
       } else if (element.modelElementType === 'ModelingContainer') {
@@ -223,6 +223,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           otherVisualisationsOfSameLanguageConstruct: element.otherVisualisationsOfSameLanguageConstruct,
           isGroup: true
         };
+        this.addGoJsBPMNGroupFields(nodeData, element.modellingLanguageConstruct);
 
         model.goJsModel.addNodeData(nodeData);
       }
@@ -1472,7 +1473,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           'commandHandler.arrowKeyBehavior': 'move',
 
           mouseDrop: this.diagramOnMouseDrop,
-          resizingTool: new LaneResizingTool(this.relayoutDiagram, this.computeMinLaneSize, this.computeLaneSize),
+          resizingTool: new LaneResizingTool(this.relayoutDiagram),
           linkingTool: new BPMNLinkingTool(), // defined in BPMNClasses.js
           relinkingTool: new BPMNRelinkingTool(), // defined in BPMNClasses.js
           'SelectionMoved': this.relayoutDiagram,  // defined below
@@ -1699,31 +1700,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     ModellingAreaBPMNComponent.myDiagram.layoutDiagram();
   }
 
-
-
-  // compute the minimum size for a particular Lane Group
-  private computeLaneSize(lane: go.Group) {
-    // assert(lane instanceof go.Group && lane.category !== "Pool");
-    const sz = this.computeMinLaneSize(lane);
-    if (lane.isSubGraphExpanded) {
-      const holder = lane.placeholder;
-      if (holder !== null) {
-        const hsz = holder.actualBounds;
-        sz.height = Math.max(sz.height, hsz.height);
-      }
-    }
-    // minimum breadth needs to be big enough to hold the header
-    const hdr = lane.findObject('HEADER');
-    if (hdr !== null) { sz.height = Math.max(sz.height, hdr.actualBounds.height); }
-    return sz;
-  }
-
-  // determine the minimum size of a Lane Group, even if collapsed
-  private computeMinLaneSize(lane: go.Group) {
-    if (!lane.isSubGraphExpanded) { return new go.Size(Helpers.MINLENGTH, 1); }
-    return new go.Size(Helpers.MINLENGTH, Helpers.MINBREADTH);
-  }
-
   // ------------------------------------------  Overview   ----------------------------------------------
 
   // const myOverview =
@@ -1819,6 +1795,37 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   public alignRows() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignRow(this.askSpace()); }
   public alignColumns() { (ModellingAreaBPMNComponent.myDiagram.commandHandler as DrawCommandHandler).alignColumn(this.askSpace()); }
 
+  private addGoJsBPMNNodeFields(nodeData: any, modellingLanguageConstruct: string) {
+    const dicEntry = Mappers.dictionaryAOAMEBPMNElementToGoJsNode.get(modellingLanguageConstruct);
+    if (!dicEntry) {
+      return;
+    }
+    nodeData.key = dicEntry.key;
+    nodeData.category = dicEntry.category;
+    nodeData.taskType = dicEntry.taskType;
+    nodeData.isLoop = dicEntry.isLoop;
+    nodeData.isSubProcess = dicEntry.isSubProcess;
+    nodeData.isTransaction = dicEntry.isTransaction;
+    nodeData.isGroup = dicEntry.isGroup;
+    nodeData.isSequential = dicEntry.isSequential;
+    nodeData.isAdHoc = dicEntry.isAdHoc;
+    nodeData.eventType = dicEntry.eventType;
+    nodeData.eventDimension = dicEntry.eventDimension;
+    nodeData.gatewayType = dicEntry.gatewayType;
+  }
+
+  private addGoJsBPMNGroupFields(nodeData: any, modellingLanguageConstruct: string) {
+    const dicEntry = Mappers.dictionaryAOAMEBPMNGroupToGoJsGroup.get(modellingLanguageConstruct);
+    if (!dicEntry) {
+      return;
+    }
+    nodeData.key = dicEntry.key;
+    nodeData.category = dicEntry.category;
+    nodeData.isGroup = dicEntry.isGroup;
+    nodeData.text = dicEntry.text;
+    nodeData.group = dicEntry.group;
+    nodeData.color = dicEntry.color;
+  }
 }
 
 //  uncomment this if you want a subprocess to expand on drop.  We decided we didn't like this behavior

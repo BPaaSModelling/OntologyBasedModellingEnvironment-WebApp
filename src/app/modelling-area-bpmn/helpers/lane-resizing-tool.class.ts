@@ -4,17 +4,11 @@ import {Helpers} from './helpers';
 // define a custom ResizingTool to limit how far one can shrink a lane Grou
 export class LaneResizingTool extends go.ResizingTool {
   private relayoutDiagram: Function;
-  private computeMinLaneSize: Function;
-  private computeLaneSize: Function;
 
-  constructor(private relayoutDiagramHandler: Function,
-              private computeMinLaneSizeHandler: Function,
-              private computeLaneSizeHandler: Function,
+  constructor(private relayoutDiagramHandler: Function
               ) {
     super();
     this.relayoutDiagram = relayoutDiagramHandler;
-    this.computeMinLaneSize = computeMinLaneSizeHandler;
-    this.computeLaneSize = computeLaneSizeHandler;
   }
 
   public isLengthening() {
@@ -31,12 +25,12 @@ export class LaneResizingTool extends go.ResizingTool {
       return go.ResizingTool.prototype.computeMinSize.call(this);
     }
     // assert(lane instanceof go.Group && lane.category !== "Pool");
-    const msz = this.computeMinLaneSize(lane);  // get the absolute minimum size
+    const msz = Helpers.computeMinLaneSize(lane);  // get the absolute minimum size
     if (lane.containingGroup !== null && this.isLengthening()) {  // compute the minimum length of all lanes
       const sz = Helpers.computeMinPoolSize(lane.containingGroup);
       msz.width = Math.max(msz.width, sz.width);
     } else {  // find the minimum size of this single lane
-      const sz = this.computeLaneSize(lane);
+      const sz = Helpers.computeLaneSize(lane);
       msz.width = Math.max(msz.width, sz.width);
       msz.height = Math.max(msz.height, sz.height);
     }
