@@ -29,9 +29,9 @@ export class ModalInsertObjectPropertyComponent implements OnInit {
     this.config = {
       displayKey: 'label',
       search: true,
-      height: 'auto',
+      height: '200px',
       placeholder: 'Select a Range',
-      limitTo: 15,
+      limitTo: 10000,
       moreText: 'more',
       noResultsFound: 'No results found!',
       searchPlaceholder: 'Search'
