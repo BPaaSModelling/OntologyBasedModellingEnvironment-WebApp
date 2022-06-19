@@ -202,7 +202,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   }
 
   // Add a lane to pool (lane parameter is lane above new lane)
-  static addPoolEvent(pool: go.Node) {
+  static addLaneEvent(pool: go.Node) {
     ModellingAreaBPMNComponent.myDiagram.startTransaction('addLane');
     if (pool != null && pool.data.category === 'Pool') {
       // create a new lane data object
@@ -217,6 +217,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         size: go.Size.stringify(size),
         group: pool.data.key
       };
+      // this.createElement(changes.new_element.currentValue);
       ModellingAreaBPMNComponent.myDiagram.model.addNodeData(newlanedata);
     }
     ModellingAreaBPMNComponent.myDiagram.commitTransaction('addLane');
@@ -750,7 +751,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   }
 
   createElement(element: PaletteElementModel) {
-
     console.log('category is: ' + element.paletteCategory);
     console.log(VariablesSettings.paletteCategoryConnectorsURI);
     console.log('instantiation type ' + this.selectedInstantiationType);
@@ -1684,7 +1684,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           // in the click event handler, the obj.part is the Adornment; its adornedObject is the port
           {
             click: function (e: go.InputEvent, obj: go.GraphObject) {
-              ModellingAreaBPMNComponent.addPoolEvent((obj.part as go.Adornment).adornedObject as go.Node);
+              ModellingAreaBPMNComponent.addLaneEvent((obj.part as go.Adornment).adornedObject as go.Node);
             }
           })
       );
