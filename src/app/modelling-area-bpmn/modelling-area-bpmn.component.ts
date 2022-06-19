@@ -202,27 +202,25 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   }
 
   // Add a lane to pool (lane parameter is lane above new lane)
-  static addLaneEvent(lane: go.Node) {
+  static addPoolEvent(pool: go.Node) {
     ModellingAreaBPMNComponent.myDiagram.startTransaction('addLane');
-    if (lane != null && lane.data.category === 'Lane') {
+    if (pool != null && pool.data.category === 'Pool') {
       // create a new lane data object
-      const shape = lane.findObject('SHAPE');
+      const shape = pool.findObject('SHAPE');
       const size = new go.Size(shape ? shape.width : Helpers.MINLENGTH, Helpers.MINBREADTH);
       const newlanedata = {
         category: 'Lane',
         text: 'New Lane',
-        color: 'white',
+        color: 'yellow',
         isGroup: true,
-        loc: go.Point.stringify(new go.Point(lane.location.x, lane.location.y + 1)), // place below selection
+        loc: go.Point.stringify(new go.Point(pool.location.x, pool.location.y + 1)), // place below selection
         size: go.Size.stringify(size),
-        group: lane.data.group
+        group: pool.data.key
       };
-      // and add it to the model
       ModellingAreaBPMNComponent.myDiagram.model.addNodeData(newlanedata);
     }
     ModellingAreaBPMNComponent.myDiagram.commitTransaction('addLane');
   }
-
 
   // set Default Sequence Flow (backslash From Arrow)
   static setSequenceLinkDefaultFlow(obj: go.Link) {
@@ -382,10 +380,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
   private prepareModelElements(model: Model, value: ModelElementDetail[]) {
     model.elements = value;
+
     model.elements.forEach(element => {
-
       if (element.modelElementType === 'ModelingRelation') {
-
         const linkData = {
           key: element.id,
           element: element,
@@ -411,8 +408,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         model.goJsModel.addLinkData(linkData);
 
       } else if (element.modelElementType === 'ModelingElement') {
-        console.log(Mappers.dictionaryAOAMEBPMNGroupToGoJsGroup.get(element.modellingLanguageConstruct));
-
         const nodeData = {
           text: element.label,
           key: element.id,
@@ -422,7 +417,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           width: element.width,
           height: element.height,
           alignment: go.Spot.Center,
-          loc: new go.Point(element.x, element.y),
+          loc: go.Point.stringify(new go.Point(element.x, element.y)),
           element: element,
           shapeRepresentsModel: element.shapeRepresentsModel,
           otherVisualisationsOfSameLanguageConstruct: element.otherVisualisationsOfSameLanguageConstruct
@@ -442,12 +437,13 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           width: element.width,
           height: element.height,
           alignment: go.Spot.Bottom,
-          loc: new go.Point(element.x, element.y),
+          loc: go.Point.stringify(new go.Point(element.x, element.y)),
           element: element,
           shapeRepresentsModel: element.shapeRepresentsModel,
           otherVisualisationsOfSameLanguageConstruct: element.otherVisualisationsOfSameLanguageConstruct,
-          isGroup: true
+          isGroup: true,
         };
+
         this.addGoJsBPMNGroupFields(nodeData, element.modellingLanguageConstruct);
 
         model.goJsModel.addNodeData(nodeData);
@@ -468,7 +464,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           }
         });
       }
-
     });
   }
 
@@ -629,97 +624,98 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
     ModellingAreaBPMNComponent.myDiagram.rebuildParts();
   }
-  //
-  // private handleNodeMove(txn) {
-  //   const lastMovedNodes = new Map();
-  //
-  //   txn.changes.toArray()
-  //     .filter(evt => ['location', 'position'].includes(evt.propertyName))
-  //     .forEach(evt => {
-  //
-  //     const nodeData = evt.object;
-  //
-  //     const modelElement: ModelElementDetail = nodeData.data.element;
-  //       modelElement.x = Math.trunc(nodeData.location.x);
-  //       modelElement.y = Math.trunc(nodeData.location.y);
-  //     nodeData.data.loc = new go.Point(modelElement.x, modelElement.y);
-  //
-  //     lastMovedNodes.set(
-  //       modelElement.id,
-  //       {
-  //         modelElementDetail: modelElement,
-  //         node: nodeData.data
-  //       }
-  //     );
-  //   });
-  //
-  //   lastMovedNodes.forEach(nodeInfo => {
-  //     if (nodeInfo.modelElementDetail.modelElementType === 'ModelingElement' || nodeInfo.modelElementDetail.modelElementType === 'ModelingContainer') {
-  //       this.updateContainerInformationIfNeeded(nodeInfo);
-  //       this.mService.updateElement(nodeInfo.modelElementDetail, this.selectedModel.id);
-  //     }
-  //   });
-  //
-  //   ModellingAreaBPMNComponent.myDiagram.rebuildParts();
-  // }
 
-  // private updateContainerInformationIfNeeded(nodeInfo) {
-  //   const initialContainerKey = nodeInfo.node.group;
-  //
-  //   // check if element has been moved inside any of the containers and update those
-  //   const overlappedContainers: ModelElementDetail[] = [];
-  //
-  //   ModellingAreaBPMNComponent.myDiagram.model.nodeDataArray.forEach(containerNode => {
-  //     if (
-  //       containerNode.element.modelElementType === 'ModelingContainer' &&
-  //       nodeInfo.modelElementDetail.id != containerNode.element.id &&
-  //       this.isNodeInContainer(containerNode, nodeInfo.modelElementDetail)
-  //     ) {
-  //       overlappedContainers.push(containerNode.element);
-  //     }
-  //   });
-  //
-  //   let mostSpecificContainer: ModelElementDetail;
-  //   overlappedContainers.forEach(value => {
-  //     if (mostSpecificContainer === undefined) {
-  //       mostSpecificContainer = value;
-  //     }
-  //     if (mostSpecificContainer.containedShapes !== undefined && mostSpecificContainer.containedShapes.includes(value.modelingLanguageConstructInstance)) {
-  //       mostSpecificContainer = value;
-  //     }
-  //   });
-  //
-  //   if (initialContainerKey !== undefined &&
-  //     ((mostSpecificContainer !== undefined && initialContainerKey !== mostSpecificContainer.id) || // moved to another container
-  //       (mostSpecificContainer === undefined)) // moved out of the container into the open space
-  //   ) {
-  //     this.removeElementFromContainer(nodeInfo.node.group, nodeInfo.modelElementDetail.modelingLanguageConstructInstance);
-  //     delete nodeInfo.node.group;
-  //   }
-  //
-  //   if (mostSpecificContainer !== undefined) {
-  //     nodeInfo.node.group = mostSpecificContainer.id;
-  //     const containedShapes = mostSpecificContainer.containedShapes || [];
-  //     if (!containedShapes.includes(nodeInfo.modelElementDetail.modelingLanguageConstructInstance)) {
-  //       containedShapes.push(nodeInfo.modelElementDetail.modelingLanguageConstructInstance);
-  //       mostSpecificContainer.containedShapes = containedShapes;
-  //       this.mService.updateElement(mostSpecificContainer, this.selectedModel.id);
-  //     }
-  //   }
-  // }
-  //
-  // private removeElementFromContainer(groupKey, elementKey) {
-  //   const containerNode = ModellingAreaBPMNComponent.myDiagram.model.findNodeDataForKey(groupKey);
-  //   _.remove(containerNode.element.containedShapes, s => s === elementKey);
-  //   this.mService.updateElement(containerNode.element, this.selectedModel.id);
-  // }
-  //
-  // private isNodeInContainer(containerNode, node) {
-  //   return containerNode.element.x < node.x &&
-  //     containerNode.element.x + containerNode.element.width > node.x + node.width &&
-  //     containerNode.element.y < node.y &&
-  //     containerNode.element.y + containerNode.element.height > node.y + node.height;
-  // }
+  private handleNodeMove(txn) {
+    const lastMovedNodes = new Map();
+
+    txn.changes.toArray()
+      .filter(evt => ['location', 'position'].includes(evt.propertyName))
+      .forEach(evt => {
+
+      const nodeData = evt.object;
+
+      const modelElement: ModelElementDetail = nodeData.data.element;
+        modelElement.x = Math.trunc(nodeData.location.x);
+        modelElement.y = Math.trunc(nodeData.location.y);
+      nodeData.data.loc = new go.Point(modelElement.x, modelElement.y);
+
+      lastMovedNodes.set(
+        modelElement.id,
+        {
+          modelElementDetail: modelElement,
+          node: nodeData.data
+        }
+      );
+    });
+
+    lastMovedNodes.forEach(nodeInfo => {
+      if (nodeInfo.modelElementDetail.modelElementType === 'ModelingElement' || nodeInfo.modelElementDetail.modelElementType === 'ModelingContainer') {
+        this.updateContainerInformationIfNeeded(nodeInfo);
+        this.mService.updateElement(nodeInfo.modelElementDetail, this.selectedModel.id);
+      }
+    });
+
+    ModellingAreaBPMNComponent.myDiagram.rebuildParts();
+  }
+
+  private updateContainerInformationIfNeeded(nodeInfo) {
+    const initialContainerKey = nodeInfo.node.group;
+
+    // check if element has been moved inside any of the containers and update those
+    const overlappedContainers: ModelElementDetail[] = [];
+
+    ModellingAreaBPMNComponent.myDiagram.model.nodeDataArray.forEach(containerNode => {
+      if (
+        // @ts-ignore
+        containerNode.element.modelElementType === 'ModelingContainer' && nodeInfo.modelElementDetail.id != containerNode.element.id &&
+        this.isNodeInContainer(containerNode, nodeInfo.modelElementDetail)
+      ) {
+        // @ts-ignore
+        overlappedContainers.push(containerNode.element);
+      }
+    });
+
+    let mostSpecificContainer: ModelElementDetail;
+    overlappedContainers.forEach(value => {
+      if (mostSpecificContainer === undefined) {
+        mostSpecificContainer = value;
+      }
+      if (mostSpecificContainer.containedShapes !== undefined && mostSpecificContainer.containedShapes.includes(value.modelingLanguageConstructInstance)) {
+        mostSpecificContainer = value;
+      }
+    });
+
+    if (initialContainerKey !== undefined &&
+      ((mostSpecificContainer !== undefined && initialContainerKey !== mostSpecificContainer.id) || // moved to another container
+        (mostSpecificContainer === undefined)) // moved out of the container into the open space
+    ) {
+      this.removeElementFromContainer(nodeInfo.node.group, nodeInfo.modelElementDetail.modelingLanguageConstructInstance);
+      delete nodeInfo.node.group;
+    }
+
+    if (mostSpecificContainer !== undefined) {
+      nodeInfo.node.group = mostSpecificContainer.id;
+      const containedShapes = mostSpecificContainer.containedShapes || [];
+      if (!containedShapes.includes(nodeInfo.modelElementDetail.modelingLanguageConstructInstance)) {
+        containedShapes.push(nodeInfo.modelElementDetail.modelingLanguageConstructInstance);
+        mostSpecificContainer.containedShapes = containedShapes;
+        this.mService.updateElement(mostSpecificContainer, this.selectedModel.id);
+      }
+    }
+  }
+
+  private removeElementFromContainer(groupKey, elementKey) {
+    const containerNode = ModellingAreaBPMNComponent.myDiagram.model.findNodeDataForKey(groupKey);
+    _.remove(containerNode.element.containedShapes, s => s === elementKey);
+    this.mService.updateElement(containerNode.element, this.selectedModel.id);
+  }
+
+  private isNodeInContainer(containerNode, node) {
+    return containerNode.element.x < node.x &&
+      containerNode.element.x + containerNode.element.width > node.x + node.width &&
+      containerNode.element.y < node.y &&
+      containerNode.element.y + containerNode.element.height > node.y + node.height;
+  }
 
   selectionChanged() {
 
@@ -735,6 +731,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         this.selectedModel.goJsModel = ModellingAreaBPMNComponent.myDiagram.model;
       }
     }
+    ModellingAreaBPMNComponent.relayoutDiagram();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -801,7 +798,8 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     if (PaletteElementModel.getProbableElementType(element) === 'ModelingElement') {
       this.addGoJsBPMNNodeFields(toData, PaletteElementModel.getProbableModellingConstruct(element));
     } else if (PaletteElementModel.getProbableElementType(element) === 'ModelingContainer') {
-      this.addGoJsBPMNGroupFields(toData, PaletteElementModel.getProbableModellingConstruct(element));
+      const probableModellingConstruct = PaletteElementModel.getProbableModellingConstruct(element);
+      this.addGoJsBPMNGroupFields(toData, probableModellingConstruct);
     }
 
     model.addNodeData(toData);
@@ -1686,7 +1684,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           // in the click event handler, the obj.part is the Adornment; its adornedObject is the port
           {
             click: function (e: go.InputEvent, obj: go.GraphObject) {
-              ModellingAreaBPMNComponent.addLaneEvent((obj.part as go.Adornment).adornedObject as go.Node);
+              ModellingAreaBPMNComponent.addPoolEvent((obj.part as go.Adornment).adornedObject as go.Node);
             }
           })
       );
@@ -1818,6 +1816,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     const poolGroupTemplate =
       $(go.Group, 'Auto', ModellingAreaBPMNComponent.groupStyle(),
         {
+          contextMenu: laneEventMenu,
           computesBoundsIncludingLinks: false,
           // use a simple layout that ignores links to stack the "lane" Groups on top of each other
           layout: $(PoolLayout, {spacing: new go.Size(0, 0)})  // no space between lanes
@@ -2131,7 +2130,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       if (txn === null) { return; }
 
       if (txn.name === 'Move') {
-        //this.handleNodeMove(txn);
+        this.handleNodeMove(txn);
       }
 
       if (txn.name === 'TextEditing') {
@@ -2389,7 +2388,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       nodeData.category = 'customNode';
       return;
     }
-    nodeData.key = dicEntry.key;
+    // nodeData.key = dicEntry.key;
     nodeData.category = dicEntry.category;
     nodeData.taskType = dicEntry.taskType;
     nodeData.isLoop = dicEntry.isLoop;
@@ -2409,11 +2408,11 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       nodeData.category = 'customGroup';
       return;
     }
-    nodeData.key = dicEntry.key;
+    // nodeData.key = dicEntry.key;
     nodeData.category = dicEntry.category;
     nodeData.isGroup = dicEntry.isGroup;
     nodeData.text = dicEntry.text;
-    nodeData.group = dicEntry.group;
+    // nodeData.group = dicEntry.group;
     nodeData.color = dicEntry.color;
   }
 }
