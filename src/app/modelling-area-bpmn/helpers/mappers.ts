@@ -52,5 +52,12 @@ export class Mappers {
     .set('Pool', { key: 601, text: 'Pool 1', isGroup: true, category: 'Pool' })
     .set('Lane', { key: 602, text: 'Lane 1', isGroup: true, group: 601, color: 'lightyellow', category: 'Lane' })
   ;
+
+  static dictionaryGoJsLinkCategoryToAOAMELinkId = new Map<string, string>()
+    .set('', 'SequenceFlow_BPMN')
+    .set('annotation', 'Association_BPMN')
+    .set('msg', 'MessageFlow_BPMN')
+    // TODO currently there is no map for associations with the category data
+    .set('data', 'SequenceFlow_BPMN');
 }
 

@@ -157,11 +157,204 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     return [];
   }
 
+  static diagramOnMouseDrop(e: go.InputEvent) {
+    // when the selection is dropped in the diagram's background,
+    // make sure the selected Parts no longer belong to any Group
+    const ok = ModellingAreaBPMNComponent.myDiagram.commandHandler.addTopLevelParts(ModellingAreaBPMNComponent.myDiagram.selection, true);
+    if (!ok) {
+      ModellingAreaBPMNComponent.myDiagram.currentTool.doCancel();
+    }
+  }
+
+// location of event on boundary of Activity is based on the index of the event in the boundaryEventArray
+  static nodeActivityBESpotConverter(s: number) {
+    const x = 10 + (ModellingAreaBPMNComponent.EventNodeSize / 2);
+    if (s === 0) {
+      return new go.Spot(0, 1, x, 0);
+    }    // bottom left
+    if (s === 1) {
+      return new go.Spot(1, 1, -x, 0);
+    }   // bottom right
+    if (s === 2) {
+      return new go.Spot(1, 0, -x, 0);
+    }   // top right
+    return new go.Spot(1, 0, -x - (s - 2) * ModellingAreaBPMNComponent.EventNodeSize, 0);    // top ... right-to-left-ish spread
+  }
+
+  static groupStyle() {  // common settings for both Lane and Pool Groups
+    return [
+      {
+        layerName: 'Background',  // all pools and lanes are always behind all nodes and links
+        background: 'transparent',  // can grab anywhere in bounds
+        movable: true, // allows users to re-order by dragging
+        copyable: false,  // can't copy lanes or pools
+        avoidable: false  // don't impede AvoidsNodes routed Links
+      },
+      new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify)
+    ];
+  }
+
+  // hide links between lanes when either lane is collapsed
+  static updateCrossLaneLinks(group: go.Group) {
+    group.findExternalLinksConnected().each((l) => {
+      l.visible = (l.fromNode !== null && l.fromNode.isVisible() && l.toNode !== null && l.toNode.isVisible());
+    });
+  }
+
+  // Add a lane to pool (lane parameter is lane above new lane)
+  static addLaneEvent(lane: go.Node) {
+    ModellingAreaBPMNComponent.myDiagram.startTransaction('addLane');
+    if (lane != null && lane.data.category === 'Lane') {
+      // create a new lane data object
+      const shape = lane.findObject('SHAPE');
+      const size = new go.Size(shape ? shape.width : Helpers.MINLENGTH, Helpers.MINBREADTH);
+      const newlanedata = {
+        category: 'Lane',
+        text: 'New Lane',
+        color: 'white',
+        isGroup: true,
+        loc: go.Point.stringify(new go.Point(lane.location.x, lane.location.y + 1)), // place below selection
+        size: go.Size.stringify(size),
+        group: lane.data.group
+      };
+      // and add it to the model
+      ModellingAreaBPMNComponent.myDiagram.model.addNodeData(newlanedata);
+    }
+    ModellingAreaBPMNComponent.myDiagram.commitTransaction('addLane');
+  }
+
+
+  // set Default Sequence Flow (backslash From Arrow)
+  static setSequenceLinkDefaultFlow(obj: go.Link) {
+    ModellingAreaBPMNComponent.myDiagram.startTransaction('setSequenceLinkDefaultFlow');
+    const model = ModellingAreaBPMNComponent.myDiagram.model;
+    model.setDataProperty(obj.data, 'isDefault', true);
+    // Set all other links from the fromNode to be isDefault=null
+    if (obj.fromNode !== null) {
+      obj.fromNode.findLinksOutOf().each(function (link) {
+        if (link !== obj && link.data.isDefault) {
+          model.setDataProperty(link.data, 'isDefault', null);
+        }
+      });
+    }
+    ModellingAreaBPMNComponent.myDiagram.commitTransaction('setSequenceLinkDefaultFlow');
+  }
+
+  // set Conditional Sequence Flow (diamond From Arrow)
+  static setSequenceLinkConditionalFlow(obj: go.Link) {
+    ModellingAreaBPMNComponent.myDiagram.startTransaction('setSequenceLinkConditionalFlow');
+    const model = ModellingAreaBPMNComponent.myDiagram.model;
+    model.setDataProperty(obj.data, 'isDefault', false);
+    ModellingAreaBPMNComponent.myDiagram.commitTransaction('setSequenceLinkConditionalFlow');
+  }
+
+  // this is called after nodes have been moved or lanes resized, to layout all of the Pool Groups again
+  static relayoutDiagram() {
+    ModellingAreaBPMNComponent.myDiagram.layout.invalidateLayout();
+    ModellingAreaBPMNComponent.myDiagram.findTopLevelGroups().each(function (g) {
+      if (g.category === 'Pool' && g.layout !== null) {
+        g.layout.invalidateLayout();
+      }
+    });
+    ModellingAreaBPMNComponent.myDiagram.layoutDiagram();
+  }
+
+  // ------------------------------------------  Overview   ----------------------------------------------
+
+  // const myOverview =
+  //   $(go.Overview, 'myOverviewDiv',
+  //     { observed: ModellingAreaBPMNComponent.myDiagram, maxScale: 0.5, contentAlignment: go.Spot.Center });
+  // // change color of viewport border in Overview
+  // (myOverview.box.elt(0) as go.Shape).stroke = 'dodgerblue';
+
+
+  // ------------------------------------------  Commands for this application  ----------------------------------------------
+
+  // Add a port to the specified side of the selected nodes.   name is beN  (be0, be1)
+  // evDim is 5 for Interrupting, 6 for non-Interrupting
+  static addActivityNodeBoundaryEvent(evType: number, evDim: number) {
+    ModellingAreaBPMNComponent.myDiagram.startTransaction('addBoundaryEvent');
+    ModellingAreaBPMNComponent.myDiagram.selection.each(function (node) {
+      // skip any selected Links
+      if (!(node instanceof go.Node)) {
+        return;
+      }
+      if (node.data && (node.data.category === 'activity' || node.data.category === 'subprocess')) {
+        // compute the next available index number for the side
+        let i = 0;
+        const defaultPort = node.findPort('');
+        // tslint:disable-next-line:max-line-length
+        while (node.findPort('be' + i.toString()) !== defaultPort) {
+          i++;
+        }           // now this new port name is unique within the whole Node because of the side prefix
+        const name = 'be' + i.toString();
+        if (!node.data.boundaryEventArray) {
+          ModellingAreaBPMNComponent.myDiagram.model.setDataProperty(node.data, 'boundaryEventArray', []);
+        }       // initialize the Array of port data if necessary
+        // create a new port data object
+        const newportdata = {
+          portId: name,
+          eventType: evType,
+          eventDimension: evDim,
+          color: 'white',
+          alignmentIndex: i
+          // if you add port data properties here, you should copy them in copyPortData above  ** BUG...  we don't do that.
+        };
+        // and add it to the Array of port data
+        ModellingAreaBPMNComponent.myDiagram.model.insertArrayItem(node.data.boundaryEventArray, -1, newportdata);
+      }
+    });
+    ModellingAreaBPMNComponent.myDiagram.commitTransaction('addBoundaryEvent');
+  }
+
+  static convertGeometryToShape(geometry: string) {
+
+    if (!geometry) { return null; }
+
+    return $(go.Shape,
+      {
+        geometryString: geometry,
+        fill: 'transparent',
+        stroke: 'black',
+        strokeWidth: 1.5,
+        strokeCap: 'round'
+      }
+    );
+  }
+
 
   ngOnInit(): void {
     this.mService.queryPaletteElements();
     this.loadModels();
     this.prepareModel();
+    this.prepareCustomRelations();
+  }
+
+  private prepareCustomRelations() {
+    // https://gojs.net/latest/samples/relationships.html
+    this.pathPatterns.set('Single', 'M0 0 L1 0');
+    this.pathPatterns.set('Double', 'M0 0 L1 0 M0 3 L1 3');
+    this.pathPatterns.set('Triple', 'M0 0 L1 0 M0 3 L1 3 M0 6 L1 6');
+    this.pathPatterns.set('Dash', 'M0 0 M3 0 L6 0');
+    this.pathPatterns.set('DoubleDash', 'M0 0 M3 0 L6 0 M3 3 L6 3');
+    this.pathPatterns.set('Dot', 'M0 0 M4 0 L4.1 0');
+    this.pathPatterns.set('DoubleDot', 'M0 0 M4 0 L4.1 0 M4 3 L4.1 3');
+    this.pathPatterns.set('BackSlash', 'M0 3 L2 6 M1 0 L5 6 M4 0 L6 3');
+    this.pathPatterns.set('Slash', 'M0 3 L2 0 M1 6 L5 0 M4 6 L6 3');
+    this.pathPatterns.set('Coil', 'M0 0 C2.5 0  5 2.5  5 5  C5 7.5  5 10  2.5 10  C0 10  0 7.5  0 5  C0 2.5  2.5 0  5 0');
+    this.pathPatterns.set('Square', 'M0 0 M1 0 L7 0 7 6 1 6z');
+    this.pathPatterns.set('Circle', 'M0 3 A3 3 0 1 0 6 4  A3 3 0 1 0 0 3');
+    this.pathPatterns.set('BigCircle', 'M0 5 A5 5 0 1 0 10 5  A5 5 0 1 0 0 5');
+    this.pathPatterns.set('Triangle', 'M0 0 L4 4 0 8z');
+    this.pathPatterns.set('Diamond', 'M0 4 L4 0 8 4 4 8z');
+    this.pathPatterns.set('Dentil', 'M0 0 L2 0  2 6  6 6  6 0  8 0');
+    this.pathPatterns.set('Greek', 'M0 0 L1 0  1 3  0 3  M0 6 L4 6  4 0  8 0  M8 3 L7 3  7 6  8 6');
+    this.pathPatterns.set('Seed', 'M0 0 A9 9 0 0 0 12 0  A9 9 180 0 0 0 0');
+    this.pathPatterns.set('SemiCircle', 'M0 0 A4 4 0 0 1 8 0');
+    this.pathPatterns.set('BlindHem', 'M0 4 L2 4  4 0  6 4  8 4');
+    this.pathPatterns.set('Zipper', 'M0 4 L1 4 1 0 8 0 8 4 9 4  M0 6 L3 6 3 2 6 2 6 6 9 6');
+    this.pathPatterns.set('Herringbone', 'M0 2 L2 4 0 6  M2 0 L4 2  M4 6 L2 8');
+    this.pathPatterns.set('Sawtooth', 'M0 3 L4 0 2 6 6 3');
   }
 
 
@@ -289,6 +482,28 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     return undefined;
   }
 
+  private navigateToLinkedModel() {
+    return (e, obj) => {
+      const node = obj.part;
+      if (node != null) {
+        console.log(node);
+        const element = node.data.element;
+        const foundModel = this.models.find(m => m.id === element.shapeRepresentsModel);
+
+        if (!foundModel) {
+          return;
+        }
+        const navExtras = {
+          queryParams: {
+            id: foundModel.id,
+            label: foundModel.label
+          }
+        } as NavigationExtras;
+        this.router.navigate(['/modeller'], navExtras);
+      }
+    };
+  }
+
   // private navigateToLinkedModel() {
   //   return (e, obj) => {
   //     const node = obj.part;
@@ -371,39 +586,49 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   //
   //   this.mService.updateElement(modelElement, this.selectedModel.id);
   // }
-  //
-  // private handleNodeLinking(txn) {
-  //   const change = txn.changes.toArray().find(element => element.propertyName === 'data');
-  //   const link = ModellingAreaBPMNComponent.myDiagram.findLinkForData(change.object.data);
-  //
-  //   if (this.selectedConnectorMode === undefined || this.selectedConnectorMode.arrowStroke === undefined) {
-  //     ModellingAreaBPMNComponent.myDiagram.model.removeLinkData(link.data);
-  //     return;
-  //   }
-  //
-  //   link.data.toArrow = this.selectedConnectorMode.toArrow || '';
-  //   link.data.fromArrow = this.selectedConnectorMode.fromArrow || '';
-  //   link.data.routing = this.selectedConnectorMode.routing || '';
-  //   link.data.pathPattern = this.pathPatterns.get(this.selectedConnectorMode.arrowStroke);
-  //
-  //   const fromElement = change.newValue.from;
-  //   const toElement = change.newValue.to;
-  //
-  //   this.mService.createConnection(
-  //     this.selectedModel.id,
-  //     UUID.UUID(),
-  //     change.object.location.x,
-  //     change.object.location.y,
-  //     fromElement,
-  //     toElement,
-  //     this.selectedConnectorMode.id.split('#')[1],
-  //     this.selectedInstantiationType
-  //   ).then(response => {
-  //     link.data.element = response;
-  //   });
-  //
-  //   ModellingAreaBPMNComponent.myDiagram.rebuildParts();
-  // }
+
+  private handleNodeLinking(txn) {
+    const change = txn.changes.toArray().find(element => element.propertyName === 'data');
+    const link = ModellingAreaBPMNComponent.myDiagram.findLinkForData(change.object.data);
+
+    if ((this.selectedConnectorMode === undefined || this.selectedConnectorMode.arrowStroke === undefined) && link.category === 'customLink') {
+      // @ts-ignore
+      ModellingAreaBPMNComponent.myDiagram.model.removeLinkData(link.data);
+      return;
+    }
+
+    let id;
+    if (link.category === 'customLink') {
+      id = this.selectedConnectorMode.id.split('#')[1];
+      link.data.toArrow = this.selectedConnectorMode.toArrow || '';
+      link.data.fromArrow = this.selectedConnectorMode.fromArrow || '';
+      link.data.routing = this.selectedConnectorMode.routing || '';
+      link.data.pathPattern = this.pathPatterns.get(this.selectedConnectorMode.arrowStroke);
+    } else {
+      id = Mappers.dictionaryGoJsLinkCategoryToAOAMELinkId.get(link.category);
+    }
+    if (!id) {
+      return;
+    }
+
+    const fromElement = change.newValue.from;
+    const toElement = change.newValue.to;
+
+    this.mService.createConnection(
+      this.selectedModel.id,
+      UUID.UUID(),
+      change.object.location.x,
+      change.object.location.y,
+      fromElement,
+      toElement,
+      id,
+      this.selectedInstantiationType
+    ).then(response => {
+      link.data.element = response;
+    });
+
+    ModellingAreaBPMNComponent.myDiagram.rebuildParts();
+  }
   //
   // private handleNodeMove(txn) {
   //   const lastMovedNodes = new Map();
@@ -1269,6 +1494,98 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           new go.Binding('text'))
       );
 
+    const nodeSelectionAdornmentTemplate =
+      $(go.Adornment, 'Auto',
+        $(go.Shape, { fill: null, stroke: 'deepskyblue', strokeWidth: 1.5, strokeDashArray: [4, 2] }),
+        $(go.Placeholder)
+      );
+
+    const customNodeTemplate =
+      $(go.Node, 'Auto', // this resizes the entire shape
+        {
+          name: 'Node',
+          locationSpot: go.Spot.Left,
+          resizable: true,
+          resizeObjectName: 'PANEL' // Changing this to Picture resizes the images, however links are a problem
+        },
+        new go.Binding('location', 'loc'),
+        new go.Binding('group', 'containedInContainer'),
+        { selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate },
+        new go.Binding('angle').makeTwoWay(),
+        // the main object is a Panel that surrounds a TextBlock with a Shape
+
+        $(go.Panel, 'Auto',
+          {
+            name: 'PANEL',
+            angle: 0
+          },
+          new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify),
+          new go.Binding('angle'),
+          $(go.Shape, 'Rectangle',  // default figure
+            {
+              name: 'SHAPE',
+              portId: '', // the default port: if no spot on link data, use closest side
+              fromLinkable: true, toLinkable: true, cursor: 'pointer',
+              fill: '#000000',  // default color
+              // width: 835, height: 575,
+              strokeWidth: 0
+            },
+            new go.Binding('fill')),
+          new go.Binding('width'),
+          new go.Binding('height'),
+          $(go.Picture,
+            {
+              name: 'Picture',
+              source: '/assets/images/BPMN-CMMN/Collapsed_Subprocess.png',
+              margin: 4, // increase margin if text alignment is changed to bottom
+              stretch: go.GraphObject.Fill // stretch image to fill whole area of shape
+              // imageStretch: go.GraphObject.Fill //do not distort the image
+            },
+            new go.Binding('source'),
+            new go.Binding('desiredSize')),
+          $(go.TextBlock,
+            {
+              font: '11pt Helvetica, Arial, sans-serif',
+              margin: 8,
+              maxSize: new go.Size(200, NaN),
+              wrap: go.TextBlock.WrapFit,
+              editable: true,
+              alignment: go.Spot.Bottom // or go.Spot.Bottom
+            },
+            new go.Binding('text').makeTwoWay(),
+            new go.Binding('alignment')
+          ),
+          $(go.Shape,
+            {
+              alignment: go.Spot.TopLeft,
+              alignmentFocus: go.Spot.TopLeft,
+              width: 12, height: 12, fill: 'orange',
+              visible: false,
+              figure: 'Arrow',
+              margin: 8,
+              cursor: 'pointer',
+              click: this.navigateToLinkedModel()
+            },
+            new go.Binding('visible', 'shapeRepresentsModel', convertFieldExistenceToLinkVisibility)
+          ),
+          $(go.Shape,
+            {
+              alignment: go.Spot.BottomLeft,
+              alignmentFocus: go.Spot.BottomLeft,
+              width: 12, height: 12, fill: 'orange',
+              visible: false,
+              margin: 8,
+              figure: 'MultiDocument'
+            },
+            new go.Binding('visible', 'otherVisualisationsOfSameLanguageConstruct', convertFieldExistenceToLinkVisibility)
+          )
+        )
+      );
+
+    function convertFieldExistenceToLinkVisibility (obj) {
+      return obj != undefined;
+    }
+
     const poolTemplateForPalette =
       $(go.Group, 'Vertical',
         {
@@ -1522,6 +1839,77 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         )
       ); // end poolGroupTemplate
 
+    const customGroupTemplate =
+      $(go.Group, 'Auto',
+        {
+          name: 'GROUP',
+          angle: 0,
+          resizable: true,
+          resizeObjectName: 'PANEL'
+        },
+        new go.Binding('location', 'loc'),
+        new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify),
+        new go.Binding('angle'),
+        $(go.Shape, 'Rectangle',  // default figure
+          {
+            name: 'SHAPE',
+            portId: '', // the default port: if no spot on link data, use closest side
+            fromLinkable: true, toLinkable: true, cursor: 'pointer',
+            fill: '#000000',  // default color
+            // width: 835, height: 575,
+            strokeWidth: 0
+          },
+          new go.Binding('fill')),
+        new go.Binding('width'),
+        new go.Binding('height'),
+        $(go.Picture,
+          {
+            name: 'Picture',
+            source: '/assets/images/BPMN-CMMN/Collapsed_Subprocess.png',
+            margin: 4, // increase margin if text alignment is changed to bottom
+            stretch: go.GraphObject.Fill // stretch image to fill whole area of shape
+            // imageStretch: go.GraphObject.Fill //do not distort the image
+          },
+          new go.Binding('source'),
+          new go.Binding('desiredSize')),
+        $(go.TextBlock,
+          {
+            font: '11pt Helvetica, Arial, sans-serif',
+            margin: 8,
+            maxSize: new go.Size(200, NaN),
+            wrap: go.TextBlock.WrapFit,
+            editable: true,
+            alignment: go.Spot.Bottom // or go.Spot.Bottom
+          },
+          new go.Binding('text').makeTwoWay(),
+          new go.Binding('alignment')
+        ),
+        $(go.Shape,
+          {
+            alignment: go.Spot.TopLeft,
+            alignmentFocus: go.Spot.TopLeft,
+            width: 12, height: 12, fill: 'orange',
+            visible: false,
+            figure: 'Arrow',
+            margin: 8,
+            cursor: 'pointer',
+            click: this.navigateToLinkedModel()
+          },
+          new go.Binding('visible', 'shapeRepresentsModel', convertFieldExistenceToLinkVisibility)
+        ),
+        $(go.Shape,
+          {
+            alignment: go.Spot.BottomLeft,
+            alignmentFocus: go.Spot.BottomLeft,
+            width: 12, height: 12, fill: 'orange',
+            visible: false,
+            margin: 8,
+            figure: 'MultiDocument'
+          },
+          new go.Binding('visible', 'otherVisualisationsOfSameLanguageConstruct', convertFieldExistenceToLinkVisibility)
+        )
+      );
+
     // ------------------------------------------  Template Maps  ----------------------------------------------
 
     // create the nodeTemplateMap, holding main view node templates:
@@ -1534,6 +1922,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     nodeTemplateMap.add('dataobject', dataObjectNodeTemplate);
     nodeTemplateMap.add('datastore', dataStoreNodeTemplate);
     nodeTemplateMap.add('privateProcess', privateProcessNodeTemplate);
+    nodeTemplateMap.add('customNode', customNodeTemplate);
     // for the default category, "", use the same template that Diagrams use by default
     // this just shows the key value as a simple TextBlock
 
@@ -1541,6 +1930,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     groupTemplateMap.add('subprocess', subProcessGroupTemplate);
     groupTemplateMap.add('Lane', swimLanesGroupTemplate);
     groupTemplateMap.add('Pool', poolGroupTemplate);
+    groupTemplateMap.add('customGroup', customGroupTemplate);
 
     // create the nodeTemplateMap, holding special palette "mini" node templates:
     const palNodeTemplateMap = new go.Map<string, go.Node>();
@@ -1647,10 +2037,51 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $(go.Shape, {toArrow: 'OpenTriangle', scale: 1, stroke: 'black'})
       );
 
+    const customLinkTemplate =
+      $(go.Link,  // the whole link panel
+        new go.Binding('routing', 'routing'),
+        $(go.Shape,  // the link shape
+          {
+            stroke: 'transparent',
+            strokeWidth: 3
+          },
+          new go.Binding('pathPattern', 'pathPattern', ModellingAreaBPMNComponent.convertGeometryToShape)
+        ),
+        $(go.Shape,  // the "from" arrowhead
+          new go.Binding('fromArrow', 'fromArrow'),
+          { scale: 2 }),
+        $(go.Shape,  // the "to" arrowhead
+          new go.Binding('toArrow', 'toArrow'),
+          { scale: 2 }),
+        $(go.TextBlock,
+          {
+            font: '11pt Helvetica, Arial, sans-serif',
+            wrap: go.TextBlock.WrapFit,
+            editable: true,
+            textAlign: 'center',
+            segmentOffset: new go.Point(0, -10),
+            alignment: go.Spot.Left // or go.Spot.Bottom
+          },
+          new go.Binding('text').makeTwoWay()
+        ),
+        $(go.Shape,
+          {
+            alignment: go.Spot.TopLeft,
+            alignmentFocus: go.Spot.TopLeft,
+            width: 12, height: 12, fill: 'orange',
+            visible: false,
+            figure: 'Arrow',
+            click: this.navigateToLinkedModel()
+          },
+          new go.Binding('visible', 'shapeRepresentsModel', convertFieldExistenceToLinkVisibility)
+        )
+      );
+
     const linkTemplateMap = new go.Map<string, go.Link>();
     linkTemplateMap.add('msg', messageFlowLinkTemplate);
     linkTemplateMap.add('annotation', annotationAssociationLinkTemplate);
     linkTemplateMap.add('data', dataAssociationLinkTemplate);
+    linkTemplateMap.add('customLink', customLinkTemplate);
     linkTemplateMap.add('', sequenceLinkTemplate);  // default
 
     // ------------------------------------------the main Diagram----------------------------------------------
@@ -1661,6 +2092,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           nodeTemplateMap: nodeTemplateMap,
           linkTemplateMap: linkTemplateMap,
           groupTemplateMap: groupTemplateMap,
+          'undoManager.isEnabled': true, // enable Ctrl-Z to undo and Ctrl-Y to redo
 
           commandHandler: new DrawCommandHandler(),  // defined in DrawCommandHandler.js
           // default to having arrow keys move selected nodes
@@ -1687,32 +2119,41 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         e.subject.category = 'data'; // data association
       } else if (e.subject.fromNode.category === 'datastore' || e.subject.toNode.category === 'datastore') {
         e.subject.category = 'data'; // data association
+      } else if (e.subject.fromNode.category === 'customNode' || e.subject.toNode.category === 'customNode') {
+        e.subject.category = 'customLink'; // data association
       }
     });
-  }
 
-  static diagramOnMouseDrop(e: go.InputEvent) {
-    // when the selection is dropped in the diagram's background,
-    // make sure the selected Parts no longer belong to any Group
-    const ok = ModellingAreaBPMNComponent.myDiagram.commandHandler.addTopLevelParts(ModellingAreaBPMNComponent.myDiagram.selection, true);
-    if (!ok) {
-      ModellingAreaBPMNComponent.myDiagram.currentTool.doCancel();
-    }
-  }
+    ModellingAreaBPMNComponent.myDiagram.addModelChangedListener((evt: ChangedEvent) => {
+      // ignore unimportant Transaction events
+      if (!evt.isTransactionFinished) { return; }
+      const txn = evt.object;  // a Transaction
+      if (txn === null) { return; }
 
-// location of event on boundary of Activity is based on the index of the event in the boundaryEventArray
-  static nodeActivityBESpotConverter(s: number) {
-    const x = 10 + (ModellingAreaBPMNComponent.EventNodeSize / 2);
-    if (s === 0) {
-      return new go.Spot(0, 1, x, 0);
-    }    // bottom left
-    if (s === 1) {
-      return new go.Spot(1, 1, -x, 0);
-    }   // bottom right
-    if (s === 2) {
-      return new go.Spot(1, 0, -x, 0);
-    }   // top right
-    return new go.Spot(1, 0, -x - (s - 2) * ModellingAreaBPMNComponent.EventNodeSize, 0);    // top ... right-to-left-ish spread
+      if (txn.name === 'Move') {
+        //this.handleNodeMove(txn);
+      }
+
+      if (txn.name === 'TextEditing') {
+        //this.handleNodeTextEditing(txn);
+      }
+
+      if (txn.name === 'Delete') {
+        //this.handleNodeDeleted(txn);
+      }
+
+      if (txn.name === 'Linking') {
+        this.handleNodeLinking(txn);
+      }
+
+      if (txn.name === 'Resizing') {
+        //this.handleNodeResizing(txn);
+      }
+
+      if (txn.name === 'Paste') {
+        //this.handleNodePaste(txn);
+      }
+    });
   }
 
   private nodeActivityTaskTypeColorConverter(s: number) {
@@ -1843,132 +2284,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     return size;
   }
 
-  static groupStyle() {  // common settings for both Lane and Pool Groups
-    return [
-      {
-        layerName: 'Background',  // all pools and lanes are always behind all nodes and links
-        background: 'transparent',  // can grab anywhere in bounds
-        movable: true, // allows users to re-order by dragging
-        copyable: false,  // can't copy lanes or pools
-        avoidable: false  // don't impede AvoidsNodes routed Links
-      },
-      new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify)
-    ];
-  }
-
-  // hide links between lanes when either lane is collapsed
-  static updateCrossLaneLinks(group: go.Group) {
-    group.findExternalLinksConnected().each((l) => {
-      l.visible = (l.fromNode !== null && l.fromNode.isVisible() && l.toNode !== null && l.toNode.isVisible());
-    });
-  }
-
-  // Add a lane to pool (lane parameter is lane above new lane)
-  static addLaneEvent(lane: go.Node) {
-    ModellingAreaBPMNComponent.myDiagram.startTransaction('addLane');
-    if (lane != null && lane.data.category === 'Lane') {
-      // create a new lane data object
-      const shape = lane.findObject('SHAPE');
-      const size = new go.Size(shape ? shape.width : Helpers.MINLENGTH, Helpers.MINBREADTH);
-      const newlanedata = {
-        category: 'Lane',
-        text: 'New Lane',
-        color: 'white',
-        isGroup: true,
-        loc: go.Point.stringify(new go.Point(lane.location.x, lane.location.y + 1)), // place below selection
-        size: go.Size.stringify(size),
-        group: lane.data.group
-      };
-      // and add it to the model
-      ModellingAreaBPMNComponent.myDiagram.model.addNodeData(newlanedata);
-    }
-    ModellingAreaBPMNComponent.myDiagram.commitTransaction('addLane');
-  }
-
-
-  // set Default Sequence Flow (backslash From Arrow)
-  static setSequenceLinkDefaultFlow(obj: go.Link) {
-    ModellingAreaBPMNComponent.myDiagram.startTransaction('setSequenceLinkDefaultFlow');
-    const model = ModellingAreaBPMNComponent.myDiagram.model;
-    model.setDataProperty(obj.data, 'isDefault', true);
-    // Set all other links from the fromNode to be isDefault=null
-    if (obj.fromNode !== null) {
-      obj.fromNode.findLinksOutOf().each(function (link) {
-        if (link !== obj && link.data.isDefault) {
-          model.setDataProperty(link.data, 'isDefault', null);
-        }
-      });
-    }
-    ModellingAreaBPMNComponent.myDiagram.commitTransaction('setSequenceLinkDefaultFlow');
-  }
-
-  // set Conditional Sequence Flow (diamond From Arrow)
-  static setSequenceLinkConditionalFlow(obj: go.Link) {
-    ModellingAreaBPMNComponent.myDiagram.startTransaction('setSequenceLinkConditionalFlow');
-    const model = ModellingAreaBPMNComponent.myDiagram.model;
-    model.setDataProperty(obj.data, 'isDefault', false);
-    ModellingAreaBPMNComponent.myDiagram.commitTransaction('setSequenceLinkConditionalFlow');
-  }
-
-  // this is called after nodes have been moved or lanes resized, to layout all of the Pool Groups again
-  static relayoutDiagram() {
-    ModellingAreaBPMNComponent.myDiagram.layout.invalidateLayout();
-    ModellingAreaBPMNComponent.myDiagram.findTopLevelGroups().each(function (g) {
-      if (g.category === 'Pool' && g.layout !== null) {
-        g.layout.invalidateLayout();
-      }
-    });
-    ModellingAreaBPMNComponent.myDiagram.layoutDiagram();
-  }
-
-  // ------------------------------------------  Overview   ----------------------------------------------
-
-  // const myOverview =
-  //   $(go.Overview, 'myOverviewDiv',
-  //     { observed: ModellingAreaBPMNComponent.myDiagram, maxScale: 0.5, contentAlignment: go.Spot.Center });
-  // // change color of viewport border in Overview
-  // (myOverview.box.elt(0) as go.Shape).stroke = 'dodgerblue';
-
-
-  // ------------------------------------------  Commands for this application  ----------------------------------------------
-
-  // Add a port to the specified side of the selected nodes.   name is beN  (be0, be1)
-  // evDim is 5 for Interrupting, 6 for non-Interrupting
-  static addActivityNodeBoundaryEvent(evType: number, evDim: number) {
-    ModellingAreaBPMNComponent.myDiagram.startTransaction('addBoundaryEvent');
-    ModellingAreaBPMNComponent.myDiagram.selection.each(function (node) {
-      // skip any selected Links
-      if (!(node instanceof go.Node)) {
-        return;
-      }
-      if (node.data && (node.data.category === 'activity' || node.data.category === 'subprocess')) {
-        // compute the next available index number for the side
-        let i = 0;
-        const defaultPort = node.findPort('');
-        // tslint:disable-next-line:max-line-length
-        while (node.findPort('be' + i.toString()) !== defaultPort) {
-          i++;
-        }           // now this new port name is unique within the whole Node because of the side prefix
-        const name = 'be' + i.toString();
-        if (!node.data.boundaryEventArray) {
-          ModellingAreaBPMNComponent.myDiagram.model.setDataProperty(node.data, 'boundaryEventArray', []);
-        }       // initialize the Array of port data if necessary
-        // create a new port data object
-        const newportdata = {
-          portId: name,
-          eventType: evType,
-          eventDimension: evDim,
-          color: 'white',
-          alignmentIndex: i
-          // if you add port data properties here, you should copy them in copyPortData above  ** BUG...  we don't do that.
-        };
-        // and add it to the Array of port data
-        ModellingAreaBPMNComponent.myDiagram.model.insertArrayItem(node.data.boundaryEventArray, -1, newportdata);
-      }
-    });
-    ModellingAreaBPMNComponent.myDiagram.commitTransaction('addBoundaryEvent');
-  }
-
   // changes the item of the object
   public rename(obj: go.GraphObject) {
     if (obj === null || obj.part === null || obj.part.data === null) {
@@ -2071,6 +2386,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   private addGoJsBPMNNodeFields(nodeData: any, modellingLanguageConstruct: string) {
     const dicEntry = Mappers.dictionaryAOAMEBPMNElementToGoJsNode.get(modellingLanguageConstruct);
     if (!dicEntry) {
+      nodeData.category = 'customNode';
       return;
     }
     nodeData.key = dicEntry.key;
@@ -2090,6 +2406,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   private addGoJsBPMNGroupFields(nodeData: any, modellingLanguageConstruct: string) {
     const dicEntry = Mappers.dictionaryAOAMEBPMNGroupToGoJsGroup.get(modellingLanguageConstruct);
     if (!dicEntry) {
+      nodeData.category = 'customGroup';
       return;
     }
     nodeData.key = dicEntry.key;
