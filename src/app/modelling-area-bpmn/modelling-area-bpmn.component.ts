@@ -33,6 +33,7 @@ import {PoolLink} from './helpers/bpmn-classes/pool-link.class';
 import {BPMNLinkingTool} from './helpers/bpmn-classes/bpmn-linking-tool.class';
 import {BPMNRelinkingTool} from './helpers/bpmn-classes/bpmn-relinking-tool.class';
 import {Mappers} from './helpers/mappers';
+import {FiguresClass} from './helpers/figures.class';
 
 
 const $ = go.GraphObject.make;
@@ -60,7 +61,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   myDiagram: go.Diagram;
   // constants for design choices
   GradientYellow = $(go.Brush, 'Linear', {0: 'LightGoldenRodYellow', 1: '#FFFF66'});
-  GradientLightGreen = $(go.Brush, 'Linear', {0: '#E0FEE0', 1: 'PaleGreen'});
+  GradientLightGreen = $(go.Brush, 'Linear', { 0: '#E0FEE0', 1: 'PaleGreen' });
   GradientLightGray = $(go.Brush, 'Linear', {0: 'White', 1: '#DADADA'});
 
   ActivityNodeFill = $(go.Brush, 'Linear', {0: 'OldLace', 1: 'PapayaWhip'});
@@ -955,33 +956,8 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       return geo;
     });
 
-    const handGeo = go.Geometry.parse('F1M18.13,10.06 C18.18,10.07 18.22,10.07 18.26,10.08 18.91,' +
-      '10.20 21.20,10.12 21.28,12.93 21.36,15.75 21.42,32.40 21.42,32.40 21.42,' +
-      '32.40 21.12,34.10 23.08,33.06 23.08,33.06 22.89,24.76 23.80,24.17 24.72,' +
-      '23.59 26.69,23.81 27.19,24.40 27.69,24.98 28.03,24.97 28.03,33.34 28.03,' +
-      '33.34 29.32,34.54 29.93,33.12 30.47,31.84 29.71,27.11 30.86,26.56 31.80,' +
-      '26.12 34.53,26.12 34.72,28.29 34.94,30.82 34.22,36.12 35.64,35.79 35.64,' +
-      '35.79 36.64,36.08 36.72,34.54 36.80,33.00 37.17,30.15 38.42,29.90 39.67,' +
-      '29.65 41.22,30.20 41.30,32.29 41.39,34.37 42.30,46.69 38.86,55.40 35.75,' +
-      '63.29 36.42,62.62 33.47,63.12 30.76,63.58 26.69,63.12 26.69,63.12 26.69,' +
-      '63.12 17.72,64.45 15.64,57.62 13.55,50.79 10.80,40.95 7.30,38.95 3.80,' +
-      '36.95 4.24,36.37 4.28,35.35 4.32,34.33 7.60,31.25 12.97,35.75 12.97,' +
-      '35.75 16.10,39.79 16.10,42.00 16.10,42.00 15.69,14.30 15.80,12.79 15.96,' +
-      '10.75 17.42,10.04 18.13,10.06z ');
-    handGeo.rotate(90, 0, 0);
-    handGeo.normalize();
-    go.Shape.defineFigureGenerator('BpmnTaskManual', function (shape, w, h) {
-      const geo = handGeo.copy();
-      // calculate how much to scale the Geometry so that it fits in w x h
-      const bounds = geo.bounds;
-      const scale = Math.min(w / bounds.width, h / bounds.height);
-      geo.scale(scale, scale);
-      // guess where text should go (in the hand)
-      geo.spot1 = new go.Spot(0, 0.6, 10, 0);
-      geo.spot2 = new go.Spot(1, 1);
-      return geo;
-    });
-
+    const figuresClass = new FiguresClass();
+    figuresClass.defineShapes();
 
     // define the appearance of tooltips, shared by various templates
     const tooltiptemplate =
@@ -1045,11 +1021,11 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           })
         ),
         $(go.Shape, 'NotAllowed',
-          {
-            alignment: go.Spot.Center,
-            desiredSize: new go.Size(this.EventNodeSymbolSize, this.EventNodeSymbolSize),
-            fill: 'white'
-          },
+            {
+              alignment: go.Spot.Center,
+              desiredSize: new go.Size(this.EventNodeSymbolSize, this.EventNodeSymbolSize),
+              fill: 'white'
+            },
           new go.Binding('figure', 'eventType', this.nodeEventTypeConverter)
         )
       );
@@ -1270,57 +1246,40 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         },
         new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
         // can be resided according to the user's desires
-        {resizable: false, resizeObjectName: 'SHAPE'},
+        { resizable: false, resizeObjectName: 'SHAPE' },
         $(go.Panel, 'Spot',
           $(go.Shape, 'Circle',  // Outer circle
             {
               strokeWidth: 1,
               name: 'SHAPE',
-              desiredSize: new go.Size(this.EventNodeSize, this.EventNodeSize),
+              desiredSize: new go.Size(self.EventNodeSize, self.EventNodeSize),
               portId: '', fromLinkable: true, toLinkable: true, cursor: 'pointer',
               fromSpot: go.Spot.RightSide, toSpot: go.Spot.LeftSide
             },
             // allows the color to be determined by the node data
-            new go.Binding('fill', 'eventDimension', function (s) {
-              return (s === 8) ? self.EventEndOuterFillColor : self.EventBackgroundColor;
-            }),
-            new go.Binding('strokeWidth', 'eventDimension', function (s) {
-              return s === 8 ? self.EventNodeStrokeWidthIsEnd : 1;
-            }),
-            new go.Binding('stroke', 'eventDimension', this.nodeEventDimensionStrokeColorConverter),
-            new go.Binding('strokeDashArray', 'eventDimension', function (s) {
-              return (s === 3 || s === 6) ? [4, 2] : null;
-            }),
-            new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)
+            new go.Binding('fill', 'eventDimension', function (s) { return (s === 8) ? self.EventEndOuterFillColor : self.EventBackgroundColor; }),
+            new go.Binding('strokeWidth', 'eventDimension', function (s) { return s === 8 ? self.EventNodeStrokeWidthIsEnd : 1; }),
+            new go.Binding('stroke', 'eventDimension', (s) => self.nodeEventDimensionStrokeColorConverter(s)),
+            new go.Binding('strokeDashArray', 'eventDimension', function (s) { return (s === 3 || s === 6) ? [4, 2] : null; }),
+            // TODO maybe uncomment this
+            //new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)
           ),  // end main shape
           $(go.Shape, 'Circle',  // Inner circle
-            {
-              alignment: go.Spot.Center,
-              desiredSize: new go.Size(this.EventNodeInnerSize, this.EventNodeInnerSize),
-              fill: null
-            },
-            new go.Binding('stroke', 'eventDimension', this.nodeEventDimensionStrokeColorConverter),
-            // tslint:disable-next-line:max-line-length
-            new go.Binding('strokeDashArray', 'eventDimension', function (s) {
-              return (s === 3 || s === 6) ? [4, 2] : null;
-            }), // dashes for non-interrupting
-            new go.Binding('visible', 'eventDimension', function (s) {
-              return s > 3 && s <= 7;
-            }) // inner  only visible for 4 thru 7
+            { alignment: go.Spot.Center, desiredSize: new go.Size(self.EventNodeInnerSize, self.EventNodeInnerSize), fill: null },
+            new go.Binding('stroke', 'eventDimension', (s) => self.nodeEventDimensionStrokeColorConverter(s)),
+            new go.Binding('strokeDashArray', 'eventDimension', function (s) { return (s === 3 || s === 6) ? [4, 2] : null; }), // dashes for non-interrupting
+            new go.Binding('visible', 'eventDimension', function (s) { return s > 3 && s <= 7; }) // inner  only visible for 4 thru 7
           ),
           $(go.Shape, 'NotAllowed',
-            {
-              alignment: go.Spot.Center,
-              desiredSize: new go.Size(this.EventNodeSymbolSize, this.EventNodeSymbolSize),
-              stroke: 'black'
-            },
-            new go.Binding('figure', 'eventType', this.nodeEventTypeConverter),
-            new go.Binding('fill', 'eventDimension', this.nodeEventDimensionSymbolFillConverter)
+            { alignment: go.Spot.Center, desiredSize: new go.Size(self.EventNodeSymbolSize, self.EventNodeSymbolSize), stroke: 'black' },
+            new go.Binding('figure', 'eventType', (s) => self.nodeEventTypeConverter(s)),
+            new go.Binding('fill', 'eventDimension', (s) => self.nodeEventDimensionSymbolFillConverter(s))
           )
         ),  // end Auto Panel
         $(go.TextBlock,
-          {alignment: go.Spot.Center, textAlign: 'center', margin: 5, editable: true},
+          { alignment: go.Spot.Center, textAlign: 'center', margin: 5, editable: true },
           new go.Binding('text').makeTwoWay())
+
       ); // end go.Node Vertical
 
     // ------------------------------------------  Gateway Node Template   ----------------------------------------------
