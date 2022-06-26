@@ -1301,20 +1301,22 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               desiredSize: new go.Size(this.GatewayNodeSize, this.GatewayNodeSize),
               portId: '', fromLinkable: true, toLinkable: true, cursor: 'pointer',
               fromSpot: go.Spot.NotLeftSide, toSpot: go.Spot.NotRightSide
-            },
-            new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)),  // end main shape
+            }
+            // TODO maybe uncomment and fix this
+            //new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)  // end main shape
+          ),
           $(go.Shape, 'NotAllowed',
             {
               alignment: go.Spot.Center,
               stroke: this.GatewayNodeSymbolStroke,
               fill: this.GatewayNodeSymbolFill
             },
-            new go.Binding('figure', 'gatewayType', this.nodeGatewaySymbolTypeConverter),
+            new go.Binding('figure', 'gatewayType', (s) => self.nodeGatewaySymbolTypeConverter(s)),
             // new go.Binding("visible", "gatewayType", function(s) { return s !== 4; }),   // comment out if you want exclusive gateway to be X instead of blank.
             new go.Binding('strokeWidth', 'gatewayType', function (s) {
               return (s <= 4) ? self.GatewayNodeSymbolStrokeWidth : 1;
             }),
-            new go.Binding('desiredSize', 'gatewayType', this.nodeGatewaySymbolSizeConverter)),
+            new go.Binding('desiredSize', 'gatewayType', (s) => self.nodeGatewaySymbolSizeConverter(s))),
           // the next 2 circles only show up for event gateway
           $(go.Shape, 'Circle',  // Outer circle
             {
@@ -1371,12 +1373,12 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               strokeWidth: this.GatewayNodeSymbolStrokeWidth,
               fill: this.GatewayNodeSymbolFill
             },
-            new go.Binding('figure', 'gatewayType', this.nodeGatewaySymbolTypeConverter),
+            new go.Binding('figure', 'gatewayType', (s) => this.nodeGatewaySymbolTypeConverter(s)),
             // new go.Binding("visible", "gatewayType", function(s) { return s !== 4; }),   // comment out if you want exclusive gateway to be X instead of blank.
             new go.Binding('strokeWidth', 'gatewayType', function (s) {
               return (s <= 4) ? self.GatewayNodeSymbolStrokeWidth : 1;
             }),
-            new go.Binding('desiredSize', 'gatewayType', this.nodePalGatewaySymbolSizeConverter)),
+            new go.Binding('desiredSize', 'gatewayType', (s) => this.nodePalGatewaySymbolSizeConverter(s))),
           // the next 2 circles only show up for event gateway
           $(go.Shape, 'Circle',  // Outer circle
             {
