@@ -17,14 +17,14 @@ export class Mappers {
     .set('DataStore', { key: 302, category: 'datastore', text: 'Data\nStorage' })
     .set('DataObject', { key: 301, category: 'dataobject', text: 'Data\nObject' })
     // don't exist in current example code
-    .set('DataInput', { key: 303, category: 'datastore', text: 'Data\nStorage' })
-    .set('DataOutput', { key: 304, category: 'datastore', text: 'Data\nStorage' })
+    .set('DataInput', { key: 303, category: 'dataobject', text: 'Data\nInput' })
+    .set('DataOutput', { key: 304, category: 'dataobject', text: 'Data\nOutput' })
     // end of don't exist
     // --------------------- EVENT --------------------- //
     .set('TerminateEndEvent', { key: 108, category: 'event', text: 'Terminate', eventType: 13, eventDimension: 8, item: 'Terminate' })
     .set('TimerIntermediateEvent', { key: 507, category: 'event', eventType: 3, eventDimension: 4, text: 'Catch\nTimer', item: '' })
     // don't exist in current example code
-    .set('IntermediateEvent', { key: 500, category: 'event', eventDimension: 4, text: 'Catch\nTimer', item: '' })
+    // .set('IntermediateEvent', { key: 500, category: 'event', eventDimension: 4, text: 'Catch\nTimer', item: '' })
     // end of don't exist
     .set('Event', { key: 101, category: 'event', text: 'Start', eventType: 1, eventDimension: 1, item: 'start' })
     // tslint:disable-next-line:max-line-length
