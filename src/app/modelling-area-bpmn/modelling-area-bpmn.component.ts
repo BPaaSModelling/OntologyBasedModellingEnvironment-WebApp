@@ -585,6 +585,19 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     txn.changes.toArray().filter(element => element.propertyName === 'parts').forEach(evt => {
       this.mService.deleteElement(this.selectedModel.id, evt.oldValue.data.element.id);
     });
+    // TODO for all elements which contained this shape, remove them
+    // for()
+    //   grp.data.element.containedShapes = containedShapes;
+    // if (p.data.element.group) {
+    //   const oldLane = self.myDiagram.model.findNodeDataForKey(p.data.element.group);
+    //   if (oldLane) {
+    //     const indexToRemove = oldLane.element.containedShapes.indexOf(p.data.element.id);
+    //     if (indexToRemove >= 0) {
+    //       oldLane.element.containedShapes.splice(indexToRemove);
+    //       self.mService.updateElement(oldLane.element, self.selectedModel.id);
+    //     }
+    //   }
+    // }
   }
 
   private handleNodeTextEditing(txn) {
@@ -1756,7 +1769,18 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
                   if (!containedShapes.includes(p.data.element.modelingLanguageConstructInstance)) {
                     containedShapes.push(p.data.element.modelingLanguageConstructInstance);
                     grp.data.element.containedShapes = containedShapes;
+                    if (p.data.element.group) {
+                      const oldLane = self.myDiagram.model.findNodeDataForKey(p.data.element.group);
+                      if (oldLane) {
+                        const indexToRemove = oldLane.element.containedShapes.indexOf(p.data.element.modelingLanguageConstructInstance);
+                        if (indexToRemove >= 0) {
+                          oldLane.element.containedShapes.splice(indexToRemove, 1);
+                          self.mService.updateElement(oldLane.element, self.selectedModel.id);
+                        }
+                      }
+                    }
                     self.mService.updateElement(grp.data.element, self.selectedModel.id);
+                    p.data.element.group = grp.data.element.id;
                   }
                 });
               } else {
@@ -2446,7 +2470,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
   private addGoJsBPMNLinkFields(nodeData: any, element: ModelElementDetail) {
     const dicEntry = Mappers.dictionaryGoJsAOAMELinkIdToLinkCategory.get(element.modellingLanguageConstruct);
-    if (!dicEntry || !this.isMappableBPMNConnection(element.fromShape, element.toShape)) {
+    if (dicEntry === undefined || !this.isMappableBPMNConnection(element.fromShape, element.toShape)) {
       nodeData.category = 'customLink';
       return;
     }
