@@ -1738,7 +1738,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
                 return;
               }
               const ok = grp.addMembers(grp.diagram.selection, true);
-              const containedShapes = grp.data.containedShapes || [];
+              const containedShapes = grp.data.element.containedShapes || [];
               if (ok) {
                 self.updateCrossLaneLinks(grp);
                 self.relayoutDiagram();
@@ -1746,7 +1746,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
                   if (!containedShapes.includes(p.data.element.modelingLanguageConstructInstance)) {
                     containedShapes.push(p.data.element.modelingLanguageConstructInstance);
                     grp.data.element.containedShapes = containedShapes;
-                    self.mService.updateElement(p.data.element, self.selectedModel.id);
+                    self.mService.updateElement(grp.data.element, self.selectedModel.id);
                   }
                 });
               } else {
