@@ -39,9 +39,9 @@ import {FiguresClass} from './helpers/figures.class';
 const $ = go.GraphObject.make;
 
 interface AdditionalCreateOptions {
-  loc,
-  size,
-  group
+  loc;
+  size;
+  group;
 }
 
 @Component({
@@ -589,6 +589,10 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
   private handleNodeTextEditing(txn) {
     const nodeData = txn.changes.iteratorBackwards.first().object;
+    if (!nodeData || !nodeData.element) {
+      console.error('couldn\'t edit text because element was undefined');
+      return;
+    }
     const modelElement: ModelElementDetail = nodeData.element;
     modelElement.label = nodeData.text;
 
@@ -1268,7 +1272,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             new go.Binding('stroke', 'eventDimension', (s) => self.nodeEventDimensionStrokeColorConverter(s)),
             new go.Binding('strokeDashArray', 'eventDimension', function (s) { return (s === 3 || s === 6) ? [4, 2] : null; }),
             // TODO maybe uncomment this
-            //new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)
+            // new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)
           ),  // end main shape
           $(go.Shape, 'Circle',  // Inner circle
             { alignment: go.Spot.Center, desiredSize: new go.Size(self.EventNodeInnerSize, self.EventNodeInnerSize), fill: null },
@@ -1309,7 +1313,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               fromSpot: go.Spot.NotLeftSide, toSpot: go.Spot.NotRightSide
             }
             // TODO maybe uncomment and fix this
-            //new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)  // end main shape
+            // new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)  // end main shape
           ),
           $(go.Shape, 'NotAllowed',
             {
@@ -1534,7 +1538,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           resizable: true,
           resizeObjectName: 'PANEL' // Changing this to Picture resizes the images, however links are a problem
         },
-        new go.Binding('location', 'loc'),
+        new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
         new go.Binding('group', 'containedInContainer'),
         { selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate },
         new go.Binding('angle').makeTwoWay(),
@@ -1714,7 +1718,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             click: function (e: go.InputEvent, obj: go.GraphObject) {
               self.addLaneEvent((obj.part as go.Adornment).adornedObject as go.Node);
             }
-          })
+          }),
       );
 
     const swimLanesGroupTemplate =
@@ -1810,8 +1814,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             },
             new go.Binding('visible', 'isSubGraphExpanded', function (e) {
               return !e;
-            }).ofObject(),
-            new go.Binding('text', 'text').makeTwoWay())
+            }).ofObject()),
+            // TODO get vertical text working again. It will display , but the edit of the label won't work if you uncomment this
+            // new go.Binding('text', 'text').makeTwoWay())
         )
       );  // end swimLanesGroupTemplate
 
