@@ -2463,7 +2463,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     // nodeData.key = dicEntry.key;
     nodeData.category = dicEntry.category;
     nodeData.isGroup = dicEntry.isGroup;
-    nodeData.text = dicEntry.text;
     // nodeData.group = dicEntry.group;
     nodeData.color = dicEntry.color;
   }
