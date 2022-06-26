@@ -415,6 +415,8 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           linkData.toArrow = element.toArrow;
         }
 
+        this.addGoJsBPMNLinkFields(linkData, element);
+
         model.goJsModel.addLinkData(linkData);
 
       } else if (element.modelElementType === 'ModelingElement') {
@@ -611,7 +613,11 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       link.data.routing = this.selectedConnectorMode.routing || '';
       link.data.pathPattern = this.pathPatterns.get(this.selectedConnectorMode.arrowStroke);
     } else {
-      id = Mappers.dictionaryGoJsLinkCategoryToAOAMELinkId.get(link.category);
+      Mappers.dictionaryGoJsAOAMELinkIdToLinkCategory.forEach((value, key, map) => {
+        if (value === link.category) {
+          id = key + '_BPMN';
+        }
+      });
     }
     if (!id) {
       return;
@@ -2433,6 +2439,16 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     nodeData.gatewayType = dicEntry.gatewayType;
   }
 
+  private addGoJsBPMNLinkFields(nodeData: any, element: ModelElementDetail) {
+    const dicEntry = Mappers.dictionaryGoJsAOAMELinkIdToLinkCategory.get(element.modellingLanguageConstruct);
+    if (!dicEntry || !this.isMappableBPMNConnection(element.fromShape, element.toShape)) {
+      nodeData.category = 'customLink';
+      return;
+    }
+    // nodeData.key = dicEntry.key;
+    nodeData.category = dicEntry;
+  }
+
   private addGoJsBPMNGroupFields(nodeData: any, modellingLanguageConstruct: string) {
     const dicEntry = Mappers.dictionaryAOAMEBPMNGroupToGoJsGroup.get(modellingLanguageConstruct);
     if (!dicEntry) {
@@ -2451,6 +2467,26 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     toData.loc = additionalCreateOptions.loc;
     toData.size = additionalCreateOptions.size;
     toData.group = additionalCreateOptions.group;
+  }
+
+  private isMappableBPMNConnection(fromShape: string, toShape: string): boolean {
+    const from = fromShape.split('_')[0];
+    const to = toShape.split('_')[0];
+    const goJsNodeFrom = Mappers.dictionaryAOAMEBPMNElementToGoJsNode.get(from);
+    const goJsNodeTo = Mappers.dictionaryAOAMEBPMNElementToGoJsNode.get(to);
+    const goJsGroupFrom = Mappers.dictionaryAOAMEBPMNGroupToGoJsGroup.get(from);
+    const goJsGroupTo = Mappers.dictionaryAOAMEBPMNGroupToGoJsGroup.get(to);
+
+    if (goJsNodeFrom?.category === 'annotation') {
+      return true;
+    } else if (goJsNodeFrom?.category === 'dataobject' || goJsNodeTo?.category === 'dataobject') {
+      return true;
+    } else if (goJsNodeFrom?.category === 'datastore' || goJsNodeTo?.category === 'datastore') {
+      return true;
+    } else if ((goJsNodeFrom || goJsGroupFrom) && (goJsNodeTo || goJsGroupTo)) {
+      return true;
+    }
+    return false;
   }
 }
 

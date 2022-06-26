@@ -53,11 +53,12 @@ export class Mappers {
     .set('Lane', { key: 602, text: 'Lane 1', isGroup: true, group: 601, color: 'lightyellow', category: 'Lane' })
   ;
 
-  static dictionaryGoJsLinkCategoryToAOAMELinkId = new Map<string, string>()
-    .set('', 'SequenceFlow_BPMN')
-    .set('annotation', 'Association_BPMN')
-    .set('msg', 'MessageFlow_BPMN')
+
+  static dictionaryGoJsAOAMELinkIdToLinkCategory = new Map<string, string>()
+    .set('SequenceFlow', '')
+    .set('Association', 'data')
+    .set('MessageFlow', 'msg')
     // TODO currently there is no map for associations with the category data
-    .set('data', 'SequenceFlow_BPMN');
+    .set('Annotation', 'annotation');
 }
 
