@@ -1,39 +1,39 @@
 import {Component, Input, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import * as go from 'gojs';
 import {ChangedEvent} from 'gojs';
-import {PaletteElementModel} from '../shared/models/PaletteElement.model';
-import {VariablesSettings} from '../_settings/variables.settings';
-import {ModellerService} from '../core/services/modeller/modeller.service';
+import {PaletteElementModel} from '../../../../shared/models/PaletteElement.model';
+import {VariablesSettings} from '../../../../_settings/variables.settings';
+import {ModellerService} from '../../../../core/services/modeller/modeller.service';
 import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
-import {Model} from '../shared/models/Model.model';
+import {Model} from '../../../../shared/models/Model.model';
 import {MatDialog} from '@angular/material/dialog';
 import {UUID} from 'angular2-uuid';
 import * as _ from 'lodash-es';
-import {InstantiationTargetType} from '../shared/models/InstantiationTargetType.model';
-import {ModalModelLink} from '../shared/modals/modal-model-link/modal-model-link';
-import {ModalElementNote} from '../shared/modals/modal-element-note/modal-element-note.component';
+import {InstantiationTargetType} from '../../../../shared/models/InstantiationTargetType.model';
+import {ModalModelLink} from '../../../../shared/modals/modal-model-link/modal-model-link';
+import {ModalElementNote} from '../../../../shared/modals/modal-element-note/modal-element-note.component';
 import {
   ModalModellingLanguageConstructInstanceLink,
   VisualisationLinksData
-} from '../shared/modals/modal-modelling-language-construct-instance-link/modal-modelling-language-construct-instance-link';
-import {ModalPaletteVisualisation} from '../shared/modals/modal-palette-visualisation/modal-palette-visualisation';
-import {ModelElementDetail} from '../shared/models/ModelElementDetail.model';
-import {ModelElementDetailAndModel} from '../shared/models/ModelElementDetailAndModel';
-import {ModalViewElementDetail} from '../shared/modals/model-element-detail/model-element-detail.component';
+} from '../../../../shared/modals/modal-modelling-language-construct-instance-link/modal-modelling-language-construct-instance-link';
+import {ModalPaletteVisualisation} from '../../../../shared/modals/modal-palette-visualisation/modal-palette-visualisation';
+import {ModelElementDetail} from '../../../../shared/models/ModelElementDetail.model';
+import {ModelElementDetailAndModel} from '../../../../shared/models/ModelElementDetailAndModel';
+import {ModalViewElementDetail} from '../../../../shared/modals/model-element-detail/model-element-detail.component';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {filter, switchMap, take, takeUntil, timeout} from 'rxjs/operators';
 import {Subject} from 'rxjs/internal/Subject';
 import {of} from 'rxjs/internal/observable/of';
 
-import {DrawCommandHandler} from './helpers/DrawCommandHandler';
-import {LaneResizingTool} from './helpers/lane-resizing-tool.class';
-import {PoolLayout} from './helpers/pool-layout.class';
-import {Helpers} from './helpers/helpers';
-import {PoolLink} from './helpers/bpmn-classes/pool-link.class';
-import {BPMNLinkingTool} from './helpers/bpmn-classes/bpmn-linking-tool.class';
-import {BPMNRelinkingTool} from './helpers/bpmn-classes/bpmn-relinking-tool.class';
-import {Mappers} from './helpers/mappers';
-import {FiguresClass} from './helpers/figures.class';
+import {DrawCommandHandlerClass} from '../../gojs/draw-command-handler.class';
+import {LaneResizingTool} from '../../gojs/bpmn-classes/lane-resizing-tool.class';
+import {PoolLayout} from '../../gojs/bpmn-classes/pool-layout.class';
+import {BpmnLaneHelpers} from '../../gojs/bpmn-classes/bpmn-lane-helpers';
+import {PoolLink} from '../../gojs/bpmn-classes/pool-link.class';
+import {BPMNLinkingTool} from '../../gojs/bpmn-classes/bpmn-linking-tool.class';
+import {BPMNRelinkingTool} from '../../gojs/bpmn-classes/bpmn-relinking-tool.class';
+import {Mappers} from '../../gojs/mappers';
+import {FiguresClass} from '../../gojs/figures.class';
 
 
 const $ = go.GraphObject.make;
@@ -220,7 +220,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       laneElement.tempUuid = uuid;
       // create a new lane data object
       const shape = pool.findObject('SHAPE');
-      const size = new go.Size(shape ? shape.width : Helpers.MINLENGTH, Helpers.MINBREADTH);
+      const size = new go.Size(shape ? shape.width : BpmnLaneHelpers.MINLENGTH, BpmnLaneHelpers.MINBREADTH);
       this.createElement(laneElement,
         {
           loc: go.Point.stringify(new go.Point(pool.location.x, pool.location.y)), // place below selection
@@ -1665,9 +1665,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             if (grp.isSubGraphExpanded) {
               grp.isSelected = true;
             }
-            Helpers.assignGroupLayer(grp);
+            BpmnLaneHelpers.assignGroupLayer(grp);
           },
-          selectionChanged: Helpers.assignGroupLayer,
+          selectionChanged: BpmnLaneHelpers.assignGroupLayer,
           computesBoundsAfterDrag: true,
           memberValidation: function (group: go.Group, part: go.Part) {
             return !(part instanceof go.Group) ||
@@ -1681,7 +1681,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             if (!ok) {
               grp.diagram.currentTool.doCancel();
             } else {
-              Helpers.assignGroupLayer(grp);
+              BpmnLaneHelpers.assignGroupLayer(grp);
             }
           },
           contextMenu: activityNodeMenu,
@@ -2157,7 +2157,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           groupTemplateMap: groupTemplateMap,
           'undoManager.isEnabled': true, // enable Ctrl-Z to undo and Ctrl-Y to redo
 
-          commandHandler: new DrawCommandHandler(),  // defined in DrawCommandHandler.js
+          commandHandler: new DrawCommandHandlerClass(),  // defined in DrawCommandHandlerClass.js
           // default to having arrow keys move selected nodes
           'commandHandler.arrowKeyBehavior': 'move',
 
@@ -2170,10 +2170,10 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           'SelectionMoved': () => self.relayoutDiagram(),
           'SelectionCopied': () => self.relayoutDiagram(),
           'LinkDrawn': function (e) {
-            Helpers.assignGroupLayer(e.subject.containingGroup);
+            BpmnLaneHelpers.assignGroupLayer(e.subject.containingGroup);
           },
           'LinkRelinked': function (e) {
-            Helpers.assignGroupLayer(e.subject.containingGroup);
+            BpmnLaneHelpers.assignGroupLayer(e.subject.containingGroup);
           }
         });
 
@@ -2417,35 +2417,35 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   }
 
   public alignLeft() {
-    (this.myDiagram.commandHandler as DrawCommandHandler).alignLeft();
+    (this.myDiagram.commandHandler as DrawCommandHandlerClass).alignLeft();
   }
 
   public alignRight() {
-    (this.myDiagram.commandHandler as DrawCommandHandler).alignRight();
+    (this.myDiagram.commandHandler as DrawCommandHandlerClass).alignRight();
   }
 
   public alignTop() {
-    (this.myDiagram.commandHandler as DrawCommandHandler).alignTop();
+    (this.myDiagram.commandHandler as DrawCommandHandlerClass).alignTop();
   }
 
   public alignBottom() {
-    (this.myDiagram.commandHandler as DrawCommandHandler).alignBottom();
+    (this.myDiagram.commandHandler as DrawCommandHandlerClass).alignBottom();
   }
 
   public alignCemterX() {
-    (this.myDiagram.commandHandler as DrawCommandHandler).alignCenterX();
+    (this.myDiagram.commandHandler as DrawCommandHandlerClass).alignCenterX();
   }
 
   public alignCenterY() {
-    (this.myDiagram.commandHandler as DrawCommandHandler).alignCenterY();
+    (this.myDiagram.commandHandler as DrawCommandHandlerClass).alignCenterY();
   }
 
   public alignRows() {
-    (this.myDiagram.commandHandler as DrawCommandHandler).alignRow(this.askSpace());
+    (this.myDiagram.commandHandler as DrawCommandHandlerClass).alignRow(this.askSpace());
   }
 
   public alignColumns() {
-    (this.myDiagram.commandHandler as DrawCommandHandler).alignColumn(this.askSpace());
+    (this.myDiagram.commandHandler as DrawCommandHandlerClass).alignColumn(this.askSpace());
   }
 
   private addGoJsBPMNNodeFields(nodeData: any, modellingLanguageConstruct: string) {

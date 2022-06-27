@@ -1,5 +1,5 @@
 import * as go from 'gojs';
-import {Helpers} from './helpers';
+import {BpmnLaneHelpers} from './bpmn-lane-helpers';
 
 // define a custom grid layout that makes sure the length of each lane is the same
 // and that each lane is broad enough to hold its subgraph
@@ -27,13 +27,13 @@ export class PoolLayout extends go.GridLayout {
     const pool = this.group;
     if (pool !== null && pool.category === 'Pool') {
       // make sure all of the Group Shapes are big enough
-      const minsize = Helpers.computeMinPoolSize(pool);
+      const minsize = BpmnLaneHelpers.computeMinPoolSize(pool);
       pool.memberParts.each(function (lane) {
         if (!(lane instanceof go.Group)) { return; }
         if (lane.category !== 'Pool') {
           const shape = lane.resizeObject;
           if (shape !== null) {  // change the desiredSize to be big enough in both directions
-            const sz = Helpers.computeLaneSize(lane);
+            const sz = BpmnLaneHelpers.computeLaneSize(lane);
             shape.width = (isNaN(shape.width) ? minsize.width : Math.max(shape.width, minsize.width));
             shape.height = (!isNaN(shape.height)) ? Math.max(shape.height, sz.height) : sz.height;
             const cell = lane.resizeCellSize;

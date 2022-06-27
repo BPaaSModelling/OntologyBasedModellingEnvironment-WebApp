@@ -17,20 +17,20 @@ import * as go from 'gojs';
  * ```js
  *   $(go.Diagram, "myDiagramDiv",
  *     {
- *       commandHandler: $(DrawCommandHandler),
+ *       commandHandler: $(DrawCommandHandlerClass),
  *       . . .
  *     }
  *   )
  * ```
  * or:
  * ```js
- *    myDiagram.commandHandler = new DrawCommandHandler();
+ *    myDiagram.commandHandler = new DrawCommandHandlerClass();
  * ```
  *
- * If you want to experiment with this extension, try the <a href="../../extensionsJSM/DrawCommandHandler.html">Drawing Commands</a> sample.
+ * If you want to experiment with this extension, try the <a href="../../extensionsJSM/DrawCommandHandlerClass.html">Drawing Commands</a> sample.
  * @category Extension
  */
-export class DrawCommandHandler extends go.CommandHandler {
+export class DrawCommandHandlerClass extends go.CommandHandler {
   private _arrowKeyBehavior: string = 'move';
   private _pasteOffset: go.Point = new go.Point(10, 10);
   private _lastPasteOffset: go.Point = new go.Point(0, 0);
@@ -43,7 +43,7 @@ export class DrawCommandHandler extends go.CommandHandler {
   get arrowKeyBehavior(): string { return this._arrowKeyBehavior; }
   set arrowKeyBehavior(val: string) {
     if (val !== 'move' && val !== 'select' && val !== 'scroll' && val !== 'none') {
-      throw new Error('DrawCommandHandler.arrowKeyBehavior must be either "move", "select", "scroll", or "none", not: ' + val);
+      throw new Error('DrawCommandHandlerClass.arrowKeyBehavior must be either "move", "select", "scroll", or "none", not: ' + val);
     }
     this._arrowKeyBehavior = val;
   }
@@ -53,7 +53,7 @@ export class DrawCommandHandler extends go.CommandHandler {
    */
   get pasteOffset(): go.Point { return this._pasteOffset; }
   set pasteOffset(val: go.Point) {
-    if (!(val instanceof go.Point)) throw new Error('DrawCommandHandler.pasteOffset must be a Point, not: ' + val);
+    if (!(val instanceof go.Point)) throw new Error('DrawCommandHandlerClass.pasteOffset must be a Point, not: ' + val);
     this._pasteOffset.set(val);
   }
 
@@ -264,7 +264,7 @@ export class DrawCommandHandler extends go.CommandHandler {
    * Change the z-ordering of selected parts to pull them forward, in front of all other parts
    * in their respective layers.
    * All unselected parts in each layer with a selected Part with a non-numeric {@link Part#zOrder} will get a zOrder of zero.
-   * @this {DrawCommandHandler}
+   * @this {DrawCommandHandlerClass}
    */
   public pullToFront(): void {
     const diagram = this.diagram;
@@ -291,7 +291,7 @@ export class DrawCommandHandler extends go.CommandHandler {
     // assign each selected Part.zOrder to the computed value for each Layer
     diagram.selection.each(function(part) {
       const z = layers.get(part.layer as go.Layer) || 0;
-      DrawCommandHandler._assignZOrder(part, z + 1);
+      DrawCommandHandlerClass._assignZOrder(part, z + 1);
     });
     diagram.commitTransaction("pullToFront");
   }
@@ -300,7 +300,7 @@ export class DrawCommandHandler extends go.CommandHandler {
    * Change the z-ordering of selected parts to push them backward, behind of all other parts
    * in their respective layers.
    * All unselected parts in each layer with a selected Part with a non-numeric {@link Part#zOrder} will get a zOrder of zero.
-   * @this {DrawCommandHandler}
+   * @this {DrawCommandHandlerClass}
    */
   public pushToBack(): void {
     const diagram = this.diagram;
@@ -327,9 +327,9 @@ export class DrawCommandHandler extends go.CommandHandler {
     // assign each selected Part.zOrder to the computed value for each Layer
     diagram.selection.each(function(part) {
       const z = layers.get(part.layer as go.Layer) || 0;
-      DrawCommandHandler._assignZOrder(part,
+      DrawCommandHandlerClass._assignZOrder(part,
         // make sure a group's nested nodes are also behind everything else
-        z - 1 - DrawCommandHandler._findGroupDepth(part));
+        z - 1 - DrawCommandHandlerClass._findGroupDepth(part));
     });
     diagram.commitTransaction("pushToBack");
   }
@@ -339,7 +339,7 @@ export class DrawCommandHandler extends go.CommandHandler {
     if (part.layer === root.layer) part.zOrder = z;
     if (part instanceof go.Group) {
       part.memberParts.each(function(m) {
-        DrawCommandHandler._assignZOrder(m, z+1, root);
+        DrawCommandHandlerClass._assignZOrder(m, z+1, root);
       });
     }
   }
@@ -348,7 +348,7 @@ export class DrawCommandHandler extends go.CommandHandler {
     if (part instanceof go.Group) {
       let d = 0;
       part.memberParts.each(function(m) {
-        d = Math.max(d, DrawCommandHandler._findGroupDepth(m));
+        d = Math.max(d, DrawCommandHandlerClass._findGroupDepth(m));
       });
       return d+1;
     } else {

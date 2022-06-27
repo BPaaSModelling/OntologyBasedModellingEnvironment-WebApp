@@ -1,18 +1,18 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {ModellerService} from '../../../core/services/modeller/modeller.service';
-import {PaletteElementModel} from '../../../shared/models/PaletteElement.model';
+import {ModellerService} from '../../../../core/services/modeller/modeller.service';
+import {PaletteElementModel} from '../../../../shared/models/PaletteElement.model';
 import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
 import {UUID} from 'angular2-uuid';
-import {ModalExtendPaletteElementComponent} from "../../../shared/modals/modal-extend-palette-element/modal-extend-palette-element.component";
+import {ModalExtendPaletteElementComponent} from "../../../../shared/modals/modal-extend-palette-element/modal-extend-palette-element.component";
 import { MatDialog } from "@angular/material/dialog";
-import {ModalCreateDomainElementsComponent} from "../../../shared/modals/modal-create-domain-elements/modal-create-domain-elements.component";
-import {ModalPaletteElementPropertiesComponent} from "../../../shared/modals/modal-palette-element-properties/modal-palette-element-properties.component";
-import {ModalEditPaletteElementComponent} from "../../../shared/modals/modal-edit-palette-element/modal-edit-palette-element.component";
-import {ModelingViewModel} from "../../../shared/models/ModelingView.model";
-import {PaletteCategoryModel} from "../../../shared/models/PaletteCategory.model";
-import {VariablesSettings} from "../../../_settings/variables.settings";
-import {ModalShowLanguageInstances} from '../../../shared/modals/modal-show-language-instances/modal-show-language-instances';
-import {ModelingLanguageModel} from '../../../shared/models/ModelingLanguage.model';
+import {ModalCreateDomainElementsComponent} from "../../../../shared/modals/modal-create-domain-elements/modal-create-domain-elements.component";
+import {ModalPaletteElementPropertiesComponent} from "../../../../shared/modals/modal-palette-element-properties/modal-palette-element-properties.component";
+import {ModalEditPaletteElementComponent} from "../../../../shared/modals/modal-edit-palette-element/modal-edit-palette-element.component";
+import {ModelingViewModel} from "../../../../shared/models/ModelingView.model";
+import {PaletteCategoryModel} from "../../../../shared/models/PaletteCategory.model";
+import {VariablesSettings} from "../../../../_settings/variables.settings";
+import {ModalShowLanguageInstances} from '../../../../shared/modals/modal-show-language-instances/modal-show-language-instances';
+import {ModelingLanguageModel} from '../../../../shared/models/ModelingLanguage.model';
 
 @Component({
   selector: 'app-palette-area',

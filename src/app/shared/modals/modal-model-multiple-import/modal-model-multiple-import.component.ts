@@ -10,7 +10,7 @@ import {IDropdownSettings} from 'ng-multiselect-dropdown';
 import {delay, take} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {ActivatedRoute} from '@angular/router';
-import {ModellingAreaComponent} from '../../../pages/modelling-area/modelling-area.component';
+import {ModellingAreaComponent} from '../../../pages/modelling-environment/components/modelling-area/modelling-area.component';
 
 
 @Component({

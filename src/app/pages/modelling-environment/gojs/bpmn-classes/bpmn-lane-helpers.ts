@@ -1,13 +1,13 @@
 import * as go from 'gojs';
 
-export class Helpers {
+export class BpmnLaneHelpers {
   static MINLENGTH = 400;  // this controls the minimum length of any swimlane
   static MINBREADTH = 20;  // this controls the minimum breadth of any non-collapsed swimlane
 
   // compute the minimum size of a Pool Group needed to hold all of the Lane Groups
   static computeMinPoolSize(pool: go.Group) {
     // assert(pool instanceof go.Group && pool.category === "Pool");
-    let len = Helpers.MINLENGTH;
+    let len = BpmnLaneHelpers.MINLENGTH;
     pool.memberParts.each(function (lane) {
       // pools ought to only contain lanes, not plain Nodes
       if (!(lane instanceof go.Group)) { return; }
@@ -30,7 +30,7 @@ export class Helpers {
   // compute the minimum size for a particular Lane Group
   static computeLaneSize(lane: go.Group) {
     // assert(lane instanceof go.Group && lane.category !== "Pool");
-    const sz = Helpers.computeMinLaneSize(lane);
+    const sz = BpmnLaneHelpers.computeMinLaneSize(lane);
     if (lane.isSubGraphExpanded) {
       const holder = lane.placeholder;
       if (holder !== null) {
@@ -46,7 +46,7 @@ export class Helpers {
 
   // determine the minimum size of a Lane Group, even if collapsed
   static computeMinLaneSize(lane: go.Group) {
-    if (!lane.isSubGraphExpanded) { return new go.Size(Helpers.MINLENGTH, 1); }
-    return new go.Size(Helpers.MINLENGTH, Helpers.MINBREADTH);
+    if (!lane.isSubGraphExpanded) { return new go.Size(BpmnLaneHelpers.MINLENGTH, 1); }
+    return new go.Size(BpmnLaneHelpers.MINLENGTH, BpmnLaneHelpers.MINBREADTH);
   }
 }

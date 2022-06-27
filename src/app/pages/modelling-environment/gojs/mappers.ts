@@ -1,5 +1,5 @@
-import {GoJsCategoryBPMNNode} from './models/GoJsCategoryBPMNNode';
-import {GoJsCategoryBPMNGroup} from './models/GoJsCategoryBPMNGroup';
+import {GoJsCategoryBPMNNode} from '../models/GoJsCategoryBPMNNode';
+import {GoJsCategoryBPMNGroup} from '../models/GoJsCategoryBPMNGroup';
 
 export class Mappers {
   static dictionaryAOAMEBPMNElementToGoJsNode = new Map<string, GoJsCategoryBPMNNode>()
