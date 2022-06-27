@@ -34,6 +34,8 @@ import {BPMNLinkingTool} from '../../gojs/bpmn-classes/bpmn-linking-tool.class';
 import {BPMNRelinkingTool} from '../../gojs/bpmn-classes/bpmn-relinking-tool.class';
 import {Mappers} from '../../gojs/mappers';
 import {FiguresClass} from '../../gojs/figures.class';
+import {BpmnTemplateService} from '../../gojs/bpmn-classes/bpmn-template.service';
+import {BpmnConstantsClass} from '../../gojs/bpmn-classes/bpmn-constants.class';
 
 
 const $ = go.GraphObject.make;
@@ -51,7 +53,7 @@ interface AdditionalCreateOptions {
 })
 export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line:max-line-length
-  public constructor(public mService: ModellerService, public matDialog: MatDialog, private activatedRoute: ActivatedRoute, private router: Router) {
+  public constructor(public mService: ModellerService, public matDialog: MatDialog, private activatedRoute: ActivatedRoute, private router: Router, bpmnTemplateService: BpmnTemplateService) {
     console.log('Constructor of graph');
     (go as any).licenseKey = '54ff43e7b11c28c702d95d76423d38f919a52e63998449a35a0412f6be086d1d239cef7157d78cc687f84cfb487fc2898fc1697d964f073cb539d08942e786aab63770b3400c40dea71136c5ceaa2ea1fa2b24a5c5b775a2dc718cf3bea1c59808eff4d54fcd5cb92b280735562bac49e7fc8973f950cf4e6b3d9ba3fffbbf4faf3c7184ccb4569aff5a70deb6f2a3417f';
 
@@ -59,42 +61,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   }
 
   myDiagram: go.Diagram;
-  // constants for design choices
-  GradientYellow = $(go.Brush, 'Linear', {0: 'LightGoldenRodYellow', 1: '#FFFF66'});
-  GradientLightGreen = $(go.Brush, 'Linear', { 0: '#E0FEE0', 1: 'PaleGreen' });
-  GradientLightGray = $(go.Brush, 'Linear', {0: 'White', 1: '#DADADA'});
 
-  ActivityNodeFill = $(go.Brush, 'Linear', {0: 'OldLace', 1: 'PapayaWhip'});
-  ActivityNodeStroke = '#CDAA7D';
-  ActivityMarkerStrokeWidth = 1.5;
-  ActivityNodeWidth = 120;
-  ActivityNodeHeight = 80;
-  ActivityNodeStrokeWidth = 1;
-  ActivityNodeStrokeWidthIsCall = 4;
 
-  SubprocessNodeFill = this.ActivityNodeFill;
-  SubprocessNodeStroke = this.ActivityNodeStroke;
-
-  EventNodeSize = 42;
-  EventNodeInnerSize = this.EventNodeSize - 6;
-  EventNodeSymbolSize = this.EventNodeInnerSize - 14;
-  EventEndOuterFillColor = 'pink';
-  EventBackgroundColor = this.GradientLightGreen;
-  EventSymbolLightFill = 'white';
-  EventSymbolDarkFill = 'dimgray';
-  EventDimensionStrokeColor = 'green';
-  EventDimensionStrokeEndColor = 'red';
-  EventNodeStrokeWidthIsEnd = 4;
-
-  GatewayNodeSize = 80;
-  GatewayNodeSymbolSize = 45;
-  GatewayNodeFill = this.GradientYellow;
-  GatewayNodeStroke = 'darkgoldenrod';
-  GatewayNodeSymbolStroke = 'darkgoldenrod';
-  GatewayNodeSymbolFill = this.GradientYellow;
-  GatewayNodeSymbolStrokeWidth = 3;
-
-  DataFill = this.GradientLightGray;
+  DataFill = BpmnConstantsClass.GradientLightGray;
   private destroy$ = new Subject<void>();
 
   @ViewChild(ContextMenuComponent, {static: true}) public elementRightClickMenu: ContextMenuComponent<any>;
@@ -178,7 +147,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
 // location of event on boundary of Activity is based on the index of the event in the boundaryEventArray
   nodeActivityBESpotConverter(s: number) {
-    const x = 10 + (this.EventNodeSize / 2);
+    const x = 10 + (BpmnConstantsClass.EventNodeSize / 2);
     if (s === 0) {
       return new go.Spot(0, 1, x, 0);
     }    // bottom left
@@ -188,7 +157,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     if (s === 2) {
       return new go.Spot(1, 0, -x, 0);
     }   // top right
-    return new go.Spot(1, 0, -x - (s - 2) * this.EventNodeSize, 0);    // top ... right-to-left-ish spread
+    return new go.Spot(1, 0, -x - (s - 2) * BpmnConstantsClass.EventNodeSize, 0);    // top ... right-to-left-ish spread
   }
 
   groupStyle() {  // common settings for both Lane and Pool Groups
@@ -1020,7 +989,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         new go.Binding('portId', 'portId'),
         new go.Binding('alignment', 'alignmentIndex', this.nodeActivityBESpotConverter),
         $(go.Shape, 'Circle',
-          {desiredSize: new go.Size(this.EventNodeSize, this.EventNodeSize)},
+          {desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize, BpmnConstantsClass.EventNodeSize)},
           new go.Binding('strokeDashArray', 'eventDimension', function (s) {
             return (s === 6) ? [4, 2] : null;
           }),
@@ -1036,7 +1005,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $(go.Shape, 'Circle',
           {
             alignment: go.Spot.Center,
-            desiredSize: new go.Size(this.EventNodeInnerSize, this.EventNodeInnerSize),
+            desiredSize: new go.Size(BpmnConstantsClass.EventNodeInnerSize, BpmnConstantsClass.EventNodeInnerSize),
             fill: null
           },
           new go.Binding('strokeDashArray', 'eventDimension', function (s) {
@@ -1046,7 +1015,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $(go.Shape, 'NotAllowed',
             {
               alignment: go.Spot.Center,
-              desiredSize: new go.Size(this.EventNodeSymbolSize, this.EventNodeSymbolSize),
+              desiredSize: new go.Size(BpmnConstantsClass.EventNodeSymbolSize, BpmnConstantsClass.EventNodeSymbolSize),
               fill: 'white'
             },
           new go.Binding('figure', 'eventType', this.nodeEventTypeConverter)
@@ -1123,15 +1092,15 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $(go.Panel, 'Auto',
           {
             name: 'PANEL',
-            minSize: new go.Size(this.ActivityNodeWidth, this.ActivityNodeHeight),
-            desiredSize: new go.Size(this.ActivityNodeWidth, this.ActivityNodeHeight)
+            minSize: new go.Size(BpmnConstantsClass.ActivityNodeWidth, BpmnConstantsClass.ActivityNodeHeight),
+            desiredSize: new go.Size(BpmnConstantsClass.ActivityNodeWidth, BpmnConstantsClass.ActivityNodeHeight)
           },
           new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify),
           $(go.Panel, 'Spot',
             $(go.Shape, 'RoundedRectangle',  // the outside rounded rectangle
               {
                 name: 'SHAPE',
-                fill: this.ActivityNodeFill, stroke: this.ActivityNodeStroke,
+                fill: BpmnConstantsClass.ActivityNodeFill, stroke: BpmnConstantsClass.ActivityNodeStroke,
                 parameter1: 10, // corner size
                 portId: '', fromLinkable: true, toLinkable: true, cursor: 'pointer',
                 fromSpot: go.Spot.RightSide, toSpot: go.Spot.LeftSide
@@ -1139,7 +1108,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               new go.Binding('fill', 'color'),
               new go.Binding('strokeWidth', 'isCall',
                 function (s) {
-                  return s ? self.ActivityNodeStrokeWidthIsCall : self.ActivityNodeStrokeWidth;
+                  return s ? BpmnConstantsClass.ActivityNodeStrokeWidthIsCall : BpmnConstantsClass.ActivityNodeStrokeWidth;
                 })
             ),
             //        $(go.Shape, "RoundedRectangle",  // the inner "Transaction" rounded rectangle
@@ -1185,23 +1154,23 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           {
             name: 'PANEL',
             // tslint:disable-next-line:max-line-length
-            desiredSize: new go.Size(this.ActivityNodeWidth / palscale, this.ActivityNodeHeight / palscale)
+            desiredSize: new go.Size(BpmnConstantsClass.ActivityNodeWidth / palscale, BpmnConstantsClass.ActivityNodeHeight / palscale)
           },
           $(go.Shape, 'RoundedRectangle',  // the outside rounded rectangle
             {
               name: 'SHAPE',
-              fill: this.ActivityNodeFill, stroke: this.ActivityNodeStroke,
+              fill: BpmnConstantsClass.ActivityNodeFill, stroke: BpmnConstantsClass.ActivityNodeStroke,
               parameter1: 10 / palscale  // corner size (default 10)
             },
             new go.Binding('strokeWidth', 'isCall',
               function (s) {
-                return s ? self.ActivityNodeStrokeWidthIsCall : self.ActivityNodeStrokeWidth;
+                return s ? BpmnConstantsClass.ActivityNodeStrokeWidthIsCall : BpmnConstantsClass.ActivityNodeStrokeWidth;
               })),
           $(go.Shape, 'RoundedRectangle',  // the inner "Transaction" rounded rectangle
             {
               margin: 3,
               stretch: go.GraphObject.Fill,
-              stroke: this.ActivityNodeStroke,
+              stroke: BpmnConstantsClass.ActivityNodeStroke,
               parameter1: 8 / palscale, fill: null, visible: false
             },
             new go.Binding('visible', 'isTransaction')),
@@ -1231,23 +1200,23 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $(go.Panel, 'Spot',
           {
             name: 'PANEL',
-            desiredSize: new go.Size(this.ActivityNodeWidth / palscale, this.ActivityNodeHeight / palscale)
+            desiredSize: new go.Size(BpmnConstantsClass.ActivityNodeWidth / palscale, BpmnConstantsClass.ActivityNodeHeight / palscale)
           },
           $(go.Shape, 'RoundedRectangle',  // the outside rounded rectangle
             {
               name: 'SHAPE',
-              fill: this.ActivityNodeFill, stroke: this.ActivityNodeStroke,
+              fill: BpmnConstantsClass.ActivityNodeFill, stroke: BpmnConstantsClass.ActivityNodeStroke,
               parameter1: 10 / palscale  // corner size (default 10)
             },
             new go.Binding('strokeWidth', 'isCall', function (s) {
-              return s ? self.ActivityNodeStrokeWidthIsCall : self.ActivityNodeStrokeWidth;
+              return s ? BpmnConstantsClass.ActivityNodeStrokeWidthIsCall : BpmnConstantsClass.ActivityNodeStrokeWidth;
             })
           ),
           $(go.Shape, 'RoundedRectangle',  // the inner "Transaction" rounded rectangle
             {
               margin: 3,
               stretch: go.GraphObject.Fill,
-              stroke: this.ActivityNodeStroke,
+              stroke: BpmnConstantsClass.ActivityNodeStroke,
               parameter1: 8 / palscale, fill: null, visible: false
             },
             new go.Binding('visible', 'isTransaction')),
@@ -1275,26 +1244,26 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             {
               strokeWidth: 1,
               name: 'SHAPE',
-              desiredSize: new go.Size(self.EventNodeSize, self.EventNodeSize),
+              desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize, BpmnConstantsClass.EventNodeSize),
               portId: '', fromLinkable: true, toLinkable: true, cursor: 'pointer',
               fromSpot: go.Spot.RightSide, toSpot: go.Spot.LeftSide
             },
             // allows the color to be determined by the node data
-            new go.Binding('fill', 'eventDimension', function (s) { return (s === 8) ? self.EventEndOuterFillColor : self.EventBackgroundColor; }),
-            new go.Binding('strokeWidth', 'eventDimension', function (s) { return s === 8 ? self.EventNodeStrokeWidthIsEnd : 1; }),
+            new go.Binding('fill', 'eventDimension', function (s) { return (s === 8) ? BpmnConstantsClass.EventEndOuterFillColor : BpmnConstantsClass.EventBackgroundColor; }),
+            new go.Binding('strokeWidth', 'eventDimension', function (s) { return s === 8 ? BpmnConstantsClass.EventNodeStrokeWidthIsEnd : 1; }),
             new go.Binding('stroke', 'eventDimension', (s) => self.nodeEventDimensionStrokeColorConverter(s)),
             new go.Binding('strokeDashArray', 'eventDimension', function (s) { return (s === 3 || s === 6) ? [4, 2] : null; }),
             // TODO maybe uncomment this
             // new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)
           ),  // end main shape
           $(go.Shape, 'Circle',  // Inner circle
-            { alignment: go.Spot.Center, desiredSize: new go.Size(self.EventNodeInnerSize, self.EventNodeInnerSize), fill: null },
+            { alignment: go.Spot.Center, desiredSize: new go.Size(BpmnConstantsClass.EventNodeInnerSize, BpmnConstantsClass.EventNodeInnerSize), fill: null },
             new go.Binding('stroke', 'eventDimension', (s) => self.nodeEventDimensionStrokeColorConverter(s)),
             new go.Binding('strokeDashArray', 'eventDimension', function (s) { return (s === 3 || s === 6) ? [4, 2] : null; }), // dashes for non-interrupting
             new go.Binding('visible', 'eventDimension', function (s) { return s > 3 && s <= 7; }) // inner  only visible for 4 thru 7
           ),
           $(go.Shape, 'NotAllowed',
-            { alignment: go.Spot.Center, desiredSize: new go.Size(self.EventNodeSymbolSize, self.EventNodeSymbolSize), stroke: 'black' },
+            { alignment: go.Spot.Center, desiredSize: new go.Size(BpmnConstantsClass.EventNodeSymbolSize, BpmnConstantsClass.EventNodeSymbolSize), stroke: 'black' },
             new go.Binding('figure', 'eventType', (s) => self.nodeEventTypeConverter(s)),
             new go.Binding('fill', 'eventDimension', (s) => self.nodeEventDimensionSymbolFillConverter(s))
           )
@@ -1319,9 +1288,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $(go.Panel, 'Spot',
           $(go.Shape, 'Diamond',
             {
-              strokeWidth: 1, fill: this.GatewayNodeFill, stroke: this.GatewayNodeStroke,
+              strokeWidth: 1, fill: BpmnConstantsClass.GatewayNodeFill, stroke: BpmnConstantsClass.GatewayNodeStroke,
               name: 'SHAPE',
-              desiredSize: new go.Size(this.GatewayNodeSize, this.GatewayNodeSize),
+              desiredSize: new go.Size(BpmnConstantsClass.GatewayNodeSize, BpmnConstantsClass.GatewayNodeSize),
               portId: '', fromLinkable: true, toLinkable: true, cursor: 'pointer',
               fromSpot: go.Spot.NotLeftSide, toSpot: go.Spot.NotRightSide
             }
@@ -1331,22 +1300,22 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           $(go.Shape, 'NotAllowed',
             {
               alignment: go.Spot.Center,
-              stroke: this.GatewayNodeSymbolStroke,
-              fill: this.GatewayNodeSymbolFill
+              stroke: BpmnConstantsClass.GatewayNodeSymbolStroke,
+              fill: BpmnConstantsClass.GatewayNodeSymbolFill
             },
             new go.Binding('figure', 'gatewayType', (s) => self.nodeGatewaySymbolTypeConverter(s)),
             // new go.Binding("visible", "gatewayType", function(s) { return s !== 4; }),   // comment out if you want exclusive gateway to be X instead of blank.
             new go.Binding('strokeWidth', 'gatewayType', function (s) {
-              return (s <= 4) ? self.GatewayNodeSymbolStrokeWidth : 1;
+              return (s <= 4) ? BpmnConstantsClass.GatewayNodeSymbolStrokeWidth : 1;
             }),
             new go.Binding('desiredSize', 'gatewayType', (s) => self.nodeGatewaySymbolSizeConverter(s))),
           // the next 2 circles only show up for event gateway
           $(go.Shape, 'Circle',  // Outer circle
             {
               strokeWidth: 1,
-              stroke: this.GatewayNodeSymbolStroke,
+              stroke: BpmnConstantsClass.GatewayNodeSymbolStroke,
               fill: null,
-              desiredSize: new go.Size(this.EventNodeSize, this.EventNodeSize)
+              desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize, BpmnConstantsClass.EventNodeSize)
             },
             new go.Binding('visible', 'gatewayType', function (s) {
               return s >= 5;
@@ -1354,8 +1323,8 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           ),  // end main shape
           $(go.Shape, 'Circle',  // Inner circle
             {
-              alignment: go.Spot.Center, stroke: this.GatewayNodeSymbolStroke,
-              desiredSize: new go.Size(this.EventNodeInnerSize, this.EventNodeInnerSize),
+              alignment: go.Spot.Center, stroke: BpmnConstantsClass.GatewayNodeSymbolStroke,
+              desiredSize: new go.Size(BpmnConstantsClass.EventNodeInnerSize, BpmnConstantsClass.EventNodeInnerSize),
               fill: null
             },
             new go.Binding('visible', 'gatewayType', function (s) {
@@ -1384,31 +1353,31 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           $(go.Shape, 'Diamond',
             {
               strokeWidth: 1,
-              fill: this.GatewayNodeFill,
-              stroke: this.GatewayNodeStroke,
+              fill: BpmnConstantsClass.GatewayNodeFill,
+              stroke: BpmnConstantsClass.GatewayNodeStroke,
               name: 'SHAPE',
-              desiredSize: new go.Size(this.GatewayNodeSize / 2, this.GatewayNodeSize / 2)
+              desiredSize: new go.Size(BpmnConstantsClass.GatewayNodeSize / 2, BpmnConstantsClass.GatewayNodeSize / 2)
             }),
           $(go.Shape, 'NotAllowed',
             {
               alignment: go.Spot.Center,
-              stroke: this.GatewayNodeSymbolStroke,
-              strokeWidth: this.GatewayNodeSymbolStrokeWidth,
-              fill: this.GatewayNodeSymbolFill
+              stroke: BpmnConstantsClass.GatewayNodeSymbolStroke,
+              strokeWidth: BpmnConstantsClass.GatewayNodeSymbolStrokeWidth,
+              fill: BpmnConstantsClass.GatewayNodeSymbolFill
             },
             new go.Binding('figure', 'gatewayType', (s) => this.nodeGatewaySymbolTypeConverter(s)),
             // new go.Binding("visible", "gatewayType", function(s) { return s !== 4; }),   // comment out if you want exclusive gateway to be X instead of blank.
             new go.Binding('strokeWidth', 'gatewayType', function (s) {
-              return (s <= 4) ? self.GatewayNodeSymbolStrokeWidth : 1;
+              return (s <= 4) ? BpmnConstantsClass.GatewayNodeSymbolStrokeWidth : 1;
             }),
             new go.Binding('desiredSize', 'gatewayType', (s) => this.nodePalGatewaySymbolSizeConverter(s))),
           // the next 2 circles only show up for event gateway
           $(go.Shape, 'Circle',  // Outer circle
             {
               strokeWidth: 1,
-              stroke: this.GatewayNodeSymbolStroke,
+              stroke: BpmnConstantsClass.GatewayNodeSymbolStroke,
               fill: null,
-              desiredSize: new go.Size(this.EventNodeSize / 2, this.EventNodeSize / 2)
+              desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize / 2, BpmnConstantsClass.EventNodeSize / 2)
             },
             // new go.Binding("desiredSize", "gatewayType", new go.Size(this.EventNodeSize/2, this.EventNodeSize/2)),
             new go.Binding('visible', 'gatewayType', function (s) {
@@ -1417,8 +1386,8 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           ),  // end main shape
           $(go.Shape, 'Circle',  // Inner circle
             {
-              alignment: go.Spot.Center, stroke: this.GatewayNodeSymbolStroke,
-              desiredSize: new go.Size(this.EventNodeInnerSize / 2, this.EventNodeInnerSize / 2),
+              alignment: go.Spot.Center, stroke: BpmnConstantsClass.GatewayNodeSymbolStroke,
+              desiredSize: new go.Size(BpmnConstantsClass.EventNodeInnerSize / 2, BpmnConstantsClass.EventNodeInnerSize / 2),
               fill: null
             },
             new go.Binding('visible', 'gatewayType', function (s) {
@@ -1436,7 +1405,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
     const annotationNodeTemplate =
       $(go.Node, 'Auto',
-        {background: this.GradientLightGray, locationSpot: go.Spot.Center},
+        {background: BpmnConstantsClass.GradientLightGray, locationSpot: go.Spot.Center},
         new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
         $(go.Shape, 'Annotation', // A left bracket shape
           {
@@ -1460,7 +1429,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             toLinkable: true,
             cursor: 'pointer',
             fill: this.DataFill,
-            desiredSize: new go.Size(this.EventNodeSize * 0.8, this.EventNodeSize)
+            desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize * 0.8, BpmnConstantsClass.EventNodeSize)
           }),
         $(go.TextBlock,
           {
@@ -1482,7 +1451,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             toLinkable: true,
             cursor: 'pointer',
             fill: this.DataFill,
-            desiredSize: new go.Size(this.EventNodeSize, this.EventNodeSize)
+            desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize, BpmnConstantsClass.EventNodeSize)
           }),
         $(go.TextBlock,
           {margin: 5, editable: true},
@@ -1499,10 +1468,10 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           {fill: null}),
         $(go.Panel, 'Table',     // table with 2 cells to hold header and lane
           {
-            desiredSize: new go.Size(this.ActivityNodeWidth * 6, this.ActivityNodeHeight),
+            desiredSize: new go.Size(BpmnConstantsClass.ActivityNodeWidth * 6, BpmnConstantsClass.ActivityNodeHeight),
             background: this.DataFill,
             name: 'LANE',
-            minSize: new go.Size(this.ActivityNodeWidth, this.ActivityNodeHeight * 0.667)
+            minSize: new go.Size(BpmnConstantsClass.ActivityNodeWidth, BpmnConstantsClass.ActivityNodeHeight * 0.667)
           },
           new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify),
           $(go.TextBlock,
@@ -1530,7 +1499,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $(go.Shape, 'Process',
           {
             fill: this.DataFill,
-            desiredSize: new go.Size(this.GatewayNodeSize / 2, this.GatewayNodeSize / 4)
+            desiredSize: new go.Size(BpmnConstantsClass.GatewayNodeSize / 2, BpmnConstantsClass.GatewayNodeSize / 4)
           }),
         $(go.TextBlock,
           {margin: 5, editable: true},
@@ -1639,12 +1608,12 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $(go.Shape, 'Process',
           {
             fill: 'white',
-            desiredSize: new go.Size(this.GatewayNodeSize / 2, this.GatewayNodeSize / 4)
+            desiredSize: new go.Size(BpmnConstantsClass.GatewayNodeSize / 2, BpmnConstantsClass.GatewayNodeSize / 4)
           }),
         $(go.Shape, 'Process',
           {
             fill: 'white',
-            desiredSize: new go.Size(this.GatewayNodeSize / 2, this.GatewayNodeSize / 4)
+            desiredSize: new go.Size(BpmnConstantsClass.GatewayNodeSize / 2, BpmnConstantsClass.GatewayNodeSize / 4)
           }),
         $(go.TextBlock,
           {margin: 5, editable: true},
@@ -1693,13 +1662,13 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $(go.Panel, 'Auto',
           $(go.Shape, 'RoundedRectangle',
             {
-              name: 'PH', fill: this.SubprocessNodeFill, stroke: this.SubprocessNodeStroke,
-              minSize: new go.Size(this.ActivityNodeWidth, this.ActivityNodeHeight),
+              name: 'PH', fill: BpmnConstantsClass.SubprocessNodeFill, stroke: BpmnConstantsClass.SubprocessNodeStroke,
+              minSize: new go.Size(BpmnConstantsClass.ActivityNodeWidth, BpmnConstantsClass.ActivityNodeHeight),
               portId: '', fromLinkable: true, toLinkable: true, cursor: 'pointer',
               fromSpot: go.Spot.RightSide, toSpot: go.Spot.LeftSide
             },
             new go.Binding('strokeWidth', 'isCall', function (s) {
-              return s ? self.ActivityNodeStrokeWidthIsCall : self.ActivityNodeStrokeWidth;
+              return s ? BpmnConstantsClass.ActivityNodeStrokeWidthIsCall : BpmnConstantsClass.ActivityNodeStrokeWidth;
             })
           ),
           $(go.Panel, 'Vertical',
@@ -2248,16 +2217,16 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
   private nodeEventDimensionStrokeColorConverter(s: number) {
     if (s === 8) {
-      return this.EventDimensionStrokeEndColor;
+      return BpmnConstantsClass.EventDimensionStrokeEndColor;
     }
-    return this.EventDimensionStrokeColor;
+    return BpmnConstantsClass.EventDimensionStrokeColor;
   }
 
   private nodeEventDimensionSymbolFillConverter(s: number) {
     if (s <= 6) {
-      return this.EventSymbolLightFill;
+      return BpmnConstantsClass.EventSymbolLightFill;
     }
-    return this.EventSymbolDarkFill;
+    return BpmnConstantsClass.EventSymbolDarkFill;
   }
 
   // sub-process,  loop, parallel, sequential, ad doc and compensation markers in horizontal array
@@ -2270,7 +2239,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           height: 12 / scale,
           margin: 2,
           visible: false,
-          strokeWidth: this.ActivityMarkerStrokeWidth
+          strokeWidth: BpmnConstantsClass.ActivityMarkerStrokeWidth
         },
         new go.Binding('visible', 'isLoop')),
       $(go.Shape, 'BpmnActivityParallel',
@@ -2279,7 +2248,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           height: 12 / scale,
           margin: 2,
           visible: false,
-          strokeWidth: this.ActivityMarkerStrokeWidth
+          strokeWidth: BpmnConstantsClass.ActivityMarkerStrokeWidth
         },
         new go.Binding('visible', 'isParallel')),
       $(go.Shape, 'BpmnActivitySequential',
@@ -2288,7 +2257,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           height: 12 / scale,
           margin: 2,
           visible: false,
-          strokeWidth: this.ActivityMarkerStrokeWidth
+          strokeWidth: BpmnConstantsClass.ActivityMarkerStrokeWidth
         },
         new go.Binding('visible', 'isSequential')),
       $(go.Shape, 'BpmnActivityAdHoc',
@@ -2297,7 +2266,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           height: 12 / scale,
           margin: 2,
           visible: false,
-          strokeWidth: this.ActivityMarkerStrokeWidth
+          strokeWidth: BpmnConstantsClass.ActivityMarkerStrokeWidth
         },
         new go.Binding('visible', 'isAdHoc')),
       $(go.Shape, 'BpmnActivityCompensation',
@@ -2306,7 +2275,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           height: 12 / scale,
           margin: 2,
           visible: false,
-          strokeWidth: this.ActivityMarkerStrokeWidth,
+          strokeWidth: BpmnConstantsClass.ActivityMarkerStrokeWidth,
           fill: null
         },
         new go.Binding('visible', 'isCompensation')),
@@ -2331,7 +2300,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
   // tweak the size of some of the gateway icons
   private nodeGatewaySymbolSizeConverter(s: number) {
-    const size = new go.Size(this.GatewayNodeSymbolSize, this.GatewayNodeSymbolSize);
+    const size = new go.Size(BpmnConstantsClass.GatewayNodeSymbolSize, BpmnConstantsClass.GatewayNodeSymbolSize);
     if (s === 4) {
       size.width = size.width / 4 * 3;
       size.height = size.height / 4 * 3;
