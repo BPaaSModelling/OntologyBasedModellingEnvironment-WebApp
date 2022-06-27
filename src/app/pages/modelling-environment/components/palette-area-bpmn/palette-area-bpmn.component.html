@@ -1,5 +1,8 @@
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
-
+<!--<div style="width: 100%; display: flex; justify-content: space-between; height: 100px;">-->
+<!--  <span>palette is here</span>-->
+<!--  <div id="myPaletteDiv" style="width: 100px; margin-right: 2px; background-color: rgb(40, 44, 52); position: relative; -webkit-tap-highlight-color: rgba(255, 255, 255, 0);"><canvas tabindex="0" width="100" height="750" style="position: absolute; top: 0px; left: 0px; z-index: 2; user-select: none; touch-action: none; width: 100px; height: 750px;">This text is displayed if your browser does not support the Canvas HTML element.</canvas><div style="position: absolute; overflow: auto; width: 100px; height: 750px; z-index: 1;"><div style="position: absolute; width: 1px; height: 1px;"></div></div></div>-->
+<!--</div>-->
 <div>
   <!-- Heroku difference -->
   <mat-select class="modelling-language" placeholder="Select" (selectionChange)="selectLang($event)">
@@ -14,14 +17,17 @@
   </mat-select>
 </div>
 
-<div class="category" [contextMenu]="paletteRightClickMenu" *ngFor="let category of paletteCategories">
+<div class="category" [contextMenu]="paletteRightClickMenu" *ngFor="let category of paletteCategories; let indexCategory=index;">
   <p class="category-title">{{category.label}}</p>
   <nav class="element-container">
-    <ng-container *ngFor="let element of mService.paletteElements">
+    <ng-container *ngFor="let element of mService.paletteElements; let indexElement=index;">
       <ul class="element" *ngIf="(element.paletteCategory == category.id && element.hiddenFromPalette == false)">
         <li class="paletteElement" >
           <a *ngIf="element.type != 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuValue]="element"  (click)="addNewShape(element)">
-            <img class="thumbnail"  src="{{imageRoot}}{{category.idSuffix}}/{{element.thumbnailURL}}" />
+            <img class="thumbnail" src="{{imageRoot}}{{category.idSuffix}}/{{element.thumbnailURL}}" *ngIf="!isBPMNNotationSelected()"/>
+            <div style="width: 100px; display: flex; justify-content: space-between; height: 50px;" *ngIf="isBPMNNotationSelected()">
+              <div id="myPalette-{{indexCategory}}-{{indexElement}}" style="width: 100px; position: relative;" class="bpmn-canvas-container"></div>
+            </div>
           </a>
           <a *ngIf="element.type == 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuValue]="element"  (click)="addNewShape(element)">
             <img *ngIf="element.fromArrow" class="thumbnail-arrow-head" [src]="'../../../../../assets/images/Arrows/' + element.fromArrow + '.PNG'" >
@@ -37,9 +43,7 @@
     </ng-container>
   </nav>
 </div>
-<div class="category">
-  <div id="myPalette"></div>
-</div>
+
 
 
 <context-menu #elementRightClickMenu>

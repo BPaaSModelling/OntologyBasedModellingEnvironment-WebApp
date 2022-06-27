@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {MetamodelElementModel} from '../../../../shared/models/MetamodelElement.model';
 import {ModellerService} from '../../../../core/services/modeller/modeller.service';
 import {PaletteElementModel} from '../../../../shared/models/PaletteElement.model';
@@ -16,6 +16,8 @@ import {ModalShowLanguageInstances} from '../../../../shared/modals/modal-show-l
 import {ModelingLanguageModel} from '../../../../shared/models/ModelingLanguage.model';
 import * as go from 'gojs';
 import {BpmnTemplateService} from '../../gojs/bpmn-classes/bpmn-template.service';
+import {FiguresClass} from '../../gojs/figures.class';
+import {timeout} from 'rxjs/operators';
 const $ = go.GraphObject.make;
 
 @Component({
@@ -45,8 +47,10 @@ export class PaletteAreaBPMNComponent implements OnInit {
   public modelingLanguages: ModelingLanguageModel[] = [];
   public paletteCategories: PaletteCategoryModel[] = [];
   public imageRoot: string = "";
+  private selectedLang: string;
+  private selectedView: string;
 
-  constructor(private mService: ModellerService, public dialog: MatDialog, private bpmnTemplateService: BpmnTemplateService) {
+  constructor(private mService: ModellerService, public dialog: MatDialog, private bpmnTemplateService: BpmnTemplateService, private cdRef: ChangeDetectorRef) {
     // Heroku difference
     //this.mService.queryModelingLanguages()
     this.mService.queryModelingLanguages().subscribe(
@@ -65,6 +69,11 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
   }
 
   ngOnInit() {
+    //this.loadPaletteElement();
+  }
+
+  public isBPMNNotationSelected(): boolean {
+    return this.selectedLang === 'lo:BPMN_2_0' && this.selectedView === 'lo:BPMNProcessModelingView';
   }
 
   private addNewShape(a: PaletteElementModel): void {
@@ -187,6 +196,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     (response) => {
         console.log(response);
         this.modelingViews = response;
+        this.selectedLang = $event.value;
     }
     );
   }
@@ -202,6 +212,13 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
         this.mService.queryPaletteElements();
         console.log('Palette elements:');
         console.log(this.mService.paletteElements);
+        this.selectedView = $event.value;
+        this.cdRef.detectChanges();
+        setTimeout(() => {
+          console.log("Delayed for 1 second.");
+          this.loadPaletteGoJSElements();
+        }, 1000);
+
       }
     );
     console.log('Palette categories');
@@ -218,9 +235,11 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
   }
 
   loadPaletteGoJSElements() {
-    const self = this;
+    const figuresClass = new FiguresClass();
+    figuresClass.defineShapes();
+
     const tooltiptemplate = this.bpmnTemplateService.getTooltipTemplate();
-    const activityNodeTemplateForPalette = self.bpmnTemplateService.getActivityNodeTemplateForPalette();
+    const activityNodeTemplateForPalette = this.bpmnTemplateService.getActivityNodeTemplateForPalette();
     const eventNodeTemplate = this.bpmnTemplateService.getEventNodeTemplate(tooltiptemplate);
     const gatewayNodeTemplateForPalette = this.bpmnTemplateService.getGatewayNodeTemplateForPalette(tooltiptemplate);
     const annotationNodeTemplate = this.bpmnTemplateService.getAnnotationNodeTemplate();
@@ -248,62 +267,60 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     palGroupTemplateMap.add('Lane', swimLanesGroupTemplateForPalette);
 
     // ------------------------------------------  Palette   ----------------------------------------------
+    this.paletteCategories.forEach((category, indexCategory) => {
+      this.mService.paletteElements.forEach((element, indexElement) => {
+        if (element.paletteCategory === category.id && !element.hiddenFromPalette && element.type !== 'PaletteConnector') {
+          const paletteId = 'myPalette' + '-' + indexCategory.toString() + '-' + indexElement.toString();
+          this.instatiatePaletteElement(element, paletteId, palNodeTemplateMap, palGroupTemplateMap);
+        }
+      });
+    });
 
+    const canvasContainers = document.getElementsByClassName('bpmn-canvas-container');
+    for (let i = 0; i < canvasContainers.length; i++) {
+      const foundDiv = canvasContainers[i].querySelector('div');
+      if (foundDiv) {
+        foundDiv.style.overflowY = 'hidden';
+      }
+    }
+  }
+
+
+  private instatiatePaletteElement(element: PaletteElementModel, paletteId: string, palNodeTemplateMap: go.Map<string, go.Node>, palGroupTemplateMap: go.Map<string, go.Group>) {
+    const self = this;
     // initialize the first Palette, BPMN Spec Level 1
-    const myPaletteLevel1 =
-      $(go.Palette, 'myPalette',
+    const myPalette =
+      $(go.Palette, paletteId,
         { // share the templates with the main Diagram
+          "draggingTool.isEnabled": false,
           nodeTemplateMap: palNodeTemplateMap,
           groupTemplateMap: palGroupTemplateMap,
           layout: $(go.GridLayout,
             {
               cellSize: new go.Size(1, 1),
               spacing: new go.Size(5, 5),
-              comparer: self.keyCompare
             })
         });
 
 
-    myPaletteLevel1.model = $(go.GraphLinksModel,
+    if (PaletteElementModel.getProbableElementType(element) === 'ModelingElement') {
+      this.bpmnTemplateService.addGoJsBPMNNodeFields(element, PaletteElementModel.getProbableModellingConstruct(element));
+    } else if (PaletteElementModel.getProbableElementType(element) === 'ModelingContainer') {
+      const probableModellingConstruct = PaletteElementModel.getProbableModellingConstruct(element);
+      this.bpmnTemplateService.addGoJsBPMNGroupFields(element, probableModellingConstruct);
+    }
+
+    myPalette.model = $(go.GraphLinksModel,
       {
         copiesArrays: true,
         copiesArrayObjects: true,
         nodeDataArray: [
           // -------------------------- Event Nodes
-          { key: 101, category: 'event', text: 'Start', eventType: 1, eventDimension: 1, item: 'start' },
-          { key: 102, category: 'event', text: 'Message', eventType: 2, eventDimension: 2, item: 'Message' }, // BpmnTaskMessage
-          { key: 103, category: 'event', text: 'Timer', eventType: 3, eventDimension: 3, item: 'Timer' },
-          { key: 104, category: 'event', text: 'End', eventType: 1, eventDimension: 8, item: 'End' },
-          { key: 107, category: 'event', text: 'Message', eventType: 2, eventDimension: 8, item: 'Message' }, // BpmnTaskMessage
-          { key: 108, category: 'event', text: 'Terminate', eventType: 13, eventDimension: 8, item: 'Terminate' },
-          // -------------------------- Task/Activity Nodes
-          { key: 131, category: 'activity', text: 'Task', item: 'generic task', taskType: 0 },
-          { key: 132, category: 'activity', text: 'User Task', item: 'User task', taskType: 2 },
-          { key: 133, category: 'activity', text: 'Service\nTask', item: 'service task', taskType: 6 },
-          // subprocess and start and end
-          { key: 134, category: 'subprocess', loc: '0 0', text: 'Subprocess', isGroup: true, isSubProcess: true, taskType: 0 },
-          { key: -802, category: 'event', loc: '0 0', group: 134, text: 'Start', eventType: 1, eventDimension: 1, item: 'start' },
-          { key: -803, category: 'event', loc: '350 0', group: 134, text: 'End', eventType: 1, eventDimension: 8, item: 'end', name: 'end' },
-          // -------------------------- Gateway Nodes, Data, Pool and Annotation
-          { key: 201, category: 'gateway', text: 'Parallel', gatewayType: 1 },
-          { key: 204, category: 'gateway', text: 'Exclusive', gatewayType: 4 },
-          { key: 301, category: 'dataobject', text: 'Data\nObject' },
-          { key: 302, category: 'datastore', text: 'Data\nStorage' },
-          { key: 401, category: 'privateProcess', text: 'Black Box' },
-          { key: '501', 'text': 'Pool 1', 'isGroup': 'true', 'category': 'Pool' },
-          { key: 'Lane5', 'text': 'Lane 1', 'isGroup': 'true', 'group': '501', 'color': 'lightyellow', 'category': 'Lane' },
-          { key: 'Lane6', 'text': 'Lane 2', 'isGroup': 'true', 'group': '501', 'color': 'lightgreen', 'category': 'Lane' },
-          { key: 701, category: 'annotation', text: 'note' }
+          element
         ]  // end nodeDataArray
       });  // end model
-  }
 
-  // Make sure the pipes are ordered by their key in the palette inventory
-  private keyCompare(a: go.Part, b: go.Part) {
-    const at = a.data.key;
-    const bt = b.data.key;
-    if (at < bt) { return -1; }
-    if (at > bt) { return 1; }
-    return 0;
+    myPalette.requestUpdate();
+    myPalette.layoutDiagram(true);
   }
 }
