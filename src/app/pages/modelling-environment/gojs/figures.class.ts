@@ -498,5 +498,42 @@ export class FiguresClass {
      geo.defaultStretch = go.GraphObject.Uniform;
      return geo;
     });
+
+    go.Shape.defineFigureGenerator('Empty', function (shape, w, h) {
+      return new go.Geometry();
+    });
+
+    go.Shape.defineFigureGenerator('Annotation', function (shape, w, h) {
+      const len = Math.min(w, 10);
+      return new go.Geometry()
+        .add(new go.PathFigure(len, 0)
+          .add(new go.PathSegment(go.PathSegment.Line, 0, 0))
+          .add(new go.PathSegment(go.PathSegment.Line, 0, h))
+          .add(new go.PathSegment(go.PathSegment.Line, len, h)));
+    });
+
+    const gearStr = 'F M 391,5L 419,14L 444.5,30.5L 451,120.5L 485.5,126L 522,141L 595,83L 618.5,92L 644,106.5' +
+      'L 660.5,132L 670,158L 616,220L 640.5,265.5L 658.122,317.809L 753.122,322.809L 770.122,348.309L 774.622,374.309' +
+      'L 769.5,402L 756.622,420.309L 659.122,428.809L 640.5,475L 616.5,519.5L 670,573.5L 663,600L 646,626.5' +
+      'L 622,639L 595,645.5L 531.5,597.5L 493.192,613.462L 450,627.5L 444.5,718.5L 421.5,733L 393,740.5L 361.5,733.5' +
+      'L 336.5,719L 330,627.5L 277.5,611.5L 227.5,584.167L 156.5,646L 124.5,641L 102,626.5L 82,602.5L 78.5,572.5' +
+      'L 148.167,500.833L 133.5,466.833L 122,432.5L 26.5,421L 11,400.5L 5,373.5L 12,347.5L 26.5,324L 123.5,317.5' +
+      'L 136.833,274.167L 154,241L 75.5,152.5L 85.5,128.5L 103,105.5L 128.5,88.5001L 154.872,82.4758L 237,155' +
+      'L 280.5,132L 330,121L 336,30L 361,15L 391,5 Z M 398.201,232L 510.201,275L 556.201,385L 505.201,491L 399.201,537' +
+      'L 284.201,489L 242.201,385L 282.201,273L 398.201,232 Z';
+    const gearGeo = go.Geometry.parse(gearStr);
+    gearGeo.normalize();
+
+    go.Shape.defineFigureGenerator('BpmnTaskService', function (shape, w, h) {
+      const geo = gearGeo.copy();
+      // calculate how much to scale the Geometry so that it fits in w x h
+      const bounds = geo.bounds;
+      const scale = Math.min(w / bounds.width, h / bounds.height);
+      geo.scale(scale, scale);
+      // text should go in the hand
+      geo.spot1 = new go.Spot(0, 0.6, 10, 0);
+      geo.spot2 = new go.Spot(1, 1);
+      return geo;
+    });
   }
 }
