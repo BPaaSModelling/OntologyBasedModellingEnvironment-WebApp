@@ -1,14 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {PaletteElementModel} from "../_models/PaletteElement.model";
-import {GraphicalElementModel} from "../_models/GraphicalElement.model";
+import {PaletteElementModel} from "../shared/models/PaletteElement.model";
+import {GraphicalElementModel} from "../shared/models/GraphicalElement.model";
 import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
-import {ModellerService} from '../core/modeller/modeller.service';
-import {ModalExtendPaletteElementComponent} from "../modal-extend-palette-element/modal-extend-palette-element.component";
-import {ModalPaletteElementPropertiesComponent} from "../modal-palette-element-properties/modal-palette-element-properties.component";
+import {ModellerService} from '../core/services/modeller/modeller.service';
+import {ModalExtendPaletteElementComponent} from "../shared/modals/modal-extend-palette-element/modal-extend-palette-element.component";
+import {ModalPaletteElementPropertiesComponent} from "../shared/modals/modal-palette-element-properties/modal-palette-element-properties.component";
 import { MatDialog } from "@angular/material/dialog";
-import {ModalEditPaletteElementComponent} from "../modal-edit-palette-element/modal-edit-palette-element.component";
+import {ModalEditPaletteElementComponent} from "../shared/modals/modal-edit-palette-element/modal-edit-palette-element.component";
 import {VariablesSettings} from "../_settings/variables.settings";
-import {ModalShowLanguageInstances} from '../modal-show-language-instances/modal-show-language-instances';
+import {ModalShowLanguageInstances} from '../shared/modals/modal-show-language-instances/modal-show-language-instances';
 
 
 @Component({

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ModellerService} from './core/modeller/modeller.service';
+import {ModellerService} from './core/services/modeller/modeller.service';
 import {filter, switchMap, take} from 'rxjs/operators';
 
 

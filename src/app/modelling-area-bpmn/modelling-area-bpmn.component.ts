@@ -1,25 +1,25 @@
 import {Component, Input, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import * as go from 'gojs';
 import {ChangedEvent} from 'gojs';
-import {PaletteElementModel} from '../_models/PaletteElement.model';
+import {PaletteElementModel} from '../shared/models/PaletteElement.model';
 import {VariablesSettings} from '../_settings/variables.settings';
-import {ModellerService} from '../core/modeller/modeller.service';
+import {ModellerService} from '../core/services/modeller/modeller.service';
 import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
-import {Model} from '../_models/Model.model';
+import {Model} from '../shared/models/Model.model';
 import {MatDialog} from '@angular/material/dialog';
 import {UUID} from 'angular2-uuid';
 import * as _ from 'lodash-es';
-import {InstantiationTargetType} from '../_models/InstantiationTargetType.model';
-import {ModalModelLink} from '../modal-model-link/modal-model-link';
-import {ModalElementNote} from '../modal-element-note/modal-element-note.component';
+import {InstantiationTargetType} from '../shared/models/InstantiationTargetType.model';
+import {ModalModelLink} from '../shared/modals/modal-model-link/modal-model-link';
+import {ModalElementNote} from '../shared/modals/modal-element-note/modal-element-note.component';
 import {
   ModalModellingLanguageConstructInstanceLink,
   VisualisationLinksData
-} from '../modal-modelling-language-construct-instance-link/modal-modelling-language-construct-instance-link';
-import {ModalPaletteVisualisation} from '../modal-palette-visualisation/modal-palette-visualisation';
-import {ModelElementDetail} from '../_models/ModelElementDetail.model';
-import {ModelElementDetailAndModel} from '../_models/ModelElementDetailAndModel';
-import {ModalViewElementDetail} from '../model-element-detail/model-element-detail.component';
+} from '../shared/modals/modal-modelling-language-construct-instance-link/modal-modelling-language-construct-instance-link';
+import {ModalPaletteVisualisation} from '../shared/modals/modal-palette-visualisation/modal-palette-visualisation';
+import {ModelElementDetail} from '../shared/models/ModelElementDetail.model';
+import {ModelElementDetailAndModel} from '../shared/models/ModelElementDetailAndModel';
+import {ModalViewElementDetail} from '../shared/modals/model-element-detail/model-element-detail.component';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {filter, switchMap, take, takeUntil, timeout} from 'rxjs/operators';
 import {Subject} from 'rxjs/internal/Subject';
