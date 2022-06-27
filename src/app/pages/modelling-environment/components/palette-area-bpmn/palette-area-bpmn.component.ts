@@ -280,7 +280,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     for (let i = 0; i < canvasContainers.length; i++) {
       const foundDiv = canvasContainers[i].querySelector('div');
       if (foundDiv) {
-        foundDiv.style.overflowY = 'hidden';
+        foundDiv.style.overflow = 'hidden';
       }
     }
   }
@@ -309,6 +309,8 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
       const probableModellingConstruct = PaletteElementModel.getProbableModellingConstruct(element);
       this.bpmnTemplateService.addGoJsBPMNGroupFields(element, probableModellingConstruct);
     }
+    // @ts-ignore
+    element.text = element.label;
 
     myPalette.model = $(go.GraphLinksModel,
       {
