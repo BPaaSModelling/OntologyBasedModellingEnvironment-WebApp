@@ -24,9 +24,9 @@
             <img class="thumbnail"  src="{{imageRoot}}{{category.idSuffix}}/{{element.thumbnailURL}}" />
           </a>
           <a *ngIf="element.type == 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuValue]="element"  (click)="addNewShape(element)">
-            <img *ngIf="element.fromArrow" class="thumbnail-arrow-head" [src]="'../assets/images/Arrows/' + element.fromArrow + '.PNG'" >
+            <img *ngIf="element.fromArrow" class="thumbnail-arrow-head" [src]="'../../../../assets/images/Arrows/' + element.fromArrow + '.PNG'" >
             <img class="thumbnail-arrow-stroke" [src]="'../assets/images/Strokes/' + element.arrowStroke + '.PNG'" >
-            <img *ngIf="element.toArrow" class="thumbnail-arrow-head" [src]="'../assets/images/Arrows/' + element.toArrow + '.PNG'" >
+            <img *ngIf="element.toArrow" class="thumbnail-arrow-head" [src]="'../../../../assets/images/Arrows/' + element.toArrow + '.PNG'" >
           </a>
           <app--tool-recursive-palette-element (showActivityElementPropertyModal1)="toggleActivityElementPropertyModal($event)"
                                                (showExtendPaletteElementModal1)="toggleExtendPaletteElementModal($event)"

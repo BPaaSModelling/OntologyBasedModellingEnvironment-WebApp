@@ -2,7 +2,7 @@ import {BrowserModule } from '@angular/platform-browser';
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {AppComponent } from './app.component';
 import {ModellingEnvironmentComponent } from './pages/modelling-environment/modelling-environment.component';
-import {PaletteAreaComponent } from './pages/palette-area/palette-area.component';
+import {PaletteAreaComponent } from './pages/modelling-environment/palette-area/palette-area.component';
 import {ModellingAreaComponent } from './pages/modelling-area/modelling-area.component';
 import {RouterModule, Routes} from '@angular/router';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
@@ -63,7 +63,7 @@ import { DiagramManagementComponent } from './pages/diagram-management/diagram-m
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {ModellingAreaBPMNComponent} from './modelling-area-bpmn/modelling-area-bpmn.component';
-import {PaletteAreaBPMNComponent} from './pages/palette-area-bpmn/palette-area-bpmn.component';
+import {PaletteAreaBPMNComponent} from './pages/modelling-environment/palette-area-bpmn/palette-area-bpmn.component';
 
 
 const appRoutes: Routes = [
