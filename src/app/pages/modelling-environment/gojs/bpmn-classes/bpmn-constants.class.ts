@@ -36,4 +36,8 @@ export class BpmnConstantsClass {
   static GatewayNodeSymbolStroke = 'darkgoldenrod';
   static GatewayNodeSymbolFill = this.GradientYellow;
   static GatewayNodeSymbolStrokeWidth = 3;
+
+  static DataFill = BpmnConstantsClass.GradientLightGray;
+
+  static Palscale = 2;
 }

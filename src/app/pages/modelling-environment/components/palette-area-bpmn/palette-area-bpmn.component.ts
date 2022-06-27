@@ -14,6 +14,9 @@ import {PaletteCategoryModel} from "../../../../shared/models/PaletteCategory.mo
 import {VariablesSettings} from "../../../../_settings/variables.settings";
 import {ModalShowLanguageInstances} from '../../../../shared/modals/modal-show-language-instances/modal-show-language-instances';
 import {ModelingLanguageModel} from '../../../../shared/models/ModelingLanguage.model';
+import * as go from 'gojs';
+import {BpmnTemplateService} from '../../gojs/bpmn-classes/bpmn-template.service';
+const $ = go.GraphObject.make;
 
 @Component({
   selector: 'app-palette-area-bpmn',
@@ -43,7 +46,7 @@ export class PaletteAreaBPMNComponent implements OnInit {
   public paletteCategories: PaletteCategoryModel[] = [];
   public imageRoot: string = "";
 
-  constructor(private mService: ModellerService, public dialog: MatDialog) {
+  constructor(private mService: ModellerService, public dialog: MatDialog, private bpmnTemplateService: BpmnTemplateService) {
     // Heroku difference
     //this.mService.queryModelingLanguages()
     this.mService.queryModelingLanguages().subscribe(
@@ -215,90 +218,92 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
   }
 
   loadPaletteGoJSElements() {
+    const self = this;
+    const tooltiptemplate = this.bpmnTemplateService.getTooltipTemplate();
+    const activityNodeTemplateForPalette = self.bpmnTemplateService.getActivityNodeTemplateForPalette();
+    const eventNodeTemplate = this.bpmnTemplateService.getEventNodeTemplate(tooltiptemplate);
+    const gatewayNodeTemplateForPalette = this.bpmnTemplateService.getGatewayNodeTemplateForPalette(tooltiptemplate);
+    const annotationNodeTemplate = this.bpmnTemplateService.getAnnotationNodeTemplate();
+    const dataObjectNodeTemplate = this.bpmnTemplateService.getDataObjectNodeTemplate();
+    const dataStoreNodeTemplate = this.bpmnTemplateService.getDataStoreNodeTemplate();
+    const privateProcessNodeTemplateForPalette = this.bpmnTemplateService.getPrivateProcessingNodeTempalteForPalette();
+
+    const subProcessGroupTemplateForPalette = this.bpmnTemplateService.getSubProcessGroupTemplateForPalette();
+    const poolTemplateForPalette = this.bpmnTemplateService.getPoolTemplateForPalette();
+    const swimLanesGroupTemplateForPalette = this.bpmnTemplateService.getSwimLanesGroupTemplateForPalette();
+
+    // create the nodeTemplateMap, holding special palette "mini" node templates:
+    const palNodeTemplateMap = new go.Map<string, go.Node>();
+    palNodeTemplateMap.add('activity', activityNodeTemplateForPalette);
+    palNodeTemplateMap.add('event', eventNodeTemplate);
+    palNodeTemplateMap.add('gateway', gatewayNodeTemplateForPalette);
+    palNodeTemplateMap.add('annotation', annotationNodeTemplate);
+    palNodeTemplateMap.add('dataobject', dataObjectNodeTemplate);
+    palNodeTemplateMap.add('datastore', dataStoreNodeTemplate);
+    palNodeTemplateMap.add('privateProcess', privateProcessNodeTemplateForPalette);
+
+    const palGroupTemplateMap = new go.Map<string, go.Group>();
+    palGroupTemplateMap.add('subprocess', subProcessGroupTemplateForPalette);
+    palGroupTemplateMap.add('Pool', poolTemplateForPalette);
+    palGroupTemplateMap.add('Lane', swimLanesGroupTemplateForPalette);
+
     // ------------------------------------------  Palette   ----------------------------------------------
 
-// Make sure the pipes are ordered by their key in the palette inventory
-// function keyCompare(a: go.Part, b: go.Part) {
-//   const at = a.data.key;
-//   const bt = b.data.key;
-//   if (at < bt) { return -1; }
-//   if (at > bt) { return 1; }
-//   return 0;
-// }
-//
-// // initialize the first Palette, BPMN Spec Level 1
-// const myPaletteLevel1 =
-//   $(go.Palette, 'myPaletteLevel1',
-//     { // share the templates with the main Diagram
-//       nodeTemplateMap: palNodeTemplateMap,
-//       groupTemplateMap: palGroupTemplateMap,
-//       layout: $(go.GridLayout,
-//         {
-//           cellSize: new go.Size(1, 1),
-//           spacing: new go.Size(5, 5),
-//           comparer: keyCompare
-//         })
-//     });
-//
-// // initialize the second Palette, BPMN Spec Level 2
-// const myPaletteLevel2 =
-//   $(go.Palette, 'myPaletteLevel2',
-//     { // share the templates with the main Diagram
-//       nodeTemplateMap: palNodeTemplateMap,
-//       groupTemplateMap: palGroupTemplateMap,
-//       layout: $(go.GridLayout,
-//         {
-//           cellSize: new go.Size(1, 1),
-//           spacing: new go.Size(5, 5),
-//           comparer: keyCompare
-//         })
-//     });
-//
-// // initialize the third Palette, random other stuff
-// const myPaletteLevel3 =
-//   $(go.Palette, 'myPaletteLevel3',
-//     { // share the templates with the main Diagram
-//       nodeTemplateMap: palNodeTemplateMap,
-//       groupTemplateMap: palGroupTemplateMap,
-//       layout: $(go.GridLayout,
-//         {
-//           cellSize: new go.Size(1, 1),
-//           spacing: new go.Size(5, 5),
-//           comparer: keyCompare
-//         })
-//     });
-//
-// myPaletteLevel1.model = $(go.GraphLinksModel,
-//   {
-//     copiesArrays: true,
-//     copiesArrayObjects: true,
-//     nodeDataArray: [
-//       // -------------------------- Event Nodes
-//       { key: 101, category: 'event', text: 'Start', eventType: 1, eventDimension: 1, item: 'start' },
-//       { key: 102, category: 'event', text: 'Message', eventType: 2, eventDimension: 2, item: 'Message' }, // BpmnTaskMessage
-//       { key: 103, category: 'event', text: 'Timer', eventType: 3, eventDimension: 3, item: 'Timer' },
-//       { key: 104, category: 'event', text: 'End', eventType: 1, eventDimension: 8, item: 'End' },
-//       { key: 107, category: 'event', text: 'Message', eventType: 2, eventDimension: 8, item: 'Message' }, // BpmnTaskMessage
-//       { key: 108, category: 'event', text: 'Terminate', eventType: 13, eventDimension: 8, item: 'Terminate' },
-//       // -------------------------- Task/Activity Nodes
-//       { key: 131, category: 'activity', text: 'Task', item: 'generic task', taskType: 0 },
-//       { key: 132, category: 'activity', text: 'User Task', item: 'User task', taskType: 2 },
-//       { key: 133, category: 'activity', text: 'Service\nTask', item: 'service task', taskType: 6 },
-//       // subprocess and start and end
-//       { key: 134, category: 'subprocess', loc: '0 0', text: 'Subprocess', isGroup: true, isSubProcess: true, taskType: 0 },
-//       { key: -802, category: 'event', loc: '0 0', group: 134, text: 'Start', eventType: 1, eventDimension: 1, item: 'start' },
-//       { key: -803, category: 'event', loc: '350 0', group: 134, text: 'End', eventType: 1, eventDimension: 8, item: 'end', name: 'end' },
-//       // -------------------------- Gateway Nodes, Data, Pool and Annotation
-//       { key: 201, category: 'gateway', text: 'Parallel', gatewayType: 1 },
-//       { key: 204, category: 'gateway', text: 'Exclusive', gatewayType: 4 },
-//       { key: 301, category: 'dataobject', text: 'Data\nObject' },
-//       { key: 302, category: 'datastore', text: 'Data\nStorage' },
-//       { key: 401, category: 'privateProcess', text: 'Black Box' },
-//       { key: '501', 'text': 'Pool 1', 'isGroup': 'true', 'category': 'Pool' },
-//       { key: 'Lane5', 'text': 'Lane 1', 'isGroup': 'true', 'group': '501', 'color': 'lightyellow', 'category': 'Lane' },
-//       { key: 'Lane6', 'text': 'Lane 2', 'isGroup': 'true', 'group': '501', 'color': 'lightgreen', 'category': 'Lane' },
-//       { key: 701, category: 'annotation', text: 'note' }
-//     ]  // end nodeDataArray
-//   });  // end model
+    // initialize the first Palette, BPMN Spec Level 1
+    const myPaletteLevel1 =
+      $(go.Palette, 'myPalette',
+        { // share the templates with the main Diagram
+          nodeTemplateMap: palNodeTemplateMap,
+          groupTemplateMap: palGroupTemplateMap,
+          layout: $(go.GridLayout,
+            {
+              cellSize: new go.Size(1, 1),
+              spacing: new go.Size(5, 5),
+              comparer: self.keyCompare
+            })
+        });
+
+
+    myPaletteLevel1.model = $(go.GraphLinksModel,
+      {
+        copiesArrays: true,
+        copiesArrayObjects: true,
+        nodeDataArray: [
+          // -------------------------- Event Nodes
+          { key: 101, category: 'event', text: 'Start', eventType: 1, eventDimension: 1, item: 'start' },
+          { key: 102, category: 'event', text: 'Message', eventType: 2, eventDimension: 2, item: 'Message' }, // BpmnTaskMessage
+          { key: 103, category: 'event', text: 'Timer', eventType: 3, eventDimension: 3, item: 'Timer' },
+          { key: 104, category: 'event', text: 'End', eventType: 1, eventDimension: 8, item: 'End' },
+          { key: 107, category: 'event', text: 'Message', eventType: 2, eventDimension: 8, item: 'Message' }, // BpmnTaskMessage
+          { key: 108, category: 'event', text: 'Terminate', eventType: 13, eventDimension: 8, item: 'Terminate' },
+          // -------------------------- Task/Activity Nodes
+          { key: 131, category: 'activity', text: 'Task', item: 'generic task', taskType: 0 },
+          { key: 132, category: 'activity', text: 'User Task', item: 'User task', taskType: 2 },
+          { key: 133, category: 'activity', text: 'Service\nTask', item: 'service task', taskType: 6 },
+          // subprocess and start and end
+          { key: 134, category: 'subprocess', loc: '0 0', text: 'Subprocess', isGroup: true, isSubProcess: true, taskType: 0 },
+          { key: -802, category: 'event', loc: '0 0', group: 134, text: 'Start', eventType: 1, eventDimension: 1, item: 'start' },
+          { key: -803, category: 'event', loc: '350 0', group: 134, text: 'End', eventType: 1, eventDimension: 8, item: 'end', name: 'end' },
+          // -------------------------- Gateway Nodes, Data, Pool and Annotation
+          { key: 201, category: 'gateway', text: 'Parallel', gatewayType: 1 },
+          { key: 204, category: 'gateway', text: 'Exclusive', gatewayType: 4 },
+          { key: 301, category: 'dataobject', text: 'Data\nObject' },
+          { key: 302, category: 'datastore', text: 'Data\nStorage' },
+          { key: 401, category: 'privateProcess', text: 'Black Box' },
+          { key: '501', 'text': 'Pool 1', 'isGroup': 'true', 'category': 'Pool' },
+          { key: 'Lane5', 'text': 'Lane 1', 'isGroup': 'true', 'group': '501', 'color': 'lightyellow', 'category': 'Lane' },
+          { key: 'Lane6', 'text': 'Lane 2', 'isGroup': 'true', 'group': '501', 'color': 'lightgreen', 'category': 'Lane' },
+          { key: 701, category: 'annotation', text: 'note' }
+        ]  // end nodeDataArray
+      });  // end model
+  }
+
+  // Make sure the pipes are ordered by their key in the palette inventory
+  private keyCompare(a: go.Part, b: go.Part) {
+    const at = a.data.key;
+    const bt = b.data.key;
+    if (at < bt) { return -1; }
+    if (at > bt) { return 1; }
+    return 0;
   }
 }

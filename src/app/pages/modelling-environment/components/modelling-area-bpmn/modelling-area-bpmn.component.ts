@@ -59,8 +59,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
   myDiagram: go.Diagram;
 
-
-  DataFill = BpmnConstantsClass.GradientLightGray;
   private destroy$ = new Subject<void>();
 
   @ViewChild(ContextMenuComponent, {static: true}) public elementRightClickMenu: ContextMenuComponent<any>;
@@ -886,17 +884,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     figuresClass.defineShapes();
 
     // define the appearance of tooltips, shared by various templates
-    const tooltiptemplate =
-      $('ToolTip',
-        $(go.TextBlock,
-          {margin: 3, editable: true},
-          new go.Binding('text', '', function (data) {
-            if (data.item !== undefined) {
-              return data.item;
-            }
-            return '(unnamed item)';
-          }))
-      );
+    const tooltiptemplate = this.bpmnTemplateService.getTooltipTemplate();
 
     // ------------------------------------------  Activity Node Boundary Events   ----------------------------------------------
 
@@ -1074,139 +1062,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       );  // end go.Node, which is a Spot Panel with bound itemArray
 
 
-    // ------------------------------- template for Activity / Task node in Palette  -------------------------------
-    const palscale = 2;
-    const activityNodeTemplateForPalette =
-      $(go.Node, 'Vertical',
-        {
-          locationObjectName: 'SHAPE',
-          locationSpot: go.Spot.Center,
-          selectionAdorned: false
-        },
-        new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-        $(go.Panel, 'Spot',
-          {
-            name: 'PANEL',
-            // tslint:disable-next-line:max-line-length
-            desiredSize: new go.Size(BpmnConstantsClass.ActivityNodeWidth / palscale, BpmnConstantsClass.ActivityNodeHeight / palscale)
-          },
-          $(go.Shape, 'RoundedRectangle',  // the outside rounded rectangle
-            {
-              name: 'SHAPE',
-              fill: BpmnConstantsClass.ActivityNodeFill, stroke: BpmnConstantsClass.ActivityNodeStroke,
-              parameter1: 10 / palscale  // corner size (default 10)
-            },
-            new go.Binding('strokeWidth', 'isCall',
-              function (s) {
-                return s ? BpmnConstantsClass.ActivityNodeStrokeWidthIsCall : BpmnConstantsClass.ActivityNodeStrokeWidth;
-              })),
-          $(go.Shape, 'RoundedRectangle',  // the inner "Transaction" rounded rectangle
-            {
-              margin: 3,
-              stretch: go.GraphObject.Fill,
-              stroke: BpmnConstantsClass.ActivityNodeStroke,
-              parameter1: 8 / palscale, fill: null, visible: false
-            },
-            new go.Binding('visible', 'isTransaction')),
-          // task icon
-          $(go.Shape, 'BpmnTaskScript',    // will be None, Script, Manual, Service, etc via converter
-            {
-              alignment: new go.Spot(0, 0, 5, 5), alignmentFocus: go.Spot.TopLeft,
-              width: 22 / palscale, height: 22 / palscale
-            },
-            new go.Binding('fill', 'taskType', this.bpmnTemplateService.nodeActivityTaskTypeColorConverter),
-            new go.Binding('figure', 'taskType', this.bpmnTemplateService.nodeActivityTaskTypeConverter)),
-          this.bpmnTemplateService.makeMarkerPanel(false, palscale) // sub-process,  loop, parallel, sequential, ad doc and compensation markers
-        ), // End Spot panel
-        $(go.TextBlock,  // the center text
-          {alignment: go.Spot.Center, textAlign: 'center', margin: 2},
-          new go.Binding('text'))
-      );  // End Node
-
-    const subProcessGroupTemplateForPalette =
-      $(go.Group, 'Vertical',
-        {
-          locationObjectName: 'SHAPE',
-          locationSpot: go.Spot.Center,
-          isSubGraphExpanded: false,
-          selectionAdorned: false
-        },
-        $(go.Panel, 'Spot',
-          {
-            name: 'PANEL',
-            desiredSize: new go.Size(BpmnConstantsClass.ActivityNodeWidth / palscale, BpmnConstantsClass.ActivityNodeHeight / palscale)
-          },
-          $(go.Shape, 'RoundedRectangle',  // the outside rounded rectangle
-            {
-              name: 'SHAPE',
-              fill: BpmnConstantsClass.ActivityNodeFill, stroke: BpmnConstantsClass.ActivityNodeStroke,
-              parameter1: 10 / palscale  // corner size (default 10)
-            },
-            new go.Binding('strokeWidth', 'isCall', function (s) {
-              return s ? BpmnConstantsClass.ActivityNodeStrokeWidthIsCall : BpmnConstantsClass.ActivityNodeStrokeWidth;
-            })
-          ),
-          $(go.Shape, 'RoundedRectangle',  // the inner "Transaction" rounded rectangle
-            {
-              margin: 3,
-              stretch: go.GraphObject.Fill,
-              stroke: BpmnConstantsClass.ActivityNodeStroke,
-              parameter1: 8 / palscale, fill: null, visible: false
-            },
-            new go.Binding('visible', 'isTransaction')),
-          this.bpmnTemplateService.makeMarkerPanel(true, palscale) // sub-process,  loop, parallel, sequential, ad doc and compensation markers
-        ), // end main body rectangles spot panel
-        $(go.TextBlock,  // the center text
-          {alignment: go.Spot.Center, textAlign: 'center', margin: 2},
-          new go.Binding('text'))
-      );  // end go.Group
-
     // ------------------------------------------  Event Node Template  ----------------------------------------------
 
-    const eventNodeTemplate =
-      $(go.Node, 'Vertical',
-        {
-          locationObjectName: 'SHAPE',
-          locationSpot: go.Spot.Center,
-          toolTip: tooltiptemplate
-        },
-        new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-        // can be resided according to the user's desires
-        { resizable: false, resizeObjectName: 'SHAPE' },
-        $(go.Panel, 'Spot',
-          $(go.Shape, 'Circle',  // Outer circle
-            {
-              strokeWidth: 1,
-              name: 'SHAPE',
-              desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize, BpmnConstantsClass.EventNodeSize),
-              portId: '', fromLinkable: true, toLinkable: true, cursor: 'pointer',
-              fromSpot: go.Spot.RightSide, toSpot: go.Spot.LeftSide
-            },
-            // allows the color to be determined by the node data
-            new go.Binding('fill', 'eventDimension', function (s) { return (s === 8) ? BpmnConstantsClass.EventEndOuterFillColor : BpmnConstantsClass.EventBackgroundColor; }),
-            new go.Binding('strokeWidth', 'eventDimension', function (s) { return s === 8 ? BpmnConstantsClass.EventNodeStrokeWidthIsEnd : 1; }),
-            new go.Binding('stroke', 'eventDimension', (s) => self.bpmnTemplateService.nodeEventDimensionStrokeColorConverter(s)),
-            new go.Binding('strokeDashArray', 'eventDimension', function (s) { return (s === 3 || s === 6) ? [4, 2] : null; }),
-            // TODO maybe uncomment this
-            // new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)
-          ),  // end main shape
-          $(go.Shape, 'Circle',  // Inner circle
-            { alignment: go.Spot.Center, desiredSize: new go.Size(BpmnConstantsClass.EventNodeInnerSize, BpmnConstantsClass.EventNodeInnerSize), fill: null },
-            new go.Binding('stroke', 'eventDimension', (s) => self.bpmnTemplateService.nodeEventDimensionStrokeColorConverter(s)),
-            new go.Binding('strokeDashArray', 'eventDimension', function (s) { return (s === 3 || s === 6) ? [4, 2] : null; }), // dashes for non-interrupting
-            new go.Binding('visible', 'eventDimension', function (s) { return s > 3 && s <= 7; }) // inner  only visible for 4 thru 7
-          ),
-          $(go.Shape, 'NotAllowed',
-            { alignment: go.Spot.Center, desiredSize: new go.Size(BpmnConstantsClass.EventNodeSymbolSize, BpmnConstantsClass.EventNodeSymbolSize), stroke: 'black' },
-            new go.Binding('figure', 'eventType', (s) => self.bpmnTemplateService.nodeEventTypeConverter(s)),
-            new go.Binding('fill', 'eventDimension', (s) => self.bpmnTemplateService.nodeEventDimensionSymbolFillConverter(s))
-          )
-        ),  // end Auto Panel
-        $(go.TextBlock,
-          { alignment: go.Spot.Center, textAlign: 'center', margin: 5, editable: true },
-          new go.Binding('text').makeTwoWay())
-
-      ); // end go.Node Vertical
+    const eventNodeTemplate = this.bpmnTemplateService.getEventNodeTemplate(tooltiptemplate);
 
     // ------------------------------------------  Gateway Node Template   ----------------------------------------------
     const gatewayNodeTemplate =
@@ -1271,126 +1129,14 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           new go.Binding('text').makeTwoWay())
       ); // end go.Node Vertical
 
-    // --------------------------------------------------------------------------------------------------------------
-
-    const gatewayNodeTemplateForPalette =
-      $(go.Node, 'Vertical',
-        {
-          toolTip: tooltiptemplate,
-          resizable: false,
-          locationObjectName: 'SHAPE',
-          locationSpot: go.Spot.Center,
-          resizeObjectName: 'SHAPE'
-        },
-        new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-        $(go.Panel, 'Spot',
-          $(go.Shape, 'Diamond',
-            {
-              strokeWidth: 1,
-              fill: BpmnConstantsClass.GatewayNodeFill,
-              stroke: BpmnConstantsClass.GatewayNodeStroke,
-              name: 'SHAPE',
-              desiredSize: new go.Size(BpmnConstantsClass.GatewayNodeSize / 2, BpmnConstantsClass.GatewayNodeSize / 2)
-            }),
-          $(go.Shape, 'NotAllowed',
-            {
-              alignment: go.Spot.Center,
-              stroke: BpmnConstantsClass.GatewayNodeSymbolStroke,
-              strokeWidth: BpmnConstantsClass.GatewayNodeSymbolStrokeWidth,
-              fill: BpmnConstantsClass.GatewayNodeSymbolFill
-            },
-            new go.Binding('figure', 'gatewayType', (s) => this.bpmnTemplateService.nodeGatewaySymbolTypeConverter(s)),
-            // new go.Binding("visible", "gatewayType", function(s) { return s !== 4; }),   // comment out if you want exclusive gateway to be X instead of blank.
-            new go.Binding('strokeWidth', 'gatewayType', function (s) {
-              return (s <= 4) ? BpmnConstantsClass.GatewayNodeSymbolStrokeWidth : 1;
-            }),
-            new go.Binding('desiredSize', 'gatewayType', (s) => this.bpmnTemplateService.nodePalGatewaySymbolSizeConverter(s))),
-          // the next 2 circles only show up for event gateway
-          $(go.Shape, 'Circle',  // Outer circle
-            {
-              strokeWidth: 1,
-              stroke: BpmnConstantsClass.GatewayNodeSymbolStroke,
-              fill: null,
-              desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize / 2, BpmnConstantsClass.EventNodeSize / 2)
-            },
-            // new go.Binding("desiredSize", "gatewayType", new go.Size(this.EventNodeSize/2, this.EventNodeSize/2)),
-            new go.Binding('visible', 'gatewayType', function (s) {
-              return s >= 5;
-            }) // only visible for > 5
-          ),  // end main shape
-          $(go.Shape, 'Circle',  // Inner circle
-            {
-              alignment: go.Spot.Center, stroke: BpmnConstantsClass.GatewayNodeSymbolStroke,
-              desiredSize: new go.Size(BpmnConstantsClass.EventNodeInnerSize / 2, BpmnConstantsClass.EventNodeInnerSize / 2),
-              fill: null
-            },
-            new go.Binding('visible', 'gatewayType', function (s) {
-              return s === 5;
-            }) // inner  only visible for == 5
-          )),
-
-        $(go.TextBlock,
-          {alignment: go.Spot.Center, textAlign: 'center', margin: 5, editable: false},
-          new go.Binding('text'))
-      );
-
 
     // --------------------------------------------------------------------------------------------------------------
 
-    const annotationNodeTemplate =
-      $(go.Node, 'Auto',
-        {background: BpmnConstantsClass.GradientLightGray, locationSpot: go.Spot.Center},
-        new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-        $(go.Shape, 'Annotation', // A left bracket shape
-          {
-            portId: '', fromLinkable: true, cursor: 'pointer', fromSpot: go.Spot.Left,
-            strokeWidth: 2, stroke: 'gray', fill: 'transparent'
-          }),
-        $(go.TextBlock,
-          {margin: 5, editable: true},
-          new go.Binding('text').makeTwoWay())
-      );
+    const annotationNodeTemplate = this.bpmnTemplateService.getAnnotationNodeTemplate();
 
-    const dataObjectNodeTemplate =
-      $(go.Node, 'Vertical',
-        {locationObjectName: 'SHAPE', locationSpot: go.Spot.Center},
-        new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-        $(go.Shape, 'File',
-          {
-            name: 'SHAPE',
-            portId: '',
-            fromLinkable: true,
-            toLinkable: true,
-            cursor: 'pointer',
-            fill: this.DataFill,
-            desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize * 0.8, BpmnConstantsClass.EventNodeSize)
-          }),
-        $(go.TextBlock,
-          {
-            margin: 5,
-            editable: true
-          },
-          new go.Binding('text').makeTwoWay())
-      );
+    const dataObjectNodeTemplate = this.bpmnTemplateService.getDataObjectNodeTemplate();
 
-    const dataStoreNodeTemplate =
-      $(go.Node, 'Vertical',
-        {locationObjectName: 'SHAPE', locationSpot: go.Spot.Center},
-        new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-        $(go.Shape, 'Database',
-          {
-            name: 'SHAPE',
-            portId: '',
-            fromLinkable: true,
-            toLinkable: true,
-            cursor: 'pointer',
-            fill: this.DataFill,
-            desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize, BpmnConstantsClass.EventNodeSize)
-          }),
-        $(go.TextBlock,
-          {margin: 5, editable: true},
-          new go.Binding('text').makeTwoWay())
-      );
+    const dataStoreNodeTemplate = this.bpmnTemplateService.getDataStoreNodeTemplate();
 
     // ------------------------------------------  private process Node Template Map   ----------------------------------------------
 
@@ -1403,7 +1149,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $(go.Panel, 'Table',     // table with 2 cells to hold header and lane
           {
             desiredSize: new go.Size(BpmnConstantsClass.ActivityNodeWidth * 6, BpmnConstantsClass.ActivityNodeHeight),
-            background: this.DataFill,
+            background: BpmnConstantsClass.DataFill,
             name: 'LANE',
             minSize: new go.Size(BpmnConstantsClass.ActivityNodeWidth, BpmnConstantsClass.ActivityNodeHeight * 0.667)
           },
@@ -1427,18 +1173,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         )
       );
 
-    const privateProcessNodeTemplateForPalette =
-      $(go.Node, 'Vertical',
-        {locationSpot: go.Spot.Center},
-        $(go.Shape, 'Process',
-          {
-            fill: this.DataFill,
-            desiredSize: new go.Size(BpmnConstantsClass.GatewayNodeSize / 2, BpmnConstantsClass.GatewayNodeSize / 4)
-          }),
-        $(go.TextBlock,
-          {margin: 5, editable: true},
-          new go.Binding('text'))
-      );
 
     const nodeSelectionAdornmentTemplate =
       $(go.Adornment, 'Auto',
@@ -1531,31 +1265,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     function convertFieldExistenceToLinkVisibility (obj) {
       return obj != undefined;
     }
-
-    const poolTemplateForPalette =
-      $(go.Group, 'Vertical',
-        {
-          locationSpot: go.Spot.Center,
-          computesBoundsIncludingLinks: false,
-          isSubGraphExpanded: false
-        },
-        $(go.Shape, 'Process',
-          {
-            fill: 'white',
-            desiredSize: new go.Size(BpmnConstantsClass.GatewayNodeSize / 2, BpmnConstantsClass.GatewayNodeSize / 4)
-          }),
-        $(go.Shape, 'Process',
-          {
-            fill: 'white',
-            desiredSize: new go.Size(BpmnConstantsClass.GatewayNodeSize / 2, BpmnConstantsClass.GatewayNodeSize / 4)
-          }),
-        $(go.TextBlock,
-          {margin: 5, editable: true},
-          new go.Binding('text'))
-      );
-
-    const swimLanesGroupTemplateForPalette =
-      $(go.Group, 'Vertical'); // empty in the palette
 
     const subProcessGroupTemplate =
       $(go.Group, 'Spot',
@@ -1897,21 +1606,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     groupTemplateMap.add('Lane', swimLanesGroupTemplate);
     groupTemplateMap.add('Pool', poolGroupTemplate);
     groupTemplateMap.add('customGroup', customGroupTemplate);
-
-    // create the nodeTemplateMap, holding special palette "mini" node templates:
-    const palNodeTemplateMap = new go.Map<string, go.Node>();
-    palNodeTemplateMap.add('activity', activityNodeTemplateForPalette);
-    palNodeTemplateMap.add('event', eventNodeTemplate);
-    palNodeTemplateMap.add('gateway', gatewayNodeTemplateForPalette);
-    palNodeTemplateMap.add('annotation', annotationNodeTemplate);
-    palNodeTemplateMap.add('dataobject', dataObjectNodeTemplate);
-    palNodeTemplateMap.add('datastore', dataStoreNodeTemplate);
-    palNodeTemplateMap.add('privateProcess', privateProcessNodeTemplateForPalette);
-
-    const palGroupTemplateMap = new go.Map<string, go.Group>();
-    palGroupTemplateMap.add('subprocess', subProcessGroupTemplateForPalette);
-    palGroupTemplateMap.add('Pool', poolTemplateForPalette);
-    palGroupTemplateMap.add('Lane', swimLanesGroupTemplateForPalette);
 
     // ------------------------------------------  Link Templates   ----------------------------------------------
 

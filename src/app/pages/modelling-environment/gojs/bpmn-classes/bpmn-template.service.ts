@@ -4,6 +4,7 @@ import {Mappers} from '../mappers';
 import {ModelElementDetail} from '../../../../shared/models/ModelElementDetail.model';
 import {AdditionalCreateOptions} from '../../models/additional-create-options.interface';
 import {BpmnConstantsClass} from './bpmn-constants.class';
+
 const $ = go.GraphObject.make;
 
 @Injectable({providedIn: 'root'})
@@ -230,5 +231,335 @@ export class BpmnTemplateService {
     size.width = size.width / 2;
     size.height = size.height / 2;
     return size;
+  }
+
+  getActivityNodeTemplateForPalette() {
+    return $(go.Node, 'Vertical',
+      {
+        locationObjectName: 'SHAPE',
+        locationSpot: go.Spot.Center,
+        selectionAdorned: false
+      },
+      new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+      $(go.Panel, 'Spot',
+        {
+          name: 'PANEL',
+          // tslint:disable-next-line:max-line-length
+          desiredSize: new go.Size(BpmnConstantsClass.ActivityNodeWidth / BpmnConstantsClass.Palscale, BpmnConstantsClass.ActivityNodeHeight / BpmnConstantsClass.Palscale)
+        },
+        $(go.Shape, 'RoundedRectangle',  // the outside rounded rectangle
+          {
+            name: 'SHAPE',
+            fill: BpmnConstantsClass.ActivityNodeFill, stroke: BpmnConstantsClass.ActivityNodeStroke,
+            parameter1: 10 / BpmnConstantsClass.Palscale  // corner size (default 10)
+          },
+          new go.Binding('strokeWidth', 'isCall',
+            function (s) {
+              return s ? BpmnConstantsClass.ActivityNodeStrokeWidthIsCall : BpmnConstantsClass.ActivityNodeStrokeWidth;
+            })),
+        $(go.Shape, 'RoundedRectangle',  // the inner "Transaction" rounded rectangle
+          {
+            margin: 3,
+            stretch: go.GraphObject.Fill,
+            stroke: BpmnConstantsClass.ActivityNodeStroke,
+            parameter1: 8 / BpmnConstantsClass.Palscale, fill: null, visible: false
+          },
+          new go.Binding('visible', 'isTransaction')),
+        // task icon
+        $(go.Shape, 'BpmnTaskScript',    // will be None, Script, Manual, Service, etc via converter
+          {
+            alignment: new go.Spot(0, 0, 5, 5), alignmentFocus: go.Spot.TopLeft,
+            width: 22 / BpmnConstantsClass.Palscale, height: 22 / BpmnConstantsClass.Palscale
+          },
+          new go.Binding('fill', 'taskType', this.nodeActivityTaskTypeColorConverter),
+          new go.Binding('figure', 'taskType', this.nodeActivityTaskTypeConverter)),
+        // sub-process,  loop, parallel, sequential, ad doc and compensation markers
+        this.makeMarkerPanel(false, BpmnConstantsClass.Palscale)
+      ), // End Spot panel
+      $(go.TextBlock,  // the center text
+        {alignment: go.Spot.Center, textAlign: 'center', margin: 2},
+        new go.Binding('text'))
+    );  // End Node
+  }
+
+  getTooltipTemplate() {
+    return $('ToolTip',
+      $(go.TextBlock,
+        {margin: 3, editable: true},
+        new go.Binding('text', '', function (data) {
+          if (data.item !== undefined) {
+            return data.item;
+          }
+          return '(unnamed item)';
+        }))
+    );
+  }
+
+  getEventNodeTemplate(tooltiptemplate) {
+    const self = this;
+    return $(go.Node, 'Vertical',
+      {
+        locationObjectName: 'SHAPE',
+        locationSpot: go.Spot.Center,
+        toolTip: tooltiptemplate
+      },
+      new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+      // can be resided according to the user's desires
+      {resizable: false, resizeObjectName: 'SHAPE'},
+      $(go.Panel, 'Spot',
+        $(go.Shape, 'Circle',  // Outer circle
+          {
+            strokeWidth: 1,
+            name: 'SHAPE',
+            desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize, BpmnConstantsClass.EventNodeSize),
+            portId: '', fromLinkable: true, toLinkable: true, cursor: 'pointer',
+            fromSpot: go.Spot.RightSide, toSpot: go.Spot.LeftSide
+          },
+          // allows the color to be determined by the node data
+          new go.Binding('fill', 'eventDimension', function (s) {
+            return (s === 8) ? BpmnConstantsClass.EventEndOuterFillColor : BpmnConstantsClass.EventBackgroundColor;
+          }),
+          new go.Binding('strokeWidth', 'eventDimension', function (s) {
+            return s === 8 ? BpmnConstantsClass.EventNodeStrokeWidthIsEnd : 1;
+          }),
+          new go.Binding('stroke', 'eventDimension', (s) => self.nodeEventDimensionStrokeColorConverter(s)),
+          new go.Binding('strokeDashArray', 'eventDimension', function (s) {
+            return (s === 3 || s === 6) ? [4, 2] : null;
+          }),
+          // TODO maybe uncomment this
+          // new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)
+        ),  // end main shape
+        $(go.Shape, 'Circle',  // Inner circle
+          {
+            alignment: go.Spot.Center,
+            desiredSize: new go.Size(BpmnConstantsClass.EventNodeInnerSize, BpmnConstantsClass.EventNodeInnerSize),
+            fill: null
+          },
+          new go.Binding('stroke', 'eventDimension', (s) => self.nodeEventDimensionStrokeColorConverter(s)),
+          new go.Binding('strokeDashArray', 'eventDimension', function (s) {
+            return (s === 3 || s === 6) ? [4, 2] : null;
+          }), // dashes for non-interrupting
+          new go.Binding('visible', 'eventDimension', function (s) {
+            return s > 3 && s <= 7;
+          }) // inner  only visible for 4 thru 7
+        ),
+        $(go.Shape, 'NotAllowed',
+          {
+            alignment: go.Spot.Center,
+            desiredSize: new go.Size(BpmnConstantsClass.EventNodeSymbolSize, BpmnConstantsClass.EventNodeSymbolSize),
+            stroke: 'black'
+          },
+          new go.Binding('figure', 'eventType', (s) => self.nodeEventTypeConverter(s)),
+          new go.Binding('fill', 'eventDimension', (s) => self.nodeEventDimensionSymbolFillConverter(s))
+        )
+      ),  // end Auto Panel
+      $(go.TextBlock,
+        {alignment: go.Spot.Center, textAlign: 'center', margin: 5, editable: true},
+        new go.Binding('text').makeTwoWay())
+    ); // end go.Node Vertical
+  }
+
+  getGatewayNodeTemplateForPalette(tooltiptemplate) {
+    const self = this;
+    return $(go.Node, 'Vertical',
+      {
+        toolTip: tooltiptemplate,
+        resizable: false,
+        locationObjectName: 'SHAPE',
+        locationSpot: go.Spot.Center,
+        resizeObjectName: 'SHAPE'
+      },
+      new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+      $(go.Panel, 'Spot',
+        $(go.Shape, 'Diamond',
+          {
+            strokeWidth: 1,
+            fill: BpmnConstantsClass.GatewayNodeFill,
+            stroke: BpmnConstantsClass.GatewayNodeStroke,
+            name: 'SHAPE',
+            desiredSize: new go.Size(BpmnConstantsClass.GatewayNodeSize / 2, BpmnConstantsClass.GatewayNodeSize / 2)
+          }),
+        $(go.Shape, 'NotAllowed',
+          {
+            alignment: go.Spot.Center,
+            stroke: BpmnConstantsClass.GatewayNodeSymbolStroke,
+            strokeWidth: BpmnConstantsClass.GatewayNodeSymbolStrokeWidth,
+            fill: BpmnConstantsClass.GatewayNodeSymbolFill
+          },
+          new go.Binding('figure', 'gatewayType', (s) => self.nodeGatewaySymbolTypeConverter(s)),
+          // tslint:disable-next-line:max-line-length
+          // new go.Binding("visible", "gatewayType", function(s) { return s !== 4; }),   // comment out if you want exclusive gateway to be X instead of blank.
+          new go.Binding('strokeWidth', 'gatewayType', function (s) {
+            return (s <= 4) ? BpmnConstantsClass.GatewayNodeSymbolStrokeWidth : 1;
+          }),
+          new go.Binding('desiredSize', 'gatewayType', (s) => self.nodePalGatewaySymbolSizeConverter(s))),
+        // the next 2 circles only show up for event gateway
+        $(go.Shape, 'Circle',  // Outer circle
+          {
+            strokeWidth: 1,
+            stroke: BpmnConstantsClass.GatewayNodeSymbolStroke,
+            fill: null,
+            desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize / 2, BpmnConstantsClass.EventNodeSize / 2)
+          },
+          // new go.Binding("desiredSize", "gatewayType", new go.Size(this.EventNodeSize/2, this.EventNodeSize/2)),
+          new go.Binding('visible', 'gatewayType', function (s) {
+            return s >= 5;
+          }) // only visible for > 5
+        ),  // end main shape
+        $(go.Shape, 'Circle',  // Inner circle
+          {
+            alignment: go.Spot.Center, stroke: BpmnConstantsClass.GatewayNodeSymbolStroke,
+            desiredSize: new go.Size(BpmnConstantsClass.EventNodeInnerSize / 2, BpmnConstantsClass.EventNodeInnerSize / 2),
+            fill: null
+          },
+          new go.Binding('visible', 'gatewayType', function (s) {
+            return s === 5;
+          }) // inner  only visible for == 5
+        )),
+
+      $(go.TextBlock,
+        {alignment: go.Spot.Center, textAlign: 'center', margin: 5, editable: false},
+        new go.Binding('text'))
+    );
+  }
+
+  getAnnotationNodeTemplate() {
+    return $(go.Node, 'Auto',
+      {background: BpmnConstantsClass.GradientLightGray, locationSpot: go.Spot.Center},
+      new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+      $(go.Shape, 'Annotation', // A left bracket shape
+        {
+          portId: '', fromLinkable: true, cursor: 'pointer', fromSpot: go.Spot.Left,
+          strokeWidth: 2, stroke: 'gray', fill: 'transparent'
+        }),
+      $(go.TextBlock,
+        {margin: 5, editable: true},
+        new go.Binding('text').makeTwoWay())
+    );
+  }
+
+  getDataObjectNodeTemplate() {
+    return $(go.Node, 'Vertical',
+      {locationObjectName: 'SHAPE', locationSpot: go.Spot.Center},
+      new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+      $(go.Shape, 'File',
+        {
+          name: 'SHAPE',
+          portId: '',
+          fromLinkable: true,
+          toLinkable: true,
+          cursor: 'pointer',
+          fill: BpmnConstantsClass.DataFill,
+          desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize * 0.8, BpmnConstantsClass.EventNodeSize)
+        }),
+      $(go.TextBlock,
+        {
+          margin: 5,
+          editable: true
+        },
+        new go.Binding('text').makeTwoWay())
+    );
+  }
+
+  getDataStoreNodeTemplate() {
+    return $(go.Node, 'Vertical',
+      {locationObjectName: 'SHAPE', locationSpot: go.Spot.Center},
+      new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+      $(go.Shape, 'Database',
+        {
+          name: 'SHAPE',
+          portId: '',
+          fromLinkable: true,
+          toLinkable: true,
+          cursor: 'pointer',
+          fill: BpmnConstantsClass.DataFill,
+          desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize, BpmnConstantsClass.EventNodeSize)
+        }),
+      $(go.TextBlock,
+        {margin: 5, editable: true},
+        new go.Binding('text').makeTwoWay())
+    );
+  }
+
+  getPrivateProcessingNodeTempalteForPalette() {
+    return $(go.Node, 'Vertical',
+      {locationSpot: go.Spot.Center},
+      $(go.Shape, 'Process',
+        {
+          fill: BpmnConstantsClass.DataFill,
+          desiredSize: new go.Size(BpmnConstantsClass.GatewayNodeSize / 2, BpmnConstantsClass.GatewayNodeSize / 4)
+        }),
+      $(go.TextBlock,
+        {margin: 5, editable: true},
+        new go.Binding('text'))
+    );
+  }
+
+  getSubProcessGroupTemplateForPalette() {
+    return $(go.Group, 'Vertical',
+      {
+        locationObjectName: 'SHAPE',
+        locationSpot: go.Spot.Center,
+        isSubGraphExpanded: false,
+        selectionAdorned: false
+      },
+      $(go.Panel, 'Spot',
+        {
+          name: 'PANEL',
+          desiredSize: new go.Size(
+            BpmnConstantsClass.ActivityNodeWidth / BpmnConstantsClass.Palscale,
+            BpmnConstantsClass.ActivityNodeHeight / BpmnConstantsClass.Palscale)
+        },
+        $(go.Shape, 'RoundedRectangle',  // the outside rounded rectangle
+          {
+            name: 'SHAPE',
+            fill: BpmnConstantsClass.ActivityNodeFill, stroke: BpmnConstantsClass.ActivityNodeStroke,
+            parameter1: 10 / BpmnConstantsClass.Palscale  // corner size (default 10)
+          },
+          new go.Binding('strokeWidth', 'isCall', function (s) {
+            return s ? BpmnConstantsClass.ActivityNodeStrokeWidthIsCall : BpmnConstantsClass.ActivityNodeStrokeWidth;
+          })
+        ),
+        $(go.Shape, 'RoundedRectangle',  // the inner "Transaction" rounded rectangle
+          {
+            margin: 3,
+            stretch: go.GraphObject.Fill,
+            stroke: BpmnConstantsClass.ActivityNodeStroke,
+            parameter1: 8 / BpmnConstantsClass.Palscale, fill: null, visible: false
+          },
+          new go.Binding('visible', 'isTransaction')),
+        this.makeMarkerPanel(true, BpmnConstantsClass.Palscale) // sub-process,  loop, parallel, sequential, ad doc and compensation markers
+      ), // end main body rectangles spot panel
+      $(go.TextBlock,  // the center text
+        {alignment: go.Spot.Center, textAlign: 'center', margin: 2},
+        new go.Binding('text'))
+    );  // end go.Group
+  }
+
+  getPoolTemplateForPalette() {
+    return $(go.Group, 'Vertical',
+      {
+        locationSpot: go.Spot.Center,
+        computesBoundsIncludingLinks: false,
+        isSubGraphExpanded: false
+      },
+      $(go.Shape, 'Process',
+        {
+          fill: 'white',
+          desiredSize: new go.Size(BpmnConstantsClass.GatewayNodeSize / 2, BpmnConstantsClass.GatewayNodeSize / 4)
+        }),
+      $(go.Shape, 'Process',
+        {
+          fill: 'white',
+          desiredSize: new go.Size(BpmnConstantsClass.GatewayNodeSize / 2, BpmnConstantsClass.GatewayNodeSize / 4)
+        }),
+      $(go.TextBlock,
+        {margin: 5, editable: true},
+        new go.Binding('text'))
+    );
+  }
+
+  getSwimLanesGroupTemplateForPalette() {
+    return $(go.Group, 'Vertical'); // empty in the palette
   }
 }
