@@ -234,6 +234,10 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     this.dialog.open(ModalShowLanguageInstances, {data:element});
   }
 
+  isElementMappedToBPMNMappers(element: PaletteElementModel): boolean {
+    return this.bpmnTemplateService.isElementMappedToBPMNMappers(element);
+  }
+
   loadPaletteGoJSElements() {
     const figuresClass = new FiguresClass();
     figuresClass.defineShapes();
@@ -269,7 +273,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     // ------------------------------------------  Palette   ----------------------------------------------
     this.paletteCategories.forEach((category, indexCategory) => {
       this.mService.paletteElements.forEach((element, indexElement) => {
-        if (element.paletteCategory === category.id && !element.hiddenFromPalette && element.type !== 'PaletteConnector') {
+        if (element.paletteCategory === category.id && !element.hiddenFromPalette && element.type !== 'PaletteConnector' && this.isElementMappedToBPMNMappers(element)) {
           const paletteId = 'myPalette' + '-' + indexCategory.toString() + '-' + indexElement.toString();
           this.instatiatePaletteElement(element, paletteId, palNodeTemplateMap, palGroupTemplateMap);
         }

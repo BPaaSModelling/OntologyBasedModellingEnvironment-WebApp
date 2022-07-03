@@ -24,8 +24,8 @@
       <ul class="element" *ngIf="(element.paletteCategory == category.id && element.hiddenFromPalette == false)">
         <li class="paletteElement" >
           <a *ngIf="element.type != 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuValue]="element"  (click)="addNewShape(element)">
-            <img class="thumbnail" src="{{imageRoot}}{{category.idSuffix}}/{{element.thumbnailURL}}" *ngIf="!isBPMNNotationSelected()"/>
-            <div style="width: 95px; display: flex; justify-content: space-between; height: 85px;" *ngIf="isBPMNNotationSelected()">
+            <img class="thumbnail" src="{{imageRoot}}{{category.idSuffix}}/{{element.thumbnailURL}}" *ngIf="!isElementMappedToBPMNMappers(element)"/>
+            <div style="width: 95px; display: flex; justify-content: space-between; height: 85px;" *ngIf="isBPMNNotationSelected() && isElementMappedToBPMNMappers(element)">
               <div id="myPalette-{{indexCategory}}-{{indexElement}}" style="width: 85px; position: relative;" class="bpmn-canvas-container"></div>
             </div>
           </a>

@@ -4,6 +4,7 @@ import {Mappers} from '../mappers';
 import {ModelElementDetail} from '../../../../shared/models/ModelElementDetail.model';
 import {AdditionalCreateOptions} from '../../models/additional-create-options.interface';
 import {BpmnConstantsClass} from './bpmn-constants.class';
+import {PaletteElementModel} from '../../../../shared/models/PaletteElement.model';
 
 const $ = go.GraphObject.make;
 
@@ -561,5 +562,15 @@ export class BpmnTemplateService {
 
   getSwimLanesGroupTemplateForPalette() {
     return $(go.Group, 'Vertical'); // empty in the palette
+  }
+
+  isElementMappedToBPMNMappers(element: PaletteElementModel): boolean {
+    const elementType = PaletteElementModel.getProbableElementType(element);
+    if (elementType === 'ModelingElement' || elementType === 'ModelingContainer') {
+      const modellingLanguageConstruct = PaletteElementModel.getProbableModellingConstruct(element);
+      return !!Mappers.dictionaryAOAMEBPMNElementToGoJsNode.get(modellingLanguageConstruct)
+        || !!Mappers.dictionaryAOAMEBPMNGroupToGoJsGroup.get(modellingLanguageConstruct);
+    }
+    return false;
   }
 }
