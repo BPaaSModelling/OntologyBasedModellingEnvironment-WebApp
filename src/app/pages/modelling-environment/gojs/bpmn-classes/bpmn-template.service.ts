@@ -229,8 +229,8 @@ export class BpmnTemplateService {
 
   public nodePalGatewaySymbolSizeConverter(s: number) {
     const size = this.nodeGatewaySymbolSizeConverter(s);
-    size.width = size.width / 2;
-    size.height = size.height / 2;
+    size.width = size.width / BpmnConstantsClass.Palscale;
+    size.height = size.height / BpmnConstantsClass.Palscale;
     return size;
   }
 
@@ -296,7 +296,7 @@ export class BpmnTemplateService {
     );
   }
 
-  getEventNodeTemplate(tooltiptemplate) {
+  getEventNodeTemplate(tooltiptemplate, sizeConverter= 1) {
     const self = this;
     return $(go.Node, 'Vertical',
       {
@@ -312,7 +312,7 @@ export class BpmnTemplateService {
           {
             strokeWidth: 1,
             name: 'SHAPE',
-            desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize, BpmnConstantsClass.EventNodeSize),
+            desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize / sizeConverter, BpmnConstantsClass.EventNodeSize / sizeConverter),
             portId: '', fromLinkable: true, toLinkable: true, cursor: 'pointer',
             fromSpot: go.Spot.RightSide, toSpot: go.Spot.LeftSide
           },
@@ -333,7 +333,7 @@ export class BpmnTemplateService {
         $(go.Shape, 'Circle',  // Inner circle
           {
             alignment: go.Spot.Center,
-            desiredSize: new go.Size(BpmnConstantsClass.EventNodeInnerSize, BpmnConstantsClass.EventNodeInnerSize),
+            desiredSize: new go.Size(BpmnConstantsClass.EventNodeInnerSize / sizeConverter, BpmnConstantsClass.EventNodeInnerSize / sizeConverter),
             fill: null
           },
           new go.Binding('stroke', 'eventDimension', (s) => self.nodeEventDimensionStrokeColorConverter(s)),
@@ -347,7 +347,7 @@ export class BpmnTemplateService {
         $(go.Shape, 'NotAllowed',
           {
             alignment: go.Spot.Center,
-            desiredSize: new go.Size(BpmnConstantsClass.EventNodeSymbolSize, BpmnConstantsClass.EventNodeSymbolSize),
+            desiredSize: new go.Size(BpmnConstantsClass.EventNodeSymbolSize / sizeConverter, BpmnConstantsClass.EventNodeSymbolSize / sizeConverter),
             stroke: 'black'
           },
           new go.Binding('figure', 'eventType', (s) => self.nodeEventTypeConverter(s)),
@@ -360,7 +360,7 @@ export class BpmnTemplateService {
     ); // end go.Node Vertical
   }
 
-  getGatewayNodeTemplateForPalette(tooltiptemplate) {
+  getGatewayNodeTemplateForPalette(tooltiptemplate, sizeConverter = 1) {
     const self = this;
     return $(go.Node, 'Vertical',
       {
@@ -378,7 +378,7 @@ export class BpmnTemplateService {
             fill: BpmnConstantsClass.GatewayNodeFill,
             stroke: BpmnConstantsClass.GatewayNodeStroke,
             name: 'SHAPE',
-            desiredSize: new go.Size(BpmnConstantsClass.GatewayNodeSize / 2, BpmnConstantsClass.GatewayNodeSize / 2)
+            desiredSize: new go.Size(BpmnConstantsClass.GatewayNodeSize / BpmnConstantsClass.Palscale, BpmnConstantsClass.GatewayNodeSize / BpmnConstantsClass.Palscale)
           }),
         $(go.Shape, 'NotAllowed',
           {
@@ -400,7 +400,7 @@ export class BpmnTemplateService {
             strokeWidth: 1,
             stroke: BpmnConstantsClass.GatewayNodeSymbolStroke,
             fill: null,
-            desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize / 2, BpmnConstantsClass.EventNodeSize / 2)
+            desiredSize: new go.Size(BpmnConstantsClass.EventNodeSize / BpmnConstantsClass.Palscale, BpmnConstantsClass.EventNodeSize / BpmnConstantsClass.Palscale)
           },
           // new go.Binding("desiredSize", "gatewayType", new go.Size(this.EventNodeSize/2, this.EventNodeSize/2)),
           new go.Binding('visible', 'gatewayType', function (s) {
@@ -410,7 +410,7 @@ export class BpmnTemplateService {
         $(go.Shape, 'Circle',  // Inner circle
           {
             alignment: go.Spot.Center, stroke: BpmnConstantsClass.GatewayNodeSymbolStroke,
-            desiredSize: new go.Size(BpmnConstantsClass.EventNodeInnerSize / 2, BpmnConstantsClass.EventNodeInnerSize / 2),
+            desiredSize: new go.Size(BpmnConstantsClass.EventNodeInnerSize / BpmnConstantsClass.Palscale, BpmnConstantsClass.EventNodeInnerSize / BpmnConstantsClass.Palscale),
             fill: null
           },
           new go.Binding('visible', 'gatewayType', function (s) {

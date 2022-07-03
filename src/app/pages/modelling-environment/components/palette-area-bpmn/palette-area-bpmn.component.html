@@ -37,7 +37,8 @@
           <app--tool-recursive-palette-element (showActivityElementPropertyModal1)="toggleActivityElementPropertyModal($event)"
                                                (showExtendPaletteElementModal1)="toggleExtendPaletteElementModal($event)"
                                                (showEditPaletteElementModal1)="toggleEditPaletteElementModal($event)"
-                                               (sendElementFromRecursiveElement)="addNewShape($event)" [child]="element"></app--tool-recursive-palette-element>
+                                               (sendElementFromRecursiveElement)="addNewShape($event)" [child]="element"
+                                               [isBPMNNotationSelected]="isBPMNNotationSelected()" [parentPaletteId]="'myPalette-'+indexCategory+'-'+indexElement"></app--tool-recursive-palette-element>
         </li>
       </ul>
     </ng-container>

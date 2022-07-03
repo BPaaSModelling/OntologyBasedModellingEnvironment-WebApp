@@ -103,15 +103,15 @@ li {
 }
 
 .paletteElement > app--tool-recursive-palette-element {
-  display: none;
+  left: -9999px;
+  position: absolute;
 }
 
 .paletteElement:hover app--tool-recursive-palette-element {
   display: block;
-  position: absolute;
   top: 0;
   left: 100%;
-  z-index: 1;
+  z-index: 99;
 }
 
 app--tool-recursive-palette-element{

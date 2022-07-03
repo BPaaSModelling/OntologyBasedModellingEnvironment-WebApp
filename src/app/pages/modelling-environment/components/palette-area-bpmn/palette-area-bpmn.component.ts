@@ -314,7 +314,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
       this.bpmnTemplateService.addGoJsBPMNGroupFields(element, probableModellingConstruct);
     }
     // @ts-ignore
-    element.text = element.label;
+    element.text = element.label.split(' ').join('\n');
 
     myPalette.model = $(go.GraphLinksModel,
       {
@@ -325,8 +325,5 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
           element
         ]  // end nodeDataArray
       });  // end model
-
-    myPalette.requestUpdate();
-    myPalette.layoutDiagram(true);
   }
 }
