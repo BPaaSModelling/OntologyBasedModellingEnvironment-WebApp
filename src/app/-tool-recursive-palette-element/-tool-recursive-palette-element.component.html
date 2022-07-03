@@ -6,8 +6,12 @@
         <img class="thumbnail"  src="{{imageRoot}}{{categorySuffix}}/{{sbchild.thumbnailURL}}"  />
         {{sbchild.label}}
       </ng-container>
-      <div style="width: auto; display: flex; justify-content: space-between; height: auto" *ngIf="isBPMNNotationSelected && isElementMappedToBPMNMappers(sbchild)">
-        <div id="{{parentPaletteId}}-{{indexElement}}" style="width: 85px; position: relative;" class="bpmn-canvas-container"></div>
+      <ng-container *ngIf="isBPMNNotationSelected && !isElementMappedToBPMNMappers(sbchild)">
+        <img class="thumbnail" style="width: 35px; margin-left: 18px; margin-right: 28px;" src="{{imageRoot}}{{categorySuffix}}/{{sbchild.thumbnailURL}}"  />
+        {{sbchild.label}}
+      </ng-container>
+      <div style="width: auto; display: flex; justify-content: space-between; height: 45px;" *ngIf="isBPMNNotationSelected && isElementMappedToBPMNMappers(sbchild)">
+        <div id="{{parentPaletteId}}-{{indexElement}}" style="width: 85px; position: relative; height: auto;" class="bpmn-canvas-container"></div>
         <p style="word-wrap:break-word; display: flex;
           justify-content: flex-start;
           flex-direction: row;">{{sbchild.label}}</p>

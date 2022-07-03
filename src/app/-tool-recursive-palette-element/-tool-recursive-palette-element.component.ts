@@ -185,8 +185,8 @@ export class ToolRecursivePaletteElementComponent implements OnInit, AfterViewIn
 
     const tooltiptemplate = this.bpmnTemplateService.getTooltipTemplate();
     const activityNodeTemplateForPalette = this.bpmnTemplateService.getActivityNodeTemplateForPalette();
-    const eventNodeTemplate = this.bpmnTemplateService.getEventNodeTemplate(tooltiptemplate, 1.6);
-    const gatewayNodeTemplateForPalette = this.bpmnTemplateService.getGatewayNodeTemplateForPalette(tooltiptemplate, 1.6);
+    const eventNodeTemplate = this.bpmnTemplateService.getEventNodeTemplate(tooltiptemplate, 1.2);
+    const gatewayNodeTemplateForPalette = this.bpmnTemplateService.getGatewayNodeTemplateForPalette(tooltiptemplate);
     const annotationNodeTemplate = this.bpmnTemplateService.getAnnotationNodeTemplate();
     const dataObjectNodeTemplate = this.bpmnTemplateService.getDataObjectNodeTemplate();
     const dataStoreNodeTemplate = this.bpmnTemplateService.getDataStoreNodeTemplate();

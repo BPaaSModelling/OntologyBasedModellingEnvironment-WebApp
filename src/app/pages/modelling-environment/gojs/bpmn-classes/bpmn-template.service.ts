@@ -360,7 +360,7 @@ export class BpmnTemplateService {
     ); // end go.Node Vertical
   }
 
-  getGatewayNodeTemplateForPalette(tooltiptemplate, sizeConverter = 1) {
+  getGatewayNodeTemplateForPalette(tooltiptemplate) {
     const self = this;
     return $(go.Node, 'Vertical',
       {
