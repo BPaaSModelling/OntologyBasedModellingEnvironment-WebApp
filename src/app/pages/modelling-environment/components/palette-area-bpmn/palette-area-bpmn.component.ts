@@ -73,7 +73,8 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
   }
 
   public isBPMNNotationSelected(): boolean {
-    return this.selectedLang === 'lo:BPMN_2_0' && this.selectedView === 'lo:BPMNProcessModelingView';
+    return (this.selectedLang === 'lo:BPMN_2_0' && this.selectedView === 'lo:BPMNProcessModelingView') ||
+      (this.selectedLang === 'lo:BPaaS_ModelingLanguage' && this.selectedView === 'lo:BPaaSProcessModelingView');
   }
 
   private addNewShape(a: PaletteElementModel): void {

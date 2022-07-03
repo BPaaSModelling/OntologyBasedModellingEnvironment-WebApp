@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ModalPaletteElementPropertiesComponent} from '../modal-palette-element-properties/modal-palette-element-properties.component';
 
-import { ModalPaletteElementPropertiesComponent } from './modal-connector-element-properties.component';
 
 describe('ModalPaletteElementPropertiesComponent', () => {
   let component: ModalPaletteElementPropertiesComponent;
