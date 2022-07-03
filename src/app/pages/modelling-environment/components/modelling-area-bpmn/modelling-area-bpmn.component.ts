@@ -42,7 +42,6 @@ import {AdditionalCreateOptions} from '../../models/additional-create-options.in
 const $ = go.GraphObject.make;
 
 
-
 @Component({
   selector: 'app-modelling-area-bpmn',
   templateUrl: './modelling-area-bpmn.component.html',
@@ -254,7 +253,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
   convertGeometryToShape(geometry: string) {
 
-    if (!geometry) { return null; }
+    if (!geometry) {
+      return null;
+    }
 
     return $(go.Shape,
       {
@@ -449,27 +450,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     };
   }
 
-  // private navigateToLinkedModel() {
-  //   return (e, obj) => {
-  //     const node = obj.part;
-  //     if (node != null) {
-  //       console.log(node);
-  //       const element = node.data.element;
-  //       const foundModel = this.models.find(e => e.id === element.shapeRepresentsModel);
-  //
-  //       if (!foundModel) {
-  //         return;
-  //       }
-  //       const navExtras = {
-  //         queryParams: {
-  //           id: foundModel.id,
-  //           label: foundModel.label
-  //         }
-  //       } as NavigationExtras;
-  //       this.router.navigate(['/modeller'], navExtras);
-  //     }
-  //   };
-  // }
   //
   // private handleNodePaste(txn: any) {
   //   // TODO handle case when several elements are copied (including containers and links)
@@ -603,21 +583,21 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       .filter(evt => ['location', 'position'].includes(evt.propertyName))
       .forEach(evt => {
 
-      const nodeData = evt.object;
+        const nodeData = evt.object;
 
-      const modelElement: ModelElementDetail = nodeData.data.element;
+        const modelElement: ModelElementDetail = nodeData.data.element;
         modelElement.x = Math.trunc(nodeData.location.x);
         modelElement.y = Math.trunc(nodeData.location.y);
-      nodeData.data.loc = new go.Point(modelElement.x, modelElement.y);
+        nodeData.data.loc = new go.Point(modelElement.x, modelElement.y);
 
-      lastMovedNodes.set(
-        modelElement.id,
-        {
-          modelElementDetail: modelElement,
-          node: nodeData.data
-        }
-      );
-    });
+        lastMovedNodes.set(
+          modelElement.id,
+          {
+            modelElementDetail: modelElement,
+            node: nodeData.data
+          }
+        );
+      });
 
     lastMovedNodes.forEach(nodeInfo => {
       if (nodeInfo.modelElementDetail.modelElementType === 'ModelingElement' || nodeInfo.modelElementDetail.modelElementType === 'ModelingContainer') {
@@ -935,11 +915,11 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           })
         ),
         $(go.Shape, 'NotAllowed',
-            {
-              alignment: go.Spot.Center,
-              desiredSize: new go.Size(BpmnConstantsClass.EventNodeSymbolSize, BpmnConstantsClass.EventNodeSymbolSize),
-              fill: 'white'
-            },
+          {
+            alignment: go.Spot.Center,
+            desiredSize: new go.Size(BpmnConstantsClass.EventNodeSymbolSize, BpmnConstantsClass.EventNodeSymbolSize),
+            fill: 'white'
+          },
           new go.Binding('figure', 'eventType', this.bpmnTemplateService.nodeEventTypeConverter)
         )
       );
@@ -988,13 +968,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           {
             click: function (e: go.InputEvent, obj: go.GraphObject) {
               self.addActivityNodeBoundaryEvent(4, 6);
-            }
-          }),
-        $('ContextMenuButton',
-          $(go.TextBlock, 'Rename', {margin: 3}),
-          {
-            click: function (e: go.InputEvent, obj: go.GraphObject) {
-              self.rename(obj);
             }
           }));
 
@@ -1176,7 +1149,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
     const nodeSelectionAdornmentTemplate =
       $(go.Adornment, 'Auto',
-        $(go.Shape, { fill: null, stroke: 'deepskyblue', strokeWidth: 1.5, strokeDashArray: [4, 2] }),
+        $(go.Shape, {fill: null, stroke: 'deepskyblue', strokeWidth: 1.5, strokeDashArray: [4, 2]}),
         $(go.Placeholder)
       );
 
@@ -1190,7 +1163,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         },
         new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
         new go.Binding('group', 'containedInContainer'),
-        { selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate },
+        {selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate},
         new go.Binding('angle').makeTwoWay(),
         // the main object is a Panel that surrounds a TextBlock with a Shape
 
@@ -1234,35 +1207,11 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             },
             new go.Binding('text').makeTwoWay(),
             new go.Binding('alignment')
-          ),
-          $(go.Shape,
-            {
-              alignment: go.Spot.TopLeft,
-              alignmentFocus: go.Spot.TopLeft,
-              width: 12, height: 12, fill: 'orange',
-              visible: false,
-              figure: 'Arrow',
-              margin: 8,
-              cursor: 'pointer',
-              click: this.navigateToLinkedModel()
-            },
-            new go.Binding('visible', 'shapeRepresentsModel', convertFieldExistenceToLinkVisibility)
-          ),
-          $(go.Shape,
-            {
-              alignment: go.Spot.BottomLeft,
-              alignmentFocus: go.Spot.BottomLeft,
-              width: 12, height: 12, fill: 'orange',
-              visible: false,
-              margin: 8,
-              figure: 'MultiDocument'
-            },
-            new go.Binding('visible', 'otherVisualisationsOfSameLanguageConstruct', convertFieldExistenceToLinkVisibility)
           )
         )
       );
 
-    function convertFieldExistenceToLinkVisibility (obj) {
+    function convertFieldExistenceToLinkVisibility(obj) {
       return obj != undefined;
     }
 
@@ -1451,8 +1400,8 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             new go.Binding('visible', 'isSubGraphExpanded', function (e) {
               return !e;
             }).ofObject()),
-            // TODO get vertical text working again. It will display , but the edit of the label won't work if you uncomment this
-            // new go.Binding('text', 'text').makeTwoWay())
+          // TODO get vertical text working again. It will display , but the edit of the label won't work if you uncomment this
+          // new go.Binding('text', 'text').makeTwoWay())
         )
       );  // end swimLanesGroupTemplate
 
@@ -1709,10 +1658,10 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         ),
         $(go.Shape,  // the "from" arrowhead
           new go.Binding('fromArrow', 'fromArrow'),
-          { scale: 2 }),
+          {scale: 2}),
         $(go.Shape,  // the "to" arrowhead
           new go.Binding('toArrow', 'toArrow'),
-          { scale: 2 }),
+          {scale: 2}),
         $(go.TextBlock,
           {
             font: '11pt Helvetica, Arial, sans-serif',
@@ -1745,6 +1694,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     linkTemplateMap.add('', sequenceLinkTemplate);  // default
 
     // ------------------------------------------the main Diagram----------------------------------------------
+    this.overrideContextMenu(nodeTemplateMap, linkTemplateMap, groupTemplateMap);
+    this.addCustomShapes(nodeTemplateMap, linkTemplateMap, groupTemplateMap, convertFieldExistenceToLinkVisibility);
+
 
     this.myDiagram =
       $(go.Diagram, 'myDiagramDiv',
@@ -1761,7 +1713,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           mouseDrop: (e) => {
             return self.diagramOnMouseDrop(self);
           },
-          resizingTool: new LaneResizingTool(() => { self.relayoutDiagram(); }),
+          resizingTool: new LaneResizingTool(() => {
+            self.relayoutDiagram();
+          }),
           linkingTool: new BPMNLinkingTool(), // defined in BPMNClasses.js
           relinkingTool: new BPMNRelinkingTool(), // defined in BPMNClasses.js
           'SelectionMoved': () => self.relayoutDiagram(),
@@ -1773,6 +1727,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             BpmnLaneHelpers.assignGroupLayer(e.subject.containingGroup);
           }
         });
+
 
     this.myDiagram.addDiagramListener('LinkDrawn', function (e) {
       if (e.subject.fromNode.category === 'annotation') {
@@ -1788,9 +1743,13 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
     this.myDiagram.addModelChangedListener((evt: ChangedEvent) => {
       // ignore unimportant Transaction events
-      if (!evt.isTransactionFinished) { return; }
+      if (!evt.isTransactionFinished) {
+        return;
+      }
       const txn = evt.object;  // a Transaction
-      if (txn === null) { return; }
+      if (txn === null) {
+        return;
+      }
 
       if (txn.name === 'Move') {
         this.handleNodeMove(txn);
@@ -1817,7 +1776,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       }
     });
   }
-
 
 
   // changes the item of the object
@@ -1919,7 +1877,208 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     (this.myDiagram.commandHandler as DrawCommandHandlerClass).alignColumn(this.askSpace());
   }
 
+  public overrideContextMenu(nodeTemplateMap: go.Map<string, go.Node>, linkTemplateMap: go.Map<string, go.Link>, groupTemplateMap: go.Map<string, go.Group>) {
+    // override context menu
+    const contextMenu = $('ContextMenu',
+      $('ContextMenuButton',
+        $(go.TextBlock, 'Model Element Attributes'),
+        {
+          click: (e, obj) => {
+            const node = obj.part.adornedPart;
+            if (node != null) {
+              const element = node.data.element;
 
+              const modelElementAndModel = new ModelElementDetailAndModel();
+              modelElementAndModel.modelId = this.selectedModel.id;
+              modelElementAndModel.elementDetail = element;
+
+              this.dialog.open(ModalViewElementDetail, {
+                data: modelElementAndModel
+              });
+            }
+          }
+        }
+      ),
+      $('ContextMenuButton',
+        $(go.TextBlock, 'Model Link'),
+        {
+          click: (e, obj) => {
+            const node = obj.part.adornedPart;
+            if (node != null) {
+              const element = node.data.element;
+
+              const modelElementDetailAndModel = new ModelElementDetailAndModel();
+              modelElementDetailAndModel.modelId = this.selectedModel.id;
+              modelElementDetailAndModel.elementDetail = element;
+
+              const dialogRef = this.dialog.open(ModalModelLink, {
+                data: modelElementDetailAndModel
+              });
+
+              dialogRef.afterClosed().pipe(take(1)).subscribe(result => {
+
+                if (result === undefined) {
+                  return;
+                }
+
+                if (result.action === 'Delete') {
+                  delete element.shapeRepresentsModel;
+                  this.mService.updateElement(element, this.selectedModel.id);
+                } else if (result.action === 'Save') {
+                  element.shapeRepresentsModel = result.selectedModelId;
+                  this.myDiagram.model.setDataProperty(node.data, 'element', element);
+                  this.myDiagram.model.setDataProperty(node.data, 'shapeRepresentsModel', element.shapeRepresentsModel);
+                  this.mService.updateElement(element, this.selectedModel.id);
+                }
+
+                this.myDiagram.rebuildParts();
+              });
+            }
+          }
+        }
+      ),
+      $('ContextMenuButton',
+        $(go.TextBlock, 'Note'),
+        {
+          click: (e, obj) => {
+            const node = obj.part.adornedPart;
+            if (node != null) {
+              const element = node.data.element;
+
+              const modelElementDetailAndModel = new ModelElementDetailAndModel();
+              modelElementDetailAndModel.modelId = this.selectedModel.id;
+              modelElementDetailAndModel.elementDetail = element;
+
+              this.dialog.open(ModalElementNote, {
+                data: modelElementDetailAndModel
+              });
+            }
+          }
+        }
+      ),
+      $('ContextMenuButton',
+        $(go.TextBlock, 'Visualisations of same element'),
+        {
+          click: (e, obj) => {
+            const node = obj.part.adornedPart;
+            if (node != null) {
+              const element = node.data.element;
+
+              const otherVisualisationsData = new VisualisationLinksData();
+              otherVisualisationsData.modelingLanguageConstructInstanceId = element.modelingLanguageConstructInstance;
+              otherVisualisationsData.otherVisualisations = [];
+
+              // referenced shapes
+              if (element.otherVisualisationsOfSameLanguageConstruct !== undefined) {
+                this.models.forEach(model => {
+                  const modelElementDetail = model.elements.find(modelElement => element.otherVisualisationsOfSameLanguageConstruct.includes(modelElement.id));
+                  if (modelElementDetail !== undefined) {
+                    const data = new ModelElementDetailAndModel();
+                    data.modelId = model.id;
+                    data.modelLabel = model.label;
+                    data.elementDetail = modelElementDetail;
+                    otherVisualisationsData.otherVisualisations.push(data);
+                  }
+                });
+              }
+
+              // current element
+              const data = new ModelElementDetailAndModel();
+              data.modelId = this.selectedModel.id;
+              data.modelLabel = this.selectedModel.label;
+              data.elementDetail = element;
+              otherVisualisationsData.otherVisualisations.push(data);
+
+              this.dialog.open(ModalModellingLanguageConstructInstanceLink, {
+                data: otherVisualisationsData
+              });
+            }
+          }
+        }
+      ),
+      $('ContextMenuButton',
+        $(go.TextBlock, 'Visualisation'),
+        {
+          click: (e, obj) => {
+            const node = obj.part.adornedPart;
+            if (node != null) {
+              const element = node.data.element;
+
+              const modelElementDetailAndModel = new ModelElementDetailAndModel();
+              modelElementDetailAndModel.modelId = this.selectedModel.id;
+              modelElementDetailAndModel.elementDetail = element;
+
+              const dialogRef = this.dialog.open(ModalPaletteVisualisation, {
+                data: modelElementDetailAndModel
+              });
+
+              dialogRef.afterClosed().pipe(take(1)).subscribe(result => {
+                if (result !== 'Cancel') {
+                  element.paletteConstruct = result.paletteConstruct;
+                  this.mService.updateElement(element, this.selectedModel.id);
+                  this.myDiagram.rebuildParts();
+                }
+              });
+
+            }
+          }
+        }
+      )
+    );
+
+    nodeTemplateMap.iteratorValues.each(n => n.contextMenu = contextMenu);
+    linkTemplateMap.iteratorValues.each(n => n.contextMenu = contextMenu);
+    groupTemplateMap.iterator.each((n) => {
+      if (n.key !== 'Pool') {
+        n.value.contextMenu = contextMenu;
+      }
+    });
+  }
+
+  private addCustomShapes(nodeTemplateMap: go.Map<string, go.Node>, linkTemplateMap: go.Map<string, go.Link>, groupTemplateMap: go.Map<string, go.Group>, convertFieldExistenceToLinkVisibility: (obj) => boolean) {
+    nodeTemplateMap.iteratorValues.each(x => {
+      this.addLinkArrowShape(x, convertFieldExistenceToLinkVisibility);
+      this.addVisualisationsOfSameLanguageConstructShape(x, convertFieldExistenceToLinkVisibility);
+    });
+    linkTemplateMap.iteratorValues.each(x => {
+      this.addLinkArrowShape(x, convertFieldExistenceToLinkVisibility);
+      this.addVisualisationsOfSameLanguageConstructShape(x, convertFieldExistenceToLinkVisibility);
+    });
+    groupTemplateMap.iteratorValues.each(x => {
+      this.addLinkArrowShape(x, convertFieldExistenceToLinkVisibility);
+      this.addVisualisationsOfSameLanguageConstructShape(x, convertFieldExistenceToLinkVisibility);
+    });
+  }
+
+  private addLinkArrowShape(x: go.Node | go.Link | go.Group, convertFieldExistenceToLinkVisibility: (obj) => boolean) {
+    x.add($(go.Shape,
+      {
+        alignment: go.Spot.TopRight,
+        alignmentFocus: go.Spot.TopRight,
+        width: 12, height: 12, fill: 'orange',
+        visible: false,
+        figure: 'Arrow',
+        margin: 16,
+        cursor: 'pointer',
+        click: this.navigateToLinkedModel()
+      },
+      new go.Binding('visible', 'shapeRepresentsModel', convertFieldExistenceToLinkVisibility)
+    ));
+  }
+
+  private addVisualisationsOfSameLanguageConstructShape(x: go.Node | go.Link | go.Group, convertFieldExistenceToLinkVisibility: (obj) => boolean) {
+    x.add($(go.Shape,
+      {
+        alignment: go.Spot.BottomLeft,
+        alignmentFocus: go.Spot.BottomLeft,
+        width: 12, height: 12, fill: 'orange',
+        visible: false,
+        margin: 8,
+        figure: 'MultiDocument'
+      },
+      new go.Binding('visible', 'otherVisualisationsOfSameLanguageConstruct', convertFieldExistenceToLinkVisibility)
+    ));
+  }
 }
 
 //  uncomment this if you want a subprocess to expand on drop.  We decided we didn't like this behavior
