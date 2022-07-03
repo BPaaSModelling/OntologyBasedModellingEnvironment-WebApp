@@ -296,7 +296,7 @@ export class BpmnTemplateService {
     );
   }
 
-  getEventNodeTemplate(tooltiptemplate, sizeConverter= 1) {
+  getEventNodeTemplate(tooltiptemplate, sizeConverter = 1) {
     const self = this;
     return $(go.Node, 'Vertical',
       {
@@ -570,6 +570,14 @@ export class BpmnTemplateService {
       const modellingLanguageConstruct = PaletteElementModel.getProbableModellingConstruct(element);
       return !!Mappers.dictionaryAOAMEBPMNElementToGoJsNode.get(modellingLanguageConstruct)
         || !!Mappers.dictionaryAOAMEBPMNGroupToGoJsGroup.get(modellingLanguageConstruct);
+    }
+    return false;
+  }
+
+  isElementBlacklisted(element: PaletteElementModel) {
+    if (PaletteElementModel.getProbableElementType(element) === 'ModelingContainer'
+      && PaletteElementModel.getProbableModellingConstruct(element) === 'Lane') {
+      return true;
     }
     return false;
   }

@@ -274,7 +274,8 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     // ------------------------------------------  Palette   ----------------------------------------------
     this.paletteCategories.forEach((category, indexCategory) => {
       this.mService.paletteElements.forEach((element, indexElement) => {
-        if (element.paletteCategory === category.id && !element.hiddenFromPalette && element.type !== 'PaletteConnector' && this.isElementMappedToBPMNMappers(element)) {
+        if (element.paletteCategory === category.id && !element.hiddenFromPalette && element.type !== 'PaletteConnector'
+          && this.isElementMappedToBPMNMappers(element) && !this.isElementBlacklisted(element)) {
           const paletteId = 'myPalette' + '-' + indexCategory.toString() + '-' + indexElement.toString();
           this.instatiatePaletteElement(element, paletteId, palNodeTemplateMap, palGroupTemplateMap);
         }
@@ -326,5 +327,9 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
           element
         ]  // end nodeDataArray
       });  // end model
+  }
+
+  public isElementBlacklisted(element: PaletteElementModel) {
+    return this.bpmnTemplateService.isElementBlacklisted(element);
   }
 }

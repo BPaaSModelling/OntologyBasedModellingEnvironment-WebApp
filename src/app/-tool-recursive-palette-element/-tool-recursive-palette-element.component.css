@@ -47,10 +47,11 @@ ul {
 .NthLevelElement > app--tool-recursive-palette-element {
   left: -9999px;
   position: absolute;
+  display: block;
 }
 
 .NthLevelElement:hover > app--tool-recursive-palette-element{
-  display: block;
+
   position: absolute;
   top: 0;
   left: 100%;
