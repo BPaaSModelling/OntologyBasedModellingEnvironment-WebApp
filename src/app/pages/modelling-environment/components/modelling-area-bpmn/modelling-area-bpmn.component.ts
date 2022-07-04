@@ -1372,7 +1372,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $(go.Shape, 'Rectangle',  // this is the resized object
           {name: 'SHAPE', fill: 'white', stroke: null},  // need stroke null here or you gray out some of pool border.
           new go.Binding('fill', 'color'),
-          new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)),
+          new go.Binding('desiredSize', 'size').makeTwoWay(go.Size.stringify)),
 
         // the lane header consisting of a Shape and a TextBlock
         $(go.Panel, 'Horizontal',
