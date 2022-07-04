@@ -990,7 +990,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             minSize: new go.Size(BpmnConstantsClass.ActivityNodeWidth, BpmnConstantsClass.ActivityNodeHeight),
             desiredSize: new go.Size(BpmnConstantsClass.ActivityNodeWidth, BpmnConstantsClass.ActivityNodeHeight)
           },
-          new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify),
+          new go.Binding('desiredSize', 'size').makeTwoWay(go.Size.stringify),
           $(go.Panel, 'Spot',
             $(go.Shape, 'RoundedRectangle',  // the outside rounded rectangle
               {
@@ -1058,9 +1058,8 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               desiredSize: new go.Size(BpmnConstantsClass.GatewayNodeSize, BpmnConstantsClass.GatewayNodeSize),
               portId: '', fromLinkable: true, toLinkable: true, cursor: 'pointer',
               fromSpot: go.Spot.NotLeftSide, toSpot: go.Spot.NotRightSide
-            }
-            // TODO maybe uncomment and fix this
-            // new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify)  // end main shape
+            },
+            //new go.Binding('desiredSize', 'size').makeTwoWay(go.Size.stringify)  // end main shape
           ),
           $(go.Shape, 'NotAllowed',
             {
@@ -1126,7 +1125,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             name: 'LANE',
             minSize: new go.Size(BpmnConstantsClass.ActivityNodeWidth, BpmnConstantsClass.ActivityNodeHeight * 0.667)
           },
-          new go.Binding('desiredSize', 'size', go.Size.parse).makeTwoWay(go.Size.stringify),
+          new go.Binding('desiredSize', 'size').makeTwoWay(go.Size.stringify),
           $(go.TextBlock,
             {
               row: 0, column: 0,
