@@ -334,7 +334,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         const linkData = {
           key: element.id,
           element: element,
-          text: element.label,
+          text: element.label ?? ' ',
           fromArrow: element.fromArrow || '',
           toArrow: element.toArrow || '',
           from: this.findShapeById(model.elements, element.fromShape),
@@ -1587,8 +1587,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           },
           new go.Binding('text', 'text').makeTwoWay(),
           new go.Binding('visible', 'visible').makeTwoWay()),
-
-
+        this.getArrowShape(0, new go.Point(25, -10)),
       );
 
 
@@ -1603,10 +1602,12 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $(go.Shape, {stroke: 'black', strokeWidth: 1, strokeDashArray: [6, 2]}),
         $(go.Shape, {toArrow: 'Triangle', scale: 1, fill: 'white', stroke: 'black'}),
         $(go.Shape, {fromArrow: 'Circle', scale: 1, visible: true, stroke: 'black', fill: 'white'}),
+        this.getArrowShape(),
         $(go.TextBlock, {
             editable: true, text: 'label'
           }, // Link label
-          new go.Binding('text', 'text').makeTwoWay())
+          new go.Binding('text', 'text').makeTwoWay()),
+        this.getArrowShape(0, new go.Point(25, -10)),
       );
 
     const dataAssociationLinkTemplate =
@@ -1617,8 +1618,10 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           reshapable: true, relinkableFrom: true, relinkableTo: true
         },
         new go.Binding('points').makeTwoWay(),
+
         $(go.Shape, {stroke: 'black', strokeWidth: 1, strokeDashArray: [1, 3]}),
         $(go.Shape, {toArrow: 'OpenTriangle', scale: 1, fill: null, stroke: 'blue'}),
+        this.getArrowShape(0, new go.Point(25, -10)),
       );
 
     const annotationAssociationLinkTemplate =
@@ -1631,6 +1634,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         new go.Binding('points').makeTwoWay(),
         $(go.Shape, {stroke: 'black', strokeWidth: 1, strokeDashArray: [1, 3]}),
         $(go.Shape, {toArrow: 'OpenTriangle', scale: 1, stroke: 'black'}),
+        this.getArrowShape(0, new go.Point(25, -10)),
       );
 
     const customLinkTemplate =
@@ -2035,7 +2039,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getArrowShape(margin = 2): go.GraphObject {
+  private getArrowShape(margin = 2, segmentOffset = new go.Point(0, 0)): go.GraphObject {
     const self = this;
     return $(go.Shape,
       {
@@ -2046,7 +2050,8 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         figure: 'Arrow',
         margin: margin,
         cursor: 'pointer',
-        click: self.navigateToLinkedModel ? self.navigateToLinkedModel() : () => ({})
+        click: self.navigateToLinkedModel(),
+        segmentOffset: segmentOffset
       },
       new go.Binding('visible', 'shapeRepresentsModel', (e) => !!e));
   }
