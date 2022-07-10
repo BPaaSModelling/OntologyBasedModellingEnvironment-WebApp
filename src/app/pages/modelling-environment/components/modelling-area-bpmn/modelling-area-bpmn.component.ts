@@ -1877,6 +1877,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   }
 
   public overrideContextMenu(nodeTemplateMap: go.Map<string, go.Node>, linkTemplateMap: go.Map<string, go.Link>, groupTemplateMap: go.Map<string, go.Group>) {
+    const self = this;
     // override context menu
     const contextMenu = $('ContextMenu',
       $('ContextMenuButton',
@@ -2022,16 +2023,26 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             }
           }
         }
-      )
+      ),
+      $('ContextMenuButton',
+        $(go.TextBlock, 'Add Lane'),
+        // in the click event handler, the obj.part is the Adornment; its adornedObject is the port
+        {
+          click: function (e: go.InputEvent, obj: go.GraphObject) {
+            self.addLaneEvent((obj.part as go.Adornment).adornedObject as go.Node);
+          }
+        },
+        new go.Binding('visible', '', self.isLaneMenuVisible),
+      ),
     );
 
     nodeTemplateMap.iteratorValues.each(n => n.contextMenu = contextMenu);
     linkTemplateMap.iteratorValues.each(n => n.contextMenu = contextMenu);
-    groupTemplateMap.iterator.each((n) => {
-      if (n.key !== 'Pool') {
-        n.value.contextMenu = contextMenu;
-      }
-    });
+    groupTemplateMap.iterator.each((n) => n.value.contextMenu = contextMenu);
+  }
+
+  private isLaneMenuVisible(m) {
+    return m?.element?.modellingLanguageConstruct === 'Pool';
   }
 
   private addCustomShapes(nodeTemplateMap: go.Map<string, go.Node>, linkTemplateMap: go.Map<string, go.Link>, groupTemplateMap: go.Map<string, go.Group>, convertFieldExistenceToLinkVisibility: (obj) => boolean) {
