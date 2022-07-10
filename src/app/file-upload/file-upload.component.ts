@@ -54,6 +54,7 @@ export class FileUploadComponent implements OnInit {
   file: File = null; // Variable to store file
   service: ModellerService;
   // Inject service
+
   constructor(private fileUploadService: FileUploadService, private uploadService: ModellerService) { }
 
   ngOnInit(): void {
@@ -78,7 +79,7 @@ export class FileUploadComponent implements OnInit {
           this.loading = false; // Flag variable
           this.uploadService.uploadFromDesktop(this.shortLink);
           console.log("Fine upload!")
-          var x = document.getElementById('myDIV');
+          const x = document.getElementById('myDIV');
           x.style.display = 'block';
         }
       }

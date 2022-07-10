@@ -62,6 +62,7 @@ import {ModalModelMultipleExport} from './modal-model-multiple-export/modal-mode
 import {ModalModelMultipleImport} from './modal-model-multiple-import/modal-model-multiple-import.component';
 import { FileUploadComponent } from    './file-upload/file-upload.component';
 import {HomeComponent} from './home/home.component';
+import {EAPValidatorEnvironmentComponent} from './EAP-Vaildator/EAP-Validator-environment.component';
 
 
 const appRoutes: Routes = [
@@ -69,6 +70,7 @@ const appRoutes: Routes = [
   { path: 'importExport', component: ImportExportEnvironmentComponent},
   { path: 'home', component: HomeComponent},
   { path: '', component: HomeComponent},
+  { path: 'EAP', component: EAPValidatorEnvironmentComponent},
 
 
 ];
@@ -113,7 +115,8 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModalModelMultipleExport,
     ModalModelMultipleImport,
     FileUploadComponent,
-    HomeComponent
+    HomeComponent,
+    EAPValidatorEnvironmentComponent
 
   ],
   entryComponents: [

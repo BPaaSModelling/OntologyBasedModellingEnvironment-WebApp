@@ -58,7 +58,14 @@ export class ModellerService {
 
   public modalModelMultipleExport: ModalModelMultipleExport;
 
+  public eapResult$: Observable<string> = of();
+  public eapResult: string;
 
+  public eapResult2$: Observable<string> = of();
+  public eapResult2: string;
+
+  public eapResult3$: Observable<string> = of();
+  public eapResult3: string;
   // public namespaceMap$: Observable<Map<string, string>> = of({});
 
   public selectedModelingLanguage;
@@ -469,6 +476,44 @@ export class ModellerService {
     );
   }
 
+  queryEAPValidation(eapModelforQuery: string []) {
+    this.httpClient.post<string>(this.endpointSettings.uploadTtlFromDesktopEAP(), eapModelforQuery).subscribe(
+      data => {
+        this.eapResult$ = of(data);
+        this.eapResult = data;
+        console.log(data);
+      }, error =>console.log (error)
+    );
+  }
+  queryEAPValidationSPOC(eapModelforQuery: string []) {
+    this.httpClient.post<string>(this.endpointSettings.postEapModelForValidation(), eapModelforQuery).subscribe(
+      data => {
+        this.eapResult$ = of(data);
+        this.eapResult = data;
+        console.log(data);
+      }, error =>console.log (error)
+    );
+  }
+
+  queryEAPValidation2(eapModelforQuery: string []) {
+    this.httpClient.post<string>(this.endpointSettings.postEapModelForValidation(), eapModelforQuery).subscribe(
+      data => {
+        this.eapResult2$ = of(data);
+        this.eapResult2 = data;
+        console.log(data);
+      }, error =>console.log (error)
+    );
+  }
+  queryEAPValidation3(eapModelforQuery: string []) {
+    this.httpClient.post<string>(this.endpointSettings.postEapModelForValidation(), eapModelforQuery).subscribe(
+      data => {
+        this.eapResult3$ = of(data);
+        this.eapResult3 = data;
+        console.log(data);
+      }, error =>console.log (error)
+    );
+  }
+
 
 
   //Get prefixes from fuseki
@@ -495,6 +540,10 @@ export class ModellerService {
       this.httpClient.post(this.endpointSettings.uploadTtlFromDesktop(), sTtlFromDesktop).subscribe(data=>{},error => console.log(error));
   }
 
+  uploadFromDesktopEAP(sTtlFromDesktop: string){
+
+    this.httpClient.post(this.endpointSettings.uploadTtlFromDesktopEAP(), sTtlFromDesktop).subscribe(data=>{},error => console.log(error));
+  }
 
 
 

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <title>EAP Validation</title>
+</head>
+<body>
+<br>
+<!--<mat-grid-list cols="2" rowHeight="2:1">
+  <mat-grid-tile class="import">
+    <mat-card-content>-->
+<div class="row">
+
+  <div class="col-md-8">
+    <div class="sbvr">
+        <h1 style="text-align:center">EAP Validation </h1>
+      <div><h2>Select the model you want to validate</h2></div><br><br>
+
+      <mat-form-field appearance="fill">
+        <mat-select
+                   [(ngModel)]="selectedModel">
+          <mat-option *ngFor="let model of models"  [value]="model">{{model.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+
+      <!--file io section test-->
+      <div class="text-center">
+        <input class="form-control" type="file"
+               (change)="onChange($event)">
+        <br>
+        <button  class="button7" style="background-color:#2979FF" (click)="onUpload()"
+                 class="btn btn-success">
+          Upload
+        </button>
+      </div>
+
+      <!-- Shareable short link of  uoloaded file -->
+
+      <!--
+      <div class="container text-center jumbotron"
+           *ngIf="shortLink">-->
+      <!--ATTENTION: The commented code below allow to show realtime the link when it's retrieved from file.io-->
+      <!--<h2> Visit Here</h2>
+      <a href="{{shortLink}}">{{shortLink}}</a>-->
+      <!--</div>
+      -->
+      <!--Flag variable is used here-->
+      <div *ngIf="loading">
+        <h3>Loading ...</h3>
+        <div id="myDIV" class="tickForHidden">Upload performed with success!</div>
+      </div>
+<br>
+       <div> <button class="button10" style="background-color:#2979FF" (click)="postEAPForValidationFromDesktop()">Validate!</button></div>
+        <img src="../../assets/images/Green_tick.png" height="50px" width="50px" id="greenTick0" class="tickForHidden" >
+        <img src="../../assets/images/Red_x.jpg" height="50px" width="50px" id="redTick0" class="tickForHidden" >
+
+
+<!--
+
+<br><br>
+
+
+
+        <div><h2>Select the EAP you want to validate from the list below</h2></div><br><br>
+      <div><h4>Single point of access for student
+        <button class="button10" style="background-color:#2979FF" (click)="postEAPForValidationSpoc()">Validate</button>
+        <img src="../../assets/images/Green_tick.png" height="50px" width="50px" id="greenTick1" class="tickForHidden" >
+        <img src="../../assets/images/Red_x.jpg" height="50px" width="50px" id="redTick1" class="tickForHidden" >
+       </h4></div>
+
+      <div><h4>MDM is unique                           <button class="button10" style="background-color:#2979FF" (click)="postEAPForValidationMDM()">Validate</button>
+        <img src="../../assets/images/Green_tick.png" height="50px" width="50px" id="greenTick2" class="tickForHidden" >
+        <img src="../../assets/images/Red_x.jpg" height="50px" width="50px" id="redTick2" class="tickForHidden" ></h4></div>
+
+      <div><h4>MS cloud for all IT platform            <button class="button10" style="background-color:#2979FF" (click)="postEAPForValidationMsTeams()">Validate</button>
+        <img src="../../assets/images/Green_tick.png" height="50px" width="50px" id="greenTick3" class="tickForHidden" >
+        <img src="../../assets/images/Red_x.jpg" height="50px" width="50px" id="redTick3" class="tickForHidden" ></h4></div>
+
+
+        -->
+      </div>
+
+    </div>
+</div>
+</body>

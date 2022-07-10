@@ -226,6 +226,11 @@ export class EndpointSettings {
 
   }
 
+  public postEapModelForValidation(){
+    return this.webserviceEndpoint + "/ModEnv/validatePrinciple"   ;
+
+  }
+
 
   public getPrefixFromFuseki(){
     return this.webserviceEndpoint + "/ModEnv/getPrefixesFromFuseki2"   ;
@@ -235,9 +240,13 @@ export class EndpointSettings {
     return this.webserviceEndpoint + "/ModEnv/getLanguagesFromGithub"   ;
 
   }
-
   public uploadTtlFromDesktop(){
     return this.webserviceEndpoint + "/ModEnv/postTtlFromDesktop"   ;
+
+  }
+
+  public uploadTtlFromDesktopEAP(){
+    return this.webserviceEndpoint + "/ModEnv/validatePrincipleEAP"   ;
 
   }
 }

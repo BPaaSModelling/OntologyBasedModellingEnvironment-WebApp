@@ -10,8 +10,8 @@ mat-grid-tile {
   background: lightblue;
 }
 
-.import {
-  background-image: url("../../assets/images/import.png");
+.sbvr {
+  background-image: url("../../assets/images/whiteForEap.jpg");
   backdrop-filter: blur(5px);
   background-position: center;
   padding: 90px 90px;
@@ -21,7 +21,7 @@ mat-grid-tile {
   margin-right: 50px;
 }
 
-.import h1{
+.sbvr h1{
 
   color:blue;
   font-size: 50px;
@@ -29,51 +29,37 @@ mat-grid-tile {
 }
 
 
-.export {
-  background-image: url("../../assets/images/export.jpg");
-  backdrop-filter: blur(30px);
-  background-color: rgba(178, 60, 253, 0.2);
-  background-position: center;
-  padding: 90px 90px;
-  border-radius: 5px;
-  box-shadow: 0 5px 15px rgba(0,0,0,.5);
-  margin-left: 50px;
-  margin-right: 50px;
-}
 
-
-.export h1{
-
-  color:blue;
-  font-size: 50px;
-  font-weight: bold;
-
-}
-
-.import h2{
+.sbvr h2{
   color:black;
   font-style: italic;
   font-size: 25px;
 }
-.export h2{
 
-  color:black;
-  font-style: italic;
-  font-size: 25px;
-}
 .centered{
   display: flex;
   justify-content: center;
+}
+
+.center {
+  margin: auto;
+  width: 50%;
+  border: 1px dot-dot-dash dodgerblue;
+  padding: 10px;
 }
 
 .button10 {
   background-color: blue; /* Green */
   border: none;
   color: white;
-  padding: 15px 32px;
+  padding: 12px 20px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 12px;
   border-radius: 12px;
+
+}
+.tickForHidden{
+  display: none;
 }
