@@ -2011,33 +2011,34 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           }
         }
       ),
-      $('ContextMenuButton',
-        $(go.TextBlock, 'Change instantion type'),
-        {
-          click: (e, obj) => {
-            const node = obj.part.adornedPart;
-            if (node != null) {
-              const element = node.data.element;
-
-              const modelElementDetailAndModel = new ModelElementDetailAndModel();
-              modelElementDetailAndModel.modelId = this.selectedModel.id;
-              modelElementDetailAndModel.elementDetail = element;
-
-              const dialogRef = this.dialog.open(ModalInstantiationTypeComponent, {
-                data: modelElementDetailAndModel
-              });
-
-              dialogRef.afterClosed().pipe(take(1)).subscribe(result => {
-                if (result && result !== 'Cancel') {
-                  element.abstractElementAttributes.instantiationType = result.selectedModel;
-                  this.mService.updateElement(element, this.selectedModel.id);
-                  this.myDiagram.rebuildParts();
-                }
-              });
-            }
-          }
-        }
-      ),
+      // TODO add this back when backend also changes the instatiation type in the PUT request
+      // $('ContextMenuButton',
+      //   $(go.TextBlock, 'Change instantion type'),
+      //   {
+      //     click: (e, obj) => {
+      //       const node = obj.part.adornedPart;
+      //       if (node != null) {
+      //         const element = node.data.element;
+      //
+      //         const modelElementDetailAndModel = new ModelElementDetailAndModel();
+      //         modelElementDetailAndModel.modelId = this.selectedModel.id;
+      //         modelElementDetailAndModel.elementDetail = element;
+      //
+      //         const dialogRef = this.dialog.open(ModalInstantiationTypeComponent, {
+      //           data: modelElementDetailAndModel
+      //         });
+      //
+      //         dialogRef.afterClosed().pipe(take(1)).subscribe(result => {
+      //           if (result && result !== 'Cancel') {
+      //             element.abstractElementAttributes.instantiationType = result.selectedModel;
+      //             this.mService.updateElement(element, this.selectedModel.id);
+      //             this.myDiagram.rebuildParts();
+      //           }
+      //         });
+      //       }
+      //     }
+      //   }
+      // ),
       $('ContextMenuButton',
         $(go.TextBlock, 'Add Lane'),
         // in the click event handler, the obj.part is the Adornment; its adornedObject is the port
