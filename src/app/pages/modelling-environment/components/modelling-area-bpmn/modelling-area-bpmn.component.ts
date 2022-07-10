@@ -450,41 +450,41 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     };
   }
 
-  //
-  // private handleNodePaste(txn: any) {
-  //   // TODO handle case when several elements are copied (including containers and links)
-  //   const data = txn.changes.toArray().find(change => change.propertyName = 'nodeDataArray').newValue;
-  //   const element = data.element;
-  //
-  //   const paletteConstructName = element.paletteConstruct.split(':')[1];
-  //   const key = paletteConstructName + '_Shape_' + UUID.UUID();
-  //
-  //   this.myDiagram.model.setKeyForNodeData(data, key);
-  //   const newElement = Object.assign({}, element); // apparently copying leads to referencing the same element from both data objects...
-  //   newElement.id = key;
-  //   const newNodeData = this.myDiagram.model.findNodeDataForKey(key);
-  //   newNodeData.element = newElement;
-  //
-  //   this.mService.copyElement(
-  //     newElement,
-  //     this.selectedModel.id
-  //   ).then(response => {
-  //     const nodeToManipulate = this.myDiagram.model.findNodeDataForKey(key);
-  //     this.myDiagram.model.setDataProperty(nodeToManipulate, 'otherVisualisationsOfSameLanguageConstruct', response.otherVisualisationsOfSameLanguageConstruct);
-  //     nodeToManipulate.element = response;
-  //
-  //     response.otherVisualisationsOfSameLanguageConstruct.forEach(otherElementDataKey => {
-  //       const otherNodeData = this.myDiagram.model.findNodeDataForKey(otherElementDataKey);
-  //       if (otherNodeData) {
-  //         const otherElements = otherNodeData.element.otherVisualisationsOfSameLanguageConstruct && otherNodeData.element.otherVisualisationsOfSameLanguageConstruct.slice() || [];
-  //         otherElements.push(response.id);
-  //         this.myDiagram.model.setDataProperty(otherNodeData, 'otherVisualisationsOfSameLanguageConstruct', otherElements);
-  //         otherNodeData.element.otherVisualisationsOfSameLanguageConstruct = otherElements;
-  //       }
-  //     });
-  //   });
-  // }
-  //
+
+  private handleNodePaste(txn: any) {
+    // TODO handle case when several elements are copied (including containers and links)
+    const data = txn.changes.toArray().find(change => change.propertyName = 'nodeDataArray').newValue;
+    const element = data.element;
+
+    const paletteConstructName = element.paletteConstruct.split(':')[1];
+    const key = paletteConstructName + '_Shape_' + UUID.UUID();
+
+    this.myDiagram.model.setKeyForNodeData(data, key);
+    const newElement = Object.assign({}, element); // apparently copying leads to referencing the same element from both data objects...
+    newElement.id = key;
+    const newNodeData = this.myDiagram.model.findNodeDataForKey(key);
+    newNodeData.element = newElement;
+
+    this.mService.copyElement(
+      newElement,
+      this.selectedModel.id
+    ).then(response => {
+      const nodeToManipulate = this.myDiagram.model.findNodeDataForKey(key);
+      this.myDiagram.model.setDataProperty(nodeToManipulate, 'otherVisualisationsOfSameLanguageConstruct', response.otherVisualisationsOfSameLanguageConstruct);
+      nodeToManipulate.element = response;
+
+      response.otherVisualisationsOfSameLanguageConstruct.forEach(otherElementDataKey => {
+        const otherNodeData = this.myDiagram.model.findNodeDataForKey(otherElementDataKey);
+        if (otherNodeData) {
+          const otherElements = otherNodeData.element.otherVisualisationsOfSameLanguageConstruct && otherNodeData.element.otherVisualisationsOfSameLanguageConstruct.slice() || [];
+          otherElements.push(response.id);
+          this.myDiagram.model.setDataProperty(otherNodeData, 'otherVisualisationsOfSameLanguageConstruct', otherElements);
+          otherNodeData.element.otherVisualisationsOfSameLanguageConstruct = otherElements;
+        }
+      });
+    });
+  }
+
   private handleNodeResizing(txn: any) {
 
     // resizing should only be affecting one element, we are not interested in the others
@@ -1753,7 +1753,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       }
 
       if (txn.name === 'Paste') {
-        // this.handleNodePaste(txn);
+        this.handleNodePaste(txn);
       }
     });
   }
