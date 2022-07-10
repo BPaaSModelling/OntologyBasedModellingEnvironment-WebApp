@@ -296,7 +296,7 @@ export class BpmnTemplateService {
     );
   }
 
-  getEventNodeTemplate(tooltiptemplate, sizeConverter = 1) {
+  getEventNodeTemplate(tooltiptemplate, sizeConverter = 1, getArrowShape = $(go.Shape, {visible: false})) {
     const self = this;
     return $(go.Node, 'Vertical',
       {
@@ -307,6 +307,7 @@ export class BpmnTemplateService {
       new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
       // can be resided according to the user's desires
       {resizable: false, resizeObjectName: 'SHAPE'},
+      getArrowShape,
       $(go.Panel, 'Spot',
         $(go.Shape, 'Circle',  // Outer circle
           {
@@ -352,7 +353,7 @@ export class BpmnTemplateService {
           },
           new go.Binding('figure', 'eventType', (s) => self.nodeEventTypeConverter(s)),
           new go.Binding('fill', 'eventDimension', (s) => self.nodeEventDimensionSymbolFillConverter(s))
-        )
+        ),
       ),  // end Auto Panel
       $(go.TextBlock,
         {alignment: go.Spot.Center, textAlign: 'center', margin: 5, editable: true},
@@ -424,10 +425,11 @@ export class BpmnTemplateService {
     );
   }
 
-  getAnnotationNodeTemplate() {
+  getAnnotationNodeTemplate(linkedArrowShape = $(go.Shape, {visible: false})) {
     return $(go.Node, 'Auto',
       {background: BpmnConstantsClass.GradientLightGray, locationSpot: go.Spot.Center},
       new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+      linkedArrowShape,
       $(go.Shape, 'Annotation', // A left bracket shape
         {
           portId: '', fromLinkable: true, cursor: 'pointer', fromSpot: go.Spot.Left,
@@ -439,10 +441,11 @@ export class BpmnTemplateService {
     );
   }
 
-  getDataObjectNodeTemplate() {
+  getDataObjectNodeTemplate(linkedArrowShape = $(go.Shape, {visible: false})) {
     return $(go.Node, 'Vertical',
       {locationObjectName: 'SHAPE', locationSpot: go.Spot.Center},
       new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+      linkedArrowShape,
       $(go.Shape, 'File',
         {
           name: 'SHAPE',
@@ -462,10 +465,11 @@ export class BpmnTemplateService {
     );
   }
 
-  getDataStoreNodeTemplate() {
+  getDataStoreNodeTemplate(linkedArrowShape = $(go.Shape, {visible: false})) {
     return $(go.Node, 'Vertical',
       {locationObjectName: 'SHAPE', locationSpot: go.Spot.Center},
       new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+      linkedArrowShape,
       $(go.Shape, 'Database',
         {
           name: 'SHAPE',

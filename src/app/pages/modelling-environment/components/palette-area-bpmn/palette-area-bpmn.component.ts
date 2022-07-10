@@ -219,7 +219,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
 
     const tooltiptemplate = this.bpmnTemplateService.getTooltipTemplate();
     const activityNodeTemplateForPalette = this.bpmnTemplateService.getActivityNodeTemplateForPalette();
-    const eventNodeTemplate = this.bpmnTemplateService.getEventNodeTemplate(tooltiptemplate);
+    const eventNodeTemplate = this.bpmnTemplateService.getEventNodeTemplate(tooltiptemplate, 1);
     const gatewayNodeTemplateForPalette = this.bpmnTemplateService.getGatewayNodeTemplateForPalette(tooltiptemplate);
     const annotationNodeTemplate = this.bpmnTemplateService.getAnnotationNodeTemplate();
     const dataObjectNodeTemplate = this.bpmnTemplateService.getDataObjectNodeTemplate();

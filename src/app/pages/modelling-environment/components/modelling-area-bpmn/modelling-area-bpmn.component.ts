@@ -1015,6 +1015,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             //          new go.Binding("visible", "isTransaction")
             //         ),
             // task icon
+
             $(go.Shape, 'BpmnTaskScript',    // will be None, Script, Manual, Service, etc via converter
               {
                 alignment: new go.Spot(0, 0, 5, 5), alignmentFocus: go.Spot.TopLeft,
@@ -1025,6 +1026,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             ), // end Task Icon
             this.bpmnTemplateService.makeMarkerPanel(false, 1) // sub-process,  loop, parallel, sequential, ad doc and compensation markers
           ),  // end main body rectangles spot panel
+          self.getArrowShape(),
           $(go.TextBlock,  // the center text
             {
               alignment: go.Spot.Center, textAlign: 'center', margin: 12,
@@ -1037,7 +1039,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
     // ------------------------------------------  Event Node Template  ----------------------------------------------
 
-    const eventNodeTemplate = this.bpmnTemplateService.getEventNodeTemplate(tooltiptemplate);
+    const eventNodeTemplate = this.bpmnTemplateService.getEventNodeTemplate(tooltiptemplate, 1, self.getArrowShape());
 
     // ------------------------------------------  Gateway Node Template   ----------------------------------------------
     const gatewayNodeTemplate =
@@ -1050,7 +1052,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
         // can be resided according to the user's desires
         {resizable: false, resizeObjectName: 'SHAPE'},
+
         $(go.Panel, 'Spot',
+
           $(go.Shape, 'Diamond',
             {
               strokeWidth: 1, fill: BpmnConstantsClass.GatewayNodeFill, stroke: BpmnConstantsClass.GatewayNodeStroke,
@@ -1094,7 +1098,8 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             new go.Binding('visible', 'gatewayType', function (s) {
               return s === 5;
             }) // inner  only visible for == 5
-          )
+          ),
+          self.getArrowShape(),
         ),
         $(go.TextBlock,
           {alignment: go.Spot.Center, textAlign: 'center', margin: 5, editable: true},
@@ -1104,11 +1109,11 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
     // --------------------------------------------------------------------------------------------------------------
 
-    const annotationNodeTemplate = this.bpmnTemplateService.getAnnotationNodeTemplate();
+    const annotationNodeTemplate = this.bpmnTemplateService.getAnnotationNodeTemplate(self.getArrowShape());
 
-    const dataObjectNodeTemplate = this.bpmnTemplateService.getDataObjectNodeTemplate();
+    const dataObjectNodeTemplate = this.bpmnTemplateService.getDataObjectNodeTemplate(self.getArrowShape());
 
-    const dataStoreNodeTemplate = this.bpmnTemplateService.getDataStoreNodeTemplate();
+    const dataStoreNodeTemplate = this.bpmnTemplateService.getDataStoreNodeTemplate(self.getArrowShape());
 
     // ------------------------------------------  private process Node Template Map   ----------------------------------------------
 
@@ -1195,6 +1200,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             },
             new go.Binding('source'),
             new go.Binding('desiredSize')),
+          self.getArrowShape(8),
           $(go.TextBlock,
             {
               font: '11pt Helvetica, Arial, sans-serif',
@@ -1373,6 +1379,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           {name: 'SHAPE', fill: 'white', stroke: null},  // need stroke null here or you gray out some of pool border.
           new go.Binding('fill', 'color'),
           new go.Binding('desiredSize', 'size').makeTwoWay(go.Size.stringify)),
+        self.getArrowShape(),
 
         // the lane header consisting of a Shape and a TextBlock
         $(go.Panel, 'Horizontal',
@@ -1451,6 +1458,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           new go.Binding('fill', 'color')),
         $(go.Panel, 'Table',
           {defaultColumnSeparatorStroke: 'black'},
+          self.getArrowShape(),
           $(go.Panel, 'Horizontal',
             {column: 0, angle: 270},
             $(go.TextBlock,
@@ -1495,6 +1503,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           },
           new go.Binding('source'),
           new go.Binding('desiredSize')),
+        self.getArrowShape(8),
         $(go.TextBlock,
           {
             font: '11pt Helvetica, Arial, sans-serif',
@@ -1506,30 +1515,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           },
           new go.Binding('text').makeTwoWay(),
           new go.Binding('alignment')
-        ),
-        $(go.Shape,
-          {
-            alignment: go.Spot.TopLeft,
-            alignmentFocus: go.Spot.TopLeft,
-            width: 12, height: 12, fill: 'orange',
-            visible: false,
-            figure: 'Arrow',
-            margin: 8,
-            cursor: 'pointer',
-            click: this.navigateToLinkedModel()
-          },
-          new go.Binding('visible', 'shapeRepresentsModel', convertFieldExistenceToLinkVisibility)
-        ),
-        $(go.Shape,
-          {
-            alignment: go.Spot.BottomLeft,
-            alignmentFocus: go.Spot.BottomLeft,
-            width: 12, height: 12, fill: 'orange',
-            visible: false,
-            margin: 8,
-            figure: 'MultiDocument'
-          },
-          new go.Binding('visible', 'otherVisualisationsOfSameLanguageConstruct', convertFieldExistenceToLinkVisibility)
         )
       );
 
@@ -1596,11 +1581,14 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           new go.Binding('segmentOffset', 'isDefault', function (s) {
             return s ? new go.Point(5, 0) : new go.Point(0, 0);
           })),
+
         $(go.TextBlock, { // this is a Link label
             name: 'Label', editable: true, text: 'label', segmentOffset: new go.Point(-10, -10), visible: false
           },
           new go.Binding('text', 'text').makeTwoWay(),
-          new go.Binding('visible', 'visible').makeTwoWay())
+          new go.Binding('visible', 'visible').makeTwoWay()),
+
+
       );
 
 
@@ -1630,7 +1618,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         },
         new go.Binding('points').makeTwoWay(),
         $(go.Shape, {stroke: 'black', strokeWidth: 1, strokeDashArray: [1, 3]}),
-        $(go.Shape, {toArrow: 'OpenTriangle', scale: 1, fill: null, stroke: 'blue'})
+        $(go.Shape, {toArrow: 'OpenTriangle', scale: 1, fill: null, stroke: 'blue'}),
       );
 
     const annotationAssociationLinkTemplate =
@@ -1642,7 +1630,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         },
         new go.Binding('points').makeTwoWay(),
         $(go.Shape, {stroke: 'black', strokeWidth: 1, strokeDashArray: [1, 3]}),
-        $(go.Shape, {toArrow: 'OpenTriangle', scale: 1, stroke: 'black'})
+        $(go.Shape, {toArrow: 'OpenTriangle', scale: 1, stroke: 'black'}),
       );
 
     const customLinkTemplate =
@@ -1661,6 +1649,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $(go.Shape,  // the "to" arrowhead
           new go.Binding('toArrow', 'toArrow'),
           {scale: 2}),
+        self.getArrowShape(),
         $(go.TextBlock,
           {
             font: '11pt Helvetica, Arial, sans-serif',
@@ -1671,17 +1660,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             alignment: go.Spot.Left // or go.Spot.Bottom
           },
           new go.Binding('text').makeTwoWay()
-        ),
-        $(go.Shape,
-          {
-            alignment: go.Spot.TopLeft,
-            alignmentFocus: go.Spot.TopLeft,
-            width: 12, height: 12, fill: 'orange',
-            visible: false,
-            figure: 'Arrow',
-            click: this.navigateToLinkedModel()
-          },
-          new go.Binding('visible', 'shapeRepresentsModel', convertFieldExistenceToLinkVisibility)
         )
       );
 
@@ -2047,33 +2025,30 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
 
   private addCustomShapes(nodeTemplateMap: go.Map<string, go.Node>, linkTemplateMap: go.Map<string, go.Link>, groupTemplateMap: go.Map<string, go.Group>, convertFieldExistenceToLinkVisibility: (obj) => boolean) {
     nodeTemplateMap.iteratorValues.each(x => {
-      this.addLinkArrowShape(x, convertFieldExistenceToLinkVisibility);
       this.addVisualisationsOfSameLanguageConstructShape(x, convertFieldExistenceToLinkVisibility);
     });
     linkTemplateMap.iteratorValues.each(x => {
-      this.addLinkArrowShape(x, convertFieldExistenceToLinkVisibility);
       this.addVisualisationsOfSameLanguageConstructShape(x, convertFieldExistenceToLinkVisibility);
     });
     groupTemplateMap.iteratorValues.each(x => {
-      this.addLinkArrowShape(x, convertFieldExistenceToLinkVisibility);
       this.addVisualisationsOfSameLanguageConstructShape(x, convertFieldExistenceToLinkVisibility);
     });
   }
 
-  private addLinkArrowShape(x: go.Node | go.Link | go.Group, convertFieldExistenceToLinkVisibility: (obj) => boolean) {
-    x.add($(go.Shape,
+  private getArrowShape(margin = 2): go.GraphObject {
+    const self = this;
+    return $(go.Shape,
       {
         alignment: go.Spot.TopRight,
         alignmentFocus: go.Spot.TopRight,
         width: 12, height: 12, fill: 'orange',
         visible: false,
         figure: 'Arrow',
-        margin: 16,
+        margin: margin,
         cursor: 'pointer',
-        click: this.navigateToLinkedModel()
+        click: self.navigateToLinkedModel ? self.navigateToLinkedModel() : () => ({})
       },
-      new go.Binding('visible', 'shapeRepresentsModel', convertFieldExistenceToLinkVisibility)
-    ));
+      new go.Binding('visible', 'shapeRepresentsModel', (e) => !!e));
   }
 
   private addVisualisationsOfSameLanguageConstructShape(x: go.Node | go.Link | go.Group, convertFieldExistenceToLinkVisibility: (obj) => boolean) {
