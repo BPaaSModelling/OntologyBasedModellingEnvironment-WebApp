@@ -5,7 +5,7 @@ import {PaletteElementModel} from '../../../../shared/models/PaletteElement.mode
 import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
 import {UUID} from 'angular2-uuid';
 import {ModalExtendPaletteElementComponent} from "../../../../shared/modals/modal-extend-palette-element/modal-extend-palette-element.component";
-import { MatDialog } from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ModalCreateDomainElementsComponent} from "../../../../shared/modals/modal-create-domain-elements/modal-create-domain-elements.component";
 import {ModalPaletteElementPropertiesComponent} from "../../../../shared/modals/modal-palette-element-properties/modal-palette-element-properties.component";
 import {ModalEditPaletteElementComponent} from "../../../../shared/modals/modal-edit-palette-element/modal-edit-palette-element.component";
@@ -18,6 +18,10 @@ import * as go from 'gojs';
 import {BpmnTemplateService} from '../../gojs/bpmn-classes/bpmn-template.service';
 import {FiguresClass} from '../../gojs/figures.class';
 import {timeout} from 'rxjs/operators';
+import {ModalInstancePropertiesComponent} from '../../../../shared/modals/modal-instance-properties/modal-instance-properties.component';
+import {
+  ModalConnectorElementPropertiesComponent
+} from '../../../../shared/modals/modal-connector-element-properties/modal-connector-element-properties.component';
 const $ = go.GraphObject.make;
 
 @Component({
@@ -35,12 +39,6 @@ export class PaletteAreaBPMNComponent implements OnInit {
 
 
   @Output() sendElementFromPalette = new EventEmitter();
-  @Output() showPaletteElementPropertyModal = new EventEmitter();
-  @Output() showExtendPaletteElementModal = new EventEmitter();
-  @Output() showCreateDomainElementModal = new EventEmitter();
-  @Output() showConnectorElementPropertyModal = new EventEmitter();
-  @Output() showActivityElementPropertyModal = new EventEmitter();
-  @Output() showEditPaletteElementModal = new EventEmitter();
 
   public modelingViews: ModelingViewModel[] = [];
   // Heroku difference
@@ -95,30 +93,6 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     }
   }
 
-  openPaletteElementPropertiesModal(element: PaletteElementModel) {
-    this.showPaletteElementPropertyModal.emit(element);
-  }
-
-  openExtendPaletteElementModal(element: PaletteElementModel){
-    this.showExtendPaletteElementModal.emit(element);
-  }
-
-  openEditPaletteElementModal(element: PaletteElementModel){
-    this.showEditPaletteElementModal.emit(element);
-  }
-
-  openCreateDomainElementModal(element: PaletteElementModel) {
-    this.showCreateDomainElementModal.emit(element);
-}
-
-  openConnectorElementProperty(element: PaletteElementModel) {
-    this.showConnectorElementPropertyModal.emit(element);
-  }
-
-  openActivityElementProperty(element: PaletteElementModel) {
-    this.showActivityElementPropertyModal.emit(element);
-  }
-
   toggleExtendPaletteElementModal(element: PaletteElementModel) {
     //console.log(element)
     let dialogRef = this.dialog.open(ModalExtendPaletteElementComponent, {
@@ -132,9 +106,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
       this.mService.queryPaletteElements();
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed : ' + result);
-    });
+    this.handleDialogClose(dialogRef);
   }
 
   toggleEditPaletteElementModal(element: PaletteElementModel){
@@ -145,8 +117,15 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
       disableClose: false,
     });
 
+    this.handleDialogClose(dialogRef);
+  }
+
+  private handleDialogClose(dialogRef: MatDialogRef<any, any>) {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed : ' + result);
+      setTimeout(() => {
+        this.loadPaletteGoJSElements();
+      }, 500);
     });
   }
 
@@ -158,9 +137,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
       disableClose: false,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed : ' + result);
-    });
+    this.handleDialogClose(dialogRef);
   }
 
   toggleActivityElementPropertyModal(element: PaletteElementModel) {
@@ -171,9 +148,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
       disableClose: false,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed : ' + result);
-    });
+    this.handleDialogClose(dialogRef);
   }
 
   hideFromPalette(element: PaletteElementModel) {
@@ -216,7 +191,6 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
         this.selectedView = $event.value;
         this.cdRef.detectChanges();
         setTimeout(() => {
-          console.log("Delayed for 1 second.");
           this.loadPaletteGoJSElements();
         }, 1000);
 
@@ -277,7 +251,11 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
         if (element.paletteCategory === category.id && !element.hiddenFromPalette && element.type !== 'PaletteConnector'
           && this.isElementMappedToBPMNMappers(element) && !this.isElementBlacklisted(element)) {
           const paletteId = 'myPalette' + '-' + indexCategory.toString() + '-' + indexElement.toString();
-          this.instatiatePaletteElement(element, paletteId, palNodeTemplateMap, palGroupTemplateMap);
+          const canvasElement = document.getElementById(paletteId).querySelector('canvas');
+          // if canvas element already exists, then don't instantiate again
+          if (!canvasElement) {
+            this.instatiatePaletteElement(element, paletteId, palNodeTemplateMap, palGroupTemplateMap);
+          }
         }
       });
     });
@@ -331,5 +309,16 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
 
   public isElementBlacklisted(element: PaletteElementModel) {
     return this.bpmnTemplateService.isElementBlacklisted(element);
+  }
+
+  toggleCreateDomainElementModal(element: PaletteElementModel) {
+    let dialogRef = this.dialog.open(ModalCreateDomainElementsComponent, {
+      data: {paletteElement: element },
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    this.handleDialogClose(dialogRef);
   }
 }

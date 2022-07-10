@@ -48,10 +48,10 @@
 
 
 <context-menu #elementRightClickMenu>
-  <ng-template let-element contextMenuItem (execute)="openExtendPaletteElementModal($event.value)">
+  <ng-template let-element contextMenuItem (execute)="toggleExtendPaletteElementModal($event.value)">
     Extend {{element.label}}
   </ng-template>
-  <ng-template let-element contextMenuItem (execute)="openEditPaletteElementModal($event.value)">
+  <ng-template let-element contextMenuItem (execute)="toggleEditPaletteElementModal($event.value)">
     Edit {{element.label}}
   </ng-template>
   <!-- <ng-template contextMenuItem [subMenu]="saySubMenu">
@@ -82,7 +82,7 @@
   <ng-template contextMenuItem (execute)="addNewPaletteElement()">
     Add new element to the Palette
   </ng-template>
-  <ng-template let-element contextMenuItem (execute)="openCreateDomainElementModal($event.value)">
+  <ng-template let-element contextMenuItem (execute)="toggleCreateDomainElementModal($event.value)">
     Create new Domain Ontology Element
   </ng-template>
   <!-- Heroku difference -->
