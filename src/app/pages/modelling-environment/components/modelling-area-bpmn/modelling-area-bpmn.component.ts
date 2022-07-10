@@ -37,6 +37,7 @@ import {FiguresClass} from '../../gojs/figures.class';
 import {BpmnTemplateService} from '../../gojs/bpmn-classes/bpmn-template.service';
 import {BpmnConstantsClass} from '../../gojs/bpmn-classes/bpmn-constants.class';
 import {AdditionalCreateOptions} from '../../models/additional-create-options.interface';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 const $ = go.GraphObject.make;
@@ -49,7 +50,7 @@ const $ = go.GraphObject.make;
 })
 export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line:max-line-length
-  public constructor(public mService: ModellerService, public matDialog: MatDialog, private activatedRoute: ActivatedRoute, private router: Router, private bpmnTemplateService: BpmnTemplateService) {
+  public constructor(public mService: ModellerService, public matDialog: MatDialog, private activatedRoute: ActivatedRoute, private router: Router, private bpmnTemplateService: BpmnTemplateService, private snackBar: MatSnackBar) {
     console.log('Constructor of graph');
     (go as any).licenseKey = '54ff43e7b11c28c702d95d76423d38f919a52e63998449a35a0412f6be086d1d239cef7157d78cc687f84cfb487fc2898fc1697d964f073cb539d08942e786aab63770b3400c40dea71136c5ceaa2ea1fa2b24a5c5b775a2dc718cf3bea1c59808eff4d54fcd5cb92b280735562bac49e7fc8973f950cf4e6b3d9ba3fffbbf4faf3c7184ccb4569aff5a70deb6f2a3417f';
 
@@ -536,6 +537,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     if ((this.selectedConnectorMode === undefined || this.selectedConnectorMode.arrowStroke === undefined) && link.category === 'customLink') {
       // @ts-ignore
       this.myDiagram.model.removeLinkData(link.data);
+      this.snackBar.open('You need to select a Connector from the bottom left corner of the palette when connecting custom elements', 'Close', {
+        duration: 5000
+      });
       return;
     }
 
