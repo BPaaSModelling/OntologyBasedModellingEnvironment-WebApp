@@ -38,6 +38,7 @@ import {BpmnTemplateService} from '../../gojs/bpmn-classes/bpmn-template.service
 import {BpmnConstantsClass} from '../../gojs/bpmn-classes/bpmn-constants.class';
 import {AdditionalCreateOptions} from '../../models/additional-create-options.interface';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {ModalInstantiationTypeComponent} from '../../../../shared/modals/modal-instantiation-type/modal-instantiation-type.component';
 
 
 const $ = go.GraphObject.make;
@@ -2006,6 +2007,33 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
                 }
               });
 
+            }
+          }
+        }
+      ),
+      $('ContextMenuButton',
+        $(go.TextBlock, 'Change instantion type'),
+        {
+          click: (e, obj) => {
+            const node = obj.part.adornedPart;
+            if (node != null) {
+              const element = node.data.element;
+
+              const modelElementDetailAndModel = new ModelElementDetailAndModel();
+              modelElementDetailAndModel.modelId = this.selectedModel.id;
+              modelElementDetailAndModel.elementDetail = element;
+
+              const dialogRef = this.dialog.open(ModalInstantiationTypeComponent, {
+                data: modelElementDetailAndModel
+              });
+
+              dialogRef.afterClosed().pipe(take(1)).subscribe(result => {
+                if (result && result !== 'Cancel') {
+                  element.abstractElementAttributes.instantiationType = result.selectedModel;
+                  this.mService.updateElement(element, this.selectedModel.id);
+                  this.myDiagram.rebuildParts();
+                }
+              });
             }
           }
         }

@@ -75,6 +75,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {ModellingAreaBPMNComponent} from './pages/modelling-environment/components/modelling-area-bpmn/modelling-area-bpmn.component';
 import {PaletteAreaBPMNComponent} from './pages/modelling-environment/components/palette-area-bpmn/palette-area-bpmn.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {ModalInstantiationTypeComponent} from './shared/modals/modal-instantiation-type/modal-instantiation-type.component';
 
 
 const appRoutes: Routes = [
@@ -119,6 +120,7 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModalModelCreation,
     ModalViewElementDetail,
     ModalModelLink,
+    ModalInstantiationTypeComponent,
     ModalElementNote,
     ModalModellingLanguageConstructInstanceLink,
     ModalPaletteVisualisation,
