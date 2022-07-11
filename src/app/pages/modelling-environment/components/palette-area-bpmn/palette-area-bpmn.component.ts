@@ -251,9 +251,9 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
         if (element.paletteCategory === category.id && !element.hiddenFromPalette && element.type !== 'PaletteConnector'
           && this.isElementMappedToBPMNMappers(element) && !this.isElementBlacklisted(element)) {
           const paletteId = 'myPalette' + '-' + indexCategory.toString() + '-' + indexElement.toString();
-          const canvasElement = document.getElementById(paletteId).querySelector('canvas');
+          const canvasElement = document.getElementById(paletteId)?.querySelector('canvas');
           // if canvas element already exists, then don't instantiate again
-          if (!canvasElement) {
+          if (document.getElementById(paletteId) && !canvasElement) {
             this.instatiatePaletteElement(element, paletteId, palNodeTemplateMap, palGroupTemplateMap);
           }
         }
