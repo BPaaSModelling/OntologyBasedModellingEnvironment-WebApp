@@ -229,6 +229,11 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     const subProcessGroupTemplateForPalette = this.bpmnTemplateService.getSubProcessGroupTemplateForPalette();
     const poolTemplateForPalette = this.bpmnTemplateService.getPoolTemplateForPalette();
     const swimLanesGroupTemplateForPalette = this.bpmnTemplateService.getSwimLanesGroupTemplateForPalette();
+    gatewayNodeTemplateForPalette.selectionAdorned = false;
+    dataObjectNodeTemplate.selectionAdorned = false;
+    dataStoreNodeTemplate.selectionAdorned = false;
+    eventNodeTemplate.selectionAdorned = false;
+    poolTemplateForPalette.selectionAdorned = false;
 
     // create the nodeTemplateMap, holding special palette "mini" node templates:
     const palNodeTemplateMap = new go.Map<string, go.Node>();

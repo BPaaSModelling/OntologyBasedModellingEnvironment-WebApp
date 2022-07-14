@@ -5,14 +5,14 @@
 <!--</div>-->
 <div>
   <!-- Heroku difference -->
-  <mat-select class="modelling-language" placeholder="Select" (selectionChange)="selectLang($event)">
+  <mat-select class="modelling-language" placeholder="Modelling Language" (selectionChange)="selectLang($event)">
     <mat-option *ngFor="let lang of modelingLanguages" [value]="lang.id">{{lang.label}}</mat-option>
   </mat-select>
 </div>
 
 <div>
   <!-- Heroku difference -->
-  <mat-select class="modelling-language-view" placeholder="Select" (selectionChange)="selectView($event)">
+  <mat-select class="modelling-language-view" placeholder="Modelling Language View" (selectionChange)="selectView($event)">
     <mat-option *ngFor="let view of modelingViews" [value]="view.id">{{view.label}}</mat-option>
   </mat-select>
 </div>
