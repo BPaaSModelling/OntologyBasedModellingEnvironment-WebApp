@@ -1,12 +1,18 @@
 .category-title{
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 0px;
-  border-top: 1px solid darkslategray;
   margin-bottom: 5px;
+  background: linear-gradient(#3f51b5, #9198e5);
+  color: whitesmoke;
+  height: 1.25rem;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+
 .modelling-language {
-  text-align: center;
+  text-align: left;
   margin: 0px;
   border-top: 1px solid darkslategray;
   margin-bottom: 5px;
@@ -16,7 +22,7 @@
 }
 
 .modelling-language-view {
-  text-align: center;
+  text-align: left;
   margin: 0px;
   border-top: 1px solid darkslategray;
   margin-bottom: 5px;
@@ -127,11 +133,6 @@ app--tool-recursive-palette-element:hover {
   filter: alpha(opacity=100);
 }
 
-.category-title {
-  background-image: url(../../../../../assets/images/background-categories.png);
-  background-repeat: repeat-x;
-}
-
 ::ng-deep .ngx-contextmenu .dropdown-menu {
   border: solid 1px grey;
   background-color: white;
@@ -156,7 +157,4 @@ app--tool-recursive-palette-element:hover {
   color:black;
   background-color:lightgrey;
   border-radius: 4px;
-}
-.ng-template {
-
 }

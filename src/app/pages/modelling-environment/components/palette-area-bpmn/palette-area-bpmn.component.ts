@@ -277,6 +277,9 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
       $(go.Palette, paletteId,
         { // share the templates with the main Diagram
           "draggingTool.isEnabled": false,
+          "panningTool.isEnabled": false,
+          allowHorizontalScroll: false,
+          allowVerticalScroll: false,
           nodeTemplateMap: palNodeTemplateMap,
           groupTemplateMap: palGroupTemplateMap,
           layout: $(go.GridLayout,
