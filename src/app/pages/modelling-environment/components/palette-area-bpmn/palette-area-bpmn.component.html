@@ -78,16 +78,8 @@
 
 
 <context-menu #paletteRightClickMenu>
-  <!-- Heroku difference -->
-  <ng-template contextMenuItem (execute)="addNewPaletteElement()">
-    Add new element to the Palette
-  </ng-template>
   <ng-template let-element contextMenuItem (execute)="toggleCreateDomainElementModal($event.value)">
     Create new Domain Ontology Element
-  </ng-template>
-  <!-- Heroku difference -->
-  <ng-template contextMenuItem (execute)="managePaletteElements()">
-    Manage Elements
   </ng-template>
 
 </context-menu>

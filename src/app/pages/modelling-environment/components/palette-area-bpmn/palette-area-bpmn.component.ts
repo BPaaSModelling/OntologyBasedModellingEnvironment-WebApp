@@ -200,11 +200,6 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     console.log(this.paletteCategories);
   }
 
-  // Heroku difference
-  addNewPaletteElement() {}
-
-  managePaletteElements() {}
-
   showInstantiatedElements(element: PaletteElementModel) {
     this.dialog.open(ModalShowLanguageInstances, {data:element});
   }

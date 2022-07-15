@@ -11,6 +11,7 @@ export class GoJsCategoryBPMNNode {
   isGroup?: boolean;
   isSequential?: boolean;
   isAdHoc?: boolean;
+  isCall?: boolean;
 
   eventType?: number;
   eventDimension?: number;

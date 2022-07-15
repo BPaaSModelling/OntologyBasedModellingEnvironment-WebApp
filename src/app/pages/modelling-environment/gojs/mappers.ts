@@ -13,6 +13,7 @@ export class Mappers {
     .set('ManualTask', { key: 203, category: 'activity', taskType: 3, isAdHoc: true, text: 'Manual', item: 'Manual Task' })
     .set('SendTask', { key: 2, category: 'activity', taskType: 5, text: 'Send Task', item: 'Send Task' })
     .set('BusinessRuleTask', { key: 3, category: 'activity', taskType: 7, text: 'Business\nRule Task', item: 'Business Rule Task' })
+    .set('UserTask', { key: 4, category: 'activity', taskType: 2, text: 'User Task', item: 'User Task', isCall: true })
     // --------------------- DATASTORE --------------------- //
     .set('DataStore', { key: 302, category: 'datastore', text: 'Data\nStorage' })
     .set('DataObject', { key: 301, category: 'dataobject', text: 'Data\nObject' })
