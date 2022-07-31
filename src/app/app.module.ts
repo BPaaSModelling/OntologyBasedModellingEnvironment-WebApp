@@ -9,6 +9,7 @@ import {SelectDropDownModule} from 'ngx-select-dropdown';
 import {ModellerService} from './core/services/modeller/modeller.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
+import {MatMenuModule} from '@angular/material/menu';
 
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
@@ -38,7 +39,7 @@ import {ModalInsertPropertyComponent} from './shared/modals/modal-insert-datatyp
 import {
   ModalConnectorManageCombinationsComponent
 } from './shared/modals/modal-connector-manage-combinations/modal-connector-manage-combinations.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+
 import {ModalCreateDomainElementsComponent} from './shared/modals/modal-create-domain-elements/modal-create-domain-elements.component';
 import {ModalEditPaletteElementComponent} from './shared/modals/modal-edit-palette-element/modal-edit-palette-element.component';
 import {ModalEditPropertiesComponent} from './shared/modals/modal-edit-datatype-property/modal-edit-datatype-property.component';
@@ -68,14 +69,15 @@ import {ModalModelMultipleExport} from './shared/modals/modal-model-multiple-exp
 import {ModalModelMultipleImport} from './shared/modals/modal-model-multiple-import/modal-model-multiple-import.component';
 import {FileUploadComponent} from './pages/importExport-environment/components/file-upload/file-upload.component';
 import {HomeComponent} from './pages/home/home.component';
-import {ContextMenuModule} from '@perfectmemory/ngx-contextmenu';
 import {DiagramManagementComponent} from './pages/diagram-management/diagram-management.component';
-import {MatIconModule} from '@angular/material/icon';
-import {MatMenuModule} from '@angular/material/menu';
+
 import {ModellingAreaBPMNComponent} from './pages/modelling-environment/components/modelling-area-bpmn/modelling-area-bpmn.component';
 import {PaletteAreaBPMNComponent} from './pages/modelling-environment/components/palette-area-bpmn/palette-area-bpmn.component';
-import {MatSnackBar} from '@angular/material/snack-bar';
+
 import {ModalInstantiationTypeComponent} from './shared/modals/modal-instantiation-type/modal-instantiation-type.component';
+import {ContextMenuModule} from 'ngx-contextmenu';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatIconModule} from '@angular/material/icon';
 
 
 const appRoutes: Routes = [
@@ -132,14 +134,41 @@ export function appInit(endpointSettings: EndpointSettings) {
     FileUploadComponent,
     HomeComponent,
     DiagramManagementComponent,
-    ModellingAreaBPMNComponent
+    ModellingAreaBPMNComponent,
+  ],
+  entryComponents: [
+    ModalInstancePropertiesComponent,
+    ModalPaletteElementPropertiesComponent,
+    ModalExtendPaletteElementComponent,
+    ModalConnectorElementPropertiesComponent,
+    ModalInsertPropertyComponent,
+    ModalCreateDomainElementsComponent,
+    ModalEditPaletteElementComponent,
+    ModalAddPropertiesComponent,
+    ModalEditPropertiesComponent,
+    ModalEditBCObjectPropertyComponent,
+    ModalEditSMObjectPropertyComponent,
+    ModalInsertObjectPropertyComponent,
+    ModalInsertLangobjectPropertyComponent,
+    ModalModelCreation,
+    ModalViewElementDetail,
+    ModalModelLink,
+    ModalElementNote,
+    ModalModellingLanguageConstructInstanceLink,
+    ModalPaletteVisualisation,
+    ModalModelEdit,
+    ModalShowLanguageInstances,
+    ModalModelExport,
+    ModalModelMultipleExport,
+    ModalModelMultipleImport,
+    ModalInstantiationTypeComponent
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes, {relativeLinkResolution: 'legacy'}),
     HttpClientModule,
     FlexLayoutModule,
-    ContextMenuModule,
+    ContextMenuModule.forRoot(),
     MatListModule,
     MatButtonModule,
     MatToolbarModule,
@@ -161,16 +190,14 @@ export function appInit(endpointSettings: EndpointSettings) {
     MatTableModule,
     MatSelectModule,
     MatFormFieldModule,
-    NgMultiSelectDropDownModule.forRoot(),
-    ContextMenuModule,
     MatRippleModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
     ModellerService,
     EndpointSettings,
-    MatSnackBar,
     {
       provide: APP_INITIALIZER,
       useFactory: appInit,

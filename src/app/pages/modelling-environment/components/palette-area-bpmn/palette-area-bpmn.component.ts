@@ -2,7 +2,6 @@ import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewC
 import {MetamodelElementModel} from '../../../../shared/models/MetamodelElement.model';
 import {ModellerService} from '../../../../core/services/modeller/modeller.service';
 import {PaletteElementModel} from '../../../../shared/models/PaletteElement.model';
-import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
 import {UUID} from 'angular2-uuid';
 import {ModalExtendPaletteElementComponent} from "../../../../shared/modals/modal-extend-palette-element/modal-extend-palette-element.component";
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
@@ -17,6 +16,7 @@ import {ModelingLanguageModel} from '../../../../shared/models/ModelingLanguage.
 import * as go from 'gojs';
 import {BpmnTemplateService} from '../../gojs/bpmn-classes/bpmn-template.service';
 import {FiguresClass} from '../../gojs/figures.class';
+import {ContextMenuComponent} from 'ngx-contextmenu';
 import {timeout} from 'rxjs/operators';
 import {ModalInstancePropertiesComponent} from '../../../../shared/modals/modal-instance-properties/modal-instance-properties.component';
 import {
@@ -31,10 +31,10 @@ const $ = go.GraphObject.make;
 })
 export class PaletteAreaBPMNComponent implements OnInit {
 
-  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent<any>;
-  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent<any>;
+  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent;
   // Optional
-  @Input() contextMenu: ContextMenuComponent<any>;
+  @Input() contextMenu: ContextMenuComponent
   @Input() contextMenuSubject: PaletteElementModel;
 
 

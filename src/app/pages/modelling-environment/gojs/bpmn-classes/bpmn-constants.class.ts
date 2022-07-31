@@ -15,14 +15,14 @@ export class BpmnConstantsClass {
   static ActivityNodeStrokeWidth = 1;
   static ActivityNodeStrokeWidthIsCall = 4;
 
-  static SubprocessNodeFill = this.ActivityNodeFill;
-  static SubprocessNodeStroke = this.ActivityNodeStroke;
+  static SubprocessNodeFill = BpmnConstantsClass.ActivityNodeFill;
+  static SubprocessNodeStroke = BpmnConstantsClass.ActivityNodeStroke;
 
   static EventNodeSize = 42;
-  static EventNodeInnerSize = this.EventNodeSize - 6;
-  static EventNodeSymbolSize = this.EventNodeInnerSize - 14;
+  static EventNodeInnerSize = BpmnConstantsClass.EventNodeSize - 6;
+  static EventNodeSymbolSize = BpmnConstantsClass.EventNodeInnerSize - 14;
   static EventEndOuterFillColor = 'pink';
-  static EventBackgroundColor = this.GradientLightGreen;
+  static EventBackgroundColor = BpmnConstantsClass.GradientLightGreen;
   static EventSymbolLightFill = 'white';
   static EventSymbolDarkFill = 'dimgray';
   static EventDimensionStrokeColor = 'green';
@@ -31,10 +31,10 @@ export class BpmnConstantsClass {
 
   static GatewayNodeSize = 80;
   static GatewayNodeSymbolSize = 45;
-  static GatewayNodeFill = this.GradientYellow;
+  static GatewayNodeFill = BpmnConstantsClass.GradientYellow;
   static GatewayNodeStroke = 'darkgoldenrod';
   static GatewayNodeSymbolStroke = 'darkgoldenrod';
-  static GatewayNodeSymbolFill = this.GradientYellow;
+  static GatewayNodeSymbolFill = BpmnConstantsClass.GradientYellow;
   static GatewayNodeSymbolStrokeWidth = 3;
 
   static DataFill = BpmnConstantsClass.GradientLightGray;

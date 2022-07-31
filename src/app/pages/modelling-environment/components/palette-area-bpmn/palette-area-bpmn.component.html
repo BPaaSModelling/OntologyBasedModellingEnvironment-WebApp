@@ -23,13 +23,13 @@
     <ng-container *ngFor="let element of mService.paletteElements; let indexElement=index;">
       <ul class="element" *ngIf="(element.paletteCategory == category.id && element.hiddenFromPalette == false && !isElementBlacklisted(element))">
         <li class="paletteElement" >
-          <a *ngIf="element.type != 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuValue]="element"  (click)="addNewShape(element)">
+          <a *ngIf="element.type != 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element"  (click)="addNewShape(element)">
             <img class="thumbnail" src="{{imageRoot}}{{category.idSuffix}}/{{element.thumbnailURL}}" *ngIf="!isElementMappedToBPMNMappers(element)"/>
             <div style="width: 95px; display: flex; justify-content: space-between; height: 85px;" *ngIf="isBPMNNotationSelected() && isElementMappedToBPMNMappers(element)">
               <div id="myPalette-{{indexCategory}}-{{indexElement}}" style="width: 85px; position: relative;" class="bpmn-canvas-container"></div>
             </div>
           </a>
-          <a *ngIf="element.type == 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuValue]="element"  (click)="addNewShape(element)">
+          <a *ngIf="element.type == 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element"  (click)="addNewShape(element)">
             <img *ngIf="element.fromArrow" class="thumbnail-arrow-head" [src]="'../../../../../assets/images/Arrows/' + element.fromArrow + '.PNG'" >
             <img class="thumbnail-arrow-stroke" [src]="'../assets/images/Strokes/' + element.arrowStroke + '.PNG'" >
             <img *ngIf="element.toArrow" class="thumbnail-arrow-head" [src]="'../../../../../assets/images/Arrows/' + element.toArrow + '.PNG'" >
@@ -48,10 +48,10 @@
 
 
 <context-menu #elementRightClickMenu>
-  <ng-template let-element contextMenuItem (execute)="toggleExtendPaletteElementModal($event.value)">
+  <ng-template let-element contextMenuItem (execute)="toggleExtendPaletteElementModal($event.item)">
     Extend {{element.label}}
   </ng-template>
-  <ng-template let-element contextMenuItem (execute)="toggleEditPaletteElementModal($event.value)">
+  <ng-template let-element contextMenuItem (execute)="toggleEditPaletteElementModal($event.item)">
     Edit {{element.label}}
   </ng-template>
   <!-- <ng-template contextMenuItem [subMenu]="saySubMenu">
@@ -65,20 +65,20 @@
       Edit {{element.label}}
     </ng-template>
   </context-menu> -->
-  <ng-template let-element contextMenuItem (execute)="hideFromPalette($event.value)">
+  <ng-template let-element contextMenuItem (execute)="hideFromPalette($event.item)">
     Hide
   </ng-template>
   <!--<ng-template let-element contextMenuItem (execute)="removeFromPalette($event.item)">
     Delete {{element.label}}
   </ng-template>-->
-  <ng-template let-element contextMenuItem (execute)="showInstantiatedElements($event.value)">
+  <ng-template let-element contextMenuItem (execute)="showInstantiatedElements($event.item)">
     Show Instances
   </ng-template>
 </context-menu>
 
 
 <context-menu #paletteRightClickMenu>
-  <ng-template let-element contextMenuItem (execute)="toggleCreateDomainElementModal($event.value)">
+  <ng-template let-element contextMenuItem (execute)="toggleCreateDomainElementModal($event.item)">
     Create new Domain Ontology Element
   </ng-template>
 

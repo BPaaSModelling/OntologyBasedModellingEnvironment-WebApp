@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ModellerService} from '../../../../core/services/modeller/modeller.service';
 import {PaletteElementModel} from '../../../../shared/models/PaletteElement.model';
-import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
 import {UUID} from 'angular2-uuid';
 import {ModalExtendPaletteElementComponent} from "../../../../shared/modals/modal-extend-palette-element/modal-extend-palette-element.component";
 import { MatDialog } from "@angular/material/dialog";
@@ -13,6 +12,7 @@ import {PaletteCategoryModel} from "../../../../shared/models/PaletteCategory.mo
 import {VariablesSettings} from "../../../../_settings/variables.settings";
 import {ModalShowLanguageInstances} from '../../../../shared/modals/modal-show-language-instances/modal-show-language-instances';
 import {ModelingLanguageModel} from '../../../../shared/models/ModelingLanguage.model';
+import {ContextMenuComponent} from 'ngx-contextmenu';
 
 @Component({
   selector: 'app-palette-area',
@@ -21,10 +21,10 @@ import {ModelingLanguageModel} from '../../../../shared/models/ModelingLanguage.
 })
 export class PaletteAreaComponent implements OnInit {
 
-  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent<any>;
-  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent<any>;
-  // Optional
-  @Input() contextMenu: ContextMenuComponent<any>;
+  @ViewChild(ContextMenuComponent, {static: true}) public elementRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, {static: true}) public paletteRightClickMenu: ContextMenuComponent;
+
+  @Input() contextMenu: ContextMenuComponent;
   @Input() contextMenuSubject: PaletteElementModel;
 
 
