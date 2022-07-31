@@ -78,6 +78,7 @@ import {ModalInstantiationTypeComponent} from './shared/modals/modal-instantiati
 import {ContextMenuModule} from 'ngx-contextmenu';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 const appRoutes: Routes = [
@@ -197,6 +198,7 @@ export function appInit(endpointSettings: EndpointSettings) {
   ],
   providers: [
     ModellerService,
+    MatSnackBar,
     EndpointSettings,
     {
       provide: APP_INITIALIZER,

@@ -37,8 +37,8 @@ import {FiguresClass} from '../../gojs/figures.class';
 import {BpmnTemplateService} from '../../gojs/bpmn-classes/bpmn-template.service';
 import {BpmnConstantsClass} from '../../gojs/bpmn-classes/bpmn-constants.class';
 import {AdditionalCreateOptions} from '../../models/additional-create-options.interface';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {ModalInstantiationTypeComponent} from '../../../../shared/modals/modal-instantiation-type/modal-instantiation-type.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 const $ = go.GraphObject.make;
