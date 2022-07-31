@@ -264,8 +264,13 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     const canvasContainers = document.getElementsByClassName('bpmn-canvas-container');
     for (let i = 0; i < canvasContainers.length; i++) {
       const foundDiv = canvasContainers[i].querySelector('div');
+      const foundCanvas = canvasContainers[i].querySelector('canvas');
       if (foundDiv) {
         foundDiv.style.overflow = 'hidden';
+      }
+      if (foundCanvas) {
+        const ctx = foundCanvas.getContext('2d');
+        //ctx.moveTo(50, 50);
       }
     }
   }
@@ -275,12 +280,9 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     const self = this;
     // initialize the first Palette, BPMN Spec Level 1
     const myPalette =
-      $(go.Palette, paletteId,
+      $(go.Diagram, paletteId,
         { // share the templates with the main Diagram
-          "draggingTool.isEnabled": false,
-          "panningTool.isEnabled": false,
-          allowHorizontalScroll: false,
-          allowVerticalScroll: false,
+
           nodeTemplateMap: palNodeTemplateMap,
           groupTemplateMap: palGroupTemplateMap,
           layout: $(go.GridLayout,
@@ -299,6 +301,8 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     }
     // @ts-ignore
     element.text = element.label.split(' ').join('\n');
+    // @ts-ignore
+    element.loc = go.Point.stringify(new go.Point(250, 0));
 
     myPalette.model = $(go.GraphLinksModel,
       {

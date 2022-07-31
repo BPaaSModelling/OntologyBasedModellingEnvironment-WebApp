@@ -87,8 +87,6 @@ const appRoutes: Routes = [
   {path: 'importExport', component: ImportExportEnvironmentComponent},
   {path: 'home', component: HomeComponent},
   {path: '', component: HomeComponent},
-
-
 ];
 
 export function appInit(endpointSettings: EndpointSettings) {
