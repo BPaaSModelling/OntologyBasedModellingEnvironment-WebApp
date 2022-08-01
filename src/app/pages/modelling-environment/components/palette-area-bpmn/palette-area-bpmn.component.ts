@@ -327,7 +327,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     const otherObj = { };
     // @ts-ignore
     otherObj.text = 'should be hidden';
-    // // @ts-ignore
+    // @ts-ignore
     otherObj.category = 'auto';
     // // @ts-ignore
     // element.location = go.Point.stringify(new go.Point(250, 20));
