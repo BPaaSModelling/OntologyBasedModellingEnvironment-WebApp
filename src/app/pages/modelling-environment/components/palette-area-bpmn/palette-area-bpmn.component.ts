@@ -231,6 +231,18 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     eventNodeTemplate.selectionAdorned = false;
     poolTemplateForPalette.selectionAdorned = false;
 
+    const autoTemplate = $(go.Node, "Auto",  // the Shape will go around the TextBlock
+      $(go.Shape, "RoundedRectangle",
+        // Shape.fill is bound to Node.data.color
+        new go.Binding("fill", "color")),
+
+      $(go.TextBlock,
+        { margin: 3 },  // some room around the text
+        // TextBlock.text is bound to Node.data.key
+        new go.Binding("text", "key")),
+      new go.Binding('location', 'location', go.Point.parse),
+    );
+
     // create the nodeTemplateMap, holding special palette "mini" node templates:
     const palNodeTemplateMap = new go.Map<string, go.Node>();
     palNodeTemplateMap.add('activity', activityNodeTemplateForPalette);
@@ -240,6 +252,13 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     palNodeTemplateMap.add('dataobject', dataObjectNodeTemplate);
     palNodeTemplateMap.add('datastore', dataStoreNodeTemplate);
     palNodeTemplateMap.add('privateProcess', privateProcessNodeTemplateForPalette);
+    // palNodeTemplateMap.add('activity', autoTemplate);
+    // palNodeTemplateMap.add('event', autoTemplate);
+    // palNodeTemplateMap.add('gateway', autoTemplate);
+    // palNodeTemplateMap.add('annotation', autoTemplate);
+    // palNodeTemplateMap.add('dataobject', autoTemplate);
+    // palNodeTemplateMap.add('datastore', autoTemplate);
+    // palNodeTemplateMap.add('privateProcess', autoTemplate);
 
     const palGroupTemplateMap = new go.Map<string, go.Group>();
     palGroupTemplateMap.add('subprocess', subProcessGroupTemplateForPalette);
@@ -280,15 +299,15 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     const self = this;
     // initialize the first Palette, BPMN Spec Level 1
     const myPalette =
-      $(go.Diagram, paletteId,
+      $(go.Palette, paletteId,
         { // share the templates with the main Diagram
 
           nodeTemplateMap: palNodeTemplateMap,
           groupTemplateMap: palGroupTemplateMap,
           layout: $(go.GridLayout,
             {
-              cellSize: new go.Size(1, 1),
-              spacing: new go.Size(5, 5),
+              cellSize: new go.Size(85, 85),
+              spacing: new go.Size(200, 0),
             })
         });
 
@@ -301,8 +320,14 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     }
     // @ts-ignore
     element.text = element.label.split(' ').join('\n');
-    // @ts-ignore
-    element.loc = go.Point.stringify(new go.Point(250, 0));
+    const otherObj = { ...element };
+    // // @ts-ignore
+    // element.location = go.Point.stringify(new go.Point(250, 20));
+    // // @ts-ignore
+    // element.color = 'lightblue';
+    // // @ts-ignore
+    // otherObj.location = go.Point.stringify(new go.Point(40, 80));
+
 
     myPalette.model = $(go.GraphLinksModel,
       {
@@ -310,6 +335,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
         copiesArrayObjects: true,
         nodeDataArray: [
           // -------------------------- Event Nodes
+          otherObj,
           element
         ]  // end nodeDataArray
       });  // end model

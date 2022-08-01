@@ -25,8 +25,8 @@
         <li class="paletteElement" >
           <a *ngIf="element.type != 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element"  (click)="addNewShape(element)">
             <img class="thumbnail" src="{{imageRoot}}{{category.idSuffix}}/{{element.thumbnailURL}}" *ngIf="!isElementMappedToBPMNMappers(element)"/>
-            <div style="width: 250px; display: flex; justify-content: space-between; height: 85px;" *ngIf="isBPMNNotationSelected() && isElementMappedToBPMNMappers(element)">
-              <div id="myPalette-{{indexCategory}}-{{indexElement}}" style="flex-grow: 1; position: relative; right: 150px; height: 85px" class="bpmn-canvas-container"></div>
+            <div style="display: flex; justify-content: space-between; height: 85px;" *ngIf="isBPMNNotationSelected() && isElementMappedToBPMNMappers(element)">
+              <div id="myPalette-{{indexCategory}}-{{indexElement}}" style="flex-grow: 1; position: relative; height: 85px" class="bpmn-canvas-container"></div>
             </div>
           </a>
           <a *ngIf="element.type == 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element"  (click)="addNewShape(element)">
