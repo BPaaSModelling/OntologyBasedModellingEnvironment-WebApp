@@ -252,7 +252,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     palNodeTemplateMap.add('dataobject', dataObjectNodeTemplate);
     palNodeTemplateMap.add('datastore', dataStoreNodeTemplate);
     palNodeTemplateMap.add('privateProcess', privateProcessNodeTemplateForPalette);
-    // palNodeTemplateMap.add('activity', autoTemplate);
+    palNodeTemplateMap.add('auto', autoTemplate);
     // palNodeTemplateMap.add('event', autoTemplate);
     // palNodeTemplateMap.add('gateway', autoTemplate);
     // palNodeTemplateMap.add('annotation', autoTemplate);
@@ -304,10 +304,14 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
 
           nodeTemplateMap: palNodeTemplateMap,
           groupTemplateMap: palGroupTemplateMap,
+          "draggingTool.isEnabled": false,
+          "panningTool.isEnabled": false,
+          allowHorizontalScroll: false,
+          allowVerticalScroll: false,
           layout: $(go.GridLayout,
             {
               cellSize: new go.Size(85, 85),
-              spacing: new go.Size(200, 0),
+              spacing: new go.Size(280, 0),
             })
         });
 
@@ -320,7 +324,11 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     }
     // @ts-ignore
     element.text = element.label.split(' ').join('\n');
-    const otherObj = { ...element };
+    const otherObj = { };
+    // @ts-ignore
+    otherObj.text = 'should be hidden';
+    // // @ts-ignore
+    otherObj.category = 'auto';
     // // @ts-ignore
     // element.location = go.Point.stringify(new go.Point(250, 20));
     // // @ts-ignore
