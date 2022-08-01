@@ -288,8 +288,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
         foundDiv.style.overflow = 'hidden';
       }
       if (foundCanvas) {
-        const ctx = foundCanvas.getContext('2d');
-        //ctx.moveTo(50, 50);
+        foundCanvas.style.zIndex = (canvasContainers.length - i).toString();
       }
     }
   }
