@@ -195,14 +195,6 @@ export class ToolRecursivePaletteElementComponent implements OnInit, AfterViewIn
     const subProcessGroupTemplateForPalette = this.bpmnTemplateService.getSubProcessGroupTemplateForPalette();
     const poolTemplateForPalette = this.bpmnTemplateService.getPoolTemplateForPalette();
     const swimLanesGroupTemplateForPalette = this.bpmnTemplateService.getSwimLanesGroupTemplateForPalette();
-    const autoTemplate = $(go.Node, "Auto",  // the Shape will go around the TextBlock
-      $(go.Shape, "RoundedRectangle",
-        { width: 0, height: 0 },
-        // Shape.fill is bound to Node.data.color
-        new go.Binding("fill", "color")),
-
-      new go.Binding('location', 'location', go.Point.parse),
-    );
 
     // create the nodeTemplateMap, holding special palette "mini" node templates:
     const palNodeTemplateMap = new go.Map<string, go.Node>();
@@ -213,7 +205,6 @@ export class ToolRecursivePaletteElementComponent implements OnInit, AfterViewIn
     palNodeTemplateMap.add('dataobject', dataObjectNodeTemplate);
     palNodeTemplateMap.add('datastore', dataStoreNodeTemplate);
     palNodeTemplateMap.add('privateProcess', privateProcessNodeTemplateForPalette);
-    palNodeTemplateMap.add('auto', autoTemplate);
 
     const palGroupTemplateMap = new go.Map<string, go.Group>();
     palGroupTemplateMap.add('subprocess', subProcessGroupTemplateForPalette);
@@ -253,15 +244,10 @@ export class ToolRecursivePaletteElementComponent implements OnInit, AfterViewIn
           groupTemplateMap: palGroupTemplateMap,
           layout: $(go.GridLayout,
             {
-              cellSize: new go.Size(40, 40),
-              spacing: new go.Size(20, 0),
+              cellSize: new go.Size(1, 1),
+              spacing: new go.Size(5, 5),
             })
         });
-    const otherObj = { };
-    // @ts-ignore
-    otherObj.text = 'should be hidden';
-    // @ts-ignore
-    otherObj.category = 'auto';
 
 
     if (PaletteElementModel.getProbableElementType(element) === 'ModelingElement') {
@@ -279,7 +265,6 @@ export class ToolRecursivePaletteElementComponent implements OnInit, AfterViewIn
         copiesArrayObjects: true,
         nodeDataArray: [
           // -------------------------- Event Nodes
-          otherObj,
           element
         ]  // end nodeDataArray
       });  // end model
