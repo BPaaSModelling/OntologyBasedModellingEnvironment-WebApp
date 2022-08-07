@@ -228,6 +228,7 @@ export class ToolRecursivePaletteElementComponent implements OnInit, AfterViewIn
         const foundDomElement = document.getElementById(paletteId);
         if (foundDomElement && !foundDomElement.querySelector('canvas')) {
           this.instatiatePaletteElement(sbchild, paletteId, palNodeTemplateMap, palGroupTemplateMap);
+
         }
       }
     });
@@ -239,6 +240,28 @@ export class ToolRecursivePaletteElementComponent implements OnInit, AfterViewIn
         foundDiv.style.overflow = 'hidden';
       }
     }
+
+    const outerRecursiveContainers = document.getElementsByClassName('outer-recursive-container');
+    for (let i = 0; i < outerRecursiveContainers.length; i++) {
+      const foundCanvas = outerRecursiveContainers[i].querySelector('canvas');
+      const textBPMN = outerRecursiveContainers[i].querySelector('p');
+      const innerRecursiveContainer = outerRecursiveContainers[i].querySelector('.inner-recursive-container');
+      if (foundCanvas) {
+
+        const ctx = foundCanvas.getContext('2d');
+        ctx.clearRect(0, 0, 150, 80);
+        // @ts-ignore
+
+        // @ts-ignore
+        //outerRecursiveContainers[i].style.width = '300px';
+        // @ts-ignore
+        outerRecursiveContainers[i].style.width = '200px';
+        textBPMN.style.right = '120px';
+        //innerRecursiveContainer.style.right = '120px';
+        foundCanvas.width = '300';
+      }
+    }
+
   }
 
 
@@ -254,7 +277,7 @@ export class ToolRecursivePaletteElementComponent implements OnInit, AfterViewIn
           layout: $(go.GridLayout,
             {
               cellSize: new go.Size(40, 40),
-              spacing: new go.Size(20, 0),
+              spacing: new go.Size(120, 0),
             })
         });
     const otherObj = { };

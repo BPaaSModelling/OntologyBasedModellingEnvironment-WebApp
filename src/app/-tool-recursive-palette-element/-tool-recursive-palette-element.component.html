@@ -1,7 +1,7 @@
 <ul *ngFor="let sbchild of child.childElements; let indexElement=index;">
   <li *ngIf="(sbchild.parentElement == child.id) && (sbchild.hiddenFromPalette == false)" class="NthLevelElement">
 
-    <a *ngIf="sbchild.type != 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="sbchild" (click)="addNewShape(sbchild)">
+    <a *ngIf="sbchild.type != 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="sbchild" (click)="addNewShape(sbchild)" class="outer-recursive-container">
       <ng-container *ngIf="!isBPMNNotationSelected && !isElementMappedToBPMNMappers(sbchild)">
         <img class="thumbnail"  src="{{imageRoot}}{{categorySuffix}}/{{sbchild.thumbnailURL}}"  />
         {{sbchild.label}}
@@ -11,7 +11,7 @@
         {{sbchild.label}}
       </ng-container>
       <div style="width: auto; display: flex; justify-content: space-between; height: 45px;" *ngIf="isBPMNNotationSelected && isElementMappedToBPMNMappers(sbchild)">
-        <div id="{{parentPaletteId}}-{{indexElement}}" style="width: 130px; position: relative; height: auto; right: 30px" class="bpmn-canvas-container"></div>
+        <div id="{{parentPaletteId}}-{{indexElement}}" style="width: 250px; position: relative; height: auto;" class="bpmn-canvas-container inner-recursive-container" ></div>
         <p style="word-wrap:break-word; display: flex;
           justify-content: flex-start;
           flex-direction: row;">{{sbchild.label}}</p>
