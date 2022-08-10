@@ -124,7 +124,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
       this.mService.queryPaletteElements().pipe(take(1)).subscribe(() => {
         setTimeout(() => {
           this.loadPaletteGoJSElements();
-        }, 1000)
+        }, 1000);
       });
     });
   }
@@ -192,7 +192,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
           this.cdRef.detectChanges();
           setTimeout(() => {
             this.loadPaletteGoJSElements();
-          }, 1000)
+          }, 1000);
         });
       }
     );
