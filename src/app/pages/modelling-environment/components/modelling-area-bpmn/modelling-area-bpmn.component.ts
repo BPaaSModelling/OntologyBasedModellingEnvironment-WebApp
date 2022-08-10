@@ -372,7 +372,8 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           loc: go.Point.stringify(new go.Point(element.x, element.y)),
           element: element,
           shapeRepresentsModel: element.shapeRepresentsModel,
-          otherVisualisationsOfSameLanguageConstruct: element.otherVisualisationsOfSameLanguageConstruct
+          otherVisualisationsOfSameLanguageConstruct: element.otherVisualisationsOfSameLanguageConstruct,
+          modelingLanguageConstructInstance: element.modelingLanguageConstructInstance
         };
 
         this.bpmnTemplateService.addGoJsBPMNNodeFields(nodeData, element.modellingLanguageConstruct);
@@ -1337,13 +1338,13 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
                 self.updateCrossLaneLinks(grp);
                 self.relayoutDiagram();
                 grp.diagram.selection.each(p => {
-                  if (!containedShapes.includes(p.data.element.modelingLanguageConstructInstance)) {
-                    containedShapes.push(p.data.element.modelingLanguageConstructInstance);
+                  if (!containedShapes.includes(p.data.modelingLanguageConstructInstance)) {
+                    containedShapes.push(p.data.modelingLanguageConstructInstance);
                     grp.data.element.containedShapes = containedShapes;
                     if (p.data.element.group) {
                       const oldLane = self.myDiagram.model.findNodeDataForKey(p.data.element.group);
                       if (oldLane) {
-                        const indexToRemove = oldLane.element.containedShapes.indexOf(p.data.element.modelingLanguageConstructInstance);
+                        const indexToRemove = oldLane.element.containedShapes.indexOf(p.data.modelingLanguageConstructInstance);
                         if (indexToRemove >= 0) {
                           oldLane.element.containedShapes.splice(indexToRemove, 1);
                           self.mService.updateElement(oldLane.element, self.selectedModel.id);
