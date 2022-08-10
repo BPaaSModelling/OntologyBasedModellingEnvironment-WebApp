@@ -13,6 +13,7 @@ import {ModalInsertObjectPropertyComponent} from "../modal-insert-object-propert
 import {ModalInsertLangobjectPropertyComponent} from "../modal-insert-langobject-property/modal-insert-langobject-property.component";
 import {VariablesSettings} from "../../../_settings/variables.settings";
 import * as go from 'gojs';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-modal-edit-palette-element',
@@ -233,7 +234,6 @@ export class ModalEditPaletteElementComponent implements OnInit {
       (response) => {
         //this.elementEdited.emit(ele);
         this.dialogRef.close();
-        this.mService.queryPaletteElements();
       }
     );
   }

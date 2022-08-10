@@ -82,7 +82,7 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.mService.queryPaletteElements();
+    this.mService.queryPaletteElements().pipe(take(1)).subscribe();
     this.loadModels();
     this.prepareModel();
     this.prepareCustomRelations();

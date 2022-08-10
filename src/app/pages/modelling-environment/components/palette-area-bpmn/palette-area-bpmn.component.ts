@@ -17,7 +17,7 @@ import * as go from 'gojs';
 import {BpmnTemplateService} from '../../gojs/bpmn-classes/bpmn-template.service';
 import {FiguresClass} from '../../gojs/figures.class';
 import {ContextMenuComponent} from 'ngx-contextmenu';
-import {timeout} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
 import {ModalInstancePropertiesComponent} from '../../../../shared/modals/modal-instance-properties/modal-instance-properties.component';
 import {
   ModalConnectorElementPropertiesComponent
@@ -104,10 +104,8 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     });
 
     const sub = dialogRef.componentInstance.newElementCreated.subscribe(() => {
-      this.mService.queryPaletteElements();
+      this.handleDialogClose(dialogRef);
     });
-
-    this.handleDialogClose(dialogRef);
   }
 
   toggleEditPaletteElementModal(element: PaletteElementModel){
@@ -117,16 +115,15 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
       width: '800px',
       disableClose: false,
     });
-
     this.handleDialogClose(dialogRef);
   }
 
   private handleDialogClose(dialogRef: MatDialogRef<any, any>) {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed : ' + result);
-      setTimeout(() => {
+      this.mService.queryPaletteElements().pipe(take(1)).subscribe(() => {
         this.loadPaletteGoJSElements();
-      }, 500);
+      });
     });
   }
 
@@ -159,7 +156,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     this.mService.hidePaletteElement(JSON.stringify(element)).subscribe(
       (response) => {
         console.log(response);
-        this.mService.queryPaletteElements();
+        this.mService.queryPaletteElements().pipe(take(1)).subscribe();
       }
     );
   }
@@ -186,15 +183,13 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
       (response) => {
         console.log(response);
         this.paletteCategories = response;
-        this.mService.queryPaletteElements();
-        console.log('Palette elements:');
-        console.log(this.mService.paletteElements);
-        this.selectedView = $event.value;
-        this.cdRef.detectChanges();
-        setTimeout(() => {
+        this.mService.queryPaletteElements().pipe(take(1)).subscribe(() => {
+          console.log('Palette elements:');
+          console.log(this.mService.paletteElements);
+          this.selectedView = $event.value;
+          this.cdRef.detectChanges();
           this.loadPaletteGoJSElements();
-        }, 1000);
-
+        });
       }
     );
     console.log('Palette categories');
@@ -281,7 +276,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     });
 
     const canvasContainers = document.getElementsByClassName('bpmn-canvas-container');
-    for (let i = 0; i < canvasContainers.length; i++) {
+    for (let i = (canvasContainers.length - 1); i >= 0; i--) {
       const foundDiv = canvasContainers[i].querySelector('div');
       const foundCanvas = canvasContainers[i].querySelector('canvas');
       if (foundDiv) {

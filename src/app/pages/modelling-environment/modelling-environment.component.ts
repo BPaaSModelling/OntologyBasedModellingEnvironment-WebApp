@@ -10,6 +10,7 @@ import {VariablesSettings} from "../../_settings/variables.settings";
 import {ModalConnectorElementPropertiesComponent} from "../../shared/modals/modal-connector-element-properties/modal-connector-element-properties.component";
 import {ModalCreateDomainElementsComponent} from "../../shared/modals/modal-create-domain-elements/modal-create-domain-elements.component";
 import {ModalEditPaletteElementComponent} from "../../shared/modals/modal-edit-palette-element/modal-edit-palette-element.component";
+import {take} from 'rxjs/operators';
 
 
 @Component({
@@ -82,7 +83,7 @@ export class ModellingEnvironmentComponent implements OnInit {
     });
 
     const sub = dialogRef.componentInstance.newElementCreated.subscribe(() => {
-      this.modellerService.queryPaletteElements();
+      this.modellerService.queryPaletteElements().pipe(take(1)).subscribe();
     });
 
     dialogRef.afterClosed().subscribe(result => {

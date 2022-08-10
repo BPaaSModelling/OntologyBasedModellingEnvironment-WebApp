@@ -83,19 +83,17 @@ export class ModellerService {
     return this.httpClient.get<ModelingViewModel[]>(this.endpointSettings.getModelingViewsEndpoint(langId));
   }
 
-  queryPaletteElements(): void {
-    this.httpClient.get<PaletteElementModel[]>(this.endpointSettings.getPaletteElementsEndpoint()).pipe(tap(paletteElements => {
-      paletteElements.filter(e => e.type === 'PaletteConnector').map(p => {
+  queryPaletteElements(): Observable<PaletteElementModel[]> {
+    return this.httpClient.get<PaletteElementModel[]>(this.endpointSettings.getPaletteElementsEndpoint()).pipe(tap(paletteElements => {
+      const data = paletteElements.filter(e => e.type === 'PaletteConnector').map(p => {
         p.routing = go.Link.Orthogonal;
         return p;
       });
-    })).subscribe(
-      data => {
-        // console.log('PaletteElements received: ' + JSON.stringify(data));
-        this.paletteElement$ = of(data);
-        this.paletteElements = data;
-        console.log(this.paletteElements);
-      }, error => console.log('Could not query PaletteElements'));
+      // console.log('PaletteElements received: ' + JSON.stringify(data));
+      this.paletteElement$ = of(paletteElements);
+      this.paletteElements = paletteElements;
+      console.log(this.paletteElements);
+    }));
   }
 
   queryPaletteCategories(viewId) {

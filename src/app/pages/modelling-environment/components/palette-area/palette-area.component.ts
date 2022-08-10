@@ -13,6 +13,7 @@ import {VariablesSettings} from "../../../../_settings/variables.settings";
 import {ModalShowLanguageInstances} from '../../../../shared/modals/modal-show-language-instances/modal-show-language-instances';
 import {ModelingLanguageModel} from '../../../../shared/models/ModelingLanguage.model';
 import {ContextMenuComponent} from 'ngx-contextmenu';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-palette-area',
@@ -115,7 +116,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     });
 
     const sub = dialogRef.componentInstance.newElementCreated.subscribe(() => {
-      this.mService.queryPaletteElements();
+      this.mService.queryPaletteElements().pipe(take(1)).subscribe();
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -169,7 +170,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     this.mService.hidePaletteElement(JSON.stringify(element)).subscribe(
       (response) => {
         console.log(response);
-        this.mService.queryPaletteElements();
+        this.mService.queryPaletteElements().pipe(take(1)).subscribe();
       }
     );
   }
@@ -195,7 +196,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
       (response) => {
         console.log(response);
         this.paletteCategories = response;
-        this.mService.queryPaletteElements();
+        this.mService.queryPaletteElements().pipe(take(1)).subscribe();
         console.log('Palette elements:');
         console.log(this.mService.paletteElements);
       }

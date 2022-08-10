@@ -14,6 +14,7 @@ import {ModalShowLanguageInstances} from '../shared/modals/modal-show-language-i
 import {FiguresClass} from '../pages/modelling-environment/gojs/figures.class';
 import * as go from 'gojs';
 import {BpmnTemplateService} from '../pages/modelling-environment/gojs/bpmn-classes/bpmn-template.service';
+import {take} from 'rxjs/operators';
 
 const $ = go.GraphObject.make;
 
@@ -73,7 +74,7 @@ export class ToolRecursivePaletteElementComponent implements OnInit, AfterViewIn
       if (confirm('Do you want to remove ' + element.label + ' from palette?')) {
         this.mService.deletePaletteElement(JSON.stringify(element)).subscribe(
           response => {
-            this.mService.queryPaletteElements();
+            this.mService.queryPaletteElements().pipe(take(1)).subscribe();
           }
         );
       } else {
@@ -161,7 +162,7 @@ export class ToolRecursivePaletteElementComponent implements OnInit, AfterViewIn
     this.mService.hidePaletteElement(JSON.stringify(element)).subscribe(
       (response) => {
         console.log(response);
-        this.mService.queryPaletteElements();
+        this.mService.queryPaletteElements().pipe(take(1)).subscribe();
       }
     );
   }

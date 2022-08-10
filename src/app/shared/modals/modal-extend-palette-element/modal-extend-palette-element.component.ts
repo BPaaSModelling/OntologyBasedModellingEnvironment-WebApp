@@ -7,6 +7,7 @@ import {ModalCreateDomainElementsComponent} from "../modal-create-domain-element
 import {ModalAddPropertiesComponent} from "../modal-add-properties/modal-add-properties.component";
 import {VariablesSettings} from "../../../_settings/variables.settings";
 import * as go from 'gojs';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-modal-extend-palette-element',
@@ -222,7 +223,7 @@ public imageRoot: string = VariablesSettings.IMG_ROOT;
           disableClose: false,
         });
 
-        this.mService.queryPaletteElements();
+        this.mService.queryPaletteElements().pipe(take(1)).subscribe();
 
         const sub = dialogRef1.componentInstance.propertiesAdded.subscribe(() => {
           dialogRef1.close('Cancel');
@@ -274,7 +275,7 @@ public imageRoot: string = VariablesSettings.IMG_ROOT;
     element.parentElement = (this.data.paletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
     this.mService.createLanguageSubclasses(JSON.stringify(element)).subscribe( // synchronous call to webservice
       (response) => {
-        this.mService.queryPaletteElements();
+        this.mService.queryPaletteElements().pipe(take(1)).subscribe();
         this.dialogRef.close('Cancel');
       }
     );

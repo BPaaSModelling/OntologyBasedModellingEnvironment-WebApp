@@ -92,7 +92,7 @@ export class ImportExportEnvironmentComponent implements OnInit {
     });
 
     const sub = dialogRef.componentInstance.newElementCreated.subscribe(() => {
-      this.uploadService.queryPaletteElements();
+      this.uploadService.queryPaletteElements().pipe(take(1)).subscribe();
     });
 
     dialogRef.afterClosed().subscribe(result => {
