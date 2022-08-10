@@ -122,7 +122,9 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed : ' + result);
       this.mService.queryPaletteElements().pipe(take(1)).subscribe(() => {
-        this.loadPaletteGoJSElements();
+        setTimeout(() => {
+          this.loadPaletteGoJSElements();
+        }, 1000)
       });
     });
   }
@@ -188,7 +190,9 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
           console.log(this.mService.paletteElements);
           this.selectedView = $event.value;
           this.cdRef.detectChanges();
-          this.loadPaletteGoJSElements();
+          setTimeout(() => {
+            this.loadPaletteGoJSElements();
+          }, 1000)
         });
       }
     );
