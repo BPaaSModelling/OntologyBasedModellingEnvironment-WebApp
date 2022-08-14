@@ -1338,8 +1338,8 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
                 self.updateCrossLaneLinks(grp);
                 self.relayoutDiagram();
                 grp.diagram.selection.each(p => {
-                  if (!containedShapes.includes(p.data.modelingLanguageConstructInstance)) {
-                    containedShapes.push(p.data.modelingLanguageConstructInstance);
+                  if (!containedShapes.includes(p?.data?.element?.modelingLanguageConstructInstance)) {
+                    containedShapes.push(p.data.element.modelingLanguageConstructInstance);
                     grp.data.element.containedShapes = containedShapes;
                     if (p.data.element.group) {
                       const oldLane = self.myDiagram.model.findNodeDataForKey(p.data.element.group);
