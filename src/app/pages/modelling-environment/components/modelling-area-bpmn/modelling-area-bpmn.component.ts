@@ -1589,10 +1589,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           })),
 
         $(go.TextBlock, { // this is a Link label
-            name: 'Label', editable: true, text: 'label', segmentOffset: new go.Point(-10, -10), visible: false
+            name: 'Label', editable: true, text: 'label', segmentOffset: new go.Point(-10, -10)
           },
-          new go.Binding('text', 'text').makeTwoWay(),
-          new go.Binding('visible', 'visible').makeTwoWay()),
+          new go.Binding('text').makeTwoWay()),
         this.getArrowShape(0, new go.Point(25, -10)),
       );
 
@@ -1612,7 +1611,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         $(go.TextBlock, {
             editable: true, text: 'label'
           }, // Link label
-          new go.Binding('text', 'text').makeTwoWay()),
+          new go.Binding('text').makeTwoWay()),
         this.getArrowShape(0, new go.Point(25, -10)),
       );
 
