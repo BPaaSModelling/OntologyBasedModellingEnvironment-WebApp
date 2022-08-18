@@ -21,6 +21,22 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadPrefixesPreparationFromGithub();
+    this.loadPrefixesPreparation();
+  }
+
+
+
+  async loadPrefixesPreparation() {
+
+    await this.uploadService.queryLanguagesFromFuseki();
 
   }
+  async loadPrefixesPreparationFromGithub() {
+
+    await this.uploadService.queryLanguagesFromGithub();
+
+  }
+
+
   }
