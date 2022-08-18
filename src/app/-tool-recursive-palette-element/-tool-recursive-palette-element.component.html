@@ -1,9 +1,22 @@
-<ul *ngFor="let sbchild of child.childElements ">
+<ul *ngFor="let sbchild of child.childElements; let indexElement=index;">
   <li *ngIf="(sbchild.parentElement == child.id) && (sbchild.hiddenFromPalette == false)" class="NthLevelElement">
 
     <a *ngIf="sbchild.type != 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="sbchild" (click)="addNewShape(sbchild)">
-      <img class="thumbnail"  src="{{imageRoot}}{{categorySuffix}}/{{sbchild.thumbnailURL}}" />
-      {{sbchild.label}}
+      <ng-container *ngIf="!isBPMNNotationSelected && !isElementMappedToBPMNMappers(sbchild)">
+        <img class="thumbnail"  src="{{imageRoot}}{{categorySuffix}}/{{sbchild.thumbnailURL}}"  />
+        {{sbchild.label}}
+      </ng-container>
+      <ng-container *ngIf="isBPMNNotationSelected && !isElementMappedToBPMNMappers(sbchild)">
+        <img class="thumbnail" style="width: 35px; margin-left: 18px; margin-right: 28px;" src="{{imageRoot}}{{categorySuffix}}/{{sbchild.thumbnailURL}}"  />
+        {{sbchild.label}}
+      </ng-container>
+      <div style="width: auto; display: flex; justify-content: space-between; height: 45px;" *ngIf="isBPMNNotationSelected && isElementMappedToBPMNMappers(sbchild)">
+        <div id="{{parentPaletteId}}-{{indexElement}}" style="width: 85px; position: relative; height: auto;" class="bpmn-canvas-container"></div>
+        <p style="word-wrap:break-word; display: flex;
+          justify-content: flex-start;
+          flex-direction: row;">{{sbchild.label}}</p>
+
+      </div>
     </a>
     <a *ngIf="sbchild.type == 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="sbchild" (click)="addNewShape(sbchild)">
       <img *ngIf="sbchild.fromArrow" class="thumbnail-arrow-head" [src]="'../assets/images/Arrows/' + sbchild.fromArrow + '.PNG'" >
@@ -19,7 +32,8 @@
     <app--tool-recursive-palette-element (showActivityElementPropertyModal1)="toggleActivityElementPropertyModal($event)"
                                          (showExtendPaletteElementModal1)="toggleExtendPaletteElementModal($event)"
                                          (showEditPaletteElementModal1)="toggleEditPaletteElementModal($event)"
-                                         (sendElementFromRecursiveElement)="addNewShape($event)" [child]="sbchild"></app--tool-recursive-palette-element>
+                                         (sendElementFromRecursiveElement)="addNewShape($event)" [child]="sbchild"
+                                         [isBPMNNotationSelected]="isBPMNNotationSelected" [parentPaletteId]="parentPaletteId + '-' + indexElement"></app--tool-recursive-palette-element>
   </li>
 </ul>
 
@@ -61,9 +75,9 @@
       Edit {{element.label}}
     </ng-template>
   </context-menu> -->
-  <ng-template let-element contextMenuItem (execute)="hideFromPalette($event.item)">
-    Hide
-  </ng-template>
+<!--  <ng-template let-element contextMenuItem (execute)="hideFromPalette($event.item)">-->
+<!--    Hide-->
+<!--  </ng-template>-->
   <ng-template let-element contextMenuItem (execute)="removeFromPalette($event.item)">
     Delete
   </ng-template>

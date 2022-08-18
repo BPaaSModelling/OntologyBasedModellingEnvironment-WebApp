@@ -1,0 +1,25 @@
+.banner{
+  background-image: url("../../../assets/images/AOAME_banner.png");
+  height: 600px;
+  background-position: center;
+  background-size: cover;
+}
+.stepBox{
+  background-color: #cadefc;
+  padding: 20px 20px;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0,0,0,.5);
+}
+.stepBox h1{
+  font-size: 50px;
+  font-weight: bold;
+  color:Blue;
+  text-align: center;
+}
+
+.stepBox p{
+  font-size: 20px;
+  font-style: italic;
+  color:Blue;
+  text-align: center;
+}
