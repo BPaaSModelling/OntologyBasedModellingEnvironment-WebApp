@@ -8,6 +8,7 @@ import {ModalAddPropertiesComponent} from "../modal-add-properties/modal-add-pro
 import {VariablesSettings} from "../../../_settings/variables.settings";
 import * as go from 'gojs';
 import {take} from 'rxjs/operators';
+import {UUID} from 'angular2-uuid';
 
 @Component({
   selector: 'app-modal-extend-palette-element',
@@ -163,7 +164,7 @@ public imageRoot: string = VariablesSettings.IMG_ROOT;
 
     const ele = this.currentPaletteElement;
     ele.id = '';
-    ele.uuid = (this.currentPaletteElement.label).replace(new RegExp(' ', 'g'), ''); // replace spaces
+    ele.uuid = UUID.UUID();
     //console.log('uuid:' + ele.uuid);
     ele.label = this.currentPaletteElement.label;
     ele.type = this.data.paletteElement.type;
