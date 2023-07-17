@@ -20,10 +20,12 @@ export class EndpointSettings {
   private static CREATEDATATYPEPROPERTY     : string = '/ModEnv/createDatatypeProperty';
   private static CREATEBRIDGECONNECTOR       : string = '/ModEnv/createBridgingConnector';
   private static CREATESEMANTICMAPPING       : string = '/ModEnv/createSemanticMapping';
+  private static CREATESHACLCONSTRAINT       : string = '/ModEnv/createShaclConstraint';
   private static GETDATATYPEPROPERTIES      : string = '/ModEnv/getDatatypeProperties';
   private static GETBRIDGECONNECTORS      : string = '/ModEnv/getBridgeConnectors';
   private static GETSEMANTICMAPPINGS      : string = '/ModEnv/getSemanticMappings';
   private static GETSHACLCONSTRAINTS      : string = '/ModEnv/getShaclConstraints';
+  private static VALIDATESHACL            : string = '/ModEnv/validateShacl';
   private static DELETEPALETTEELEMENT       : string = '/ModEnv/deletePaletteElement';
   private static HIDEPALETTEELEMENT         : string = '/ModEnv/hidePaletteElement';
   private static CREATELANGUAGESUBCLASSES   : string = '/ModEnv/createModelingLanguageSubclasses';
@@ -138,6 +140,14 @@ export class EndpointSettings {
 
   public getCreateSemanticMappingEndpoint(): string {
     return this.webserviceEndpoint + EndpointSettings.CREATESEMANTICMAPPING;
+  }
+
+  public getCreateShaclConstraintEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATESHACLCONSTRAINT;
+  }
+
+  public getValidateShaclEndpoint(modelId): string {
+    return this.webserviceEndpoint + EndpointSettings.VALIDATESHACL+ '/' + modelId;
   }
 
   public getDatatypePropertyEndpoint(domainName): string {
