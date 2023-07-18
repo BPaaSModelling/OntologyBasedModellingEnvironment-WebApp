@@ -14,6 +14,8 @@ import {ModalInsertLangobjectPropertyComponent} from "../modal-insert-langobject
 import {VariablesSettings} from "../../../_settings/variables.settings";
 import * as go from 'gojs';
 import {take} from 'rxjs/operators';
+import {ModalInsertShaclPropertyComponent} from '../modal-insert-shacl-property/modal-insert-shacl-property.component';
+import {ShaclConstraintModel} from '../../models/ShaclConstraint.model';
 
 @Component({
   selector: 'app-modal-edit-palette-element',
@@ -54,7 +56,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public datatypeProperties: DatatypePropertyModel[] = [];
   public bridgingConnectors: ObjectPropertyModel[] = [];
   public semanticMappings: ObjectPropertyModel[] = [];
-  public shaclConstraints: any[] = [];
+  public shaclConstraints: ShaclConstraintModel[] = [];
 
   public config1: any;
   public VariablesSettings: any;
@@ -102,6 +104,12 @@ export class ModalEditPaletteElementComponent implements OnInit {
       (response) => {
         this.semanticMappings = response;
         console.log("Loading object properties");
+      }
+    );
+    this.mService.queryShaclConstraints(this.domainName).subscribe(
+      (response) => {
+        this.shaclConstraints = response;
+        console.log("Loading shacl constraints");
       }
     );
       //}
@@ -288,14 +296,14 @@ export class ModalEditPaletteElementComponent implements OnInit {
   }
 
   openInsertNewShaclConstraint(element: PaletteElementModel) {
-    const dialogRef1 = this.dialog.open(ModalInsertObjectPropertyComponent, { //TODO: Change ModalInsertObjectProperty if needed for Shacl Constraints
+    const dialogRef1 = this.dialog.open(ModalInsertShaclPropertyComponent, { //TODO: Change ModalInsertObjectProperty if needed for Shacl Constraints
       data: {paletteElement: element },
       height:'80%',
       width: '800px',
       disableClose: false,
     });
 
-    const sub = dialogRef1.componentInstance.newRelationAdded.subscribe(() => {
+    const sub = dialogRef1.componentInstance.newConstraintAdded.subscribe(() => {
       this.mService.queryShaclConstraints(this.domainName).subscribe( //TODO: Implement this
         (response) => {
           this.shaclConstraints = response; //TODO: Implement this

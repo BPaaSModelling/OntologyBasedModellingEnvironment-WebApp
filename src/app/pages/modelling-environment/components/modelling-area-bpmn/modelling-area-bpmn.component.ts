@@ -2102,6 +2102,16 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       new go.Binding('visible', 'otherVisualisationsOfSameLanguageConstruct', convertFieldExistenceToLinkVisibility)
     ));
   }
+
+  validateSHACL() {
+    console.log("Validating SHACL for model: " + this.selectedModel.id + " with name: " + this.selectedModel.label);
+    this.mService.validateShacl(this.selectedModel.id).subscribe(
+      (response: String) => {
+        console.log("Response from SHACL validation: " + response)
+      }
+    )
+
+  }
 }
 
 //  uncomment this if you want a subprocess to expand on drop.  We decided we didn't like this behavior

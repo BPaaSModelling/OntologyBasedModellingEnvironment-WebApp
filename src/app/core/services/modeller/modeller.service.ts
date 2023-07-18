@@ -29,6 +29,7 @@ import {saveAs} from 'file-saver';
 import {ModalModelMultipleExport} from '../../../shared/modals/modal-model-multiple-export/modal-model-multiple-export.component';
 import {promise} from 'protractor';
 import * as go from 'gojs';
+import {ShaclConstraintModel} from '../../../shared/models/ShaclConstraint.model';
 
 
 @Injectable()
@@ -170,6 +171,18 @@ export class ModellerService {
     return this.httpClient.post(this.endpointSettings.getCreateSemanticMappingEndpoint(), oImg);
   }
 
+  createNewShaclConstraint(oImg) {
+    const querySuccess: Boolean = false;
+    console.log(oImg);
+    return this.httpClient.post(this.endpointSettings.getCreateShaclConstraintEndpoint(), oImg);
+  }
+
+  validateShacl(modelId: string) {
+    const querySuccess: Boolean = false;
+    console.log();
+    return this.httpClient.get<String>(this.endpointSettings.getValidateShaclEndpoint(modelId));
+  }
+
   editElement(element: PaletteElementModel, modifiedElement: PaletteElementModel) {
     const querySuccess: Boolean = false;
     const params = new URLSearchParams();
@@ -262,7 +275,8 @@ export class ModellerService {
   }
 
   queryShaclConstraints(domainName) {
-    return this.httpClient.get<ObjectPropertyModel[]>(this.endpointSettings.getShaclConstraintEndpoint(domainName)); //TODO: adjust as needed
+    console.log("Querying shacl constraints. DomainName: " + domainName+ " Endpoint: " + this.endpointSettings.getShaclConstraintEndpoint(domainName));
+    return this.httpClient.get<ShaclConstraintModel[]>(this.endpointSettings.getShaclConstraintEndpoint(domainName)); //TODO: adjust as needed
   }
 
   queryNamespacePrefixes(): void {
