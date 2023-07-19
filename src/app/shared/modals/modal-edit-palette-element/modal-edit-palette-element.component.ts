@@ -109,6 +109,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
     this.mService.queryShaclConstraints(this.domainName).subscribe(
       (response) => {
         this.shaclConstraints = response;
+        console.log(response);
         console.log("Loading shacl constraints");
       }
     );
@@ -296,7 +297,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
   }
 
   openInsertNewShaclConstraint(element: PaletteElementModel) {
-    const dialogRef1 = this.dialog.open(ModalInsertShaclPropertyComponent, { //TODO: Change ModalInsertObjectProperty if needed for Shacl Constraints
+    const dialogRef1 = this.dialog.open(ModalInsertShaclPropertyComponent, {
       data: {paletteElement: element },
       height:'80%',
       width: '800px',
@@ -304,9 +305,10 @@ export class ModalEditPaletteElementComponent implements OnInit {
     });
 
     const sub = dialogRef1.componentInstance.newConstraintAdded.subscribe(() => {
-      this.mService.queryShaclConstraints(this.domainName).subscribe( //TODO: Implement this
+      this.mService.queryShaclConstraints(this.domainName).subscribe(
         (response) => {
-          this.shaclConstraints = response; //TODO: Implement this
+          this.shaclConstraints = response;
+          console.log(response);
           dialogRef1.close('Cancel');
         }
       );

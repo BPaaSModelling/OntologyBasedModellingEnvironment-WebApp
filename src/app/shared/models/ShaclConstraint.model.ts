@@ -7,7 +7,7 @@ export class ShaclConstraintModel {
   maxCount: number;
 
   domainName: string;
-  label: string;
+
   range: string;
   defaultValue: string;
 }
