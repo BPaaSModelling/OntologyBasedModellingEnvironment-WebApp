@@ -39,6 +39,11 @@ export class VariablesSettings{
 
   /* END - BPaaS  */
 
+  /* START - FloWare */
+  public static CAT_FloWare_SystemLayer: string = 'FloWare_SystemLayer';
+
+  /* END - FloWare  */
+
   /* START - ArchiMate */
   public static CAT_ArchiMate_ApplicationLayer: string = 'ArchiMate_ApplicationLayer';
   public static CAT_ArchiMate_BusinessLayer: string = 'ArchiMate_BusinessLayer';
@@ -79,5 +84,6 @@ export class VariablesSettings{
   public static archiMateApplicationLayerImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_ArchiMate_ApplicationLayer + "/";
   public static archiMateBusinessLayerImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_ArchiMate_BusinessLayer + "/";
   public static archiMateTechLayerImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_ArchiMate_TechnologyLayer + "/";
+  public static floWare_SystemLayerImagePath: string = VariablesSettings.IMG_ROOT + VariablesSettings.CAT_FloWare_SystemLayer + "/";
   /* END - Properties to the complete path of the images for the categories */
 }

@@ -44,10 +44,11 @@ public roleImageList: any;
 public sapscenesImageList: any;
 public sapscenesRelationsList: any;
 
-  public archiMateApplicationLayerList: any;
-  public archiMateBusinessLayerList: any;
-  public archiMateTechnologyLayerList: any;
+public archiMateApplicationLayerList: any;
+public archiMateBusinessLayerList: any;
+public archiMateTechnologyLayerList: any;
 
+public floWare_SystemLayerList: any;
 
 public config: any;
 public config1: any;

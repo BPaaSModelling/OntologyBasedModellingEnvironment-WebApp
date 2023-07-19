@@ -48,6 +48,8 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public archiMateBusinessLayerList: any;
   public archiMateTechnologyLayerList: any;
 
+  public floWare_SystemLayerList: any;
+
   public domainName: string;
   //public domainNameArr = [];
   public namespaceMap: Map<string, string>;
