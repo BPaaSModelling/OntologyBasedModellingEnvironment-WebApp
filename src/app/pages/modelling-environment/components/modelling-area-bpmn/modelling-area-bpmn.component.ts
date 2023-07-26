@@ -736,6 +736,11 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       return null;
     }
     */
+
+    if (this.myDiagram === undefined) {
+      this.initDiagramCanvas();
+    }
+
     const elementId = element.uuid;
     const nodeId = '#' + elementId;
     console.log('icon url is: ' + VariablesSettings.IMG_ROOT + (element.paletteCategory).split('#')[1] + '/' + element.imageURL);
