@@ -4,6 +4,8 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog
 import {ModellerService} from '../../../core/services/modeller/modeller.service';
 import {PaletteElementModel} from '../../models/PaletteElement.model';
 import {ModalCreateDomainElementsComponent} from '../modal-create-domain-elements/modal-create-domain-elements.component';
+import {unescapeIdentifier} from '@angular/compiler';
+import {UUID} from 'angular2-uuid';
 
 @Component({
   selector: 'app-modal-insert-shacl-property',
@@ -15,6 +17,7 @@ export class ModalInsertShaclPropertyComponent implements OnInit {
 
   @Output() newConstraintAdded = new EventEmitter();
   public shaclConstraint: ShaclConstraintModel;
+  public domainName: string;
   step = 0;
   public config: any;
    constructor(@Inject(MAT_DIALOG_DATA) public data: any,
@@ -24,6 +27,12 @@ export class ModalInsertShaclPropertyComponent implements OnInit {
 
   ngOnInit(): void {
     this.shaclConstraint = new ShaclConstraintModel();
+    // Extract the domain name from the palette element
+    const domainNameArr = this.data.paletteElement.representedLanguageClass.split('#');
+    const prefix = this.data.paletteElement.languagePrefix;
+    if (domainNameArr[1] !== undefined) this.domainName = prefix + ':' + domainNameArr[1];
+    else this.domainName = domainNameArr[0];
+    this.mService.queryAllProperties(this.domainName);
 
     this.config = {
       displayKey: 'label',
@@ -55,7 +64,7 @@ export class ModalInsertShaclPropertyComponent implements OnInit {
   selectionChanged(event) {
     console.log(event);
     if(!(event.value === null || event.value === undefined)) {
-      this.shaclConstraint.path = event.value.label;
+      this.shaclConstraint.path = event.value.id;
     }
   }
 
@@ -78,13 +87,14 @@ export class ModalInsertShaclPropertyComponent implements OnInit {
   }
 
   insertNewShaclConstraint() {
-    this.shaclConstraint.id = (this.shaclConstraint.name).replace(new RegExp(' ', 'g'), '_');
+     //Make sure the id is unique
+    this.shaclConstraint.id = (this.shaclConstraint.name + '_' + UUID.UUID()).replace(new RegExp(' ', 'g'), '_');
     this.shaclConstraint.domainName = this.data.paletteElement.representedLanguageClass;
     console.log(this.shaclConstraint.path);
     this.mService.createNewShaclConstraint(JSON.stringify(this.shaclConstraint)).subscribe(
       (response) => {
         console.log(response);
-        -this.newConstraintAdded.emit(this.shaclConstraint);
+        this.newConstraintAdded.emit(this.shaclConstraint);
         this.dialogRef.close('Cancel');
       }
     );

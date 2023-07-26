@@ -16,7 +16,7 @@
         </mat-expansion-panel-header>
 
         <mat-form-field class="full-width">
-          <input matInput placeholder="Label" name="input_name" [(ngModel)]="shaclConstraint.name" required>
+          <input matInput placeholder="Name" name="input_name" [(ngModel)]="shaclConstraint.name" required>
         </mat-form-field>
 
         <!--<mat-form-field class="full-width">
@@ -31,6 +31,18 @@
             <input matInput placeholder="Description" [(ngModel)]="shaclConstraint.description">
           </mat-form-field>
         </div>
+
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Type of value" [(ngModel)]="shaclConstraint.datatype">
+            <mat-option value="xsd:boolean">Boolean</mat-option>
+            <mat-option value="xsd:date">Date</mat-option>
+            <mat-option value="xsd:dateTime">DateTime</mat-option>
+            <mat-option value="xsd:decimal">Decimal</mat-option>
+            <mat-option value="xsd:integer">Integer</mat-option>
+            <mat-option value="xsd:string">String</mat-option>
+            <mat-option value="rdf:HTML">HTML</mat-option>
+          </mat-select>
+        </mat-form-field>
 
         <!--
                   <mat-panel-title>Cardinality</mat-panel-title>
@@ -51,7 +63,7 @@
               <input matInput type="number" placeholder="Maximum Count" name="input_maxCount" [(ngModel)]="shaclConstraint.maxCount" min="0" pattern="[0-9]+">
             </mat-form-field>
           </div>
-       <ngx-select-dropdown name="select_path" (change)="selectionChanged($event)" [multiple]="false" [(ngModel)]="shaclConstraint.path" [config]="config" [options]="mService.modelingLanguageClasses">
+       <ngx-select-dropdown name="select_path" (change)="selectionChanged($event)" [multiple]="false" [(ngModel)]="shaclConstraint.path" [config]="config" [options]="mService.allProperties">
        </ngx-select-dropdown>
 
         <br>

@@ -276,8 +276,8 @@
             <mat-expansion-panel>
               <mat-expansion-panel-header>
                 <mat-panel-title>{{element.name}}</mat-panel-title>
-                <mat-panel-title>{{element.id}}</mat-panel-title>
-                <mat-panel-description><b>Path</b>: <i>{{element.path}}</i></mat-panel-description>
+                <mat-panel-title style="word-wrap: break-word; word-break: break-all;">{{element.id}}</mat-panel-title>
+                <mat-panel-description ><b>Path: </b><i style="word-wrap: break-word; word-break: break-all;">{{element.path}}</i></mat-panel-description>
               </mat-expansion-panel-header>
               <mat-action-row>
                 <button mat-raised-button (click)="modifySHACLConstraint(data.paletteElement, element)">Modify</button> <!-- TODO: IMPLEMENT -->

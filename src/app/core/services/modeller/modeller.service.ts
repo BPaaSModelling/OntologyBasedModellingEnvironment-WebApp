@@ -43,6 +43,8 @@ export class ModellerService {
   public domainClasses: DomainElementModel[] = [];
   public modelingLanguageClasse$: Observable<QueryAnswerModel[]> = of([]);
   public modelingLanguageClasses: QueryAnswerModel[] = [];
+  public allProperties$: Observable<ObjectPropertyModel[]> = of([]);
+  public allProperties: ObjectPropertyModel[] = [];
   public datatypeProperties$: Observable<DatatypePropertyModel[]> = of([]);
   public namespacePrefixe$: Observable<string[]> = of([]);
   public namespacePrefixes: string[] = [];
@@ -180,7 +182,7 @@ export class ModellerService {
   validateShacl(modelId: string) {
     const querySuccess: Boolean = false;
     console.log();
-    return this.httpClient.get<String>(this.endpointSettings.getValidateShaclEndpoint(modelId));
+    return this.httpClient.get<any[]>(this.endpointSettings.getValidateShaclEndpoint(modelId));
   }
 
   editElement(element: PaletteElementModel, modifiedElement: PaletteElementModel) {
@@ -260,6 +262,17 @@ export class ModellerService {
         this.modelingLanguageClasse$ = of(data);
         this.modelingLanguageClasses = data;
       }, error => console.log('Could not query Modeling Language Classes'));
+  }
+
+  queryAllProperties(domainName): void {
+    this.httpClient.get<ObjectPropertyModel[]>(this.endpointSettings.getAllPropertiesEndpoint(domainName))
+      .subscribe(data => {
+          // console.log('PaletteElements received: ' + JSON.stringify(data));
+          this.allProperties$ = of(data);
+          this.allProperties = data;
+          console.log("Properties were pulled "+this.allProperties);
+        },
+        error => console.log('Could not query All Properties'));
   }
 
   queryDatatypeProperties(domainName) {

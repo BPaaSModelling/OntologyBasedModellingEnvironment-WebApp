@@ -84,9 +84,29 @@
       </mat-tab>
 
       <mat-tab label="SHACL Constraints">
-        <h3>Add Shacl Constraints</h3>
+        <h3>Edit SHACL Constraints (Constraint Property)</h3>
+        <mat-dialog-actions layout="row">
+          <button mat-raised-button color="accent" (click)="openInsertNewShaclConstraint(data.paletteElement)">Insert new SHACL Constraint</button>
+        </mat-dialog-actions>
+        <mat-card>
+          <mat-accordion *ngFor="let element of shaclConstraints">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{element.name}}</mat-panel-title>
+                <mat-panel-title style="word-wrap: break-word; word-break: break-all;">{{element.id}}</mat-panel-title>
+                <mat-panel-description ><b>Path: </b><i style="word-wrap: break-word; word-break: break-all;">{{element.path}}</i></mat-panel-description>
+              </mat-expansion-panel-header>
+              <mat-action-row>
+                <button mat-raised-button (click)="modifySHACLConstraint(data.paletteElement, element)">Modify</button> <!-- TODO: IMPLEMENT -->
+                <button mat-raised-button color="warn" style="margin-right:20px;" (click)="deleteSHACLConstraint(element)">Delete</button> <!-- TODO: IMPLEMENT -->
+              </mat-action-row>
+            </mat-expansion-panel>
+          </mat-accordion>
+          <div layout="row">
+            <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
+          </div>
+        </mat-card>
       </mat-tab>
-
     </mat-tab-group>
   </mat-dialog-content>
 

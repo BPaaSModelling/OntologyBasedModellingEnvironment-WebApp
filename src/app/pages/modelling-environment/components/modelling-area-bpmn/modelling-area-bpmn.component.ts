@@ -2106,8 +2106,16 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   validateSHACL() {
     console.log("Validating SHACL for model: " + this.selectedModel.id + " with name: " + this.selectedModel.label);
     this.mService.validateShacl(this.selectedModel.id).subscribe(
-      (response: String) => {
-        console.log("Response from SHACL validation: " + response)
+      (response: any[]) => {
+        console.log(response);
+        const message = response.map(obj => `FocusNode: ${obj.FocusNode} Message: ${obj.Message} Path: ${obj.Path} Severity: ${obj.Severity}`).join('');
+        // Display alert
+        this.snackBar.open(message, 'Close', {
+          duration: 15000,
+
+          panelClass: ['mat-toolbar', 'mat-warning']
+        });
+
       }
     )
 

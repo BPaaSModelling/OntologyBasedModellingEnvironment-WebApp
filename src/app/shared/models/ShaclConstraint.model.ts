@@ -3,6 +3,7 @@ export class ShaclConstraintModel {
   name: string;
   description: string;
   path: string;
+  datatype: string;
   minCount: number;
   maxCount: number;
 
