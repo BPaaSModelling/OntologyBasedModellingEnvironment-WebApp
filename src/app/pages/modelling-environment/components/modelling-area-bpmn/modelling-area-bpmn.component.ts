@@ -2116,8 +2116,6 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         const message = response.map(obj => `FocusNode: ${obj.FocusNode} Message: ${obj.Message} Path: ${obj.Path} Severity: ${obj.Severity}`).join('');
         // Display alert
         this.snackBar.open(message, 'Close', {
-          duration: 15000,
-
           panelClass: ['mat-toolbar', 'mat-warning']
         });
 
