@@ -39,6 +39,7 @@ import {BpmnConstantsClass} from '../../gojs/bpmn-classes/bpmn-constants.class';
 import {AdditionalCreateOptions} from '../../models/additional-create-options.interface';
 import {ModalInstantiationTypeComponent} from '../../../../shared/modals/modal-instantiation-type/modal-instantiation-type.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { ToastrService } from 'ngx-toastr';
 
 const $ = go.GraphObject.make;
 
@@ -50,7 +51,7 @@ const $ = go.GraphObject.make;
 })
 export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line:max-line-length
-  public constructor(public mService: ModellerService, public matDialog: MatDialog, private activatedRoute: ActivatedRoute, private router: Router, private bpmnTemplateService: BpmnTemplateService, private snackBar: MatSnackBar) {
+  public constructor(public mService: ModellerService, public matDialog: MatDialog, private activatedRoute: ActivatedRoute, private router: Router, private bpmnTemplateService: BpmnTemplateService, private snackBar:MatSnackBar, private toastr: ToastrService) {
     console.log('Constructor of graph');
     (go as any).licenseKey = '54ff43e7b11c28c702d95d76423d38f919a52e63998449a35a0412f6be086d1d239cef7157d78cc687f84cfb487fc2898fc1697d964f073cb539d08942e786aab63770b3400c40dea71136c5ceaa2ea1fa2b24a5c5b775a2dc718cf3bea1c59808eff4d54fcd5cb92b280735562bac49e7fc8973f950cf4e6b3d9ba3fffbbf4faf3c7184ccb4569aff5a70deb6f2a3417f';
 
@@ -2114,15 +2115,12 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         console.log(response);
         let message: string;
         if (response.length === 0) {
-          message = 'Validation successful';
+          //message = 'Validation successful';
+          this.toastr.success(message, 'Validation Success', {positionClass: 'toast-bottom-center'});
         } else {
-          message= response.map(obj => `FocusNode: ${obj.FocusNode}\nMessage: ${obj.Message}\nPath: ${obj.Path}\nSeverity: ${obj.Severity}\n`).join('\n');
+          message= response.map(obj => `FocusNode: ${obj.FocusNode}<br>Message: ${obj.Message}<br>Path: ${obj.Path}<br>Severity: ${obj.Severity}<br>`).join('<br>');
+          this.toastr.warning(message, 'Validation Results', {enableHtml: true, disableTimeOut: true, positionClass: 'toast-bottom-full-width', tapToDismiss: true, closeButton: true});
         }
-        // Display alert
-        this.snackBar.open(message, 'Close', {
-          panelClass: ['mat-toolbar', 'mat-warning']
-        });
-
       }
     )
 

@@ -81,6 +81,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { ModalInsertShaclPropertyComponent } from './shared/modals/modal-insert-shacl-property/modal-insert-shacl-property.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { ToastrModule } from 'ngx-toastr';
 
 
 const appRoutes: Routes = [
@@ -196,7 +197,8 @@ export function appInit(endpointSettings: EndpointSettings) {
     MatIconModule,
     MatMenuModule,
     NgMultiSelectDropDownModule.forRoot(),
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
     ModellerService,
