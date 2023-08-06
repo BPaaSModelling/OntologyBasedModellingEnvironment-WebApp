@@ -20,6 +20,8 @@ export class ModalInsertShaclPropertyComponent implements OnInit {
   public domainName: string;
   step = 0;
   public config: any;
+  patternError: string;
+
    constructor(@Inject(MAT_DIALOG_DATA) public data: any,
                public mService: ModellerService,
                public dialogRef: MatDialogRef<ModalInsertShaclPropertyComponent>,
@@ -89,8 +91,8 @@ export class ModalInsertShaclPropertyComponent implements OnInit {
   insertNewShaclConstraint() {
      //Make sure the id is unique
     this.shaclConstraint.id = (this.shaclConstraint.name + '_' + UUID.UUID()).replace(new RegExp(' ', 'g'), '_');
-    this.shaclConstraint.domainName = this.data.paletteElement.representedLanguageClass;
-    console.log(this.shaclConstraint.path);
+    this.shaclConstraint.targetClass = this.data.paletteElement.representedLanguageClass;
+    console.log(this.shaclConstraint);
     this.mService.createNewShaclConstraint(JSON.stringify(this.shaclConstraint)).subscribe(
       (response) => {
         console.log(response);
@@ -98,6 +100,19 @@ export class ModalInsertShaclPropertyComponent implements OnInit {
         this.dialogRef.close('Cancel');
       }
     );
+  }
+
+  onPatternChange() {
+    if (this.shaclConstraint.pattern && this.shaclConstraint.pattern.length > 0) {
+      try {
+        new RegExp(this.shaclConstraint.pattern);
+        this.patternError = 'Valid regex pattern!';
+      } catch (e) {
+        this.patternError = 'Invalid regex pattern!';
+      }
+    } else {
+      this.patternError = 'Input is empty';
+    }
   }
 
 }

@@ -40,7 +40,6 @@ import {AdditionalCreateOptions} from '../../models/additional-create-options.in
 import {ModalInstantiationTypeComponent} from '../../../../shared/modals/modal-instantiation-type/modal-instantiation-type.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
-
 const $ = go.GraphObject.make;
 
 
@@ -2113,7 +2112,12 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     this.mService.validateShacl(this.selectedModel.id).subscribe(
       (response: any[]) => {
         console.log(response);
-        const message = response.map(obj => `FocusNode: ${obj.FocusNode} Message: ${obj.Message} Path: ${obj.Path} Severity: ${obj.Severity}`).join('');
+        let message: string;
+        if (response.length === 0) {
+          message = 'Validation successful';
+        } else {
+          message= response.map(obj => `FocusNode: ${obj.FocusNode}\nMessage: ${obj.Message}\nPath: ${obj.Path}\nSeverity: ${obj.Severity}\n`).join('\n');
+        }
         // Display alert
         this.snackBar.open(message, 'Close', {
           panelClass: ['mat-toolbar', 'mat-warning']

@@ -4,10 +4,11 @@ export class ShaclConstraintModel {
   description: string;
   path: string;
   datatype: string;
+  pattern: string;
   minCount: number;
   maxCount: number;
 
-  domainName: string;
+  targetClass: string;
 
   range: string;
   defaultValue: string;
