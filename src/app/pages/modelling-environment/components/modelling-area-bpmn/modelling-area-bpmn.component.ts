@@ -2116,7 +2116,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
         let message: string;
         if (response.length === 0) {
           //message = 'Validation successful';
-          this.toastr.success(message, 'Validation Success', {positionClass: 'toast-bottom-center'});
+          this.toastr.success(message, 'Validation Success', {positionClass: 'toast-bottom-center', timeOut: 5000, tapToDismiss: true});
         } else {
           message= response.map(obj => `FocusNode: ${obj.FocusNode}<br>Message: ${obj.Message}<br>Path: ${obj.Path}<br>Severity: ${obj.Severity}<br>`).join('<br>');
           this.toastr.warning(message, 'Validation Results', {enableHtml: true, disableTimeOut: true, positionClass: 'toast-bottom-full-width', tapToDismiss: true, closeButton: true});
