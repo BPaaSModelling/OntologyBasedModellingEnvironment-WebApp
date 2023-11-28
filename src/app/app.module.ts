@@ -168,7 +168,7 @@ export function appInit(endpointSettings: EndpointSettings) {
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
     HttpClientModule,
     FlexLayoutModule,
     ContextMenuModule.forRoot(),
