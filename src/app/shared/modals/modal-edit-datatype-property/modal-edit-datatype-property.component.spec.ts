@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 import { ModalEditPropertiesComponent } from './modal-edit-datatype-property.component';
 
@@ -6,7 +6,7 @@ describe('ModalEditPropertiesComponent', () => {
   let component: ModalEditPropertiesComponent;
   let fixture: ComponentFixture<ModalEditPropertiesComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ModalEditPropertiesComponent ]
     })

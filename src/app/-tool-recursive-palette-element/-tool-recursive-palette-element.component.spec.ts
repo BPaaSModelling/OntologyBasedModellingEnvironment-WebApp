@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 import { ToolRecursivePaletteElementComponent } from './-tool-recursive-palette-element.component';
 
@@ -6,7 +6,7 @@ describe('ToolRecursivePaletteElementComponent', () => {
   let component: ToolRecursivePaletteElementComponent;
   let fixture: ComponentFixture<ToolRecursivePaletteElementComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ToolRecursivePaletteElementComponent ]
     })
