@@ -260,5 +260,9 @@ export class EndpointSettings {
 
   }
 
+  public getLogin() :string {
+    return this.webserviceEndpoint + "/login";
+  }
+
 
 }
