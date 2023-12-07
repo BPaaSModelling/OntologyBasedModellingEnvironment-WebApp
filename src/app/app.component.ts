@@ -17,9 +17,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if (!this.auth.isAuthenticated()) {
-      this.auth.login();
-    }
+    this.auth.authenticate();
 
     if (!this.modellerService.prefixAdvancedGithub || this.modellerService.prefixAdvancedGithub.length === 0) {
       this.modellerService.queryLanguagesFromGithub().pipe(

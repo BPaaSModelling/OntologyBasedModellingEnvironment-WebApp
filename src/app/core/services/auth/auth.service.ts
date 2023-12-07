@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+
+
 
 import {EndpointSettings} from '../../../_settings/endpoint.settings';
 import {Observable} from 'rxjs/internal/Observable';
-import {tap} from 'rxjs/operators';
+import {filter, tap} from 'rxjs/operators';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,25 +17,41 @@ export class AuthService {
   public password: string;
   public loginUrl: string;
 
-  constructor(private http: HttpClient, private endpointSettings: EndpointSettings) { }
+  constructor(private http: HttpClient, private router: Router,private endpointSettings: EndpointSettings) { }
 
   public login() {
-
-    this.http.get<string>(this.endpointSettings.getLogin()).subscribe(
-      data => {
-          this.loginUrl = data;
-          console.log("LoginURL is: "+this.loginUrl);
-
-          window.location.href = this.loginUrl;
-
-    }, error => console.log(error));
-
+    window.location.href = this.endpointSettings.getLogin();
   }
 
-  public isAuthenticated(): boolean {
-    const token = localStorage.getItem('jwt_token');
-    // Here you can also add logic to check if the token is expired
-    return token != null;
+  public authenticate(): void {
+
+      this.http.get<any>(this.endpointSettings.getAuth()).subscribe(
+          response => {
+              // Check if the response contains the tokens
+              const accessToken = response.accessToken;
+              const idToken = response.idToken;
+              if (accessToken && idToken) {
+                  // Store the tokens
+                  localStorage.setItem('accessToken', accessToken);
+                  localStorage.setItem('idToken', idToken);
+
+                  // Redirect to a protected route
+                  this.router.navigate(['/home']);
+              } else {
+                  // If tokens are not received, redirect to login
+                  this.login();
+              }
+          },
+          error => {
+              console.error('Authentication error', error);
+              // Redirect to login in case of error
+              this.login();
+          }
+      );
   }
 
+    private storeTokens(accessToken: string, idToken: string): void {
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('idToken', idToken);
+    }
 }
