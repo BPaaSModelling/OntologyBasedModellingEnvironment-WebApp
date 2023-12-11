@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
 
 
@@ -17,23 +17,64 @@ export class AuthService {
   public password: string;
   public loginUrl: string;
 
-  constructor(private http: HttpClient, private router: Router,private endpointSettings: EndpointSettings) { }
+  constructor(private http: HttpClient,
+              private router: Router,
+              private endpointSettings: EndpointSettings) {
+    this.handleAuthCallback();
+  }
 
   public login() {
     window.location.href = this.endpointSettings.getLogin();
   }
 
-  public authenticate(): void {
+  public logout() {
 
-      this.http.get<any>(this.endpointSettings.getAuth()).subscribe(
+    // Clear user data, tokens, etc.
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('idToken');
+    window.location.href = this.endpointSettings.getLogout();
+  }
+
+  private handleAuthCallback(): void {
+    // this.router.events.subscribe(event => {
+    //   if(event instanceof NavigationEnd) {
+    //     const url = new URL(window.location.href);
+    //     const accessToken = url.searchParams.get('accessToken');
+    //     const idToken = url.searchParams.get('idToken');
+    //     if(accessToken && idToken) {
+    //       localStorage.setItem('accessToken', accessToken);
+    //       localStorage.setItem('idToken', idToken);
+    //       this.router.navigate(['/home']); // Adjust as per your route
+    //     }
+    //   }
+    // })
+  }
+
+  public authenticate(): void {
+    let accessToken = localStorage.getItem('accessToken');
+    let idToken = localStorage.getItem('idToken');
+
+    if (!accessToken || !idToken) {
+      const url = new URL(window.location.href);
+      accessToken = url.searchParams.get('accessToken');
+      idToken = url.searchParams.get('idToken');
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('idToken', idToken);
+      //this.login();
+      //return;
+    }
+
+    const params = new HttpParams()
+      .set('accessToken', accessToken)
+      .set('idToken', idToken);
+
+      this.http.get<any>(this.endpointSettings.getAuth(), { params: params})
+        .subscribe(
           response => {
               // Check if the response contains the tokens
-              const accessToken = response.accessToken;
-              const idToken = response.idToken;
-              if (accessToken && idToken) {
-                  // Store the tokens
-                  localStorage.setItem('accessToken', accessToken);
-                  localStorage.setItem('idToken', idToken);
+              //const accessToken = response.accessToken;
+              const idToken = response;
+              if (response) {
 
                   // Redirect to a protected route
                   this.router.navigate(['/home']);
@@ -50,8 +91,6 @@ export class AuthService {
       );
   }
 
-    private storeTokens(accessToken: string, idToken: string): void {
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('idToken', idToken);
-    }
+  public decodeIdToken
+
 }
