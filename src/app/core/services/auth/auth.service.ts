@@ -1,21 +1,19 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
-
-
 import {EndpointSettings} from '../../../_settings/endpoint.settings';
 import {Observable} from 'rxjs/internal/Observable';
 import {filter, tap} from 'rxjs/operators';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+
+import {UserModel} from '../../../shared/models/User.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  public username: string;
-  public password: string;
-  public loginUrl: string;
+  public user: UserModel;
 
   constructor(private http: HttpClient,
               private router: Router,
@@ -44,7 +42,7 @@ export class AuthService {
     //     if(accessToken && idToken) {
     //       localStorage.setItem('accessToken', accessToken);
     //       localStorage.setItem('idToken', idToken);
-    //       this.router.navigate(['/home']); // Adjust as per your route
+    //       //this.router.navigate(['/home']); // Adjust as per your route
     //     }
     //   }
     // })
@@ -54,7 +52,7 @@ export class AuthService {
     let accessToken = localStorage.getItem('accessToken');
     let idToken = localStorage.getItem('idToken');
 
-    if (!accessToken || !idToken) {
+    if (!accessToken || !idToken || accessToken === "null" || idToken === "null") {
       const url = new URL(window.location.href);
       accessToken = url.searchParams.get('accessToken');
       idToken = url.searchParams.get('idToken');
@@ -68,14 +66,13 @@ export class AuthService {
       .set('accessToken', accessToken)
       .set('idToken', idToken);
 
-      this.http.get<any>(this.endpointSettings.getAuth(), { params: params})
+      this.http.get<UserModel>(this.endpointSettings.getAuth(), { params: params})
         .subscribe(
           response => {
               // Check if the response contains the tokens
               //const accessToken = response.accessToken;
-              const idToken = response;
               if (response) {
-
+                  this.user = response;
                   // Redirect to a protected route
                   this.router.navigate(['/home']);
               } else {
@@ -91,6 +88,8 @@ export class AuthService {
       );
   }
 
-  public decodeIdToken
+  public getUserData(): UserModel {
+    return this.user;
+  }
 
 }

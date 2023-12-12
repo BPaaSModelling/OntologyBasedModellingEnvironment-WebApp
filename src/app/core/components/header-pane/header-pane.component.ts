@@ -13,7 +13,7 @@ export class HeaderPaneComponent implements OnInit {
   public showModellerHeader = false;
   public modelName: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, private navigation: NavigationService, private authService: AuthService) { }
+  constructor(private activatedRoute: ActivatedRoute, private router: Router, private navigation: NavigationService, protected authService: AuthService) { }
 
   ngOnInit() {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
