@@ -22,11 +22,12 @@ export class AuthService {
   }
 
   public login() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('idToken');
     window.location.href = this.endpointSettings.getLogin();
   }
 
   public logout() {
-
     // Clear user data, tokens, etc.
     localStorage.removeItem('accessToken');
     localStorage.removeItem('idToken');
@@ -46,21 +47,25 @@ export class AuthService {
     //     }
     //   }
     // })
+
   }
 
   public authenticate(): void {
-    let accessToken = localStorage.getItem('accessToken');
-    let idToken = localStorage.getItem('idToken');
+    //let accessToken = localStorage.getItem('accessToken');
+    //let idToken = localStorage.getItem('idToken');
 
-    if (!accessToken || !idToken || accessToken === "null" || idToken === "null") {
-      const url = new URL(window.location.href);
-      accessToken = url.searchParams.get('accessToken');
-      idToken = url.searchParams.get('idToken');
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('idToken', idToken);
-      //this.login();
-      //return;
+
+    const url = new URL(window.location.href);
+    let accessToken = url.searchParams.get('accessToken');
+    let idToken = url.searchParams.get('idToken');
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('idToken', idToken);
+
+    if(!accessToken || !idToken || accessToken === "null" || idToken === "null") {
+      this.login();
+      return;
     }
+
 
     const params = new HttpParams()
       .set('accessToken', accessToken)
