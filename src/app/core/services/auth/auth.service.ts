@@ -51,47 +51,76 @@ export class AuthService {
   }
 
   public authenticate(): void {
-    //let accessToken = localStorage.getItem('accessToken');
-    //let idToken = localStorage.getItem('idToken');
+    this.http.get<UserModel>(this.endpointSettings.getAuth(), { withCredentials: true })
+      .subscribe(
+        response => {
+          // Check if the response contains the user data
+          if (response) {
+            this.user = response;
+            //this.router.navigate(['/home']);
+          }
+          //else {
+          //  this.login();
+          //}
+        },
+        error => {
+          console.error('Authentication error', error);
+          this.login();
+        }
+      );
 
+    /*// Check if tokens are already stored
+    let accessToken = localStorage.getItem('accessToken');
+    let idToken = localStorage.getItem('idToken');
 
     const url = new URL(window.location.href);
-    let accessToken = url.searchParams.get('accessToken');
-    let idToken = url.searchParams.get('idToken');
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('idToken', idToken);
+    // if tokens are passed as parameters than save them
+    if (url.searchParams.has('accessToken') &&  url.searchParams.has('idToken')) {
+      accessToken = url.searchParams.get('accessToken');
+      idToken = url.searchParams.get('idToken');
+
+      this.validateTokens(accessToken, idToken);
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('idToken', idToken);
+    }
 
     if(!accessToken || !idToken || accessToken === "null" || idToken === "null") {
       this.login();
       return;
-    }
+    }*/
 
 
+  }
+
+  private validateTokens(accessToken: string, idToken: string): void {
     const params = new HttpParams()
       .set('accessToken', accessToken)
       .set('idToken', idToken);
 
-      this.http.get<UserModel>(this.endpointSettings.getAuth(), { params: params})
-        .subscribe(
-          response => {
-              // Check if the response contains the tokens
-              //const accessToken = response.accessToken;
-              if (response) {
-                  this.user = response;
-                  // Redirect to a protected route
-                  this.router.navigate(['/home']);
-              } else {
-                  // If tokens are not received, redirect to login
-                  this.login();
-              }
-          },
-          error => {
-              console.error('Authentication error', error);
-              // Redirect to login in case of error
-              this.login();
+    this.http.get<UserModel>(this.endpointSettings.getAuth(), { params: params, withCredentials: true })
+    // Provide tokens as parameters in URL
+
+    this.http.get<UserModel>(this.endpointSettings.getAuth(), { params: params})
+      .subscribe(
+        response => {
+          // Check if the response contains the tokens
+          if (response) {
+            this.user = response;
+            // Redirect to a protected route
+            this.router.url //navigate(['/home']);
+          } else {
+            // If tokens are not received, redirect to login page
+            this.login();
           }
+        },
+        error => {
+          console.error('Authentication error', error);
+          // Redirect to login page in case of error
+          this.login();
+        }
       );
-  }
+
+}
 
   public getUserData(): UserModel {
     return this.user;
