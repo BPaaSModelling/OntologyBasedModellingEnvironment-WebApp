@@ -11,6 +11,8 @@ import {ModalInsertLangobjectPropertyComponent} from "../modal-insert-langobject
 import {ModalEditPropertiesComponent} from "../modal-edit-datatype-property/modal-edit-datatype-property.component";
 import {ModalEditBCObjectPropertyComponent} from "../modal-edit-bc-object-property/modal-edit-bc-object-property.component";
 import {ModalEditSMObjectPropertyComponent} from "../modal-edit-sm-object-property/modal-edit-sm-object-property.component";
+import {ModalInsertShaclPropertyComponent} from '../modal-insert-shacl-property/modal-insert-shacl-property.component';
+import {ShaclConstraintModel} from '../../models/ShaclConstraint.model';
 
 @Component({
   selector: 'app-modal-add-properties',
@@ -27,6 +29,7 @@ export class ModalAddPropertiesComponent implements OnInit {
   public datatypeProperties: DatatypePropertyModel[] = [];
   public bridgingConnectors: ObjectPropertyModel[] = [];
   public semanticMappings: ObjectPropertyModel[] = [];
+  public shaclConstraints: ShaclConstraintModel[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<ModalAddPropertiesComponent>,
@@ -94,6 +97,30 @@ export class ModalAddPropertiesComponent implements OnInit {
       );
     });
   }
+  // Why not reuse the code from modal-edit-palette-element.component.ts
+  // if it's almost the same?
+  openInsertNewShaclConstraint(element: PaletteElementModel) {
+    const dialogRef1 = this.dialog.open(ModalInsertShaclPropertyComponent, {
+      data: {paletteElement: element },
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    const sub = dialogRef1.componentInstance.newConstraintAdded.subscribe(() => {
+      this.mService.queryShaclConstraints(this.domainName).subscribe(
+        (response) => {
+          this.shaclConstraints = response;
+          console.log(response);
+          dialogRef1.close('Cancel');
+        }
+      );
+    });
+
+    dialogRef1.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }
 
   openInsertNewLanguageRelation(element: PaletteElementModel) {
     const dialogRef1 = this.dialog.open(ModalInsertLangobjectPropertyComponent, {
@@ -120,7 +147,7 @@ export class ModalAddPropertiesComponent implements OnInit {
       disableClose: false,
     });
 
-    const sub = dialogRef1.componentInstance.propertyEdited.subscribe(() => {
+    const sub= dialogRef1.componentInstance.propertyEdited.subscribe(() => {
       //const prefix = this.namespaceMap.get(this.domainName);
       //const domainStr = prefix + ":" + this.domainNameArr[1];
       this.mService.queryDatatypeProperties(this.domainName).subscribe(

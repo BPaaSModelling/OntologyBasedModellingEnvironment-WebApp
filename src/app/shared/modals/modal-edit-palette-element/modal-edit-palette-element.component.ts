@@ -14,6 +14,9 @@ import {ModalInsertLangobjectPropertyComponent} from "../modal-insert-langobject
 import {VariablesSettings} from "../../../_settings/variables.settings";
 import * as go from 'gojs';
 import {take} from 'rxjs/operators';
+import {ModalInsertShaclPropertyComponent} from '../modal-insert-shacl-property/modal-insert-shacl-property.component';
+import {ShaclConstraintModel} from '../../models/ShaclConstraint.model';
+import {of} from 'rxjs/internal/observable/of';
 
 @Component({
   selector: 'app-modal-edit-palette-element',
@@ -21,6 +24,8 @@ import {take} from 'rxjs/operators';
   styleUrls: ['./modal-edit-palette-element.component.css']
 })
 export class ModalEditPaletteElementComponent implements OnInit {
+
+  @Output() propertiesAdded = new EventEmitter();
 
   public currentPaletteElement: PaletteElementModel;
   public activityImageList: any;
@@ -56,6 +61,8 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public datatypeProperties: DatatypePropertyModel[] = [];
   public bridgingConnectors: ObjectPropertyModel[] = [];
   public semanticMappings: ObjectPropertyModel[] = [];
+  public shaclConstraints: ShaclConstraintModel[] = [];
+
   public config1: any;
   public VariablesSettings: any;
 
@@ -76,7 +83,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const domainNameArr = this.data.paletteElement.representedLanguageClass.split('#');
+
     // const domainStr = domainNameArr[0]; //!!!Fix this - should be in format bmm:BMMTask (prefix case-sensitive)
     /*this.mService.queryNamespaceMap().subscribe(
       (data) => {
@@ -84,14 +91,16 @@ export class ModalEditPaletteElementComponent implements OnInit {
       this.namespaceMap.set('bmm','hello');
       console.log(data);*/
       // const arr = domainStr.split("/");
-      const prefix = this.data.paletteElement.languagePrefix;
-      this.domainName = prefix + ':' + domainNameArr[1];
-      this.mService.queryDatatypeProperties(this.domainName).subscribe(
-        (response) => {
-          this.datatypeProperties = response;
-          console.log("Loading datatype properties");
-        }
-      );
+    const domainNameArr = this.data.paletteElement.representedLanguageClass.split('#');
+    const prefix = this.data.paletteElement.languagePrefix;
+    if (domainNameArr[1] !== undefined) this.domainName = prefix + ':' + domainNameArr[1];
+    else this.domainName = domainNameArr[0];
+    this.mService.queryDatatypeProperties(this.domainName).subscribe(
+      (response) => {
+        this.datatypeProperties = response;
+        console.log("Loading datatype properties");
+      }
+    );
       this.mService.queryBridgingConnectors(this.domainName).subscribe(
         (response) => {
           this.bridgingConnectors = response;
@@ -104,10 +113,18 @@ export class ModalEditPaletteElementComponent implements OnInit {
         console.log("Loading object properties");
       }
     );
+    this.mService.queryShaclConstraints(this.domainName).subscribe(
+      (response) => {
+        this.shaclConstraints = response;
+        console.log(response);
+        console.log("Loading shacl constraints");
+      }
+    );
       //}
     //);
     this.mService.queryDomainClasses();
     this.mService.queryModelingElementClasses();
+
     //this.mService.queryPaletteCategories();
     this.mService.queryNamespacePrefixes();
 
@@ -287,6 +304,28 @@ export class ModalEditPaletteElementComponent implements OnInit {
     );
   }
 
+  openInsertNewShaclConstraint(element: PaletteElementModel) {
+    const dialogRef1 = this.dialog.open(ModalInsertShaclPropertyComponent, {
+      data: {paletteElement: element },
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    const sub = dialogRef1.componentInstance.newConstraintAdded.subscribe(() => {
+      this.mService.queryShaclConstraints(this.domainName).subscribe(
+        (response) => {
+          this.shaclConstraints = response;
+          console.log(response);
+          dialogRef1.close('Cancel');
+        }
+      );
+    });
+
+    dialogRef1.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }
   openInsertNewSemanticMapping(element: PaletteElementModel) {
 
     const dialogRef1 = this.dialog.open(ModalInsertObjectPropertyComponent, {

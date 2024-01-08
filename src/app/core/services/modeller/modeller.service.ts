@@ -29,6 +29,7 @@ import {saveAs} from 'file-saver';
 import {ModalModelMultipleExport} from '../../../shared/modals/modal-model-multiple-export/modal-model-multiple-export.component';
 import {promise} from 'protractor';
 import * as go from 'gojs';
+import {ShaclConstraintModel} from '../../../shared/models/ShaclConstraint.model';
 
 
 @Injectable()
@@ -42,6 +43,8 @@ export class ModellerService {
   public domainClasses: DomainElementModel[] = [];
   public modelingLanguageClasse$: Observable<QueryAnswerModel[]> = of([]);
   public modelingLanguageClasses: QueryAnswerModel[] = [];
+  public allProperties$: Observable<ObjectPropertyModel[]> = of([]);
+  public allProperties: ObjectPropertyModel[] = [];
   public datatypeProperties$: Observable<DatatypePropertyModel[]> = of([]);
   public namespacePrefixe$: Observable<string[]> = of([]);
   public namespacePrefixes: string[] = [];
@@ -170,6 +173,18 @@ export class ModellerService {
     return this.httpClient.post(this.endpointSettings.getCreateSemanticMappingEndpoint(), oImg);
   }
 
+  createNewShaclConstraint(oImg) {
+    const querySuccess: Boolean = false;
+    console.log(oImg);
+    return this.httpClient.post(this.endpointSettings.getCreateShaclConstraintEndpoint(), oImg);
+  }
+
+  validateShacl(modelId: string) {
+    const querySuccess: Boolean = false;
+    console.log();
+    return this.httpClient.get<any[]>(this.endpointSettings.getValidateShaclEndpoint(modelId));
+  }
+
   editElement(element: PaletteElementModel, modifiedElement: PaletteElementModel) {
     const querySuccess: Boolean = false;
     const params = new URLSearchParams();
@@ -249,6 +264,17 @@ export class ModellerService {
       }, error => console.log('Could not query Modeling Language Classes'));
   }
 
+  queryAllProperties(domainName): void {
+    this.httpClient.get<ObjectPropertyModel[]>(this.endpointSettings.getAllPropertiesEndpoint(domainName))
+      .subscribe(data => {
+          // console.log('PaletteElements received: ' + JSON.stringify(data));
+          this.allProperties$ = of(data);
+          this.allProperties = data;
+          console.log("Properties were pulled "+this.allProperties);
+        },
+        error => console.log('Could not query All Properties'));
+  }
+
   queryDatatypeProperties(domainName) {
     return this.httpClient.get<DatatypePropertyModel[]>(this.endpointSettings.getDatatypePropertyEndpoint(domainName));
   }
@@ -259,6 +285,11 @@ export class ModellerService {
 
   querySemanticMappings(domainName) {
     return this.httpClient.get<ObjectPropertyModel[]>(this.endpointSettings.getSemanticMappingEndpoint(domainName));
+  }
+
+  queryShaclConstraints(domainName) {
+    console.log("Querying shacl constraints. DomainName: " + domainName+ " Endpoint: " + this.endpointSettings.getShaclConstraintEndpoint(domainName));
+    return this.httpClient.get<ShaclConstraintModel[]>(this.endpointSettings.getShaclConstraintEndpoint(domainName)); //TODO: adjust as needed
   }
 
   queryNamespacePrefixes(): void {

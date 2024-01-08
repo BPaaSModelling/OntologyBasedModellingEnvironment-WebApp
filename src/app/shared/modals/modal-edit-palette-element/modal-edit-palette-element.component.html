@@ -265,6 +265,59 @@
           </div>
         </mat-card>
       </mat-tab>
+
+      <mat-tab label="SHACL Constraints">
+        <h3>Edit SHACL Constraints (Constraint Property)</h3>
+        <mat-dialog-actions layout="row">
+          <button mat-raised-button color="accent" (click)="openInsertNewShaclConstraint(data.paletteElement)">Insert new SHACL Constraint</button>
+        </mat-dialog-actions>
+        <mat-card>
+          <mat-accordion *ngFor="let element of shaclConstraints">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{element.name}}</mat-panel-title>
+                <mat-panel-title style="word-wrap: break-word; word-break: break-all;">{{element.id.split('#')[1]}}</mat-panel-title>
+                <mat-panel-description ><b>Path: </b><i style="word-wrap: break-word; word-break: break-all;">{{element.path.split('#')[1]}}</i></mat-panel-description>
+              </mat-expansion-panel-header>
+              <mat-action-row>
+                <!-- Implement if needed
+                <button mat-raised-button (click)="modifySHACLConstraint(data.paletteElement, element)">Modify</button>
+                <button mat-raised-button color="warn" style="margin-right:20px;" (click)="deleteSHACLConstraint(element)">Delete</button>
+                -->
+              </mat-action-row>
+            </mat-expansion-panel>
+
+            <!--<mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Last name</mat-panel-title>
+                <mat-panel-description>DataType</mat-panel-description>
+              </mat-expansion-panel-header>
+              <label><b>Range</b>: <i>String</i></label>
+              <mat-action-row>
+                <button mat-raised-button>Modify</button>
+                <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
+              </mat-action-row>
+            </mat-expansion-panel>
+
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>Date of birth</mat-panel-title>
+                  <mat-panel-description>DataType</mat-panel-description>
+                </mat-expansion-panel-header>
+                <label><b>Range</b>: <i>Date</i></label>
+                <mat-action-row>
+                  <button mat-raised-button>Modify</button>
+                  <button mat-raised-button color="warn" style="margin-right:20px;">Delete</button>
+                </mat-action-row>
+              </mat-expansion-panel>-->
+
+          </mat-accordion>
+          <div layout="row">
+            <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
+          </div>
+        </mat-card>
+      </mat-tab>
+
     </mat-tab-group>
   </mat-dialog-content>
 

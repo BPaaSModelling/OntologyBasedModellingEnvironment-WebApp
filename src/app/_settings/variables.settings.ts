@@ -50,9 +50,6 @@ export class VariablesSettings{
   public static CAT_ArchiMate_TechnologyLayer: string = 'ArchiMate_TechnologyLayer';
   /* END - ArchiMate  */
 
-
-
-
   /* START - SAP Scenes */
   public static CAT_SAPSCENES: string = 'SAPScenesElements';
   public static CAT_SAPRELATIONS: string = 'SAPScenesRelations';

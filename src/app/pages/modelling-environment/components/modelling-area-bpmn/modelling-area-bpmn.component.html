@@ -1,3 +1,4 @@
+
 <div style="display: flex; flex-direction: column">
   <div style="display: flex; flex-direction: row">
     <mat-form-field appearance="fill">
@@ -8,6 +9,9 @@
 
       </mat-select>
     </mat-form-field>
+
+
+      <button mat-button (click)="validateSHACL()">Validate SHACL</button>
 
 <!--    <mat-card *ngIf="selectedConnectorMode" style="padding: 0">-->
 <!--      <mat-card-header>-->
@@ -36,7 +40,11 @@
 
 
   </div>
+
   <div style="display: flex; flex-direction: row">
     <div id="myDiagramDiv" style="flex-grow: 1; height: 700px; "></div>
   </div>
 </div>
+
+
+

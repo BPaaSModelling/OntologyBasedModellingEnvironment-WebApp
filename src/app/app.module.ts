@@ -79,6 +79,9 @@ import {ContextMenuModule} from 'ngx-contextmenu';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { ModalInsertShaclPropertyComponent } from './shared/modals/modal-insert-shacl-property/modal-insert-shacl-property.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { ToastrModule } from 'ngx-toastr';
 
 
 const appRoutes: Routes = [
@@ -134,6 +137,7 @@ export function appInit(endpointSettings: EndpointSettings) {
     HomeComponent,
     DiagramManagementComponent,
     ModellingAreaBPMNComponent,
+    ModalInsertShaclPropertyComponent,
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -192,7 +196,9 @@ export function appInit(endpointSettings: EndpointSettings) {
     MatRippleModule,
     MatIconModule,
     MatMenuModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    MatButtonToggleModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
     ModellerService,

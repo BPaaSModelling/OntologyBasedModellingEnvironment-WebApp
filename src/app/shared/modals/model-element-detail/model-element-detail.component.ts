@@ -97,7 +97,7 @@ export class ModalViewElementDetail {
           return rel;
         } else {
           let rel = tableValue.relation;
-          rel.value = '"' + tableValue.relation.value + '"^^' + tableValue.primitiveTypeRange
+          rel.value = '"' + tableValue.relation.value + '"^^' + tableValue.primitiveTypeRange;
           return rel;
         }
     });

@@ -20,9 +20,13 @@ export class EndpointSettings {
   private static CREATEDATATYPEPROPERTY     : string = '/ModEnv/createDatatypeProperty';
   private static CREATEBRIDGECONNECTOR       : string = '/ModEnv/createBridgingConnector';
   private static CREATESEMANTICMAPPING       : string = '/ModEnv/createSemanticMapping';
+  private static CREATESHACLCONSTRAINT       : string = '/ModEnv/createShaclConstraint';
   private static GETDATATYPEPROPERTIES      : string = '/ModEnv/getDatatypeProperties';
   private static GETBRIDGECONNECTORS      : string = '/ModEnv/getBridgeConnectors';
   private static GETSEMANTICMAPPINGS      : string = '/ModEnv/getSemanticMappings';
+  private static GETALLPROPERTIES      : string = '/ModEnv/getAllProperties';
+  private static GETSHACLCONSTRAINTS      : string = '/ModEnv/getShaclConstraints';
+  private static VALIDATESHACL            : string = '/ModEnv/validateShacl';
   private static DELETEPALETTEELEMENT       : string = '/ModEnv/deletePaletteElement';
   private static HIDEPALETTEELEMENT         : string = '/ModEnv/hidePaletteElement';
   private static CREATELANGUAGESUBCLASSES   : string = '/ModEnv/createModelingLanguageSubclasses';
@@ -139,6 +143,14 @@ export class EndpointSettings {
     return this.webserviceEndpoint + EndpointSettings.CREATESEMANTICMAPPING;
   }
 
+  public getCreateShaclConstraintEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATESHACLCONSTRAINT;
+  }
+
+  public getValidateShaclEndpoint(modelId): string {
+    return this.webserviceEndpoint + EndpointSettings.VALIDATESHACL+ '/' + modelId;
+  }
+
   public getDatatypePropertyEndpoint(domainName): string {
     return this.webserviceEndpoint + EndpointSettings.GETDATATYPEPROPERTIES + '/' + domainName;
   }
@@ -151,6 +163,13 @@ export class EndpointSettings {
     return this.webserviceEndpoint + EndpointSettings.GETSEMANTICMAPPINGS + '/' + domainName;
   }
 
+  getAllPropertiesEndpoint(domainName) {
+    return this.webserviceEndpoint + EndpointSettings.GETALLPROPERTIES + '/' + domainName;
+  }
+  public getShaclConstraintEndpoint(domainName): string {
+    return this.webserviceEndpoint + EndpointSettings.GETSHACLCONSTRAINTS + '/' + domainName; //TODO: MAKE SURE THIS IS CORRECT
+  }
+
   public getDeletePaletteElementEndpoint(): string {
     return this.webserviceEndpoint + EndpointSettings.DELETEPALETTEELEMENT;
   }
@@ -159,7 +178,7 @@ export class EndpointSettings {
     return this.webserviceEndpoint + EndpointSettings.HIDEPALETTEELEMENT;
   }
 
-  public getCreateLanguageSubclassesEndpoint(): string {
+    public getCreateLanguageSubclassesEndpoint(): string {
     return this.webserviceEndpoint + EndpointSettings.CREATELANGUAGESUBCLASSES;
   }
 
@@ -240,4 +259,6 @@ export class EndpointSettings {
     return this.webserviceEndpoint + "/ModEnv/postTtlFromDesktop"   ;
 
   }
+
+
 }

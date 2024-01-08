@@ -9,6 +9,7 @@ import {VariablesSettings} from "../../../_settings/variables.settings";
 import * as go from 'gojs';
 import {take} from 'rxjs/operators';
 import {UUID} from 'angular2-uuid';
+import {ModalEditPaletteElementComponent} from '../modal-edit-palette-element/modal-edit-palette-element.component';
 
 @Component({
   selector: 'app-modal-extend-palette-element',
@@ -49,6 +50,8 @@ public archiMateBusinessLayerList: any;
 public archiMateTechnologyLayerList: any;
 
 public floWare_SystemLayerList: any;
+public domainName: string;
+
 
 public config: any;
 public config1: any;
@@ -69,12 +72,16 @@ public imageRoot: string = VariablesSettings.IMG_ROOT;
     @Inject(MAT_DIALOG_DATA) public data: any, public mService: ModellerService, public dialog: MatDialog, private changeDetection: ChangeDetectorRef) {
     this.currentPaletteElement = new PaletteElementModel();
     this.VariablesSettings = VariablesSettings;
+    this.domainName = data.paletteElement.representedLanguageClass;
+
   }
 
 
   async ngOnInit() {
+    console.log('Domain name is ' + this.domainName);
     this.mService.queryDomainClasses();
     this.mService.queryModelingElementClasses();
+    this.mService.queryAllProperties(this.domainName);
     //this.mService.queryPaletteCategories();
     this.mService.queryNamespacePrefixes();
 
@@ -218,7 +225,7 @@ public imageRoot: string = VariablesSettings.IMG_ROOT;
         this.newElementCreated.emit(ele);
         this.dialogRef.close();
 
-        const dialogRef1 = this.dialog.open(ModalAddPropertiesComponent, {
+        const dialogRef1 = this.dialog.open(ModalEditPaletteElementComponent, { //ModalAddPropertiesComponent, {
           data: {paletteElement: ele },
           height:'80%',
           width: '800px',
