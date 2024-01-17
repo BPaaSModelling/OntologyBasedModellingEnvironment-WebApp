@@ -13,6 +13,8 @@ import {UserModel} from '../../../shared/models/User.model';
 })
 export class AuthService {
 
+  public idToken: string;
+  public accessToken: string;
   public user: UserModel;
 
   constructor(private http: HttpClient,
@@ -21,18 +23,46 @@ export class AuthService {
     this.handleAuthCallback();
   }
 
+
+  public saveUser(user: UserModel): void {
+    window.sessionStorage.removeItem(this.user.email);
+    window.sessionStorage.setItem(this.user.email, JSON.stringify(user));
+  }
+
+  public getUser(): any {
+    const user:string = window.sessionStorage.getItem(this.user.email);
+    if (user) {
+      return JSON.parse(user);
+    }
+    return {};
+  }
+
+  public getUserData(): UserModel {
+    return this.user;
+  }
+
+
   public login() {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('idToken');
+    window.sessionStorage.removeItem(this.accessToken);
+    window.sessionStorage.removeItem(this.idToken);
     window.location.href = this.endpointSettings.getLogin();
+  }
+  public isLoggedIn(): boolean {
+    const user: string = window.sessionStorage.getItem(this.user.email);
+    if (user) {
+      return true;
+    }
+    return false;
   }
 
   public logout() {
     // Clear user data, tokens, etc.
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('idToken');
+    window.sessionStorage.removeItem(this.accessToken);
+    window.sessionStorage.removeItem(this.idToken);
     window.location.href = this.endpointSettings.getLogout();
   }
+
+
 
   private handleAuthCallback(): void {
     // this.router.events.subscribe(event => {
@@ -57,6 +87,10 @@ export class AuthService {
           // Check if the response contains the user data
           if (response) {
             this.user = response;
+            this.saveUser(this.user);
+
+
+
             //this.router.navigate(['/home']);
           }
           //else {
@@ -120,10 +154,11 @@ export class AuthService {
         }
       );
 
-}
-
-  public getUserData(): UserModel {
-    return this.user;
   }
+
+  clean(): void {
+    window.sessionStorage.clear();
+  }
+
 
 }
