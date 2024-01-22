@@ -17,19 +17,23 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.auth.authenticate();
+    this.auth.authenticate().then(() => {
+      // This part is executed when the observable completes successfully -> authentication successful
 
-    if (!this.modellerService.prefixAdvancedGithub || this.modellerService.prefixAdvancedGithub.length === 0) {
-      this.modellerService.queryLanguagesFromGithub().pipe(
-        take(1),
-        filter(q => !!q),
-        switchMap((queryLanguages) => {
-          return this.modellerService.queryUploadLanguagesSelectedOnFuseki(queryLanguages);
-        })
-      ).subscribe(() => {
-        console.log("preloaded the language ttl files");
-      });
-    }
-
+      if (!this.modellerService.prefixAdvancedGithub || this.modellerService.prefixAdvancedGithub.length === 0) {
+        this.modellerService.queryLanguagesFromGithub().pipe(
+          take(1),
+          filter(q => !!q),
+          switchMap((queryLanguages) => {
+            return this.modellerService.queryUploadLanguagesSelectedOnFuseki(queryLanguages);
+          })
+        ).subscribe(() => {
+          console.log("preloaded the language ttl files");
+        });
+      }
+    }).catch((error) => {
+      // Handle error
+      console.error(`Error during authentication: ${error}`);
+    });
   }
 }
