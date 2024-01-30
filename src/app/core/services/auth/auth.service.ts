@@ -8,6 +8,15 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {UserModel} from '../../../shared/models/User.model';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 
+/**
+ * The AuthService class is responsible for managing authentication-related functionality.
+ * It provides methods for user login, logout, and authentication checks.
+ *
+ * @constructor
+ * @param {HttpClient} http - The HttpClient service used for making HTTP requests.
+ * @param {Router} router - The Router service used for navigating between routes.
+ * @param {EndpointSettings} endpointSettings - The EndpointSettings service used for retrieving endpoint URLs.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -54,9 +63,9 @@ export class AuthService {
 
   public logout() {
     // Clear user data, tokens, etc.
-    //window.sessionStorage.removeItem(this.accessToken);
     window.sessionStorage.removeItem('currentUser');
     window.location.href = this.endpointSettings.getLogout();
+    this.clean();
   }
 
   public saveUser(user: UserModel): void {
@@ -87,61 +96,9 @@ export class AuthService {
             reject();
           });
     });
-
-    /*// Check if tokens are already stored
-    let accessToken = localStorage.getItem('accessToken');
-    let idToken = localStorage.getItem('idToken');
-
-    const url = new URL(window.location.href);
-    // if tokens are passed as parameters than save them
-    if (url.searchParams.has('accessToken') &&  url.searchParams.has('idToken')) {
-      accessToken = url.searchParams.get('accessToken');
-      idToken = url.searchParams.get('idToken');
-
-      this.validateTokens(accessToken, idToken);
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('idToken', idToken);
-    }
-
-    if(!accessToken || !idToken || accessToken === "null" || idToken === "null") {
-      this.login();
-      return;
-    }*/
   }
-
-  // private validateTokens(accessToken: string, idToken: string): void {
-  //   const params = new HttpParams()
-  //     .set('accessToken', accessToken)
-  //     .set('idToken', idToken);
-  //
-  //   this.http.get<UserModel>(this.endpointSettings.getAuth(), { params: params, withCredentials: true })
-  //   // Provide tokens as parameters in URL
-  //
-  //   this.http.get<UserModel>(this.endpointSettings.getAuth(), { params: params})
-  //     .subscribe(
-  //       response => {
-  //         // Check if the response contains the tokens
-  //         if (response) {
-  //           this.user = response;
-  //           // Redirect to a protected route
-  //           this.router.url //navigate(['/home']);
-  //         } else {
-  //           // If tokens are not received, redirect to login page
-  //           this.login();
-  //         }
-  //       },
-  //       error => {
-  //         console.error('Authentication error', error);
-  //         // Redirect to login page in case of error
-  //         this.login();
-  //       }
-  //     );
-  //
-  // }
 
   clean(): void {
     window.sessionStorage.clear();
   }
-
-
 }
