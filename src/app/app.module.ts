@@ -62,7 +62,7 @@ import {ModalModelEdit} from './shared/modals/modal-model-edit/modal-model-edit.
 import {ModalViewElementDetail} from './shared/modals/model-element-detail/model-element-detail.component';
 import {ModalShowLanguageInstances} from './shared/modals/modal-show-language-instances/modal-show-language-instances';
 import {EndpointSettings} from './_settings/endpoint.settings';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {ModalModelExport} from './shared/modals/modal-model-export/modal-model-export-component';
 import {ImportExportEnvironmentComponent} from './pages/importExport-environment/import-export-environment.component';
 import {ModalModelMultipleExport} from './shared/modals/modal-model-multiple-export/modal-model-multiple-export.component';
@@ -82,6 +82,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import { ModalInsertShaclPropertyComponent } from './shared/modals/modal-insert-shacl-property/modal-insert-shacl-property.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { ToastrModule } from 'ngx-toastr';
+import {httpInterceptorProviders} from "./core/services/auth/http-interceptor.service";
 
 
 const appRoutes: Routes = [
@@ -204,6 +205,7 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModellerService,
     MatSnackBar,
     EndpointSettings,
+    httpInterceptorProviders,
     {
       provide: APP_INITIALIZER,
       useFactory: appInit,
