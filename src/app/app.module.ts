@@ -83,6 +83,7 @@ import { ModalInsertShaclPropertyComponent } from './shared/modals/modal-insert-
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { ToastrModule } from 'ngx-toastr';
 import {httpInterceptorProviders} from "./core/services/auth/http-interceptor.service";
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 const appRoutes: Routes = [
@@ -200,6 +201,7 @@ export function appInit(endpointSettings: EndpointSettings) {
     NgMultiSelectDropDownModule.forRoot(),
     MatButtonToggleModule,
     ToastrModule.forRoot(),
+    MatProgressSpinnerModule,
   ],
   providers: [
     ModellerService,

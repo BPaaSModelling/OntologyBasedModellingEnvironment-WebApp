@@ -7,6 +7,7 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 
 import {UserModel} from '../../../shared/models/User.model';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
+import {ToastrService} from 'ngx-toastr';
 
 /**
  * The AuthService class is responsible for managing authentication-related functionality.
@@ -29,7 +30,8 @@ export class AuthService {
 
   constructor(private http: HttpClient,
               private router: Router,
-              private endpointSettings: EndpointSettings) {
+              private endpointSettings: EndpointSettings,
+              private toastr: ToastrService) {
     this.currentUserSubject = new BehaviorSubject<UserModel>(this.getUser());
     this.currentUser$ = this.currentUserSubject.asObservable();
   }
@@ -75,27 +77,32 @@ export class AuthService {
   }
 
   public authenticate() {
-    return new Promise((resolve, reject) => {
-      this.http.get<UserModel>(this.endpointSettings.getAuth(), {withCredentials: true})
-        .subscribe(
-          response => {
-            // Check if the response contains the user data
-            if (response) {
-              //this.user = response;
-              this.saveUser(response);
-              resolve();
-              //this.router.navigate(['/home']);
-            } else {
-              console.error("No user data received in the authentication response.");
-              reject();
-            }
-          },
-          error => {
+    return this.http.get<UserModel>(this.endpointSettings.getAuth(), {withCredentials: true})
+      .subscribe(response => {
+          // Check if the response contains the user data
+          if (response) {
+            //this.user = response;
+            this.saveUser(response);
+            //this.router.navigate(['/home']);
+          } else {
+            console.error("No user data received in the authentication response.");
+          }
+        },
+        error => {
+          if (error.status === 401) { // User is not logged in or token problem (expired, etc.)
             console.error('Authentication error', error);
             this.login();
-            reject();
-          });
-    });
+          } else if(error.status === 403) { // Jena Fuseki is not running
+            console.error('Jena Fuseki Server error', error);
+            this.toastr.error(
+              'Please make sure Jena Fuseki is running before logging in. <br/> Make sure all Turtle files are uploaded. <br/><br/>' + error.error,
+              'Authentication error',
+              {positionClass: 'toast-center-center', enableHtml: true});
+            setTimeout(() => {
+              this.login()
+            }, 7000);
+          }
+        });
   }
 
   clean(): void {
