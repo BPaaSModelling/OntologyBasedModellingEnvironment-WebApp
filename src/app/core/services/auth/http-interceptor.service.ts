@@ -4,6 +4,12 @@ import { Observable} from "rxjs";
 import { AuthService} from "../auth/auth.service";
 import {UserModel} from "../../../shared/models/User.model";
 
+/**
+ * Class representing an HTTP interceptor service.
+ * @implements {HttpInterceptor}
+ * @classdesc This service is used to intercept HTTP requests and add authentication headers.
+ * @injectable
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -12,16 +18,10 @@ export class HttpInterceptorService implements HttpInterceptor {
   }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    //const userData: string = sessionStorage.getItem(this.authService.getUser());
-    const idToken = this.authService.idToken;
-
     req = req.clone({
       //headers: req.headers.set('Authorization', 'Bearer ' + idToken),
       withCredentials: true
     });
-
-
-    console.log("HttpInterceptor is working");
 
     return next.handle(req);
   }

@@ -4,7 +4,7 @@ import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import {ModellerService} from '../../core/services/modeller/modeller.service';
 import {PaletteElementModel} from '../../shared/models/PaletteElement.model';
 import { MatDialog } from '@angular/material/dialog';
-import {filter, switchMap, take} from 'rxjs/operators';
+import {filter, finalize, switchMap, take, tap} from 'rxjs/operators';
 import {AuthService} from '../../core/services/auth/auth.service';
 
 
@@ -53,17 +53,20 @@ export class HomeComponent implements OnInit {
         switchMap((queryLanguages) => {
           console.log("preloading the language ttl files");
           return this.modellerService.queryUploadLanguagesSelectedOnFuseki(queryLanguages);
+        }),
+        tap(() => {
+          // Ensure that all previous tasks have been completed and then authenticate
+          console.log("preloaded the language ttl files");
+          this.auth.authenticate();
+        }),
+        finalize(() => {
+          // will always be executed, regardless of successful or unsuccessful completion
+          this.isLoading = false;
         })
-      ).subscribe(() => {
-        console.log("preloaded the language ttl files");
-        this.isLoading = false;
-        this.auth.authenticate();
-      }, error => {
-        console.error("Error during preloading ttl files", error);
-        this.isLoading = false;
+      ).subscribe({
+        error:err => console.error("Error during preloading ttl files from Github", err)
       });
     }
   }
 
-
-  }
+}
