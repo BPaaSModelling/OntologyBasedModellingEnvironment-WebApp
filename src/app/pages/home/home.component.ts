@@ -57,6 +57,7 @@ export class HomeComponent implements OnInit {
         tap(() => {
           // Ensure that all previous tasks have been completed and then authenticate
           console.log("preloaded the language ttl files");
+          // IF YOU DON'T WANT TO AUTHENTICATE, COMMENT THE LINE BELOW
           this.auth.authenticate();
         }),
         finalize(() => {
