@@ -56,16 +56,18 @@ export class HomeComponent implements OnInit {
         }),
         tap(() => {
           // Ensure that all previous tasks have been completed and then authenticate
-          console.log("preloaded the language ttl files");
-          // IF YOU DON'T WANT TO AUTHENTICATE, COMMENT THE LINE BELOW
-          this.auth.authenticate();
+          console.log("Successfully preloaded the language ttl files");
         }),
         finalize(() => {
           // will always be executed, regardless of successful or unsuccessful completion
           this.isLoading = false;
+          // IF YOU DON'T WANT TO AUTHENTICATE, COMMENT THE LINE BELOW
+          this.auth.authenticate();
         })
       ).subscribe({
-        error:err => console.error("Error during preloading ttl files from Github", err)
+        error:err => {
+          console.error("Error during preloading ttl files from Github", err);
+        }
       });
     }
   }
