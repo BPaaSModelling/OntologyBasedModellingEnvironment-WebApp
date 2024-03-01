@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
           // will always be executed, regardless of successful or unsuccessful completion
           this.isLoading = false;
           // IF YOU DON'T WANT TO AUTHENTICATE, COMMENT THE LINE BELOW
-          //this.auth.authenticate();
+          this.auth.authenticate();
         })
       ).subscribe({
         error:err => {
