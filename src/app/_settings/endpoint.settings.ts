@@ -167,7 +167,7 @@ export class EndpointSettings {
     return this.webserviceEndpoint + EndpointSettings.GETALLPROPERTIES + '/' + domainName;
   }
   public getShaclConstraintEndpoint(domainName): string {
-    return this.webserviceEndpoint + EndpointSettings.GETSHACLCONSTRAINTS + '/' + domainName; //TODO: MAKE SURE THIS IS CORRECT
+    return this.webserviceEndpoint + EndpointSettings.GETSHACLCONSTRAINTS + '/' + domainName;
   }
 
   public getDeletePaletteElementEndpoint(): string {

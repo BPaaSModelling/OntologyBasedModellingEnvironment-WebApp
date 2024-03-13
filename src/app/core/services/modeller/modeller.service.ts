@@ -289,7 +289,7 @@ export class ModellerService {
 
   queryShaclConstraints(domainName) {
     console.log("Querying shacl constraints. DomainName: " + domainName+ " Endpoint: " + this.endpointSettings.getShaclConstraintEndpoint(domainName));
-    return this.httpClient.get<ShaclConstraintModel[]>(this.endpointSettings.getShaclConstraintEndpoint(domainName)); //TODO: adjust as needed
+    return this.httpClient.get<ShaclConstraintModel[]>(this.endpointSettings.getShaclConstraintEndpoint(domainName));
   }
 
   queryNamespacePrefixes(): void {
