@@ -64,4 +64,8 @@ export class DiagramManagementComponent implements OnInit {
   public toggleRipple(): void {
     this.rippleDisabled = !this.rippleDisabled;
   }
+
+  createNewOntologyLanguage() {
+
+  }
 }
