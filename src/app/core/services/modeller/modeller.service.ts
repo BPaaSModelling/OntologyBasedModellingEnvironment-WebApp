@@ -379,7 +379,8 @@ export class ModellerService {
   }
 
   getElements(modelId: string): Observable<ModelElementDetail[]> {
-    return this.httpClient.get<ModelElementDetail[]>(this.endpointSettings.getElementEndpoint(modelId));
+    //
+    return this.httpClient.get<ModelElementDetail[]>(`${this.endpointSettings.getElementEndpoint(modelId)}`);
   }
 
   updateElement(elementDetail: ModelElementDetail, modelId: string) {
