@@ -362,4 +362,32 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
 
     this.handleDialogClose(dialogRef);
   }
+
+  onCreateNewOntology($event: any) {
+    console.log('Create New Ontology selected');
+    console.log($event.value);
+
+    // TO DO: Implement the logic for creating a new ontology
+    // a plus sign should appear for adding a group of elements
+    // user must enter the name of the ontology and the group name
+
+    // this.paletteCategories = [];
+    // this.mService.queryPaletteCategories($event.value).subscribe(
+    //   (response) => {
+    //     console.log(response);
+    //     this.paletteCategories = response;
+    //     this.mService.queryPaletteElements().pipe(take(1)).subscribe(() => {
+    //       console.log('Palette elements:');
+    //       console.log(this.mService.paletteElements);
+    //       this.selectedView = $event.value;
+    //       this.cdRef.detectChanges();
+    //       setTimeout(() => {
+    //         this.loadPaletteGoJSElements();
+    //       }, 1000);
+    //     });
+    //   }
+    // );
+    console.log('Palette categories');
+
+  }
 }

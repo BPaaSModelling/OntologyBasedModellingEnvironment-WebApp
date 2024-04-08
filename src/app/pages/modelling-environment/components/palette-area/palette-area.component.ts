@@ -213,4 +213,8 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
   showInstantiatedElements(element: PaletteElementModel) {
     this.dialog.open(ModalShowLanguageInstances, {data:element});
   }
+
+  onCreateNewOntology() {
+
+  }
 }
