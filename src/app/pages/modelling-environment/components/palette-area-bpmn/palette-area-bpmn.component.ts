@@ -8,6 +8,7 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ModalCreateDomainElementsComponent} from "../../../../shared/modals/modal-create-domain-elements/modal-create-domain-elements.component";
 import {ModalPaletteElementPropertiesComponent} from "../../../../shared/modals/modal-palette-element-properties/modal-palette-element-properties.component";
 import {ModalEditPaletteElementComponent} from "../../../../shared/modals/modal-edit-palette-element/modal-edit-palette-element.component";
+import {CreateNewOntologyComponent} from './create-new-ontology/create-new-ontology.component';
 import {ModelingViewModel} from "../../../../shared/models/ModelingView.model";
 import {PaletteCategoryModel} from "../../../../shared/models/PaletteCategory.model";
 import {VariablesSettings} from "../../../../_settings/variables.settings";
@@ -363,9 +364,20 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     this.handleDialogClose(dialogRef);
   }
 
-  onCreateNewOntology($event: any) {
+  toggleCreateNewOntology($event: any) {
     console.log('Create New Ontology selected');
     console.log($event.value);
+
+    let dialogRef = this.dialog.open(CreateNewOntologyComponent, {
+      data: { SuperClassOfAllModelingLanguages: 'lo:ModelingLanguage' }, //paletteElement: element()
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+    this.handleDialogClose(dialogRef);
+    // const sub = dialogRef.componentInstance.newElementCreated.subscribe(() => {
+    //   this.handleDialogClose(dialogRef);
+    // });
 
     // TO DO: Implement the logic for creating a new ontology
     // a plus sign should appear for adding a group of elements

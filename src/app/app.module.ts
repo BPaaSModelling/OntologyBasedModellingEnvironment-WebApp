@@ -84,6 +84,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { ToastrModule } from 'ngx-toastr';
 import {httpInterceptorProviders} from "./core/services/auth/http-interceptor.service";
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { CreateNewOntologyComponent } from './pages/modelling-environment/components/palette-area-bpmn/create-new-ontology/create-new-ontology.component';
 
 
 const appRoutes: Routes = [
@@ -140,6 +141,7 @@ export function appInit(endpointSettings: EndpointSettings) {
     DiagramManagementComponent,
     ModellingAreaBPMNComponent,
     ModalInsertShaclPropertyComponent,
+    CreateNewOntologyComponent,
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,

@@ -33,8 +33,8 @@ public groupImageList: any;
 
 public documents4DSML4PTMImageList: any;
 public data4DSML4PTMImageList: any;
-public activities4DSML4PTMImageList:any;
-public connectors4DSML4PTMDocumentViewImageList:any;
+public activities4DSML4PTMImageList: any;
+public connectors4DSML4PTMDocumentViewImageList: any;
 
 public group4BPaaSImageList: any;
 
