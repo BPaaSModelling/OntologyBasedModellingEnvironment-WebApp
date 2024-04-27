@@ -12,7 +12,7 @@
         <mat-dialog-actions layout="row">
           <button mat-raised-button color="accent" (click)="openInsertNewProperty(data.paletteElement)">Insert new Datatype Property</button>
         </mat-dialog-actions>
-        <mat-card>
+        <mat-card appearance="outlined">
           <mat-accordion *ngFor="let element of datatypeProperties">
             <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -38,7 +38,7 @@
           <!-- Heroku difference -->
           <button mat-raised-button color="accent" (click)="openInsertNewLanguageRelation(data.paletteElement)">Insert new Bridging Connector</button>
         </mat-dialog-actions>
-        <mat-card>
+        <mat-card appearance="outlined">
           <mat-accordion *ngFor="let element of bridgingConnectors">
             <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -63,7 +63,7 @@
           <!-- Heroku difference -->
           <button mat-raised-button color="accent" (click)="openInsertNewDomainRelation(data.paletteElement)">Insert new Semantic Mapping</button>
         </mat-dialog-actions>
-        <mat-card>
+        <mat-card appearance="outlined">
           <mat-accordion *ngFor="let element of semanticMappings">
             <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -88,7 +88,7 @@
         <mat-dialog-actions layout="row">
           <button mat-raised-button color="accent" (click)="openInsertNewShaclConstraint(data.paletteElement)">Insert new SHACL Constraint</button>
         </mat-dialog-actions>
-        <mat-card>
+        <mat-card appearance="outlined">
           <mat-accordion *ngFor="let element of shaclConstraints">
             <mat-expansion-panel>
               <mat-expansion-panel-header>

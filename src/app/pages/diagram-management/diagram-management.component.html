@@ -8,7 +8,7 @@
 
   <mat-grid-list cols="5" rowHeight="16rem" gutterSize="1rem">
     <mat-grid-tile [colspan]="1" [rowspan]="1" *ngFor="let model of models; index as i">
-      <mat-card class="diagram-card" mat-ripple [matRippleDisabled]="rippleDisabled" (click)="openModel(model)">
+      <mat-card appearance="outlined" class="diagram-card" mat-ripple [matRippleDisabled]="rippleDisabled" (click)="openModel(model)">
         <md-card-header>
           <md-card-title>{{model.label}} </md-card-title>
           <div fxFlex></div>

@@ -2,14 +2,14 @@
   <mat-toolbar>
     <div class="mat-toolbar-tools">
       <!-- <h2>Extend {{data.paletteElement.label}}</h2>-->
-      <h2 class="mat-display-2">Edit</h2>
+      <h2 class="mat-headline-3">Edit</h2>
     </div>
   </mat-toolbar>
   <mat-dialog-content style="max-width:800px;max-height:810px; ">
     <mat-tab-group mat-dynamic-height mat-border-bottom>
       <mat-tab label={{data.paletteElement.label}}>
         <h3>Edit {{data.paletteElement.label}}</h3>
-        <mat-card>
+        <mat-card appearance="outlined">
           <form class="form">
 
             <div layout="row">
@@ -125,7 +125,7 @@
         <mat-dialog-actions layout="row">
           <button mat-raised-button color="accent" (click)="openInsertNewProperty(data.paletteElement)">Insert new Datatype Property</button>
         </mat-dialog-actions>
-        <mat-card>
+        <mat-card appearance="outlined">
           <mat-accordion *ngFor="let element of datatypeProperties">
             <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -174,7 +174,7 @@
         <mat-dialog-actions layout="row">
           <button mat-raised-button color="accent" (click)="openInsertNewBridgingConnector(data.paletteElement)">Insert new Bridging Connector</button>
         </mat-dialog-actions>
-        <mat-card>
+        <mat-card appearance="outlined">
           <mat-accordion *ngFor="let element of bridgingConnectors">
             <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -222,7 +222,7 @@
         <mat-dialog-actions layout="row">
           <button mat-raised-button color="accent" (click)="openInsertNewSemanticMapping(data.paletteElement)">Insert new Semantic Mapping</button>
         </mat-dialog-actions>
-        <mat-card>
+        <mat-card appearance="outlined">
           <mat-accordion *ngFor="let element of semanticMappings">
             <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -271,7 +271,7 @@
         <mat-dialog-actions layout="row">
           <button mat-raised-button color="accent" (click)="openInsertNewShaclConstraint(data.paletteElement)">Insert new SHACL Constraint</button>
         </mat-dialog-actions>
-        <mat-card>
+        <mat-card appearance="outlined">
           <mat-accordion *ngFor="let element of shaclConstraints">
             <mat-expansion-panel>
               <mat-expansion-panel-header>

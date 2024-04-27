@@ -8,8 +8,8 @@
   <mat-dialog-content style="max-width:800px;max-height:810px; ">
     <mat-tab-group mat-dynamic-height mat-border-bottom>
       <mat-tab label="New Modelling Element">
-        <h3 class="mat-display-1">Create new sub-class of {{data.paletteElement.label}}</h3>
-        <mat-card>
+        <h3 class="mat-headline-4">Create new sub-class of {{data.paletteElement.label}}</h3>
+        <mat-card appearance="outlined">
           <form class="form">
 
             <div layout="row">
@@ -206,8 +206,8 @@
         </mat-card>
       </mat-tab>
       <mat-tab label="Integrate with Existing Elements" *ngIf="(data.paletteElement.paletteCategory.search(VariablesSettings.CAT_CONNECTORS) == -1)">
-        <h3 class="mat-display-1">Add existing sub-classes to {{data.paletteElement.label}}</h3>
-        <mat-card>
+        <h3 class="mat-headline-4">Add existing sub-classes to {{data.paletteElement.label}}</h3>
+        <mat-card appearance="outlined">
           <form class="form">
 
             <div layout="row">

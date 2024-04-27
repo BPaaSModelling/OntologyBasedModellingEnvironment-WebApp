@@ -81,11 +81,11 @@
       </mat-tab> -->
 
       <mat-tab label="Attributes">
-        <h2 class="mat-display-2">Attributes</h2>
+        <h2 class="mat-headline-3">Attributes</h2>
         <mat-dialog-actions layout="row">
           <button mat-raised-button color="accent" (click)="openInsertNewProperty(data.paletteElement)">Insert new Attribute</button>
         </mat-dialog-actions>
-        <mat-card>
+        <mat-card appearance="outlined">
           <!-- Heroku difference -->
           <!--<mat-accordion *ngFor="let element of mService.datatypeProperties">-->
           <mat-accordion *ngFor="let element of datatypeProperties">
