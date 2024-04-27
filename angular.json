@@ -112,7 +112,6 @@
       }
     }
   },
-  "defaultProject": "ontology-based-modelling-environment",
   "cli": {
     "analytics": false
   }
