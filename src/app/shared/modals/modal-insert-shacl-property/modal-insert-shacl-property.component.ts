@@ -4,7 +4,6 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog
 import {ModellerService} from '../../../core/services/modeller/modeller.service';
 import {PaletteElementModel} from '../../models/PaletteElement.model';
 import {ModalCreateDomainElementsComponent} from '../modal-create-domain-elements/modal-create-domain-elements.component';
-import {unescapeIdentifier} from '@angular/compiler';
 import {UUID} from 'angular2-uuid';
 
 @Component({
