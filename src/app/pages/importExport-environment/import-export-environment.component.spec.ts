@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ImportExportEnvironmentComponent } from './import-export-environment.component';
 
@@ -6,7 +6,7 @@ describe('ModellingEnvironmentComponent', () => {
   let component: ImportExportEnvironmentComponent;
   let fixture: ComponentFixture<ImportExportEnvironmentComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ImportExportEnvironmentComponent ]
     })
