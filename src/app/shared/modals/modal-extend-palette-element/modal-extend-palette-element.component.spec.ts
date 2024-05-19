@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ModalExtendPaletteElementComponent } from './modal-extend-palette-element.component';
 
@@ -6,7 +6,7 @@ describe('ModalExtendPaletteElementComponent', () => {
   let component: ModalExtendPaletteElementComponent;
   let fixture: ComponentFixture<ModalExtendPaletteElementComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ModalExtendPaletteElementComponent ]
     })
