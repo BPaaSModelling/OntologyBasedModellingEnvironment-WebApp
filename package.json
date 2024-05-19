@@ -35,7 +35,7 @@
     "ng-multiselect-dropdown": "^0.3.8",
     "ngx-contextmenu": "^6.0.0",
     "ngx-select-dropdown": "^1.5.0",
-    "ngx-toastr": "^13.2.1",
+    "ngx-toastr": "^18.0.0",
     "path": "^0.12.7",
     "react-flow-renderer": "^10.3.17",
     "reactflow": "^11.11.3",
