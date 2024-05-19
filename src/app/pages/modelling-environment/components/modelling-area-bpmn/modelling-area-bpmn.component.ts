@@ -6,7 +6,7 @@ import {VariablesSettings} from '../../../../_settings/variables.settings';
 import {ModellerService} from '../../../../core/services/modeller/modeller.service';
 import {ContextMenuComponent} from 'ngx-contextmenu';
 import {Model} from '../../../../shared/models/Model.model';
-import {MatDialog} from '@angular/material/dialog';
+import {MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
 import {UUID} from 'angular2-uuid';
 import * as _ from 'lodash-es';
 import {InstantiationTargetType} from '../../../../shared/models/InstantiationTargetType.model';
@@ -38,7 +38,7 @@ import {BpmnTemplateService} from '../../gojs/bpmn-classes/bpmn-template.service
 import {BpmnConstantsClass} from '../../gojs/bpmn-classes/bpmn-constants.class';
 import {AdditionalCreateOptions} from '../../models/additional-create-options.interface';
 import {ModalInstantiationTypeComponent} from '../../../../shared/modals/modal-instantiation-type/modal-instantiation-type.component';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatLegacySnackBar as MatSnackBar} from '@angular/material/legacy-snack-bar';
 import { ToastrService } from 'ngx-toastr';
 
 const $ = go.GraphObject.make;

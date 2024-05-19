@@ -7,7 +7,7 @@ import {ModalExtendPaletteElementComponent} from '../shared/modals/modal-extend-
 import {
   ModalPaletteElementPropertiesComponent
 } from '../shared/modals/modal-palette-element-properties/modal-palette-element-properties.component';
-import {MatDialog} from '@angular/material/dialog';
+import {MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
 import {ModalEditPaletteElementComponent} from '../shared/modals/modal-edit-palette-element/modal-edit-palette-element.component';
 import {VariablesSettings} from '../_settings/variables.settings';
 import {ModalShowLanguageInstances} from '../shared/modals/modal-show-language-instances/modal-show-language-instances';

@@ -5,7 +5,7 @@ import {ModellerService} from '../../core/services/modeller/modeller.service';
 import {MetamodelElementModel} from '../../shared/models/MetamodelElement.model';
 import {PaletteElementModel} from '../../shared/models/PaletteElement.model';
 import {ModalInstancePropertiesComponent} from '../../shared/modals/modal-instance-properties/modal-instance-properties.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import {ModalPaletteElementPropertiesComponent} from '../../shared/modals/modal-palette-element-properties/modal-palette-element-properties.component';
 import {ModalExtendPaletteElementComponent} from '../../shared/modals/modal-extend-palette-element/modal-extend-palette-element.component';
 import {VariablesSettings} from '../../_settings/variables.settings';

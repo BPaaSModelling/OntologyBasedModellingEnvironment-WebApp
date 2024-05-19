@@ -6,7 +6,7 @@ import {VariablesSettings} from '../../../../_settings/variables.settings';
 import {ModellerService} from '../../../../core/services/modeller/modeller.service';
 import {ContextMenuComponent} from 'ngx-contextmenu';
 import {Model} from '../../../../shared/models/Model.model';
-import {MatDialog} from '@angular/material/dialog';
+import {MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
 import {UUID} from 'angular2-uuid';
 import * as _ from 'lodash-es';
 import {InstantiationTargetType} from '../../../../shared/models/InstantiationTargetType.model';

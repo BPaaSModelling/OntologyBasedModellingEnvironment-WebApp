@@ -1,7 +1,7 @@
 import {Component, OnInit } from '@angular/core';
 import {ModalModelCreation} from '../../shared/modals/modal-model-creation/modal-model-creation.component';
 import {Model} from '../../shared/models/Model.model';
-import {MatDialog} from '@angular/material/dialog';
+import {MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
 import {ModellerService} from '../../core/services/modeller/modeller.service';
 import {take} from 'rxjs/operators';
 import {NavigationExtras, Router} from '@angular/router';

@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Inject} from '@angular/core';
 import {ObjectPropertyModel} from '../../models/ObjectProperty.model';
 import {ModellerService} from "../../../core/services/modeller/modeller.service";
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from "@angular/material/dialog";
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef, MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
 import {ModalCreateDomainElementsComponent} from "../modal-create-domain-elements/modal-create-domain-elements.component";
 import {PaletteElementModel} from "../../models/PaletteElement.model";
 

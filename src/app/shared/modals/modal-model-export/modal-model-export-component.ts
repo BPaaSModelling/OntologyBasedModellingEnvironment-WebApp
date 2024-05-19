@@ -3,12 +3,12 @@
 
 import {ChangeDetectorRef, Component, Inject} from '@angular/core';
 
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import {Model} from '../../models/Model.model';
 import {ModellerService} from '../../../core/services/modeller/modeller.service';
 import {HttpClient} from '@angular/common/http';
 import {EndpointSettings} from '../../../_settings/endpoint.settings';
-import {MatDialog} from '@angular/material/dialog';
+import {MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
 import * as go from 'gojs';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { saveAs } from 'file-saver';

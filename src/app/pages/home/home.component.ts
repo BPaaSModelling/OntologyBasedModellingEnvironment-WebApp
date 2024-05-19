@@ -3,7 +3,7 @@
 import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import {ModellerService} from '../../core/services/modeller/modeller.service';
 import {PaletteElementModel} from '../../shared/models/PaletteElement.model';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import {filter, finalize, switchMap, take, tap} from 'rxjs/operators';
 import {AuthService} from '../../core/services/auth/auth.service';
 

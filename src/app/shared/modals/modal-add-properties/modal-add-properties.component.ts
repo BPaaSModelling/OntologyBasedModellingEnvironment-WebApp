@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from "@angular/material/dialog";
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef, MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
 import {ModellerService} from "../../../core/services/modeller/modeller.service";
 import {DatatypePropertyModel} from "../../models/DatatypeProperty.model";
 import {ObjectPropertyModel} from "../../models/ObjectProperty.model";
