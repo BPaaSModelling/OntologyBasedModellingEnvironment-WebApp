@@ -3,3 +3,8 @@ export interface AdditionalCreateOptions {
   size;
   group;
 }
+/*export interface ReactFlowAdditionalCreateOptions {
+  loc;
+  size;
+  group;
+}*/
