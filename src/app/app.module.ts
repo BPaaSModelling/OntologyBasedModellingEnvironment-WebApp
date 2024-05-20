@@ -18,7 +18,7 @@ import {MatRippleModule} from '@angular/material/core';
 import {MatOptionModule} from '@angular/material/core';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatInputModule} from '@angular/material/input';
 import {MatListModule} from '@angular/material/list';
@@ -76,14 +76,14 @@ import {ModellingAreaBPMNComponent} from './pages/modelling-environment/componen
 import {PaletteAreaBPMNComponent} from './pages/modelling-environment/components/palette-area-bpmn/palette-area-bpmn.component';
 
 import {ModalInstantiationTypeComponent} from './shared/modals/modal-instantiation-type/modal-instantiation-type.component';
-import {ContextMenuModule} from 'ngx-contextmenu';
+import {ContextMenuModule} from '@perfectmemory/ngx-contextmenu';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import { ModalInsertShaclPropertyComponent } from './shared/modals/modal-insert-shacl-property/modal-insert-shacl-property.component';
+import {ModalInsertShaclPropertyComponent} from './shared/modals/modal-insert-shacl-property/modal-insert-shacl-property.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import { ToastrModule } from 'ngx-toastr';
-import {httpInterceptorProviders} from "./core/services/auth/http-interceptor.service";
+import {ToastrModule} from 'ngx-toastr';
+import {httpInterceptorProviders} from './core/services/auth/http-interceptor.service';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
@@ -100,54 +100,54 @@ export function appInit(endpointSettings: EndpointSettings) {
 }
 
 @NgModule({
-    declarations: [
-        ImportExportEnvironmentComponent,
-        AppComponent,
-        ModellingEnvironmentComponent,
-        PaletteAreaComponent,
-        PaletteAreaBPMNComponent,
-        HeaderPaneComponent,
-        ModellingAreaComponent,
-        ToolRecursivePaletteElementComponent,
-        ModalInstancePropertiesComponent,
-        ModalPaletteElementPropertiesComponent,
-        ModalExtendPaletteElementComponent,
-        ModalConnectorElementPropertiesComponent,
-        ModalInsertPropertyComponent,
-        ModalConnectorManageCombinationsComponent,
-        ModalCreateDomainElementsComponent,
-        ModalEditPaletteElementComponent,
-        ModalEditPropertiesComponent,
-        ModalAddPropertiesComponent,
-        ModalInsertObjectPropertyComponent,
-        HeaderPaneComponent,
-        ModalEditBCObjectPropertyComponent,
-        ModalInsertLangobjectPropertyComponent,
-        ModalEditSMObjectPropertyComponent,
-        ModalModelCreation,
-        ModalViewElementDetail,
-        ModalModelLink,
-        ModalInstantiationTypeComponent,
-        ModalElementNote,
-        ModalModellingLanguageConstructInstanceLink,
-        ModalPaletteVisualisation,
-        ModalModelEdit,
-        ModalShowLanguageInstances,
-        ModalModelExport,
-        ModalModelMultipleExport,
-        ModalModelMultipleImport,
-        FileUploadComponent,
-        HomeComponent,
-        DiagramManagementComponent,
-        ModellingAreaBPMNComponent,
-        ModalInsertShaclPropertyComponent,
-    ],
+  declarations: [
+    ImportExportEnvironmentComponent,
+    AppComponent,
+    ModellingEnvironmentComponent,
+    PaletteAreaComponent,
+    PaletteAreaBPMNComponent,
+    HeaderPaneComponent,
+    ModellingAreaComponent,
+    ToolRecursivePaletteElementComponent,
+    ModalInstancePropertiesComponent,
+    ModalPaletteElementPropertiesComponent,
+    ModalExtendPaletteElementComponent,
+    ModalConnectorElementPropertiesComponent,
+    ModalInsertPropertyComponent,
+    ModalConnectorManageCombinationsComponent,
+    ModalCreateDomainElementsComponent,
+    ModalEditPaletteElementComponent,
+    ModalEditPropertiesComponent,
+    ModalAddPropertiesComponent,
+    ModalInsertObjectPropertyComponent,
+    HeaderPaneComponent,
+    ModalEditBCObjectPropertyComponent,
+    ModalInsertLangobjectPropertyComponent,
+    ModalEditSMObjectPropertyComponent,
+    ModalModelCreation,
+    ModalViewElementDetail,
+    ModalModelLink,
+    ModalInstantiationTypeComponent,
+    ModalElementNote,
+    ModalModellingLanguageConstructInstanceLink,
+    ModalPaletteVisualisation,
+    ModalModelEdit,
+    ModalShowLanguageInstances,
+    ModalModelExport,
+    ModalModelMultipleExport,
+    ModalModelMultipleImport,
+    FileUploadComponent,
+    HomeComponent,
+    DiagramManagementComponent,
+    ModellingAreaBPMNComponent,
+    ModalInsertShaclPropertyComponent,
+  ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes, {}),
     HttpClientModule,
     FlexLayoutModule,
-    ContextMenuModule.forRoot(),
+    ContextMenuModule,
     MatListModule,
     MatButtonModule,
     MatToolbarModule,
@@ -177,19 +177,23 @@ export function appInit(endpointSettings: EndpointSettings) {
     ToastrModule.forRoot(),
     MatProgressSpinnerModule,
   ],
-    providers: [
-        ModellerService,
-        MatSnackBar,
-        EndpointSettings,
-        httpInterceptorProviders,
-        {
-            provide: APP_INITIALIZER,
-            useFactory: appInit,
-            multi: true,
-            deps: [EndpointSettings]
-        }
-    ],
-    bootstrap: [AppComponent]
+  providers: [
+    ModellerService,
+    MatSnackBar,
+    EndpointSettings,
+    httpInterceptorProviders,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInit,
+      multi: true,
+      deps: [EndpointSettings]
+    },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {appearance: 'outline'}
+    }
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

@@ -12,7 +12,7 @@ import {PaletteCategoryModel} from "../../../../shared/models/PaletteCategory.mo
 import {VariablesSettings} from "../../../../_settings/variables.settings";
 import {ModalShowLanguageInstances} from '../../../../shared/modals/modal-show-language-instances/modal-show-language-instances';
 import {ModelingLanguageModel} from '../../../../shared/models/ModelingLanguage.model';
-import {ContextMenuComponent} from 'ngx-contextmenu';
+import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
 import {take} from 'rxjs/operators';
 
 @Component({
@@ -22,10 +22,10 @@ import {take} from 'rxjs/operators';
 })
 export class PaletteAreaComponent implements OnInit {
 
-  @ViewChild(ContextMenuComponent, {static: true}) public elementRightClickMenu: ContextMenuComponent;
-  @ViewChild(ContextMenuComponent, {static: true}) public paletteRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, {static: true}) public elementRightClickMenu: ContextMenuComponent<any>;
+  @ViewChild(ContextMenuComponent, {static: true}) public paletteRightClickMenu: ContextMenuComponent<any>;
 
-  @Input() contextMenu: ContextMenuComponent;
+  @Input() contextMenu: ContextMenuComponent<any>;
   @Input() contextMenuSubject: PaletteElementModel;
 
 

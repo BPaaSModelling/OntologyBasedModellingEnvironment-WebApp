@@ -16,7 +16,7 @@ import {ModelingLanguageModel} from '../../../../shared/models/ModelingLanguage.
 import * as go from 'gojs';
 import {BpmnTemplateService} from '../../gojs/bpmn-classes/bpmn-template.service';
 import {FiguresClass} from '../../gojs/figures.class';
-import {ContextMenuComponent} from 'ngx-contextmenu';
+import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
 import {take} from 'rxjs/operators';
 import {ModalInstancePropertiesComponent} from '../../../../shared/modals/modal-instance-properties/modal-instance-properties.component';
 import {
@@ -31,10 +31,10 @@ const $ = go.GraphObject.make;
 })
 export class PaletteAreaBPMNComponent implements OnInit {
 
-  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent;
-  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent<any>;
+  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent<any>;
   // Optional
-  @Input() contextMenu: ContextMenuComponent
+  @Input() contextMenu: ContextMenuComponent<any>
   @Input() contextMenuSubject: PaletteElementModel;
 
 
@@ -48,7 +48,7 @@ export class PaletteAreaBPMNComponent implements OnInit {
   private selectedLang: string;
   private selectedView: string;
 
-  constructor(private mService: ModellerService, public dialog: MatDialog, private bpmnTemplateService: BpmnTemplateService, private cdRef: ChangeDetectorRef) {
+  constructor(public mService: ModellerService, public dialog: MatDialog, private bpmnTemplateService: BpmnTemplateService, private cdRef: ChangeDetectorRef) {
     // Heroku difference
     //this.mService.queryModelingLanguages()
     this.mService.queryModelingLanguages().subscribe(
@@ -77,7 +77,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
       (this.selectedLang === 'lo:DSML4PTM' && this.selectedView === 'lo:DSML4PTMProcessModelingView');
   }
 
-  private addNewShape(a: PaletteElementModel): void {
+  protected addNewShape(a: PaletteElementModel): void {
     //Here i give to the paletteElement a new ID, so that when this is received by the modeller, it recognize it as a new Element to create
     const uuid = UUID.UUID();
     const b: PaletteElementModel = Object.assign({}, a);

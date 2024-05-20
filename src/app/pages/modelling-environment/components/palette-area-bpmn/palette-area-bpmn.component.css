@@ -10,24 +10,40 @@
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+::ng-deep form-field-container  {
+  flex-direction: row;
+  margin: 0;
+  text-align: left;
+  padding: 0;
+  height: 55px;
+}
+
+::ng-deep mat-form-field {
+  height: 55px;
+  font-size: 5px;
+}
+::ng-deep mat-select {
+  font-size: 5px;
+}
 
 .modelling-language {
   text-align: left;
-  margin: 0px;
-  border-top: 1px solid darkslategray;
-  margin-bottom: 5px;
+  /*margin: 0;*/
+  /*border-top: 1px solid darkslategray;*/
+  /*margin-bottom: 5px;*/
   width: 100%;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 9pt;
+  /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+  /*font-size: 9pt;*/
 }
 
 .modelling-language-view {
   text-align: left;
-  margin: 0px;
-  border-top: 1px solid darkslategray;
-  margin-bottom: 5px;
+  /*margin: 0;*/
+  /*border-top: 1px solid darkslategray;*/
+  /*padding-left: 1ch;*/
+  /*margin-bottom: 5px;*/
   width: 100%;
-  font-size: 9pt;
+  /*font-size: 9pt;*/
 }
 
 .element-container {

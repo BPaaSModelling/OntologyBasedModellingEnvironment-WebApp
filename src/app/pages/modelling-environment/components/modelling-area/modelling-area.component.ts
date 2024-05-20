@@ -4,7 +4,7 @@ import {ChangedEvent} from 'gojs';
 import {PaletteElementModel} from '../../../../shared/models/PaletteElement.model';
 import {VariablesSettings} from '../../../../_settings/variables.settings';
 import {ModellerService} from '../../../../core/services/modeller/modeller.service';
-import {ContextMenuComponent} from 'ngx-contextmenu';
+import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
 import {Model} from '../../../../shared/models/Model.model';
 import {MatDialog} from '@angular/material/dialog';
 import {UUID} from 'angular2-uuid';
@@ -42,10 +42,10 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
     this.dialog = matDialog;
   }
 
-  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent;
-  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent<any>;
+  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent<any>;
 
-  @Input() contextMenu: ContextMenuComponent;
+  @Input() contextMenu: ContextMenuComponent<any>;
   @Input() contextMenuSubject: PaletteElementModel;
 
   @Input() public elements: any;

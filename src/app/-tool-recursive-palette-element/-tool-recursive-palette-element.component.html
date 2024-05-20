@@ -1,7 +1,7 @@
 <ul *ngFor="let sbchild of child.childElements; let indexElement=index;">
   <li *ngIf="(sbchild.parentElement == child.id) && (sbchild.hiddenFromPalette == false)" class="NthLevelElement">
 
-    <a *ngIf="sbchild.type != 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="sbchild" (click)="addNewShape(sbchild)">
+    <a *ngIf="sbchild.type != 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuValue]="sbchild" (click)="addNewShape(sbchild)">
       <ng-container *ngIf="!isBPMNNotationSelected && !isElementMappedToBPMNMappers(sbchild)">
         <img class="thumbnail"  src="{{imageRoot}}{{categorySuffix}}/{{sbchild.thumbnailURL}}"  />
         {{sbchild.label}}
@@ -18,7 +18,7 @@
 
       </div>
     </a>
-    <a *ngIf="sbchild.type == 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="sbchild" (click)="addNewShape(sbchild)">
+    <a *ngIf="sbchild.type == 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuValue]="sbchild" (click)="addNewShape(sbchild)">
       <img *ngIf="sbchild.fromArrow" class="thumbnail-arrow-head" [src]="'../assets/images/Arrows/' + sbchild.fromArrow + '.PNG'" >
       <img class="thumbnail-arrow-stroke" [src]="'../assets/images/Strokes/' + sbchild.arrowStroke + '.PNG'" >
       <img *ngIf="sbchild.toArrow" class="thumbnail-arrow-head" [src]="'../assets/images/Arrows/' + sbchild.toArrow + '.PNG'" >

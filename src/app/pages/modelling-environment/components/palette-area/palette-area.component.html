@@ -20,10 +20,10 @@
     <ng-container *ngFor="let element of mService.paletteElements">
       <ul class="element" *ngIf="(element.paletteCategory == category.id && element.hiddenFromPalette == false)">
         <li class="paletteElement" >
-          <a *ngIf="element.type != 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element"  (click)="addNewShape(element)">
+          <a *ngIf="element.type != 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuValue]="element"  (click)="addNewShape(element)">
             <img class="thumbnail"  src="{{imageRoot}}{{category.idSuffix}}/{{element.thumbnailURL}}" />
           </a>
-          <a *ngIf="element.type == 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuSubject]="element"  (click)="addNewShape(element)">
+          <a *ngIf="element.type == 'PaletteConnector'" [contextMenu]="elementRightClickMenu" [contextMenuValue]="element"  (click)="addNewShape(element)">
             <img *ngIf="element.fromArrow" class="thumbnail-arrow-head" [src]="'../../../../../assets/images/Arrows/' + element.fromArrow + '.PNG'" >
             <img class="thumbnail-arrow-stroke" [src]="'../assets/images/Strokes/' + element.arrowStroke + '.PNG'" >
             <img *ngIf="element.toArrow" class="thumbnail-arrow-head" [src]="'../../../../../assets/images/Arrows/' + element.toArrow + '.PNG'" >

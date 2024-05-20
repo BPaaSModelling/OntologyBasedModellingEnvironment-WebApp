@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {PaletteElementModel} from '../shared/models/PaletteElement.model';
 import {GraphicalElementModel} from '../shared/models/GraphicalElement.model';
-import {ContextMenuComponent} from 'ngx-contextmenu';
+import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
 import {ModellerService} from '../core/services/modeller/modeller.service';
 import {ModalExtendPaletteElementComponent} from '../shared/modals/modal-extend-palette-element/modal-extend-palette-element.component';
 import {
@@ -24,12 +24,12 @@ const $ = go.GraphObject.make;
   styleUrls: ['./-tool-recursive-palette-element.component.css']
 })
 export class ToolRecursivePaletteElementComponent implements OnInit, AfterViewInit {
-  @ViewChild(ContextMenuComponent, {static: true}) public elementRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, {static: true}) public elementRightClickMenu: ContextMenuComponent<any>;
 
   @Input() child: PaletteElementModel;
   @Input() isBPMNNotationSelected: boolean;
   @Input() parentPaletteId: string;
-  @Input() contextMenu: ContextMenuComponent;
+  @Input() contextMenu: ContextMenuComponent<any>;
   @Input() contextMenuSubject: PaletteElementModel;
 
   @Output() sendElementFromRecursiveElement = new EventEmitter();
