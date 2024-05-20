@@ -172,10 +172,11 @@ export function appInit(endpointSettings: EndpointSettings) {
     MatRippleModule,
     MatIconModule,
     MatMenuModule,
-    NgMultiSelectDropDownModule.forRoot(),
+    // NgMultiSelectDropDownModule,
     MatButtonToggleModule,
     ToastrModule.forRoot(),
     MatProgressSpinnerModule,
+    NgMultiSelectDropDownModule,
   ],
   providers: [
     ModellerService,
