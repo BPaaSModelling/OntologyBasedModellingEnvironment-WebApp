@@ -5,7 +5,7 @@ import {ModellerService} from '../../core/services/modeller/modeller.service';
 import {PaletteElementModel} from '../../shared/models/PaletteElement.model';
 import { MatDialog } from '@angular/material/dialog';
 import {filter, finalize, switchMap, take, tap} from 'rxjs/operators';
-import {AuthService} from '../../core/services/auth/auth.service';
+import {Auth0Service} from '../../core/services/auth/auth0.service';
 
 
 @Component({
@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private modellerService: ModellerService,
               public dialog: MatDialog,
-              private auth: AuthService) {
+              private auth: Auth0Service) {
     this.showProp = false;
   }
 
@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
           // will always be executed, regardless of successful or unsuccessful completion
           this.isLoading = false;
           // IF YOU DON'T WANT TO AUTHENTICATE, COMMENT THE LINE BELOW
-          this.auth.authenticate();
+          //this.auth.authenticate();
         })
       ).subscribe({
         error:err => {

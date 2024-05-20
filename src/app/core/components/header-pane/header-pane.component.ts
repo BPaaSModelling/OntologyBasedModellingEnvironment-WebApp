@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {filter, take} from 'rxjs/operators';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {NavigationService} from '../../services/navigation/navigation.service';
-import {AuthService} from '../../services/auth/auth.service';
+import {Auth0Service} from '../../services/auth/auth0.service';
 
 @Component({
   selector: 'app-header-pane',
@@ -13,7 +13,7 @@ export class HeaderPaneComponent implements OnInit {
   public showModellerHeader = false;
   public modelName: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, private navigation: NavigationService, protected authService: AuthService) { }
+  constructor(private activatedRoute: ActivatedRoute, private router: Router, private navigation: NavigationService, protected authService: Auth0Service) { }
 
   ngOnInit() {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {

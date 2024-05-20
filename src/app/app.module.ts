@@ -79,19 +79,23 @@ import {ContextMenuModule} from 'ngx-contextmenu';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import { ModalInsertShaclPropertyComponent } from './shared/modals/modal-insert-shacl-property/modal-insert-shacl-property.component';
+import {ModalInsertShaclPropertyComponent} from './shared/modals/modal-insert-shacl-property/modal-insert-shacl-property.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import { ToastrModule } from 'ngx-toastr';
-import {httpInterceptorProviders} from "./core/services/auth/http-interceptor.service";
+import {ToastrModule} from 'ngx-toastr';
+import {HttpInterceptorService} from './core/services/auth/http-interceptor.service';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
+import {AuthGuard, AuthHttpInterceptor, AuthModule} from '@auth0/auth0-angular';
+import {environment as env} from '../environments/environment';
+import {ProfileComponent} from './shared/profile/profile.component';
 
 
 const appRoutes: Routes = [
-  {path: 'diagramManagement', component: DiagramManagementComponent},
-  {path: 'modeller', component: ModellingEnvironmentComponent},
-  {path: 'importExport', component: ImportExportEnvironmentComponent},
-  {path: 'home', component: HomeComponent},
-  {path: '', component: HomeComponent},
+  {path: 'diagramManagement', component: DiagramManagementComponent, canActivate: [AuthGuard],},
+  {path: 'modeller', component: ModellingEnvironmentComponent, canActivate: [AuthGuard],},
+  {path: 'importExport', component: ImportExportEnvironmentComponent, canActivate: [AuthGuard],},
+  {path: 'home', component: HomeComponent, canActivate: [AuthGuard],},
+  {path: '', component: HomeComponent, canActivate: [AuthGuard],},
 ];
 
 export function appInit(endpointSettings: EndpointSettings) {
@@ -140,6 +144,7 @@ export function appInit(endpointSettings: EndpointSettings) {
     DiagramManagementComponent,
     ModellingAreaBPMNComponent,
     ModalInsertShaclPropertyComponent,
+    ProfileComponent,
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -172,6 +177,20 @@ export function appInit(endpointSettings: EndpointSettings) {
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     HttpClientModule,
+    AuthModule.forRoot({
+      ...env.auth,
+      httpInterceptor: {
+        allowedList: [
+          {
+            uri: '*',
+            // tokenOptions: {
+            //   audience: 'https://aoame-webservice',
+            //   scope: 'openid profile email read:messages'
+            // }
+          }
+        ]
+      }
+    }),
     FlexLayoutModule,
     ContextMenuModule.forRoot(),
     MatListModule,
@@ -207,7 +226,11 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModellerService,
     MatSnackBar,
     EndpointSettings,
-    httpInterceptorProviders,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthHttpInterceptor,
+      multi: true,
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: appInit,

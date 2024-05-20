@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ModellerService} from './core/services/modeller/modeller.service';
 import {filter, switchMap, take} from 'rxjs/operators';
-import {AuthService} from './core/services/auth/auth.service';
+import {Auth0Service} from './core/services/auth/auth0.service';
 
 
 @Component({
@@ -12,13 +12,9 @@ import {AuthService} from './core/services/auth/auth.service';
 export class AppComponent implements OnInit {
   title = 'app';
 
-  constructor(private modellerService: ModellerService, private auth: AuthService) {
+  constructor(private modellerService: ModellerService) {
   }
 
   ngOnInit(): void {
-
-
-
-
   }
 }
