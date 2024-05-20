@@ -462,7 +462,6 @@ export class ModellerService {
   }
 
   async getUploadedImages(): Promise<Object> {
-
     return await this.httpClient.get('/images').toPromise();
   }
 
@@ -508,6 +507,7 @@ export class ModellerService {
 
   //Get data from fuseki based on the prefix provided in the dropdownlist and then download as a .ttl
   queryModelsAndLanguageADVANCEDwithDistinctionMultipleSelection(sPrefix: string []) {
+    console.log("sPrefix : ",sPrefix);
     this.httpClient.post<string>(this.endpointSettings.getModelAndLanguageFromFusekiAdvancedwithDistinction2(), sPrefix).subscribe(
       data => {
         this.modelAndLanguageAdvanced$ = of(data);

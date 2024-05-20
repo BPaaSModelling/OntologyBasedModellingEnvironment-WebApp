@@ -2,14 +2,20 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angula
 import {ModellerService} from '../../../../core/services/modeller/modeller.service';
 import {PaletteElementModel} from '../../../../shared/models/PaletteElement.model';
 import {UUID} from 'angular2-uuid';
-import {ModalExtendPaletteElementComponent} from "../../../../shared/modals/modal-extend-palette-element/modal-extend-palette-element.component";
-import { MatDialog } from "@angular/material/dialog";
-import {ModalCreateDomainElementsComponent} from "../../../../shared/modals/modal-create-domain-elements/modal-create-domain-elements.component";
-import {ModalPaletteElementPropertiesComponent} from "../../../../shared/modals/modal-palette-element-properties/modal-palette-element-properties.component";
-import {ModalEditPaletteElementComponent} from "../../../../shared/modals/modal-edit-palette-element/modal-edit-palette-element.component";
-import {ModelingViewModel} from "../../../../shared/models/ModelingView.model";
-import {PaletteCategoryModel} from "../../../../shared/models/PaletteCategory.model";
-import {VariablesSettings} from "../../../../_settings/variables.settings";
+import {
+  ModalExtendPaletteElementComponent
+} from '../../../../shared/modals/modal-extend-palette-element/modal-extend-palette-element.component';
+import {MatDialog} from '@angular/material/dialog';
+import {
+  ModalCreateDomainElementsComponent
+} from '../../../../shared/modals/modal-create-domain-elements/modal-create-domain-elements.component';
+import {
+  ModalPaletteElementPropertiesComponent
+} from '../../../../shared/modals/modal-palette-element-properties/modal-palette-element-properties.component';
+import {ModalEditPaletteElementComponent} from '../../../../shared/modals/modal-edit-palette-element/modal-edit-palette-element.component';
+import {ModelingViewModel} from '../../../../shared/models/ModelingView.model';
+import {PaletteCategoryModel} from '../../../../shared/models/PaletteCategory.model';
+import {VariablesSettings} from '../../../../_settings/variables.settings';
 import {ModalShowLanguageInstances} from '../../../../shared/modals/modal-show-language-instances/modal-show-language-instances';
 import {ModelingLanguageModel} from '../../../../shared/models/ModelingLanguage.model';
 import {ContextMenuComponent} from '@perfectmemory/ngx-contextmenu';
@@ -41,7 +47,7 @@ export class PaletteAreaComponent implements OnInit {
   // Heroku difference
   public modelingLanguages: ModelingLanguageModel[] = [];
   public paletteCategories: PaletteCategoryModel[] = [];
-  public imageRoot: string = "";
+  public imageRoot: string = '';
 
   constructor(private mService: ModellerService, public dialog: MatDialog) {
     // Heroku difference
@@ -55,7 +61,7 @@ export class PaletteAreaComponent implements OnInit {
     //this.mService.queryPaletteCategories();
 
 
-this.imageRoot = VariablesSettings.IMG_ROOT;
+    this.imageRoot = VariablesSettings.IMG_ROOT;
 //console.log('Palette categories');
 //console.log(this.mService.paletteCategories);
 
@@ -64,7 +70,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
   ngOnInit() {
   }
 
-  private addNewShape(a: PaletteElementModel): void {
+  public addNewShape(a: PaletteElementModel): void {
     //Here i give to the paletteElement a new ID, so that when this is received by the modeller, it recognize it as a new Element to create
     const uuid = UUID.UUID();
     const b: PaletteElementModel = Object.assign({}, a);
@@ -86,17 +92,17 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     this.showPaletteElementPropertyModal.emit(element);
   }
 
-  openExtendPaletteElementModal(element: PaletteElementModel){
+  openExtendPaletteElementModal(element: PaletteElementModel) {
     this.showExtendPaletteElementModal.emit(element);
   }
 
-  openEditPaletteElementModal(element: PaletteElementModel){
+  openEditPaletteElementModal(element: PaletteElementModel) {
     this.showEditPaletteElementModal.emit(element);
   }
 
   openCreateDomainElementModal(element: PaletteElementModel) {
     this.showCreateDomainElementModal.emit(element);
-}
+  }
 
   openConnectorElementProperty(element: PaletteElementModel) {
     this.showConnectorElementPropertyModal.emit(element);
@@ -109,8 +115,8 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
   toggleExtendPaletteElementModal(element: PaletteElementModel) {
     //console.log(element)
     let dialogRef = this.dialog.open(ModalExtendPaletteElementComponent, {
-      data: { paletteElement: element},
-      height:'80%',
+      data: {paletteElement: element},
+      height: '80%',
       width: '800px',
       disableClose: false,
     });
@@ -124,10 +130,10 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     });
   }
 
-  toggleEditPaletteElementModal(element: PaletteElementModel){
+  toggleEditPaletteElementModal(element: PaletteElementModel) {
     let dialogRef = this.dialog.open(ModalEditPaletteElementComponent, {
-      data: { paletteElement: element},
-      height:'80%',
+      data: {paletteElement: element},
+      height: '80%',
       width: '800px',
       disableClose: false,
     });
@@ -139,8 +145,8 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
 
   toggleCreateDomainElementModalFromExtend(element: PaletteElementModel) {
     let dialogRef = this.dialog.open(ModalCreateDomainElementsComponent, {
-      data: {paletteElement: element },
-      height:'80%',
+      data: {paletteElement: element},
+      height: '80%',
       width: '800px',
       disableClose: false,
     });
@@ -152,8 +158,8 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
 
   toggleActivityElementPropertyModal(element: PaletteElementModel) {
     let dialogRef = this.dialog.open(ModalPaletteElementPropertiesComponent, {
-      data: {paletteElement: element },
-      height:'80%',
+      data: {paletteElement: element},
+      height: '80%',
       width: '800px',
       disableClose: false,
     });
@@ -181,10 +187,10 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     this.modelingViews = [];
     this.paletteCategories = [];
     this.mService.queryModelingViews($event.value).subscribe(
-    (response) => {
+      (response) => {
         console.log(response);
         this.modelingViews = response;
-    }
+      }
     );
   }
 
@@ -206,11 +212,13 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
   }
 
   // Heroku difference
-  addNewPaletteElement() {}
+  addNewPaletteElement() {
+  }
 
-  managePaletteElements() {}
+  managePaletteElements() {
+  }
 
   showInstantiatedElements(element: PaletteElementModel) {
-    this.dialog.open(ModalShowLanguageInstances, {data:element});
+    this.dialog.open(ModalShowLanguageInstances, {data: element});
   }
 }

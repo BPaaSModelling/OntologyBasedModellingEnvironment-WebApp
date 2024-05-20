@@ -124,7 +124,7 @@ public imageRoot: string = VariablesSettings.IMG_ROOT;
   }
   private async loadImages() {
     await this.mService.getUploadedImages().then(async values => {
-
+      console.log('Images Values are ', values);
       let category = this.data.paletteElement.paletteCategory.split('#')[1];
 
       this.imageList = values[category];

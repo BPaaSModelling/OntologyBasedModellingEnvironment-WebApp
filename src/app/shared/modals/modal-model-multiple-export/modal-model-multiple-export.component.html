@@ -15,7 +15,8 @@
 
 </mat-toolbar>
 <br>
-<div><ng-multiselect-dropdown
+<div>
+  <ng-multiselect-dropdown
   [placeholder]="'Select a prefix'"
   [settings]="dropdownSettings"
   [data]="dropdownList"
@@ -24,7 +25,16 @@
   (onSelectAll)="onSelectAll($event)"
 >
 </ng-multiselect-dropdown>
+<!--  <mat-form-field style="width: 100%">-->
+<!--    <mat-label>Select a prefix</mat-label>-->
+<!--    <mat-select multiple [(value)]="selectedItems" (selectionChange)="onItemSelect($event)" >-->
+<!--      <mat-option *ngFor="let prefix of dropdownList" [value]="prefix">-->
+<!--        {{prefix.item_text}}-->
+<!--      </mat-option>-->
+<!--    </mat-select>-->
+<!--  </mat-form-field>-->
 </div>
+
 
 <mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>

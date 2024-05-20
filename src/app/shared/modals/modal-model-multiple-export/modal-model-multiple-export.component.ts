@@ -62,8 +62,8 @@ export class ModalModelMultipleExport {
     for (let i = 0; i < this.selectedItems.length; i++) {
       aSelectedLangArray[i] = this.selectedItems[i].item_text;
     }
+    console.log("aSelectedLangArray", aSelectedLangArray);
     this.mService.queryModelsAndLanguageADVANCEDwithDistinctionMultipleSelection(aSelectedLangArray);
-
   }
 
   ngOnInit(): void {
@@ -88,8 +88,9 @@ export class ModalModelMultipleExport {
     };
   }
 
-  onItemSelect(item: any) {
-    console.log(item);
+  onItemSelect(event: any) {
+    console.log(event.value);
+    // this.selectedItems = event.value;
   }
 
   onSelectAll(items: any) {

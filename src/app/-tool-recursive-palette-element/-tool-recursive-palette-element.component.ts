@@ -60,7 +60,7 @@ export class ToolRecursivePaletteElementComponent implements OnInit, AfterViewIn
     }, 1000);
   }
 
-  private addNewShape(a: GraphicalElementModel): void {
+  addNewShape(a: GraphicalElementModel): void {
     let b: GraphicalElementModel = Object.assign({}, a);
     this.sendElementFromRecursiveElement.emit(b);
   }

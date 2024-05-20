@@ -38,50 +38,50 @@
 </ul>
 
 <context-menu>
-  <ng-template let-sbchild contextMenuItem (execute)="showMessage('Hi, ' + $event.item.name)">
+  <ng-template let-sbchild contextMenuItem (execute)="showMessage('Hi, ' + $event.value.name)">
     Extend {{sbchild.label}}
   </ng-template>
   <ng-template contextMenuItem [subMenu]="saySubMenu">
     Edit
   </ng-template>
   <context-menu #saySubMenu>
-    <ng-template contextMenuItem (execute)="showMessage('Hi, ' + $event.item.name)">
+    <ng-template contextMenuItem (execute)="showMessage('Hi, ' + $event.value.name)">
       Add new Attribute / Property
     </ng-template>
-    <ng-template let-sbchild contextMenuItem (execute)="showMessage('Hola, ' + $event.item.name)">
+    <ng-template let-sbchild contextMenuItem (execute)="showMessage('Hola, ' + $event.value.name)">
       Edit {{sbchild.label}}
     </ng-template>
   </context-menu>
-  <ng-template let-element contextMenuItem (execute)="showMessage('Hi, ' + $event.item.name)">
+  <ng-template let-element contextMenuItem (execute)="showMessage('Hi, ' + $event.value.name)">
     Remove from palette
   </ng-template>
 </context-menu>
 
 <context-menu #elementRightClickMenu>
-  <ng-template let-element contextMenuItem (execute)="openExtendPaletteElementModal($event.item)">
+  <ng-template let-element contextMenuItem (execute)="openExtendPaletteElementModal($event.value)">
     Extend {{element.label}}
   </ng-template>
-  <ng-template let-element contextMenuItem (execute)="openEditPaletteElementModal($event.item)">
+  <ng-template let-element contextMenuItem (execute)="openEditPaletteElementModal($event.value)">
     Edit {{element.label}}
   </ng-template>
   <!-- <ng-template contextMenuItem [subMenu]="saySubMenu">
     Edit
   </ng-template>
   <context-menu #saySubMenu>
-    <ng-template contextMenuItem (execute)="openActivityElementProperty($event.item)">
+    <ng-template contextMenuItem (execute)="openActivityElementProperty($event.value)">
       Add new Attribute
     </ng-template>
-    <ng-template let-element contextMenuItem (execute)="openExtendPaletteElementModal($event.item)">
+    <ng-template let-element contextMenuItem (execute)="openExtendPaletteElementModal($event.value)">
       Edit {{element.label}}
     </ng-template>
   </context-menu> -->
-<!--  <ng-template let-element contextMenuItem (execute)="hideFromPalette($event.item)">-->
+<!--  <ng-template let-element contextMenuItem (execute)="hideFromPalette($event.value)">-->
 <!--    Hide-->
 <!--  </ng-template>-->
-  <ng-template let-element contextMenuItem (execute)="removeFromPalette($event.item)">
+  <ng-template let-element contextMenuItem (execute)="removeFromPalette($event.value)">
     Delete
   </ng-template>
-  <ng-template let-element contextMenuItem (execute)="showInstantiatedElements($event.item)">
+  <ng-template let-element contextMenuItem (execute)="showInstantiatedElements($event.value)">
     Show Instances
   </ng-template>
 </context-menu>
