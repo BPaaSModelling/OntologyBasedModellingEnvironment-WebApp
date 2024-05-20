@@ -13,7 +13,7 @@
   margin: 1rem 0;
 }
 
-md-card-title {
+.mat-card-title {
   font-size: 1rem;
   padding-top: 0.6rem;
   padding-left: 1rem;
