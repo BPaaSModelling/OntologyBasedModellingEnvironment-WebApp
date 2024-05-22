@@ -5,13 +5,12 @@ import {
   HttpHandler,
   HttpRequest,
 
-} from "@angular/common/http";
-import { Observable} from "rxjs";
-import { Auth0Service} from '../auth/auth0.service';
-import {AuthHttpInterceptor, AuthService} from '@auth0/auth0-angular';
-import {UserModel} from "../../../shared/models/User.model";
+} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {AuthHttpInterceptor, AuthService, User} from '@auth0/auth0-angular';
+import {UserModel} from '../../../shared/models/User.model';
 import {from} from 'rxjs/internal/observable/from';
-import {switchMap} from 'rxjs/operators';
+import {catchError, switchMap} from 'rxjs/operators';
 
 /**
  * Class representing an HTTP interceptor service.
@@ -26,13 +25,33 @@ export class HttpInterceptorService implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return from(this.authService.getAccessTokenSilently()).pipe(
-      switchMap(token => {
-        if (token) {
-          const clonedRequest = req.clone({
-            headers: req.headers.set('Authorization', `Bearer ${token}`)
-          });
-          return next.handle(clonedRequest);
-        }
+      switchMap(accessToken =>
+        from(this.authService.getIdTokenClaims().toPromise()).pipe(
+          switchMap(idTokenClaims => {
+            if (accessToken && idTokenClaims) {
+              const userDataBase64 = btoa(JSON.stringify(idTokenClaims));
+              const clonedRequest = req.clone({
+                headers: req.headers
+                  .set('Authorization', `Bearer ${accessToken}`)
+                  .set('X-User-Data', userDataBase64)
+              });
+
+              console.log("Headers", clonedRequest.headers.get('X-User-Data'));
+
+              return next.handle(clonedRequest);
+            }
+            return next.handle(req);
+          }),
+          catchError(err => {
+            // Handle errors if any
+            console.error('Error fetching idTokenClaims', err);
+            return next.handle(req);
+          })
+        )
+      ),
+      catchError(err => {
+        // Handle errors if any
+        console.error('Error fetching accessToken', err);
         return next.handle(req);
       })
     );

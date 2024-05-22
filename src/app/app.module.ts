@@ -62,7 +62,7 @@ import {ModalModelEdit} from './shared/modals/modal-model-edit/modal-model-edit.
 import {ModalViewElementDetail} from './shared/modals/model-element-detail/model-element-detail.component';
 import {ModalShowLanguageInstances} from './shared/modals/modal-show-language-instances/modal-show-language-instances';
 import {EndpointSettings} from './_settings/endpoint.settings';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule, HttpInterceptor} from '@angular/common/http';
 import {ModalModelExport} from './shared/modals/modal-model-export/modal-model-export-component';
 import {ImportExportEnvironmentComponent} from './pages/importExport-environment/import-export-environment.component';
 import {ModalModelMultipleExport} from './shared/modals/modal-model-multiple-export/modal-model-multiple-export.component';
@@ -228,7 +228,7 @@ export function appInit(endpointSettings: EndpointSettings) {
     EndpointSettings,
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthHttpInterceptor,
+      useClass: HttpInterceptorService,
       multi: true,
     },
     {

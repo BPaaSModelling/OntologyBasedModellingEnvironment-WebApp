@@ -82,9 +82,9 @@ export class EndpointSettings {
   public getElementEndpoint(modelId: string): string {
     return this.webserviceEndpoint + EndpointSettings.MODELS + '/' + modelId + '/element';
   }
-  public getElementStatusEndpoint(modelId: string): string {
-    return this.webserviceEndpoint + EndpointSettings.MODELS + '/' + modelId + '/element/status';
-  }
+  // public getElementStatusEndpoint(modelId: string): string {
+  //   return this.webserviceEndpoint + EndpointSettings.MODELS + '/' + modelId + '/element/status';
+  // }
 
   public getConnectionEndpoint(modelId: string): string {
     return this.webserviceEndpoint + EndpointSettings.MODELS + '/' + modelId + '/connection';

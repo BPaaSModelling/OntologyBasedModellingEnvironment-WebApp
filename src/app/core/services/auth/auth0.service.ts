@@ -11,6 +11,7 @@ import {ToastrService} from 'ngx-toastr';
 
 import {AuthService} from '@auth0/auth0-angular';
 import {DOCUMENT} from '@angular/common';
+import {ModelingLanguageModel} from '../../../shared/models/ModelingLanguage.model';
 
 /**
  * The AuthService class is responsible for managing authentication-related functionality.
@@ -70,6 +71,36 @@ export class Auth0Service {
     // Call this to redirect the user to the login page
     console.log('login with redirect');
     this.auth.loginWithRedirect();
+    //TODO: IMPLEMENT THE FOLLOWING CODE IN THE FIRST AUTHENTICATION
+
+    // Set User and graph data
+    // this.http.get<>(this.endpointSettings.getAuth())
+    //   .subscribe(response => {
+    //     // Check if the response contains the user data
+    //     if (response) {
+    //       //this.user = response;
+    //       this.saveUser(response);
+    //       //this.router.navigate(['/home']);
+    //     } else {
+    //       console.error('No user data received in the authentication response.');
+    //     }
+    //   },
+    //   error => {
+    //     if (error.status === 401) { // User is not logged in or token problem (expired, etc.)
+    //       console.error('Authentication error', error);
+    //       this.login();
+    //     } else if (error.status === 403) { // Jena Fuseki is not running
+    //       console.error('Jena Fuseki Server error', error);
+    //       this.toastr.error(
+    //         'Please make sure Jena Fuseki is running before logging in. <br/> Make sure all Turtle files are uploaded. <br/><br/>' + error.error,
+    //         'Authentication error',
+    //         {positionClass: 'toast-center-center', enableHtml: true});
+    //       setTimeout(() => {
+    //         this.login();
+    //       }, 7000);
+    //     }
+    //   });
+
   }
 
 
