@@ -231,47 +231,34 @@ export class EndpointSettings {
   //not used method
   public getModelAndLanguageFromFusekiAdvanced(){
     return this.webserviceEndpoint + "/ModEnv/getTTLAd"   ;
-
   }
 //old endpoint not used anymore
   public getModelAndLanguageFromFusekiAdvancedwithDistinction(){
     return this.webserviceEndpoint + "/ModEnv/getTTLAdwithDistinction"   ;
-
   }
+
   public getModelAndLanguageFromFusekiAdvancedwithDistinction2(){
     return this.webserviceEndpoint + "/ModEnv/getTTLAdwithDistinction2"   ;
-
   }
 
   public postLanguagesToFuseki(){
     return this.webserviceEndpoint + "/ModEnv/postLanguagesSelectedtoFuseki"   ;
-
   }
 
 
   public getPrefixFromFuseki(){
     return this.webserviceEndpoint + "/ModEnv/getPrefixesFromFuseki2"   ;
-
   }
+
   public getPrefixFromGithub(){
     return this.webserviceEndpoint + "/ModEnv/getLanguagesFromGithub"   ;
-
   }
 
   public uploadTtlFromDesktop(){
     return this.webserviceEndpoint + "/ModEnv/postTtlFromDesktop"   ;
-
-  }
-
-  public getLogin() :string {
-    return this.webserviceEndpoint + "/login";
-  }
-
-  public getLogout() :string {
-    return this.webserviceEndpoint + "/logout";
   }
 
   public getAuth() :string {
-    return this.webserviceEndpoint + "/auth";
+    return this.webserviceEndpoint + "/ModEnv/auth";
   }
 }
