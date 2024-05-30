@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit {
 
   loadGithubLanguages() {
     if (!this.modellerService.prefixAdvancedGithub || this.modellerService.prefixAdvancedGithub.length === 0) {
-      this.isLoading = true;
+      this.isLoading = false;
       this.modellerService.queryLanguagesFromGithub().pipe(
         take(1),
         filter(q => !!q),

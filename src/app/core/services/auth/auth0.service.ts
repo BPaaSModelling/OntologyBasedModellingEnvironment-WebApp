@@ -1,17 +1,14 @@
 import {Inject, Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 
 import {EndpointSettings} from '../../../_settings/endpoint.settings';
 import {Observable} from 'rxjs/internal/Observable';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 
 import {UserModel} from '../../../shared/models/User.model';
-import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 import {ToastrService} from 'ngx-toastr';
 
 import {AuthService} from '@auth0/auth0-angular';
 import {DOCUMENT} from '@angular/common';
-import {ModelingLanguageModel} from '../../../shared/models/ModelingLanguage.model';
 
 /**
  * The AuthService class is responsible for managing authentication-related functionality.
@@ -19,7 +16,6 @@ import {ModelingLanguageModel} from '../../../shared/models/ModelingLanguage.mod
  *
  * @constructor
  * @param {HttpClient} http - The HttpClient service used for making HTTP requests.
- * @param {Router} router - The Router service used for navigating between routes.
  * @param {EndpointSettings} endpointSettings - The EndpointSettings service used for retrieving endpoint URLs.
  */
 @Injectable({
@@ -30,7 +26,6 @@ export class Auth0Service {
   constructor(public auth: AuthService,
               @Inject(DOCUMENT) private doc: Document,
               private http: HttpClient,
-              private router: Router,
               private endpointSettings: EndpointSettings,
               private toastr: ToastrService) {
     // this.currentUserSubject = new BehaviorSubject<UserModel>(this.getUser());
@@ -47,13 +42,6 @@ export class Auth0Service {
       }
     );
     return user as UserModel;
-    // const user: string = window.sessionStorage.getItem('currentUser');
-    // if (user) {
-    //   return JSON.parse(user);
-    // } else {
-    //   console.log('No user found or currently logged in!');
-    //   return null;
-    // }
   }
 
   public loginCallback(): void {
