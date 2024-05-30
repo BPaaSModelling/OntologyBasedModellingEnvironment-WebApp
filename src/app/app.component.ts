@@ -12,9 +12,11 @@ import {Auth0Service} from './core/services/auth/auth0.service';
 export class AppComponent implements OnInit {
   title = 'app';
 
-  constructor(private modellerService: ModellerService) {
+  constructor(private modellerService: ModellerService, private auth0Service:Auth0Service) {
   }
 
   ngOnInit(): void {
+    // Called when the user logs in
+    this.auth0Service.loginCallback();
   }
 }

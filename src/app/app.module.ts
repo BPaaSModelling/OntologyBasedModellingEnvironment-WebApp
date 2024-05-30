@@ -182,7 +182,7 @@ export function appInit(endpointSettings: EndpointSettings) {
       httpInterceptor: {
         allowedList: [
           {
-            uri: '*',
+            uri: `/*`, // allowedList is only used by AuthHttpInterceptor if it's active
             // tokenOptions: {
             //   audience: 'https://aoame-webservice',
             //   scope: 'openid profile email read:messages'
@@ -226,7 +226,7 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModellerService,
     MatSnackBar,
     EndpointSettings,
-    {
+    {// Custom Interceptor that attaches the User Email header to the request
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,
       multi: true,

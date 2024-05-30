@@ -27,11 +27,6 @@ import {ModelingLanguageModel} from '../../../shared/models/ModelingLanguage.mod
 })
 export class Auth0Service {
 
-  public idToken: string;
-  public accessToken: string;
-  private currentUserSubject: BehaviorSubject<UserModel>;
-  public currentUser$: Observable<UserModel>;
-
   constructor(public auth: AuthService,
               @Inject(DOCUMENT) private doc: Document,
               private http: HttpClient,
@@ -40,13 +35,15 @@ export class Auth0Service {
               private toastr: ToastrService) {
     // this.currentUserSubject = new BehaviorSubject<UserModel>(this.getUser());
     // this.currentUser$ = this.currentUserSubject.asObservable();
+
+
   }
 
   public getUser(): UserModel | null {
     let user: UserModel;
     this.auth.user$.subscribe((profile) => {
         user = JSON.parse(JSON.stringify(profile, null, 2));
-      console.log('Current User: ', user);
+        console.log('Current User: ', user);
       }
     );
     return user as UserModel;
@@ -59,48 +56,41 @@ export class Auth0Service {
     // }
   }
 
-  // call this when user data change (login or logout)
-  private refreshUser(): void {
-    this.currentUserSubject.next(this.getUser());
+  public loginCallback(): void {
+    // Called when the user logs in
+    this.auth.appState$.subscribe((appState) => {
+      console.log("LoginCallback triggered: appState: ", appState);
+      this.handleUserData();
+    });
   }
 
-  public login(): void {
-    // window.sessionStorage.removeItem('currentUser');
-    // window.location.href = this.endpointSettings.getLogin();
+  private handleUserData(): void {
+    // Checks if user graph exists, if not creates it
+    this.http.get(this.endpointSettings.getAuth()).subscribe(response => {
+        if (response) {
+          console.log('User Graph successfully created: ', response);
+        } else {
+          console.error('No user data received in the authentication response.');
+        }
+      },
+      error => {
+        if (error.status === 401) { // User is not logged in or token problem (expired, etc.)
+          console.error('Authentication error', error);
+          this.auth.loginWithRedirect();
+        } else if (error.status === 403) { // Jena Fuseki is not running
+          console.error('Jena Fuseki Server error', error);
+          this.toastr.error(
+            'Please make sure Jena Fuseki is running before logging in. <br/> Make sure all Turtle files are uploaded. <br/><br/>' + error.error,
+            'Authentication error',
+            {positionClass: 'toast-center-center', enableHtml: true});
+          setTimeout(() => {
+            // Called after 7 seconds to give time for the user to read the error message
+            this.auth.loginWithRedirect();
+          }, 7000);
+        }
 
-    // Call this to redirect the user to the login page
-    console.log('login with redirect');
-    this.auth.loginWithRedirect();
-    //TODO: IMPLEMENT THE FOLLOWING CODE IN THE FIRST AUTHENTICATION
-
-    // Set User and graph data
-    // this.http.get<>(this.endpointSettings.getAuth())
-    //   .subscribe(response => {
-    //     // Check if the response contains the user data
-    //     if (response) {
-    //       //this.user = response;
-    //       this.saveUser(response);
-    //       //this.router.navigate(['/home']);
-    //     } else {
-    //       console.error('No user data received in the authentication response.');
-    //     }
-    //   },
-    //   error => {
-    //     if (error.status === 401) { // User is not logged in or token problem (expired, etc.)
-    //       console.error('Authentication error', error);
-    //       this.login();
-    //     } else if (error.status === 403) { // Jena Fuseki is not running
-    //       console.error('Jena Fuseki Server error', error);
-    //       this.toastr.error(
-    //         'Please make sure Jena Fuseki is running before logging in. <br/> Make sure all Turtle files are uploaded. <br/><br/>' + error.error,
-    //         'Authentication error',
-    //         {positionClass: 'toast-center-center', enableHtml: true});
-    //       setTimeout(() => {
-    //         this.login();
-    //       }, 7000);
-    //     }
-    //   });
-
+      });
+    console.log('Initializing the graph data');
   }
 
 
@@ -111,59 +101,6 @@ export class Auth0Service {
 
   public logout() {
     // Clear user data, tokens, etc.
-    // window.sessionStorage.removeItem('currentUser');
-    // window.location.href = this.endpointSettings.getLogout();
-    // this.clean();
     this.auth.logout({returnTo: this.doc.location.origin});
-  }
-
-  public isLoggedIn(): boolean {
-    const user: string = window.sessionStorage.getItem('currentUser');
-    if (user) {
-      return true;
-    }
-    return false;
-  }
-
-
-  public saveUser(user: UserModel): void {
-    window.sessionStorage.removeItem('currentUser');
-    window.sessionStorage.setItem('currentUser', JSON.stringify(user));
-    this.refreshUser();
-  }
-
-  public authenticate() {
-
-
-    return this.http.get<UserModel>(this.endpointSettings.getAuth(), {withCredentials: true})
-      .subscribe(response => {
-          // Check if the response contains the user data
-          if (response) {
-            //this.user = response;
-            this.saveUser(response);
-            //this.router.navigate(['/home']);
-          } else {
-            console.error('No user data received in the authentication response.');
-          }
-        },
-        error => {
-          if (error.status === 401) { // User is not logged in or token problem (expired, etc.)
-            console.error('Authentication error', error);
-            this.login();
-          } else if (error.status === 403) { // Jena Fuseki is not running
-            console.error('Jena Fuseki Server error', error);
-            this.toastr.error(
-              'Please make sure Jena Fuseki is running before logging in. <br/> Make sure all Turtle files are uploaded. <br/><br/>' + error.error,
-              'Authentication error',
-              {positionClass: 'toast-center-center', enableHtml: true});
-            setTimeout(() => {
-              this.login();
-            }, 7000);
-          }
-        });
-  }
-
-  clean(): void {
-    window.sessionStorage.clear();
   }
 }
