@@ -9,6 +9,8 @@ import {ToastrService} from 'ngx-toastr';
 
 import {AuthService} from '@auth0/auth0-angular';
 import {DOCUMENT} from '@angular/common';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {of} from 'rxjs/internal/observable/of';
 
 /**
  * The AuthService class is responsible for managing authentication-related functionality.
@@ -44,47 +46,51 @@ export class Auth0Service {
     return user as UserModel;
   }
 
-  public loginCallback(): void {
+  public loginCallback(): Observable<any> {
     // Called when the user logs in
-    this.auth.appState$.subscribe((appState) => {
-      console.log("LoginCallback triggered: appState: ", appState);
-      this.handleUserData();
-    });
+    return this.auth.appState$.pipe(
+      tap(appState => {
+        console.log('Initializing the graph data in appState: ', appState);
+      }),
+      switchMap(() => this.handleUserData())
+    );
   }
 
-  private handleUserData(): void {
+
+  private handleUserData(): Observable<any> {
     // Checks if user graph exists, if not creates it
-    this.http.get(this.endpointSettings.getAuth()).subscribe(response => {
+    return this.http.get(this.endpointSettings.getAuth()).pipe(
+      tap(response => {
         if (response) {
           console.log('User Graph successfully created: ', response);
+          this.toastr.success(response.toString(),
+            'Authentication',
+            {positionClass: 'toast-center-center', enableHtml: true});
         } else {
-          console.error('No user data received in the authentication response.');
+          this.toastr.error('No user data received in the authentication response.',
+            'Authentication error',
+            {positionClass: 'toast-center-center'});
         }
-      },
-      error => {
+      }),
+      catchError(error => {
         if (error.status === 401) { // User is not logged in or token problem (expired, etc.)
           console.error('Authentication error', error);
-          this.auth.loginWithRedirect();
+          //this.auth.loginWithRedirect();
         } else if (error.status === 403) { // Jena Fuseki is not running
           console.error('Jena Fuseki Server error', error);
           this.toastr.error(
-            'Please make sure Jena Fuseki is running before logging in. <br/> Make sure all Turtle files are uploaded. <br/><br/>' + error.error,
+            'Please make sure Jena Fuseki is running before logging in. <br/> Make sure all Turtle files are uploaded. <br/><br/>' + error.message,
             'Authentication error',
-            {positionClass: 'toast-center-center', enableHtml: true});
-          setTimeout(() => {
-            // Called after 7 seconds to give time for the user to read the error message
-            this.auth.loginWithRedirect();
-          }, 7000);
+            {positionClass: 'toast-center-center'});
+        } else {
+          console.error('Authentication error', error);
+          this.toastr.error(
+            'An error occurred while authenticating the user. <br/> Please check the console for more details. <br/><br/>' + error.message,
+            'Authentication error',
+            {positionClass: 'toast-center-center'});
         }
-
-      });
-    console.log('Initializing the graph data');
-  }
-
-
-  public isAuthenticated(): Observable<boolean> {
-    console.log('isAuthenticated: ', this.auth.isAuthenticated$);
-    return this.auth.isAuthenticated$;
+        return of(null);
+      }));
   }
 
   public logout() {

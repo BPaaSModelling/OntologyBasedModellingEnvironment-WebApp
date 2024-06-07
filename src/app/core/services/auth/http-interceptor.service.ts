@@ -9,7 +9,7 @@ import {
 import {Observable} from 'rxjs';
 import {AuthHttpInterceptor, AuthService, User} from '@auth0/auth0-angular';
 import {from} from 'rxjs/internal/observable/from';
-import {catchError, switchMap} from 'rxjs/operators';
+import {catchError, switchMap, take} from 'rxjs/operators';
 
 /**
  * Class representing an HTTP interceptor service.
@@ -27,6 +27,7 @@ export class HttpInterceptorService implements HttpInterceptor {
     return from(this.authService.getAccessTokenSilently()).pipe(
       switchMap(accessToken =>
         from(this.authService.user$).pipe(
+          take(1),
           switchMap(user => {
             if (accessToken && user) {
               const clonedRequest = req.clone({
@@ -34,9 +35,7 @@ export class HttpInterceptorService implements HttpInterceptor {
                   .set('Authorization', `Bearer ${accessToken}`)
                   .set('X-User-Email', user.email)
               });
-
-              console.log("Header of the user: ", clonedRequest.headers.get('X-User-Email'));
-
+              console.log(`HTTP request: ${req.url}, method: ${req.method}, User: ${clonedRequest.headers.get('X-User-Email')}`);
               return next.handle(clonedRequest);
             }
             return next.handle(req);
