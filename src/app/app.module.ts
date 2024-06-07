@@ -88,6 +88,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {AuthGuard, AuthHttpInterceptor, AuthModule} from '@auth0/auth0-angular';
 import {environment as env} from '../environments/environment';
 import {ProfileComponent} from './shared/profile/profile.component';
+import {LoadingService} from './core/services/loading/loading.service';
 
 
 const appRoutes: Routes = [
@@ -224,6 +225,7 @@ export function appInit(endpointSettings: EndpointSettings) {
   ],
   providers: [
     ModellerService,
+    LoadingService,
     MatSnackBar,
     EndpointSettings,
     {// Custom Interceptor that attaches the User Email header to the request

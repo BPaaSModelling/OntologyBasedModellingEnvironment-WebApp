@@ -46,3 +46,7 @@
   text-decoration: underline;
 
 }
+
+::ng-deep .custom-spinner circle {
+  stroke: #1E90FF !important;
+}
