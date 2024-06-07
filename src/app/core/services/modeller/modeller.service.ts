@@ -538,6 +538,7 @@ export class ModellerService {
       data => {
         this.prefixAdvanced$ = of(data);
         this.prefixAdvanced = data;
+        console.log("Fetched Prefixes from Fuseki", data)
       }, error => console.log(error)
     );
   }
