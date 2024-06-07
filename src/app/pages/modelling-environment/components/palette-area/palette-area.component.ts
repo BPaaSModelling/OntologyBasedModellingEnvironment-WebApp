@@ -48,7 +48,7 @@ export class PaletteAreaComponent implements OnInit {
     //this.mService.queryModelingLanguages()
     this.mService.queryModelingLanguages().subscribe(
       (response) => {
-        console.log(response);
+        console.log("Modeling Languages: ", response);
         this.modelingLanguages = response;
       }
     );
