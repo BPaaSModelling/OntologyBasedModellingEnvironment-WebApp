@@ -79,15 +79,16 @@ export class Auth0Service {
         } else if (error.status === 403) { // Jena Fuseki is not running
           console.error('Jena Fuseki Server error', error);
           this.toastr.error(
-            'Please make sure Jena Fuseki is running before logging in. <br/> Make sure all Turtle files are uploaded. <br/><br/>' + error.message,
+            `Please make sure Jena Fuseki is running before logging in. <br/> Make sure all Turtle files are uploaded. <br/><br/> ${error.error}`,
             'Authentication error',
-            {positionClass: 'toast-center-center'});
+            {positionClass: 'toast-center-center', enableHtml: true, tapToDismiss: true, closeButton: true});
+
         } else {
           console.error('Authentication error', error);
           this.toastr.error(
-            'An error occurred while authenticating the user. <br/> Please check the console for more details. <br/><br/>' + error.message,
+            `Please make sure Jena Fuseki is running before logging in. <br/> Ensure that all Turtle files are uploaded and default graph is not empty. <br/><br/> ${error}`,
             'Authentication error',
-            {positionClass: 'toast-center-center'});
+            {positionClass: 'toast-center-center', enableHtml: true, tapToDismiss: true, closeButton: true});
         }
         return of(null);
       }));
