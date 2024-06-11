@@ -1,8 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ModellerService} from './core/services/modeller/modeller.service';
-import {filter, finalize, switchMap, take, tap} from 'rxjs/operators';
+import {catchError, filter, finalize, switchMap, take, tap} from 'rxjs/operators';
 import {Auth0Service} from './core/services/auth/auth0.service';
 import {LoadingService} from './core/services/loading/loading.service';
+import {of} from 'rxjs/internal/observable/of';
+import {forkJoin} from 'rxjs/internal/observable/forkJoin';
+import {from} from 'rxjs/internal/observable/from';
 
 
 @Component({
@@ -12,6 +15,7 @@ import {LoadingService} from './core/services/loading/loading.service';
 })
 export class AppComponent implements OnInit {
   title = 'app';
+
   constructor(private modellerService: ModellerService,
               private auth0Service: Auth0Service,
               private loadingService: LoadingService) {
@@ -19,62 +23,74 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // Called when the user logs in
-    this.auth0Service.loginCallback().subscribe(isAuthenticated => {
-      if (isAuthenticated) {
-        console.log('Loading Github languages and prefixes from Fuseki and Github...');
-        this.loadPrefixesPreparationFromGithub();
-        this.loadPrefixesPreparation();
-        this.loadGithubLanguages();
-      } else {
-        console.log('User is not authenticated. Cannot load Github languages and prefixes.');
-      }
-    }, error => {
-      console.error('Error during login callback', error);
+    this.auth0Service.auth.isAuthenticated$.pipe(
+      switchMap(isAuthenticated => {
+        if (isAuthenticated) {
+          return this.auth0Service.loginCallback();
+        } else {
+          console.log('User is not authenticated. Cannot load Github languages and prefixes.');
+          return of(null);
+        }
+      })
+    ).subscribe(() => {
+      console.log('Loading Github languages and prefixes from Fuseki and Github...');
+      forkJoin([
+        this.loadPrefixesPreparationFromGithub(),
+        this.loadPrefixesPreparation(),
+        this.loadGithubLanguages()
+      ]).subscribe(
+        ([githubPrefixes, fusekiPrefixes, githubLanguages]) => {
+          console.log('All data loaded', githubPrefixes, fusekiPrefixes, githubLanguages);
+        },
+        error => {
+          console.error('Error during login callback', error);
+        }
+      );
     });
   }
 
-  async loadPrefixesPreparation() {
+  loadPrefixesPreparation() {
     this.loadingService.setLoading(true);
-    await this.modellerService.queryLanguagesFromFuseki();
-    this.loadingService.setLoading(false);
-  }
-  async loadPrefixesPreparationFromGithub() {
-    this.loadingService.setLoading(true);
-    this.modellerService.queryLanguagesFromGithub();
-    this.loadingService.setLoading(false);
+    return from(this.modellerService.queryLanguagesFromFuseki()).pipe(
+      tap(() => {
+        console.log('Successfully loaded prefixes from Fuseki');
+        this.loadingService.setLoading(false);
+      }),
+      catchError(error => {
+        console.error('Error loading prefixes from Fuseki', error);
+        this.loadingService.setLoading(false);
+        return of(null);
+      })
+    );
   }
 
-  async loadGithubLanguages() {
-    console.log("ModellerService.prefixAdvancedGithub", this.modellerService.prefixAdvancedGithub);
-    if (!this.modellerService.prefixAdvancedGithub || this.modellerService.prefixAdvancedGithub.length === 0) {
-      this.loadingService.setLoading(true);
-      this.modellerService.queryLanguagesFromGithub().pipe(
-        take(1),
-        filter(q => !!q),
-        switchMap((queryLanguages) => {
-          console.log("preloading the language ttl files");
-          return this.modellerService.queryUploadLanguagesSelectedOnFuseki(queryLanguages).pipe(
-            tap((result) => {
-              console.log('Result of queryUploadLanguagesSelectedOnFuseki:', result);
-            }))
-        }),
-        tap(() => {
-          // Ensure that all previous tasks have been completed and then authenticate
-          console.log("Successfully preloaded the language ttl files");
-        }),
-        finalize(() => {
-          // will always be executed, regardless of successful or unsuccessful completion
-          this.loadingService.setLoading(false);
-          console.log("Finished preloading ttl files from Github");
-        })
-      ).subscribe({
-        next: value => console.log('Observable chain emitted: ', value),
-        error:err => {
-          console.error("Error during preloading ttl files from Github", err);
-        }
-      });
-    } else {
-      console.log("Languages from Github already loaded");
-    }
+  loadPrefixesPreparationFromGithub() {
+    this.loadingService.setLoading(true);
+    return this.modellerService.queryLanguagesFromGithub().pipe(
+      tap(() => {
+        console.log('Successfully loaded prefixes from Github');
+        this.loadingService.setLoading(false);
+      }),
+      catchError(error => {
+        console.error('Error loading prefixes from Github', error);
+        this.loadingService.setLoading(false);
+        return of(null);
+      })
+    );
+  }
+
+  loadGithubLanguages() {
+    this.loadingService.setLoading(true);
+    return this.modellerService.queryLanguagesFromGithub().pipe(
+      tap(() => {
+        console.log('Successfully loaded Github languages');
+        this.loadingService.setLoading(false);
+      }),
+      catchError(error => {
+        console.error('Error loading Github languages', error);
+        this.loadingService.setLoading(false);
+        return of(null);
+      })
+    );
   }
 }

@@ -180,6 +180,7 @@ export function appInit(endpointSettings: EndpointSettings) {
     HttpClientModule,
     AuthModule.forRoot({
       ...env.auth,
+      cacheLocation: 'localstorage',
       httpInterceptor: {
         allowedList: [
           {
