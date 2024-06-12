@@ -4,7 +4,6 @@ import {HttpClient} from '@angular/common/http';
 import {EndpointSettings} from '../../../_settings/endpoint.settings';
 import {Observable} from 'rxjs/internal/Observable';
 
-import {UserModel} from '../../../shared/models/User.model';
 import {ToastrService} from 'ngx-toastr';
 
 import {AuthService} from '@auth0/auth0-angular';
@@ -32,18 +31,6 @@ export class Auth0Service {
               private toastr: ToastrService) {
     // this.currentUserSubject = new BehaviorSubject<UserModel>(this.getUser());
     // this.currentUser$ = this.currentUserSubject.asObservable();
-
-
-  }
-
-  public getUser(): UserModel | null {
-    let user: UserModel;
-    this.auth.user$.subscribe((profile) => {
-        user = JSON.parse(JSON.stringify(profile, null, 2));
-        console.log('Current User: ', user);
-      }
-    );
-    return user as UserModel;
   }
 
   public loginCallback(): Observable<any> {
