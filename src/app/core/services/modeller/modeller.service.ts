@@ -384,52 +384,10 @@ export class ModellerService {
    * The polling will stop when the provided `stop$` Observable emits a value.
    *
    * @param {string} modelId - The ID of the model for which to retrieve elements.
-   * @param {Observable<void>} stop$ - An Observable that will emit a value when the polling should stop.
    * @returns {Observable<ModelElementDetail[]>} - An Observable that will emit the retrieved elements.
    */
-  getElements(modelId: string, stop$: Observable<void>): Observable<ModelElementDetail[]> {
-    // getElementEndpoint starts the process of retrieving the elements
-    // getElementStatusEndpoint is used to poll the status of the retrieval every n seconds
-    // This is necessary to avoid Heroku server timeout after 30 seconds when this process takes longer
+  getElements(modelId: string): Observable<ModelElementDetail[]> {
     return this.httpClient.get<ModelElementDetail[]>(`${this.endpointSettings.getElementEndpoint(modelId)}`);
-     // return  new Observable<ModelElementDetail[]>(observer => {
-     //   let interval: any;
-     //   this.httpClient.get<string>(this.endpointSettings.getElementEndpoint(modelId)).subscribe(taskId => {
-     //     interval = setInterval(() => {
-     //       this.httpClient.get<ModelElementDetail[]>(this.endpointSettings.getElementStatusEndpoint(modelId), {observe: 'response'})
-     //         .pipe(takeUntil(stop$))
-     //         .subscribe(
-     //           response => {
-     //             if (response.status === 200) { // Success status received from server
-     //               console.log(response.body)
-     //               observer.next(response.body);
-     //               observer.complete();
-     //               clearInterval(interval);
-     //             } else if (response.status >= 400) { // Error status received from server
-     //               observer.error('Error status received: ' + response.status);
-     //               observer.complete();
-     //               clearInterval(interval);
-     //             } else {
-     //               console.log(response.body); // current status
-     //             }
-     //           },
-     //           error => { // Error occurred during polling
-     //             console.error('Error occurred during polling: ' + error.toString());
-     //             observer.error(error);
-     //             observer.complete();
-     //             clearInterval(interval);
-     //           }
-     //         );
-     //     }, 5000); // Poll every n seconds to check status
-     //   });
-       // stop$.subscribe(() => {
-       //   if (interval) {
-       //     clearInterval(interval);
-       //     console.log('Polling was successfully interrupted because the component was destroyed');
-       //   }
-       // });
-
-     // });
   }
 
   updateElement(elementDetail: ModelElementDetail, modelId: string) {
@@ -481,7 +439,6 @@ export class ModellerService {
   }
 
   async getUploadedImages(): Promise<Object> {
-
     return await this.httpClient.get('/images').toPromise();
   }
 
@@ -499,7 +456,6 @@ export class ModellerService {
         });
         saveAs(myblob, filename);
         // FileSaver.saveAs(myblob, "hello world.txt");
-
       }, error => console.log('Could not query models and language from endpoint fuseki')
     );
   }
@@ -519,7 +475,6 @@ export class ModellerService {
         });
         saveAs(myblob, filename);
         // FileSaver.saveAs(myblob, "hello world.txt");
-
       }, error => console.log(error)
     );
 
@@ -539,7 +494,6 @@ export class ModellerService {
         });
         saveAs(myblob, filename);
         // FileSaver.saveAs(myblob, "hello world.txt");
-
       }, error => console.log(error)
     );
 
@@ -570,7 +524,6 @@ export class ModellerService {
   }
 
   uploadFromDesktop(sTtlFromDesktop: string){
-
       this.httpClient.post(this.endpointSettings.uploadTtlFromDesktop(), sTtlFromDesktop).subscribe(data=>{},error => console.log(error));
   }
 

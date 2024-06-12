@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ModellerService} from './core/services/modeller/modeller.service';
 import {catchError, filter, finalize, switchMap, take, tap} from 'rxjs/operators';
 import {Auth0Service} from './core/services/auth/auth0.service';
-import {LoadingService} from './core/services/loading/loading.service';
 import {of} from 'rxjs/internal/observable/of';
 import {forkJoin} from 'rxjs/internal/observable/forkJoin';
 import {from} from 'rxjs/internal/observable/from';
@@ -17,8 +16,7 @@ export class AppComponent implements OnInit {
   title = 'app';
 
   constructor(private modellerService: ModellerService,
-              private auth0Service: Auth0Service,
-              private loadingService: LoadingService) {
+              private auth0Service: Auth0Service) {
   }
 
   ngOnInit(): void {
@@ -50,45 +48,36 @@ export class AppComponent implements OnInit {
   }
 
   loadPrefixesPreparation() {
-    this.loadingService.setLoading(true);
     return from(this.modellerService.queryLanguagesFromFuseki()).pipe(
       tap(() => {
         console.log('Successfully loaded prefixes from Fuseki');
-        this.loadingService.setLoading(false);
       }),
       catchError(error => {
         console.error('Error loading prefixes from Fuseki', error);
-        this.loadingService.setLoading(false);
         return of(null);
       })
     );
   }
 
   loadPrefixesPreparationFromGithub() {
-    this.loadingService.setLoading(true);
     return this.modellerService.queryLanguagesFromGithub().pipe(
       tap(() => {
         console.log('Successfully loaded prefixes from Github');
-        this.loadingService.setLoading(false);
       }),
       catchError(error => {
         console.error('Error loading prefixes from Github', error);
-        this.loadingService.setLoading(false);
         return of(null);
       })
     );
   }
 
   loadGithubLanguages() {
-    this.loadingService.setLoading(true);
     return this.modellerService.queryLanguagesFromGithub().pipe(
       tap(() => {
         console.log('Successfully loaded Github languages');
-        this.loadingService.setLoading(false);
       }),
       catchError(error => {
         console.error('Error loading Github languages', error);
-        this.loadingService.setLoading(false);
         return of(null);
       })
     );

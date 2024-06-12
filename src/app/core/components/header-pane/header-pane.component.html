@@ -18,5 +18,6 @@
     <mat-icon>arrow_back_ios</mat-icon>
     <span>{{ modelName }}</span>
   </button>
+  <mat-spinner *ngIf="isLoading" class="custom-spinner" [diameter]="35" [strokeWidth]="3"></mat-spinner>
 </mat-toolbar>
 <br>

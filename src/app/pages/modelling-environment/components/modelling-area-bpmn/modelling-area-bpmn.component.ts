@@ -314,7 +314,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             this.selectedModel = new Model();
             this.selectedModel.id = params.id;
             this.selectedModel.label = params.label;
-            return this.mService.getElements(params.id, this.destroy$);
+            return this.mService.getElements(params.id);
           }
           return of(null);
         }),
