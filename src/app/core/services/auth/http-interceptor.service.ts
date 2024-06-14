@@ -25,8 +25,12 @@ export class HttpInterceptorService implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-
+    // Pass all requests to /api endpoint without authentication
+    // It is important to get env vars regardless of the auth state
+    if (req.url.endsWith('/api')) {
+      return next.handle(req);
+    }
+    // Check if the user is authenticated,
     return this.authService.isAuthenticated$.pipe(
       switchMap(isAuthenticated => {
         if (isAuthenticated) {
@@ -36,12 +40,9 @@ export class HttpInterceptorService implements HttpInterceptor {
             finalize(() => this.loadingService.setLoading(false)) // Reset loading state on completion or error
           );
         } else {
-          console.log('User is not authenticated. Redirecting to login page...');
-          this.authService.loginWithRedirect({
-            appState: {target: req.url} // Set the current route as the appState
-          });
-          this.loadingService.setLoading(false);
-          return throwError('User is not authenticated');
+          console.log('User is not authenticated');
+
+          return next.handle(req);
         }
       })
       );
