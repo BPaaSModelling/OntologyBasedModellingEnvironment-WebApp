@@ -71,14 +71,12 @@ export class HttpInterceptorService implements HttpInterceptor {
             );
           }),
           catchError(err => {
-            console.error('Error fetching user', err);
             return throwError('Error fetching user');
           })
         )
       ),
       catchError(err => {
-        console.error('Error fetching accessToken', err);
-        return throwError('Error fetching accessToken');
+        return throwError('Error fetching accessToken', err);
       })
     );
   }
