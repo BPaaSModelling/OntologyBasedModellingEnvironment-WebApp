@@ -87,7 +87,6 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import {AuthGuard, AuthHttpInterceptor, AuthModule} from '@auth0/auth0-angular';
 import {environment as env} from '../environments/environment';
-import {ProfileComponent} from './shared/profile/profile.component';
 import {LoadingService} from './core/services/loading/loading.service';
 
 
@@ -145,7 +144,6 @@ export function appInit(endpointSettings: EndpointSettings) {
     DiagramManagementComponent,
     ModellingAreaBPMNComponent,
     ModalInsertShaclPropertyComponent,
-    ProfileComponent,
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
