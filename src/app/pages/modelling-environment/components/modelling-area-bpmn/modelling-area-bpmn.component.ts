@@ -795,7 +795,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       this.selectedInstantiationType
     ).then(response => {
       newnode.part.data.element = response;
-
+      console.log("Element Created from response", response);
       this.myDiagram.commitTransaction('Add State');
       this.relayoutDiagram();
 
@@ -803,6 +803,9 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       if (additionalCreateOptions && additionalCreateOptions.group) {
         self.setGroupPropertyForChildAndParent(newnode, additionalCreateOptions);
       }
+    }).catch(error => {
+      console.error(error);
+      this.myDiagram.rollbackTransaction();
     });
   }
 
@@ -1879,7 +1882,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
             const node = obj.part.adornedPart;
             if (node != null) {
               const element = node.data.element;
-
+              console.log('Node data: ', node.data);
               const modelElementAndModel = new ModelElementDetailAndModel();
               modelElementAndModel.modelId = this.selectedModel.id;
               modelElementAndModel.elementDetail = element;
