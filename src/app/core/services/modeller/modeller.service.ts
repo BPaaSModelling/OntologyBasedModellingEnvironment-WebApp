@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {EndpointSettings} from '../../../_settings/endpoint.settings';
 //import {ModalModelMultipleExport} from './modal-model-multiple-export';
 import {Observable} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {map, takeUntil, tap} from 'rxjs/operators';
 import {of} from 'rxjs';
 // import 'rxjs/operator/delay';
 // import 'rxjs/operator/mergeMap';
@@ -377,40 +377,17 @@ export class ModellerService {
     return this.httpClient.put<ModelElementDetail>(this.endpointSettings.getConnectionEndpoint(modelId), payload)
       .toPromise();
   }
-
+  /**
+   * This method is used to retrieve elements associated with a specific model.
+   * It starts the process of retrieving the elements and then polls the status of the retrieval every n seconds.
+   * This is necessary to avoid Heroku server timeout after 30 seconds when this process takes longer.
+   * The polling will stop when the provided `stop$` Observable emits a value.
+   *
+   * @param {string} modelId - The ID of the model for which to retrieve elements.
+   * @returns {Observable<ModelElementDetail[]>} - An Observable that will emit the retrieved elements.
+   */
   getElements(modelId: string): Observable<ModelElementDetail[]> {
-    // getElementEndpoint starts the process of retrieving the elements
-    // getElementStatusEndpoint is used to poll the status of the retrieval every n seconds
-    // This is necessary to avoid Heroku server timeout after 30 seconds when this process takes longer
-     return  new Observable<ModelElementDetail[]>(observer => {
-      this.httpClient.get<string>(this.endpointSettings.getElementEndpoint(modelId)).subscribe(taskId => {
-        const interval = setInterval(() => {
-          this.httpClient.get<ModelElementDetail[]>(this.endpointSettings.getElementStatusEndpoint(modelId), {observe: 'response'})
-            .subscribe(
-              response => {
-                if (response.status === 200) { // Success status received from server
-                  console.log(response.body)
-                  observer.next(response.body);
-                  observer.complete();
-                  clearInterval(interval);
-                } else if (response.status >= 400) { // Error status received from server
-                  observer.error('Error status received: ' + response.status);
-                  observer.complete();
-                  clearInterval(interval);
-                } else {
-                  console.log(response.body); // current status
-                }
-              },
-              error => { // Error occurred during polling
-                console.error('Error occurred during polling: ' + error.toString());
-                observer.error(error);
-                observer.complete();
-                clearInterval(interval);
-              }
-            );
-        }, 5000); // Poll every n seconds to check status
-      });
-    });
+    return this.httpClient.get<ModelElementDetail[]>(`${this.endpointSettings.getElementEndpoint(modelId)}`);
   }
 
   updateElement(elementDetail: ModelElementDetail, modelId: string) {
@@ -462,7 +439,6 @@ export class ModellerService {
   }
 
   async getUploadedImages(): Promise<Object> {
-
     return await this.httpClient.get('/images').toPromise();
   }
 
@@ -480,7 +456,6 @@ export class ModellerService {
         });
         saveAs(myblob, filename);
         // FileSaver.saveAs(myblob, "hello world.txt");
-
       }, error => console.log('Could not query models and language from endpoint fuseki')
     );
   }
@@ -500,7 +475,6 @@ export class ModellerService {
         });
         saveAs(myblob, filename);
         // FileSaver.saveAs(myblob, "hello world.txt");
-
       }, error => console.log(error)
     );
 
@@ -520,7 +494,6 @@ export class ModellerService {
         });
         saveAs(myblob, filename);
         // FileSaver.saveAs(myblob, "hello world.txt");
-
       }, error => console.log(error)
     );
 
@@ -552,7 +525,6 @@ export class ModellerService {
   }
 
   uploadFromDesktop(sTtlFromDesktop: string){
-
       this.httpClient.post(this.endpointSettings.uploadTtlFromDesktop(), sTtlFromDesktop).subscribe(data=>{},error => console.log(error));
   }
 

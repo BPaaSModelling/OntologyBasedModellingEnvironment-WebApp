@@ -1,10 +1,14 @@
 <mat-toolbar color="primary" class="mat-elevation-z8" *ngIf="!showModellerHeader">
   <span><a mat-button routerLink="/home"><img width="350" src="assets/images/AOAME_crop.png"></a></span>
 
+  <mat-spinner *ngIf="isLoading" class="custom-spinner" [diameter]="35" [strokeWidth]="3"></mat-spinner>
   <div class="spacer"></div>
-  <span *ngIf="authService.currentUser$ | async as user" style="font-size: smaller; font-weight: bold;">{{user.email}}</span>
-  <a mat-button routerLink="/home"routerLinkActive="active-link" [routerLinkActiveOptions]={exact:true} >Home</a>
-  <a mat-button routerLink="/diagramManagement"routerLinkActive="active-link">Modeller</a>
+
+  <div class="spacer"></div>
+
+  <span *ngIf="authService.auth.user$  | async as user" style="font-size: smaller; font-weight: bold;">{{ user.email }}</span>
+  <a mat-button routerLink="/home" routerLinkActive="active-link" [routerLinkActiveOptions]={exact:true}>Home</a>
+  <a mat-button routerLink="/diagramManagement" routerLinkActive="active-link">Modeller</a>
   <a mat-button routerLink="/importExport" routerLinkActive="active-link">Import and Export</a>
   <a mat-button (click)="authService.logout()" routerLinkActive="active-link" [routerLinkActiveOptions]={exact:true}>Logout</a>
 </mat-toolbar>
@@ -14,5 +18,6 @@
     <mat-icon>arrow_back_ios</mat-icon>
     <span>{{ modelName }}</span>
   </button>
+  <mat-spinner *ngIf="isLoading" class="custom-spinner" [diameter]="35" [strokeWidth]="3"></mat-spinner>
 </mat-toolbar>
 <br>

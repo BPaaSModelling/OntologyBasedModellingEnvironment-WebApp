@@ -62,7 +62,7 @@ import {ModalModelEdit} from './shared/modals/modal-model-edit/modal-model-edit.
 import {ModalViewElementDetail} from './shared/modals/model-element-detail/model-element-detail.component';
 import {ModalShowLanguageInstances} from './shared/modals/modal-show-language-instances/modal-show-language-instances';
 import {EndpointSettings} from './_settings/endpoint.settings';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule, HttpInterceptor} from '@angular/common/http';
 import {ModalModelExport} from './shared/modals/modal-model-export/modal-model-export-component';
 import {ImportExportEnvironmentComponent} from './pages/importExport-environment/import-export-environment.component';
 import {ModalModelMultipleExport} from './shared/modals/modal-model-multiple-export/modal-model-multiple-export.component';
@@ -79,19 +79,24 @@ import {ContextMenuModule} from 'ngx-contextmenu';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import { ModalInsertShaclPropertyComponent } from './shared/modals/modal-insert-shacl-property/modal-insert-shacl-property.component';
+import {ModalInsertShaclPropertyComponent} from './shared/modals/modal-insert-shacl-property/modal-insert-shacl-property.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import { ToastrModule } from 'ngx-toastr';
-import {httpInterceptorProviders} from "./core/services/auth/http-interceptor.service";
+import {ToastrModule} from 'ngx-toastr';
+import {HttpInterceptorService} from './core/services/auth/http-interceptor.service';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
+import {AuthGuard, AuthHttpInterceptor, AuthModule} from '@auth0/auth0-angular';
+import {environment as env} from '../environments/environment';
+import {ProfileComponent} from './shared/profile/profile.component';
+import {LoadingService} from './core/services/loading/loading.service';
 
 
 const appRoutes: Routes = [
-  {path: 'diagramManagement', component: DiagramManagementComponent},
-  {path: 'modeller', component: ModellingEnvironmentComponent},
-  {path: 'importExport', component: ImportExportEnvironmentComponent},
-  {path: 'home', component: HomeComponent},
-  {path: '', component: HomeComponent},
+  {path: 'diagramManagement', component: DiagramManagementComponent, canActivate: [AuthGuard],},
+  {path: 'modeller', component: ModellingEnvironmentComponent, canActivate: [AuthGuard],},
+  {path: 'importExport', component: ImportExportEnvironmentComponent, canActivate: [AuthGuard],},
+  {path: 'home', component: HomeComponent, canActivate: [AuthGuard],},
+  {path: '', component: HomeComponent, canActivate: [AuthGuard],},
 ];
 
 export function appInit(endpointSettings: EndpointSettings) {
@@ -140,6 +145,7 @@ export function appInit(endpointSettings: EndpointSettings) {
     DiagramManagementComponent,
     ModellingAreaBPMNComponent,
     ModalInsertShaclPropertyComponent,
+    ProfileComponent,
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -172,6 +178,21 @@ export function appInit(endpointSettings: EndpointSettings) {
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     HttpClientModule,
+    AuthModule.forRoot({
+      ...env.auth,
+      cacheLocation: 'localstorage',
+      httpInterceptor: {
+        allowedList: [
+          {
+            uri: `/*`, // allowedList is only used by AuthHttpInterceptor if it's active
+            // tokenOptions: {
+            //   audience: 'https://aoame-webservice',
+            //   scope: 'openid profile email read:messages'
+            // }
+          }
+        ]
+      }
+    }),
     FlexLayoutModule,
     ContextMenuModule.forRoot(),
     MatListModule,
@@ -205,9 +226,14 @@ export function appInit(endpointSettings: EndpointSettings) {
   ],
   providers: [
     ModellerService,
+    LoadingService,
     MatSnackBar,
     EndpointSettings,
-    httpInterceptorProviders,
+    {// Custom Interceptor that attaches the User Email header to the request
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpInterceptorService,
+      multi: true,
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: appInit,
