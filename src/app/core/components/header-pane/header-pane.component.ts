@@ -20,10 +20,7 @@ export class HeaderPaneComponent implements OnInit {
               private router: Router,
               private navigation: NavigationService,
               protected authService: Auth0Service,
-              private loadingService: LoadingService) {
-    // Subscribe to the loading service to update the spinner in the header
-    this.loadingService.isLoading$.subscribe(isLoading => {this.isLoading = isLoading;});
-  }
+              private loadingService: LoadingService) {}
 
   ngOnInit() {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
@@ -33,6 +30,8 @@ export class HeaderPaneComponent implements OnInit {
         this.showModellerHeader = false;
       }
     });
+    // Subscribe to the loading service to update the spinner in the header
+    this.loadingService.isLoading$.subscribe(isLoading => {this.isLoading = isLoading;});
   }
 
   private setQueryParamsModeller(): void {

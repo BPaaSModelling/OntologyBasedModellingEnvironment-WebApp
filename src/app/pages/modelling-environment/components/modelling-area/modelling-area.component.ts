@@ -955,6 +955,7 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
       if (response.modelElementType === 'ModelingContainer') {
         newnode.part.data.isGroup = true;
       }
+      console.log('element created response', response);
 
       this.myDiagram.commitTransaction('Add State');
     });

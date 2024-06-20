@@ -1,13 +1,7 @@
-import {Inject, Injectable} from '@angular/core';
-import {
-  HttpEvent,
-  HttpInterceptor,
-  HttpHandler,
-  HttpRequest,
-
-} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,} from '@angular/common/http';
+import {AuthService} from '@auth0/auth0-angular';
 import {Observable} from 'rxjs';
-import {AuthHttpInterceptor, AuthService, User} from '@auth0/auth0-angular';
 import {from} from 'rxjs/internal/observable/from';
 import {catchError, finalize, switchMap, take} from 'rxjs/operators';
 import {throwError} from 'rxjs/internal/observable/throwError';
@@ -30,29 +24,30 @@ export class HttpInterceptorService implements HttpInterceptor {
     if (req.url.endsWith('/api')) {
       return next.handle(req);
     }
-    // Check if the user is authenticated,
+    // Check if the user is authenticated
     return this.authService.isAuthenticated$.pipe(
+      take(1),
       switchMap(isAuthenticated => {
         if (isAuthenticated) {
-          // Set the loading spinner
           this.loadingService.setLoading(true);
-          return this.addAccessTokenAndHeaders(req, next).pipe(
-            finalize(() => this.loadingService.setLoading(false)) // Reset loading state on completion or error
-          );
+          return this.addAccessTokenAndHeaders(req, next);
         } else {
           console.log('User is not authenticated');
-
           return next.handle(req);
         }
-      })
-      );
-    }
+      }),
+      catchError(err => {
+        this.loadingService.setLoading(false);
+        return throwError(() => new Error(`Error during authentication check: ${err.message}`));
+      }),
+      finalize(() => this.loadingService.setLoading(false))
+    );
+  }
 
-
-  private addAccessTokenAndHeaders(req: HttpRequest<any>, next: HttpHandler){
+  private addAccessTokenAndHeaders(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return from(this.authService.getAccessTokenSilently()).pipe(
       switchMap(accessToken =>
-        from(this.authService.user$).pipe(
+        this.authService.user$.pipe(
           take(1),
           switchMap(user => {
             if (accessToken && user) {
@@ -62,21 +57,15 @@ export class HttpInterceptorService implements HttpInterceptor {
                   .set('X-User-Email', user.email)
               });
               console.log(`HTTP request: ${req.url}, method: ${req.method}, User: ${clonedRequest.headers.get('X-User-Email')}`);
-              return next.handle(clonedRequest).pipe(
-                finalize(() => this.loadingService.setLoading(false)) // Reset loading state on completion or error
-              );
+              return next.handle(clonedRequest);
+            } else {
+              return next.handle(req);
             }
-            return next.handle(req).pipe(
-              finalize(() => this.loadingService.setLoading(false)) // Reset loading state on completion or error
-            );
-          }),
-          catchError(err => {
-            return throwError('Error fetching user');
           })
         )
       ),
       catchError(err => {
-        return throwError('Error fetching accessToken', err);
+        return throwError(() => new Error(`Error fetching accessToken or user: ${err.message}`));
       })
     );
   }
