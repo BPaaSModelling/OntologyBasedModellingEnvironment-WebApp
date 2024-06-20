@@ -21,7 +21,7 @@ export class HttpInterceptorService implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Pass all requests to /api endpoint without authentication
     // It is important to get env vars regardless of the auth state
-    if (req.url.endsWith('/api')) {
+    if (req.url.includes('/api') || req.url.includes('/images')) {
       return next.handle(req);
     }
     // Check if the user is authenticated
