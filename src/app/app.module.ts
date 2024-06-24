@@ -231,13 +231,13 @@ export function appInit(endpointSettings: EndpointSettings) {
     MatSnackBar,
     EndpointSettings,
     // TODO: THIS CODE IS NOT USED IN THE CURRENT IMPLEMENTATION, remove if not needed
-    /*
+
     {// Custom Interceptor that attaches the User Email header to the request
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,
       multi: true,
     },
-    */
+
     {
       provide: APP_INITIALIZER,
       useFactory: appInit,

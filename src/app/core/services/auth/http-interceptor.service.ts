@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,} from '@angular/common/http';
-import {AuthService} from '@auth0/auth0-angular';
+//import {AuthService} from '@auth0/auth0-angular';
 import {Observable} from 'rxjs';
 import {from} from 'rxjs/internal/observable/from';
-import {catchError, switchMap, take} from 'rxjs/operators';
+import {catchError, finalize, switchMap, take} from 'rxjs/operators';
 import {throwError} from 'rxjs/internal/observable/throwError';
 import {LoadingService} from '../loading/loading.service';
 
@@ -15,11 +15,15 @@ import {LoadingService} from '../loading/loading.service';
  */
 @Injectable()
 export class HttpInterceptorService implements HttpInterceptor {
-  constructor(private authService: AuthService, private loadingService: LoadingService) {
+  // private authService: AuthService,
+  constructor( private loadingService: LoadingService) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(req);
+    this.loadingService.setLoading(true);
+    return next.handle(req).pipe(
+      finalize(() => this.loadingService.setLoading(false))
+    );
 
     /* THIS CODE IS NOT USED IN THE CURRENT IMPLEMENTATION
       // Pass all requests to /api endpoint without authentication
@@ -49,6 +53,7 @@ export class HttpInterceptorService implements HttpInterceptor {
   }
 
   // THIS METHOD IS NOT USED IN THE CURRENT IMPLEMENTATION
+  /*
   private addAccessTokenAndHeaders(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return from(this.authService.getAccessTokenSilently()).pipe(
       switchMap(accessToken =>
@@ -74,4 +79,5 @@ export class HttpInterceptorService implements HttpInterceptor {
       })
     );
   }
+  */
 }
