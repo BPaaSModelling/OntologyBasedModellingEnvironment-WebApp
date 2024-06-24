@@ -803,10 +803,11 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
       if (additionalCreateOptions && additionalCreateOptions.group) {
         self.setGroupPropertyForChildAndParent(newnode, additionalCreateOptions);
       }
-    }).catch(error => {
-      console.error(error);
-      this.myDiagram.rollbackTransaction();
-    });
+    })
+    // .catch(error => {
+    //   console.error(error);
+    //   this.myDiagram.rollbackTransaction();
+    // });
   }
 
   private setGroupPropertyForChildAndParent(newnode: go.Node, additionalCreateOptions: AdditionalCreateOptions) {

@@ -11,7 +11,8 @@ import {DOCUMENT} from '@angular/common';
 import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {of} from 'rxjs/internal/observable/of';
 
-/**
+/** THIS SERVICE IS NOT USED IN THE CURRENT IMPLEMENTATION
+ *
  * The AuthService class is responsible for managing authentication-related functionality.
  * It provides methods for user login, logout, and authentication checks.
  *
@@ -19,11 +20,12 @@ import {of} from 'rxjs/internal/observable/of';
  * @param {HttpClient} http - The HttpClient service used for making HTTP requests.
  * @param {EndpointSettings} endpointSettings - The EndpointSettings service used for retrieving endpoint URLs.
  */
+
 @Injectable({
   providedIn: 'root'
 })
 export class Auth0Service {
-
+/*
   constructor(public auth: AuthService,
               @Inject(DOCUMENT) private doc: Document,
               private http: HttpClient,
@@ -85,4 +87,6 @@ export class Auth0Service {
     // Clear user data, tokens, etc.
     this.auth.logout({returnTo: this.doc.location.origin});
   }
+  */
 }
+

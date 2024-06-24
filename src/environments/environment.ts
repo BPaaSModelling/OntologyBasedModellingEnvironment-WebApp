@@ -5,6 +5,7 @@
 
 export const environment = {
   production: false,
+  /*
   auth: {
     domain: 'dev-aoame.eu.auth0.com',
     clientId: 'hnndSNGQ24vp0LJc9avBqTbEmuaZ9zuz',
@@ -12,4 +13,5 @@ export const environment = {
     scope: 'openid profile email read:messages',
     redirectUri: window.location.origin
   },
+  */
 };

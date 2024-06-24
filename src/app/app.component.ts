@@ -20,7 +20,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // THIS CODE IS NOT USED IN THE CURRENT IMPLEMENTATION, REMOVE IF NOT NEEDED
     // Called when the user logs in
+    /*
     this.auth0Service.auth.isAuthenticated$.pipe(
       switchMap(isAuthenticated => {
         if (isAuthenticated) {
@@ -45,8 +47,9 @@ export class AppComponent implements OnInit {
         }
       );
     });
+     */
   }
-
+/*
   loadPrefixesPreparation() {
     return from(this.modellerService.queryLanguagesFromFuseki()).pipe(
       tap(() => {
@@ -82,4 +85,5 @@ export class AppComponent implements OnInit {
       })
     );
   }
+  */
 }

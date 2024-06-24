@@ -91,11 +91,11 @@ import {LoadingService} from './core/services/loading/loading.service';
 
 
 const appRoutes: Routes = [
-  {path: 'diagramManagement', component: DiagramManagementComponent, canActivate: [AuthGuard],},
-  {path: 'modeller', component: ModellingEnvironmentComponent, canActivate: [AuthGuard],},
-  {path: 'importExport', component: ImportExportEnvironmentComponent, canActivate: [AuthGuard],},
-  {path: 'home', component: HomeComponent, canActivate: [AuthGuard],},
-  {path: '', component: HomeComponent, canActivate: [AuthGuard],},
+  {path: 'diagramManagement', component: DiagramManagementComponent},
+  {path: 'modeller', component: ModellingEnvironmentComponent},
+  {path: 'importExport', component: ImportExportEnvironmentComponent},
+  {path: 'home', component: HomeComponent},
+  {path: '', component: HomeComponent},
 ];
 
 export function appInit(endpointSettings: EndpointSettings) {
@@ -176,6 +176,8 @@ export function appInit(endpointSettings: EndpointSettings) {
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     HttpClientModule,
+    // THIS CODE IS NOT USED IN THE CURRENT IMPLEMENTATION
+    /*
     AuthModule.forRoot({
       ...env.auth,
       cacheLocation: 'localstorage',
@@ -191,6 +193,7 @@ export function appInit(endpointSettings: EndpointSettings) {
         ]
       }
     }),
+    */
     FlexLayoutModule,
     ContextMenuModule.forRoot(),
     MatListModule,
@@ -227,11 +230,14 @@ export function appInit(endpointSettings: EndpointSettings) {
     LoadingService,
     MatSnackBar,
     EndpointSettings,
+    // TODO: THIS CODE IS NOT USED IN THE CURRENT IMPLEMENTATION, remove if not needed
+    /*
     {// Custom Interceptor that attaches the User Email header to the request
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,
       multi: true,
     },
+    */
     {
       provide: APP_INITIALIZER,
       useFactory: appInit,

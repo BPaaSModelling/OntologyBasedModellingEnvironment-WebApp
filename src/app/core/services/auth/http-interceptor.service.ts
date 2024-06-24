@@ -3,7 +3,7 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,} from '@angular/co
 import {AuthService} from '@auth0/auth0-angular';
 import {Observable} from 'rxjs';
 import {from} from 'rxjs/internal/observable/from';
-import {catchError, finalize, switchMap, take} from 'rxjs/operators';
+import {catchError, switchMap, take} from 'rxjs/operators';
 import {throwError} from 'rxjs/internal/observable/throwError';
 import {LoadingService} from '../loading/loading.service';
 
@@ -19,7 +19,10 @@ export class HttpInterceptorService implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Pass all requests to /api endpoint without authentication
+    return next.handle(req);
+
+    /* THIS CODE IS NOT USED IN THE CURRENT IMPLEMENTATION
+      // Pass all requests to /api endpoint without authentication
     // It is important to get env vars regardless of the auth state
     if (req.url.includes('/api') || req.url.includes('/images')) {
       return next.handle(req);
@@ -42,8 +45,10 @@ export class HttpInterceptorService implements HttpInterceptor {
       }),
       finalize(() => this.loadingService.setLoading(false))
     );
+    */
   }
 
+  // THIS METHOD IS NOT USED IN THE CURRENT IMPLEMENTATION
   private addAccessTokenAndHeaders(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return from(this.authService.getAccessTokenSilently()).pipe(
       switchMap(accessToken =>
