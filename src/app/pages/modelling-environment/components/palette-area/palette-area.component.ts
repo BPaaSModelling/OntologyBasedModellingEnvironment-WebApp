@@ -12,6 +12,7 @@ interface BpmnElement {
   isConnectable: boolean;
   sourcePosition: string;
   targetPosition: string;
+  label?: string; // Add this line
 }
 
 @Component({
@@ -21,18 +22,18 @@ interface BpmnElement {
 })
 export class PaletteAreaComponent {
   elements: BpmnElement[] = [
-    { name: 'Non Event', type: 'nonEvent', isConnectable: true, sourcePosition: 'null', targetPosition: 'null' },
-    { name: 'Task', type: 'task', isConnectable: true, sourcePosition: 'null', targetPosition: 'null' }
+    {name: 'Non Event', type: 'nonEvent', isConnectable: true, sourcePosition: 'null', targetPosition: 'null'},
+    {name: 'Task', type: 'task', isConnectable: true, sourcePosition: 'null', targetPosition: 'null'}
   ];
 
   showStartNode: boolean = false;
   showEndNode: boolean = false;
   showTaskOptions: boolean = false;
   showConnectors: boolean = false; // Control visibility of connector section
-  lastNodePosition = { x: 0, y: 0 };
+  lastNodePosition = {x: 0, y: 0};
   lastNodeId: string | null = null;
   contextMenuVisible: boolean = false;
-  contextMenuPosition = { x: 0, y: 0 };
+  contextMenuPosition = {x: 0, y: 0};
   selectedNodeId: string | null = null;
 
   connectors: Connector[] = [
@@ -52,9 +53,11 @@ export class PaletteAreaComponent {
   nodes: Node[] = [];
   edges: Edge[] = [];
 
-  constructor() {}
+  constructor() {
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   onHoverOverNonEvent() {
     this.showStartNode = true;
@@ -72,7 +75,7 @@ export class PaletteAreaComponent {
     const nodeId = `${eventType}-${Date.now()}`;
     const offset = 200;
 
-    const newNodePosition = { x: this.lastNodePosition.x + offset, y: this.lastNodePosition.y };
+    const newNodePosition = {x: this.lastNodePosition.x + offset, y: this.lastNodePosition.y};
 
     let newNode: Node;
     let newEdge: Edge | null = null;
@@ -82,7 +85,7 @@ export class PaletteAreaComponent {
       newNode = {
         id: nodeId,
         type: eventType,
-        data: { label: '' },
+        data: {label: ''},
         position: newNodePosition,
         sourcePosition: Position.Right,
         draggable: true,
@@ -101,7 +104,7 @@ export class PaletteAreaComponent {
       newNode = {
         id: nodeId,
         type: eventType,
-        data: { label: '' },
+        data: {label: ''},
         position: newNodePosition,
         draggable: true,
         targetPosition: Position.Left,
@@ -119,7 +122,7 @@ export class PaletteAreaComponent {
       newNode = {
         id: nodeId,
         type: eventType,
-        data: { label: '' },
+        data: {label: ''},
         position: newNodePosition,
         draggable: true,
         style: {
@@ -194,17 +197,28 @@ export class PaletteAreaComponent {
     this.edges = this.edges.map(edge => {
       let style;
       if (connector.type === 'circle') {
-        style = {stroke: 'black', strokeWidth: 2, strokeDasharray: '0', markerEnd: 'url(#arrow)'}; // Custom style for circle connector
+        style = {
+          stroke: 'black',
+          strokeWidth: 2,
+          strokeDasharray: '1, 5', // Adjust these numbers to change the size and spacing of the circles
+          markerEnd: 'url(#circleMarker)' // Reference the circle marker
+        };
       } else if (connector.type === 'dash') {
-        style = {stroke: 'black', strokeWidth: 2, strokeDasharray: '5,5'}; // Custom style for dash connector
+        style = { stroke: 'black', strokeWidth: 1, strokeDasharray: '5,5' }; // Custom style for dash connector
       } else if (connector.type === 'triangle') {
-        style = {stroke: 'black', strokeWidth: 2, strokeDasharray: '5,5', markerEnd: 'url(#arrow)'}; // Custom style for triangle connector
+        style = {
+          stroke: 'black',
+          strokeWidth: 1,
+          strokeDasharray: '0',
+          markerEnd: 'url(#arrowhead)' // Correct marker reference
+        };
       } else if (connector.type === 'single') {
-        style = {stroke: 'black', strokeWidth: 2}; // Custom style for single connector
+        style = { stroke: 'black', strokeWidth: 1 }; // Custom style for single connector
       }
-      return {...edge, style};
+      return { ...edge, style };
     });
   }
+
 }
 /**import { Component, EventEmitter, Output } from '@angular/core';
 import { Node, Edge, Position } from 'reactflow';

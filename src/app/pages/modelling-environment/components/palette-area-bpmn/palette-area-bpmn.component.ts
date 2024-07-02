@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Output, OnInit, Input } from '@angular/core';
+//import { Component, EventEmitter, Output, OnInit, Input, ViewChild } from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import { ContextMenuComponent } from '@perfectmemory/ngx-contextmenu';
 import { Node, Edge, Connection, addEdge, MarkerType } from 'reactflow';
 import { PaletteElementModel } from 'src/app/shared/models/PaletteElement.model';
-
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-palette-area-bpmn',
@@ -9,13 +11,14 @@ import { PaletteElementModel } from 'src/app/shared/models/PaletteElement.model'
   styleUrls: ['./palette-area-bpmn.component.css']
 })
 export class PaletteAreaBPMNComponent implements OnInit {
-  languages = ['BPMN 2.0', 'Other Language'];
-  views = ['Process Modeling View', 'Other View'];
-  //elements: PaletteElement[] = [];
-  elements:PaletteElementModel[] = [];
- hoveredElement: PaletteElementModel| null = null;
-  selectedView: string = '';
-  selectedLanguage: string = '';
+  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent<any>;
+  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent<any>;
+  // Optional
+  @Input() contextMenu: ContextMenuComponent<any>;
+  @Input() contextMenuSubject: PaletteElementModel;
+
+  @Output() sendElementFromPalette = new EventEmitter();
+
   @Input() nodes: Node[] = [];
   @Input() edges: Edge[] = [];
   @Output() addNode = new EventEmitter<Node>();
@@ -25,10 +28,24 @@ export class PaletteAreaBPMNComponent implements OnInit {
 
   //newNodeLabel: any;
   //editingNodeId: string | undefined;
-  @Output() sendElementFromPalette = new EventEmitter<PaletteElementModel>();
+
+  newNodeLabel: string;
+  constructor() {}
+
+  languages = ['BPMN 2.0', 'Other Language'];
+  views = ['Process Modeling View', 'Other View'];
+  elements:PaletteElementModel[] = [];
+  hoveredElement: PaletteElementModel| null = null;
+  selectedView: string = '';
+  selectedLanguage: string = '';
+  id: string = '';
+  position:string = '';
+
+
+  ngOnInit() {}
 
   // Example method that emits PaletteElementModel
-  emitElementToCanvas() {
+  /*emitElementToCanvas() {
     const element: PaletteElementModel = {
       id: '1',
       uuid: 'uuid-1',
@@ -60,10 +77,7 @@ export class PaletteAreaBPMNComponent implements OnInit {
       type: ''
     };
     this.sendElementFromPalette.emit(element);
-  }
-  constructor() {}
-
-  ngOnInit() {}
+  }*/
 
   onLanguageChange(event: any) {
     this.selectedLanguage = event.value;
@@ -78,7 +92,7 @@ export class PaletteAreaBPMNComponent implements OnInit {
   addNodeToModel(node: Node) {
     this.addNode.emit(node);
   }
-  /*addNodeToModel(event: any) {
+ /* addNodeToModel(event: any) {
     const nodeType: string = event?.type || ''; // Handle undefined or null
     const position: any = event?.position || { x: 0, y: 0 }; // Example default position
 
@@ -91,9 +105,9 @@ export class PaletteAreaBPMNComponent implements OnInit {
 
     this.addNode.emit(newNodeData);
     this.newNodeLabel = '';
-  }
+  }*/
 
-  generateUniqueId(): string {
+ /* generateUniqueId(): string {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   }*/
 

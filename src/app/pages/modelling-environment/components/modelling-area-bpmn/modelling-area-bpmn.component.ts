@@ -1,8 +1,9 @@
 import {Component, Input, Output, EventEmitter, OnInit, SimpleChanges} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import {Node, Edge, Connection, MarkerType, addEdge} from 'reactflow';
+//import {Node, Edge, Connection, MarkerType, addEdge} from 'reactflow';
 //import { Model } from 'src/app/shared/models/Model.model';
-
+import { Node, Edge, Connection, NodeChange, EdgeChange} from 'reactflow';
+import MouseEvent from "reactflow";
 interface NodeWithLabel extends Node {
   data: {
     label: string;
@@ -15,16 +16,20 @@ interface NodeWithLabel extends Node {
   styleUrls: ['./modelling-area-bpmn.component.css']
 })
 export class ModellingAreaBPMNComponent implements OnInit {
-
-  @Input() nodes: NodeWithLabel[] = [];
+  @Input() nodes: Node[] = [];
   @Input() edges: Edge[] = [];
+  @Input() node!: Node[];
+  //@Output() nodeDoubleClick = new EventEmitter<{ event: MouseEvent, node: NodeWithLabel }>();
+  @Output() nodeDoubleClick = new EventEmitter<{ event: MouseEvent, node: Node }>();
   /*@Output() nodesChange = new EventEmitter<Node[]>();
   @Output() edgesChange = new EventEmitter<Edge[]>();
  */
-  @Output() nodeDoubleClick = new EventEmitter<{ event: MouseEvent, node: Node }>();
   private lastNodePosition: any;
   private nodesChange: any;
+ // edges: Edge[] = [];
 
+  selectedNode: Node | null = null;
+  newLabel: string = '';
 
   onAddNode(node: Node) {
     this.nodes = [...this.nodes, node];
@@ -44,19 +49,30 @@ export class ModellingAreaBPMNComponent implements OnInit {
     this.edges = edges;
   }
 
-  onNodeDoubleClick(node: Node) {
-    const newLabel = prompt('Enter new label:', node.data.label ?? '');
-    if (newLabel !== null) {
-      const updatedNode = { ...node, data: { ...node.data, label: newLabel } };
-      this.nodes = this.nodes.map(n => (n.id === node.id ? updatedNode : n));
-      this.nodesChange.emit(this.nodes);
-    }
+  emitNodeDoubleClick(event: MouseEvent, node: Node) {
+    this.nodeDoubleClick.emit({ event, node });
   }
+
   onNodeDragEnd(event: any) {
     const { node } = event; // Destructure the node object from the event
     this.lastNodePosition = node.position; // Update your lastNodePosition property (if needed)
   }
 
+  handleNodeDoubleClick(node: Node) {
+    this.selectedNode = node;
+    this.newLabel = node.data.label;
+  }
+
+  updateNodeLabel() {
+    if (this.selectedNode) {
+      const nodeIndex = this.nodes.findIndex(node => node.id === this.selectedNode!.id);
+      if (nodeIndex !== -1) {
+        this.nodes[nodeIndex].data.label = this.newLabel;
+        this.selectedNode = null;
+        this.newLabel = '';
+      }
+    }
+  }
   /*onNodesChange(event: any) {
     this.nodes = event.nodes;
     this.nodesChange.emit(this.nodes);

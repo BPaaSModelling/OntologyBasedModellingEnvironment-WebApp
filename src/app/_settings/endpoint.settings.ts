@@ -45,6 +45,7 @@ export class EndpointSettings {
 
   // The URL of the webservice. This gets read on the server side from the environment variable WEBSERVICE_ENDPOINT.
   // http://localhost:8080 is use if this environment variable does not exist.
+  // @ts-ignore
   private webserviceEndpoint: string = undefined;
 
   constructor(private http: HttpClient) {
@@ -56,6 +57,7 @@ export class EndpointSettings {
     const defaultEndpoint = 'http://localhost:8080';
 
     // Make a request to the server to retrieve an URL that points to the webservice.
+    // @ts-ignore
     return this.http.get<Config>('/api').toPromise().then((data:Config) =>{
       if(data.webserviceEndpoint){
         console.log('Received webservice endpoint: ' + data.webserviceEndpoint);
@@ -102,7 +104,7 @@ export class EndpointSettings {
     return this.webserviceEndpoint + EndpointSettings.GETMODELINGLANGUAGES;
   }
 
-  public getModelingViewsEndpoint(langId): string {
+  public getModelingViewsEndpoint(langId: string): string {
     return this.webserviceEndpoint + EndpointSettings.GETMODELINGVIEWS + '/' + langId;
   }
 
@@ -110,7 +112,7 @@ export class EndpointSettings {
     return this.webserviceEndpoint + EndpointSettings.PALETTEELEMENTS;
   }
 
-  public getPaletteCategoriesEndpoint(viewId): string {
+  public getPaletteCategoriesEndpoint(viewId: string): string {
     return this.webserviceEndpoint + EndpointSettings.PALETTECATEGORIES + '/' + viewId;
   }
 
@@ -150,26 +152,26 @@ export class EndpointSettings {
     return this.webserviceEndpoint + EndpointSettings.CREATESHACLCONSTRAINT;
   }
 
-  public getValidateShaclEndpoint(modelId): string {
+  public getValidateShaclEndpoint(modelId: string): string {
     return this.webserviceEndpoint + EndpointSettings.VALIDATESHACL+ '/' + modelId;
   }
 
-  public getDatatypePropertyEndpoint(domainName): string {
+  public getDatatypePropertyEndpoint(domainName: string): string {
     return this.webserviceEndpoint + EndpointSettings.GETDATATYPEPROPERTIES + '/' + domainName;
   }
 
-  public getBridgeConnectorEndpoint(domainName): string {
+  public getBridgeConnectorEndpoint(domainName: string): string {
     return this.webserviceEndpoint + EndpointSettings.GETBRIDGECONNECTORS + '/' + domainName;
   }
 
-  public getSemanticMappingEndpoint(domainName): string {
+  public getSemanticMappingEndpoint(domainName: string): string {
     return this.webserviceEndpoint + EndpointSettings.GETSEMANTICMAPPINGS + '/' + domainName;
   }
 
-  getAllPropertiesEndpoint(domainName) {
+  getAllPropertiesEndpoint(domainName: string) {
     return this.webserviceEndpoint + EndpointSettings.GETALLPROPERTIES + '/' + domainName;
   }
-  public getShaclConstraintEndpoint(domainName): string {
+  public getShaclConstraintEndpoint(domainName: string): string {
     return this.webserviceEndpoint + EndpointSettings.GETSHACLCONSTRAINTS + '/' + domainName;
   }
 

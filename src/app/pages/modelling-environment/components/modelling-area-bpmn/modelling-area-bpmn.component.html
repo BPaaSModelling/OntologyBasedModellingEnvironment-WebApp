@@ -74,11 +74,22 @@
         [fitView]="true"
         [style]="{ width: '100%', height: '500px' }"
         (nodeDragEnd)="onNodeDragEnd($event)">
+        <div *ngFor="let node of nodes" (dblclick)="handleNodeDoubleClick(node)" class="node-content">
+          <div class="node-label">{{ node.data.label }}</div>
+        </div>
       </ngx-reactflow>
+      <!-- Modal for editing node label -->
+      <div *ngIf="selectedNode" class="modal">
+        <h2>Edit Node Label</h2>
+        <mat-form-field>
+          <input matInput [(ngModel)]="newLabel" placeholder="New Label">
+        </mat-form-field>
+        <button mat-button (click)="updateNodeLabel()">Update</button>
+        <button mat-button (click)="selectedNode = null">Cancel</button>
+      </div>
+    </div>
     </div>
   </div>
-</div>
-
 
 
 

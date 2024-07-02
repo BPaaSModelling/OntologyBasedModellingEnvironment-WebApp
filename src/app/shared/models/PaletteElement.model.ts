@@ -1,5 +1,4 @@
-//import {QueryAnswerModel} from "./QueryAnswer.model";
-
+import {QueryAnswerModel} from "./QueryAnswer.model";
 export class PaletteElementModel {
   id: string;
   uuid: string;
@@ -12,7 +11,7 @@ export class PaletteElementModel {
   childElements: PaletteElementModel[];
   representedLanguageClass: string;
   representedDomainClass: string[];
-  //languageSubclasses: QueryAnswerModel[];
+  languageSubclasses: QueryAnswerModel[];
   languagePrefix: string;
   comment: string;
   /*datatypePropertyId: string;
@@ -35,6 +34,9 @@ export class PaletteElementModel {
 
   type: string;
 
+  tempLabel: string;  // Specify type
+  tempUuid: string;   // Specify type
+  routing: string;
 
   static getProbableElementType(element: PaletteElementModel): string {
     if (element.id.includes('Lane') || element.id.includes('Pool')) {

@@ -1,0 +1,13 @@
+.node-content {
+  display: inline-block;
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.node-label {
+  font-weight: bold;
+}

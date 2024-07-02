@@ -1,5 +1,57 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import MouseEvent, { Node, Edge } from 'reactflow';
+import { MatDialog } from "@angular/material/dialog";
+
+@Component({
+  selector: 'app-modelling-environment',
+  templateUrl: './modelling-environment.component.html',
+  styleUrls: ['./modelling-environment.component.css']
+})
+export class ModellingEnvironmentComponent implements OnInit {
+  nodes: Node[] = [];
+  //node: Node[] = [];
+  edges: Edge[] = [];
+  editingNodeId: string | null = null;
+  newNodeLabel: string | null = null;
+  showProp: boolean = false;
+  constructor(public dialog: MatDialog) {}
+
+  ngOnInit(): void {}
+
+  onAddNode(node: Node) {
+    this.nodes = [...this.nodes, node];
+  }
+
+  onAddEdge(edge: Edge) {
+    // Replace existing edge if one with the same id exists
+    this.edges = this.edges.filter(e => e.id !== edge.id);
+    this.edges = [...this.edges, edge];
+  }
+
+  onNodesChange(nodes: Node[]) {
+    this.nodes = nodes;
+  }
+
+  onEdgesChange(edges: Edge[]) {
+    this.edges = edges;
+  }
+
+  handleNodeDoubleClick(event: { event: MouseEvent; node: Node }) {
+    console.log('Node double-clicked:');
+    this.editingNodeId = event.node.id;
+    const node = this.nodes.find(n => n.id === this.editingNodeId);
+    if (node) {
+      this.newNodeLabel = node.data.label as string;
+    }
+  }
+
+  toggleInstancePropertiesModal(event: any) {
+    console.log('Show element property modal:', event);
+  }
+}
+
+/*import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Node, Edge } from 'reactflow';
 import { MatDialog } from "@angular/material/dialog";
 import { PaletteElementModel } from 'src/app/shared/models/PaletteElement.model';
@@ -49,7 +101,7 @@ export class ModellingEnvironmentComponent implements OnInit {
   toggleInstancePropertiesModal(event: any) {
     console.log('Show element property modal:', event);
   }
-}
+}*/
 
 /*import { Node, Edge, Connection } from 'reactflow';
 
