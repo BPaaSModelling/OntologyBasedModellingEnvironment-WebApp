@@ -38,6 +38,7 @@ import {
 import {
   PaletteAreaBPMNComponent
 } from "./pages/modelling-environment/components/palette-area-bpmn/palette-area-bpmn.component";
+import { ErrorPopupDialogComponent } from './error-popup-dialog/error-popup-dialog.component';
 const appRoutes: Routes = [
   {path: 'modeller', component: ModellingEnvironmentComponent},
 
@@ -52,7 +53,8 @@ const appRoutes: Routes = [
     ModellingAreaComponent,
     PaletteAreaComponent,
     PaletteAreaBPMNComponent,
-    ModellingAreaBPMNComponent
+    ModellingAreaBPMNComponent,
+    ErrorPopupDialogComponent
 
   ],
   imports: [

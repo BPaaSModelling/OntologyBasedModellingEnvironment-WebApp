@@ -1,6 +1,12 @@
 <div>
   <div class="palette-area">
+      <!-- Error Message Section -->
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+        <button (click)="errorMessage = null">Cancel</button> <!-- Add a cancel button -->
+      </div>
     <!-- Events Section -->
+    <br>
     <div *ngFor="let element of elements" class="palette-item">
       <div class="dropdown" *ngIf="element.type === 'nonEvent'">
         <div class="section-title">Events</div>
@@ -22,17 +28,15 @@
       <div class="dropdown" *ngIf="element.type === 'task'">
         <div class="section-title">Activities</div>
         <br>
-        <div class="activities-container">
-          <button class="dropbtn-task" (mouseover)="onHoverOverTask()">
-            {{ element.name }}
-          </button>
-          <div class="dropdown-content">
-            <div class="task-item" *ngIf="showTaskOptions" (click)="onOptionClick(element, 'manualTask')">
-              <img src="assets/Manual_Task.png" alt="Manual Task" />
-            </div>
-            <div class="task-item" *ngIf="showTaskOptions" (click)="onOptionClick(element, 'serviceTask')">
-              <img src="assets/Service_Task.png" alt="Service Task" />
-            </div>
+        <button class="dropbtn-task" (mouseover)="onHoverOverTask()">
+          {{ element.name }}
+        </button>
+        <div class="dropdown-content">
+          <div class="task-item" *ngIf="showTaskOptions" (click)="onOptionClick(element, 'manualTask')">
+            <img src="assets/Manual_Task.png" alt="Manual Task" />
+          </div>
+          <div class="task-item" *ngIf="showTaskOptions" (click)="onOptionClick(element, 'serviceTask')">
+            <img src="assets/Service_Task.png" alt="Service Task" />
           </div>
         </div>
       </div>
@@ -53,16 +57,83 @@
   <!-- SVG Definitions for Markers -->
   <svg width="0" height="0">
     <defs>
-      <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+      <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
         <polygon points="0 0, 10 3.5, 0 7" />
       </marker>
-      <marker id="circleMarker" markerWidth="1" markerHeight="1" refX="5" refY="5" orient="auto">
+      <marker id="circleMarker" markerWidth="10" markerHeight="10" refX="0" refY="0" orient="auto">
         <circle cx="5" cy="5" r="3" style="stroke: none; fill:black;" />
       </marker>
       <!-- Add other markers if needed -->
     </defs>
   </svg>
 </div>
+
+<!--<div>
+  <div class="palette-area">
+
+    <br>
+    <div *ngFor="let element of elements" class="palette-item">
+      <div class="dropdown" *ngIf="element.type === 'nonEvent'">
+        <div class="section-title">Events</div>
+        <br>
+        <button class="dropbtn" (mouseover)="onHoverOverNonEvent()">
+          {{ element.name }}
+        </button>
+        <div class="dropdown-content">
+          <div class="dropdown-item" *ngIf="showStartNode" (click)="onOptionClick(element, 'startEvent')">
+            <img src="assets/Simple_Start.png" alt="Start Event" />
+          </div>
+          <div class="dropdown-item" *ngIf="showEndNode" (click)="onOptionClick(element, 'endEvent')">
+            <img src="assets/Simple_End.png" alt="End Event" />
+          </div>
+        </div>
+      </div>
+
+      <div class="dropdown" *ngIf="element.type === 'task'">
+        <div class="section-title">Activities</div>
+        <br>
+        <div class="activities-container">
+          <button class="dropbtn-task" (mouseover)="onHoverOverTask()">
+            {{ element.name }}
+          </button>
+          <div class="dropdown-content">
+            <div class="task-item" *ngIf="showTaskOptions" (click)="onOptionClick(element, 'manualTask')">
+              <img src="assets/Manual_Task.png" alt="Manual Task" />
+            </div>
+            <div class="task-item" *ngIf="showTaskOptions" (click)="onOptionClick(element, 'serviceTask')">
+              <img src="assets/Service_Task.png" alt="Service Task" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="palette-item">
+      <div class="section-title">Connectors</div>
+      <br>
+      <div class="connectors-container">
+        <div *ngFor="let connector of connectors" class="connector-item" (click)="onConnectorClick(connector)">
+          <img [src]="connector.src" [alt]="connector.type + ' Connector'" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <svg width="0" height="0">
+    <defs>
+      <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" />
+      </marker>
+      <marker id="circleMarker" markerWidth="10" markerHeight="10" refX="0" refY="0" orient="auto">
+        <circle cx="5" cy="5" r="3" style="stroke: none; fill:black;" />
+      </marker>
+
+    </defs>
+  </svg>
+</div>-->
+
 
 <!--<div>
   <div class="palette-area">

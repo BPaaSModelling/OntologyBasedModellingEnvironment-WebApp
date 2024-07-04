@@ -201,7 +201,7 @@ app--tool-recursive-palette-element:hover {
   border-top:none;
 }
 ::ng-deep .ngx-contextmenu a {
-  color:black;
+  color: #fafafa;
   display: block;
   padding: 0.3em 0.3em;
   text-decoration: none;
