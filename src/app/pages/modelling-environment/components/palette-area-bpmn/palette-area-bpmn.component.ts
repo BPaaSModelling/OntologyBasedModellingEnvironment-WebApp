@@ -4,7 +4,6 @@ import { ContextMenuComponent } from '@perfectmemory/ngx-contextmenu';
 import { Node, Edge, Connection, addEdge, MarkerType } from 'reactflow';
 import { PaletteElementModel } from 'src/app/shared/models/PaletteElement.model';
 import {take} from 'rxjs/operators';
-
 @Component({
   selector: 'app-palette-area-bpmn',
   templateUrl: './palette-area-bpmn.component.html',

@@ -39,6 +39,7 @@ import {
   PaletteAreaBPMNComponent
 } from "./pages/modelling-environment/components/palette-area-bpmn/palette-area-bpmn.component";
 import { ErrorPopupDialogComponent } from './error-popup-dialog/error-popup-dialog.component';
+import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/delete-confirmation-dialog.component';
 const appRoutes: Routes = [
   {path: 'modeller', component: ModellingEnvironmentComponent},
 
@@ -54,8 +55,8 @@ const appRoutes: Routes = [
     PaletteAreaComponent,
     PaletteAreaBPMNComponent,
     ModellingAreaBPMNComponent,
-    ErrorPopupDialogComponent
-
+    ErrorPopupDialogComponent,
+    DeleteConfirmationDialogComponent,
   ],
   imports: [
     BrowserModule,

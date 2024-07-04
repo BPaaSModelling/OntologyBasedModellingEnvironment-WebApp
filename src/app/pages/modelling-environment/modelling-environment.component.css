@@ -3,16 +3,7 @@
   height: 100%;
   width: 100%;
 }
-.palette-area{
-  /*background-color: white;*/
-  border-width: 1px;
-  border-style: ridge;
-  width: 214px;
-  min-width: 214px;
-  display: inline-block;
-  z-index: 2;
-  overflow: visible;
-}
+
 .modelling-area{
   border-right: 1px solid #333333;
   min-height: 100%;
@@ -30,7 +21,6 @@
   flex-flow: row wrap;
   /* This aligns items to the end line on main-axis */
   justify-content: flex-end;
-  display: inline-block;
   z-index: 2;
 }
 
@@ -44,7 +34,6 @@
 .palette-area {
   width: 60%; /* Adjust the width as needed */
   border-right: 2px solid black; /* Add a right border */
-  box-sizing: border-box;
   flex: 1; /* Adjust based on your requirements */
   padding: 10px;
   border-right: 1px solid #ccc; /* Add border to the right */

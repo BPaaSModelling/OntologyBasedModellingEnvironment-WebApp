@@ -111,10 +111,13 @@
   font-size: 1em;
   font-weight: bold;
   padding: 0.5em 0;
-  border-top: 0.5px solid #838485;
-  border-bottom: 0.5px solid #012318;
+  border-top: 1px solid #838485;
+  border-bottom: 1px solid #012318;
+  background-color: #007bff; /* Blue background color */
+  color: white; /* White text color */
+  text-align: center; /* Center the text */
+  margin-bottom: 20px; /* Adjust margin bottom for spacing */
 }
-
 .react-flow__handle[data-handlepos="top"] {
   display: none !important;
 }
