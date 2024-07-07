@@ -48,15 +48,13 @@
   <div _ngcontent-mgi-c147="" class="palette-area">
     <app-palette-area-bpmn
       (addNode)="onAddNode($event)"
-      (addEdge)="onAddEdge($event)"
-      >
+      (addEdge)="onAddEdge($event)">
     </app-palette-area-bpmn>
   </div>
   <div class="modelling-area">
     <app-modelling-area-bpmn
       [nodes]="nodes"
-      [edges]="edges"
-      (nodeDoubleClick)=" handleNodeDoubleClick($event)">
+      [edges]="edges">
     </app-modelling-area-bpmn>
   </div>
 </div>

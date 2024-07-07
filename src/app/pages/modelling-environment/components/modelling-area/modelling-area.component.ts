@@ -1,7 +1,43 @@
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { ReactFlowComponent } from 'ngx-reactflow'; // Adjust the import as per your library structure
+
+@Component({
+  selector: 'app-modelling-area',
+  templateUrl: './modelling-area.component.html',
+  styleUrls: ['./modelling-area.component.css']
+})
+export class ModellingAreaComponent implements AfterViewInit {
+  @ViewChild('flowDiagram') flowDiagram!: ReactFlowComponent; // Adjust the ViewChild type
+
+  nodes: any[] = []; // Example nodes array
+  edges: any[] = []; // Example edges array
+
+  constructor() {
+    // Initialize nodes and edges if needed
+    this.nodes = [
+      // Example node objects
+    ];
+    this.edges = [
+      // Example edge objects
+    ];
+  }
+
+  ngAfterViewInit() {
+    // Now you can access flowDiagram and interact with it programmatically
+    console.log(this.flowDiagram);
+  }
+
+  onConnect(event: any) {
+    // Handle connect event if needed
+    console.log('Connect event:', event);
+  }
+}
+
+/**
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Node, Edge, Connection, addEdge, MarkerType } from 'reactflow';
 import _ from 'lodash';
-import { InstantiationTargetType } from 'src/app/shared/models/InstantiationTargetType.model';
+//import { InstantiationTargetType } from 'src/app/shared/models/InstantiationTargetType.model';
 
 @Component({
   selector: 'app-modelling-area',
@@ -15,7 +51,7 @@ export class ModellingAreaComponent implements OnChanges {
   //@Output() edgesChange = new EventEmitter<Edge[]>();
   @Output() connect = new EventEmitter<Connection>();
   @Output() rightClick = new EventEmitter<{ event: MouseEvent, nodeId: string }>();
-
+  name:string = "Modelling-area-Coponent"
 
   contextMenuVisible: boolean = false;
   contextMenuPosition = { x: 0, y: 0 };
@@ -25,12 +61,9 @@ export class ModellingAreaComponent implements OnChanges {
   newNodeLabel: string = '';
 
 
-  selectedInstantiationType: InstantiationTargetType = InstantiationTargetType.INSTANCE;
+  //selectedInstantiationType: InstantiationTargetType = InstantiationTargetType.INSTANCE;
   nodesChange: any;
 
-  getInstantiationTypes(): InstantiationTargetType[] {
-    return _.values(InstantiationTargetType);
-  }
 
   ngOnChanges(changes: SimpleChanges) {
     if ('nodes' in changes) {
@@ -128,7 +161,7 @@ export class ModellingAreaComponent implements OnChanges {
     document.addEventListener('mouseup', onMouseUp);
   }*/
 
-}
+/*}*/
 
 
 /**import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';

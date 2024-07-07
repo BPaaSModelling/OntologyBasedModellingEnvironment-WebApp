@@ -45,6 +45,7 @@ const appRoutes: Routes = [
 
 ];
 
+import { ContextMenuModule } from '@perfectmemory/ngx-contextmenu';
 
 @NgModule({
   declarations: [
@@ -95,8 +96,7 @@ const appRoutes: Routes = [
     MatButtonToggleModule,
     ToastrModule.forRoot(),
     MatProgressSpinnerModule,
-    //NgMultiSelectDropDownModule,
-    //ContextMenuModule,
+    ContextMenuModule,
   ],
   providers: [
     MatSnackBar,

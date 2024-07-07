@@ -1,95 +1,83 @@
-import {Component, Input, Output, EventEmitter, OnInit, SimpleChanges} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-//import {Node, Edge, Connection, MarkerType, addEdge} from 'reactflow';
-//import { Model } from 'src/app/shared/models/Model.model';
-import { Node, Edge, Connection, NodeChange, EdgeChange} from 'reactflow';
-import MouseEvent from "reactflow";
-interface NodeWithLabel extends Node {
-  data: {
-    label: string;
-  };
-}
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Node, Edge, Connection, MarkerType } from 'reactflow'; // Adjust import as per your library
 
 @Component({
   selector: 'app-modelling-area-bpmn',
   templateUrl: './modelling-area-bpmn.component.html',
   styleUrls: ['./modelling-area-bpmn.component.css']
 })
-export class ModellingAreaBPMNComponent implements OnInit {
+export class ModellingAreaBPMNComponent {
   @Input() nodes: Node[] = [];
   @Input() edges: Edge[] = [];
-  @Input() node!: Node[];
-  //@Output() nodeDoubleClick = new EventEmitter<{ event: MouseEvent, node: NodeWithLabel }>();
-  @Output() nodeDoubleClick = new EventEmitter<{ event: MouseEvent, node: Node }>();
-  /*@Output() nodesChange = new EventEmitter<Node[]>();
+  @Output() nodesChange = new EventEmitter<Node[]>();
   @Output() edgesChange = new EventEmitter<Edge[]>();
- */
-  private lastNodePosition: any;
-  private nodesChange: any;
- // edges: Edge[] = [];
+  @Output() connect = new EventEmitter<Connection>();
+  @Output() rightClick = new EventEmitter<{ event: MouseEvent, nodeId: string }>();
 
-  selectedNode: Node | null = null;
-  newLabel: string = '';
+  contextMenuVisible = false;
+  contextMenuPosition = { x: 0, y: 0 };
+  selectedNodeId: string | null = null;
 
-  onAddNode(node: Node) {
-    this.nodes = [...this.nodes, node];
+  constructor() {}
+
+  onNodesChange(event: any) {
+    const updatedNodes = event.nodes;
+    this.nodesChange.emit(updatedNodes);
   }
 
-  onAddEdge(edge: Edge) {
-    // Replace existing edge if one with the same id exists
-    this.edges = this.edges.filter(e => e.id !== edge.id);
-    this.edges = [...this.edges, edge];
+  onEdgesChange(event: any) {
+    const updatedEdges = event.edges;
+    this.edgesChange.emit(updatedEdges);
   }
 
-  onNodesChange(nodes: Node[]) {
-    this.nodes = nodes;
+  onConnect(event: any) {
+    const newEdge: Edge = {
+      id: `e${event.source}-${event.target}`,
+      source: event.source,
+      target: event.target,
+      sourceHandle: event.sourceHandle || null,
+      targetHandle: event.targetHandle || null,
+      markerEnd: MarkerType.ArrowClosed,
+    };
+    this.edges.push(newEdge);
+    this.edgesChange.emit(this.edges);
   }
 
-  onEdgesChange(edges: Edge[]) {
-    this.edges = edges;
+  onRightClick(event: MouseEvent, nodeId: string) {
+    event.preventDefault();
+    this.contextMenuVisible = true;
+    this.contextMenuPosition = { x: event.clientX, y: event.clientY };
+    this.selectedNodeId = nodeId;
   }
 
-  emitNodeDoubleClick(event: MouseEvent, node: Node) {
-    this.nodeDoubleClick.emit({ event, node });
+  onNodeContextMenu(event: any) {
+    const { event: mouseEvent, node } = event;
+    this.onRightClick(mouseEvent, node.id);
   }
 
-  onNodeDragEnd(event: any) {
-    const { node } = event; // Destructure the node object from the event
-    this.lastNodePosition = node.position; // Update your lastNodePosition property (if needed)
-  }
-
-  handleNodeDoubleClick(node: Node) {
-    this.selectedNode = node;
-    this.newLabel = node.data.label;
-  }
-
-  updateNodeLabel() {
-    if (this.selectedNode) {
-      const nodeIndex = this.nodes.findIndex(node => node.id === this.selectedNode!.id);
-      if (nodeIndex !== -1) {
-        this.nodes[nodeIndex].data.label = this.newLabel;
-        this.selectedNode = null;
-        this.newLabel = '';
-      }
+  onDeleteNode() {
+    if (this.selectedNodeId) {
+      this.nodes = this.nodes.filter(node => node.id !== this.selectedNodeId);
+      this.edges = this.edges.filter(edge => edge.source !== this.selectedNodeId && edge.target !== this.selectedNodeId);
+      this.nodesChange.emit(this.nodes);
+      this.edgesChange.emit(this.edges);
+      this.contextMenuVisible = false;
+      this.selectedNodeId = null;
     }
   }
-  /*onNodesChange(event: any) {
-    this.nodes = event.nodes;
-    this.nodesChange.emit(this.nodes);
-  }*/
 
-  /*onEdgesChange(event: any) {
-    this.edges = event.edges;
-    this.edgesChange.emit(this.edges);
-  }*/
-
-  ngOnInit(): void {}
+  onCancelContextMenu() {
+    this.contextMenuVisible = false;
+    this.selectedNodeId = null;
+  }
 }
 
 
 
 
-/***import {Component, Input, Output, EventEmitter, OnDestroy, OnInit} from '@angular/core';
+
+
+/*import {Component, Input, Output, EventEmitter, OnDestroy, OnInit} from '@angular/core';
 import { Node, Edge, Connection, addEdge, MarkerType } from 'reactflow';
 //import * as console from "node:console";
 import {ReactFlowComponent } from 'ngx-reactflow';
@@ -124,19 +112,15 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     this.edgesChange.emit(this.edges);
   }
 
-  onConnect(event: any) {
+  onConnect(event: Event) {
+    const connection = event as unknown as Connection;
     const newEdge: Edge = {
-      id: `e${event.source}-${event.target}`,
-      source: event.source,
-      target: event.target,
-      sourceHandle: event.sourceHandle || null,
-      targetHandle: event.targetHandle || null,
-      markerEnd: {
-        type: MarkerType.ArrowClosed,
-      },
+      id: `edge-${connection.source}-${connection.target}`,
+      source: connection.source || '',
+      target: connection.target || '',
+      type: 'default',
     };
-    this.edges = addEdge(newEdge, this.edges);
-    this.edgesChange.emit(this.edges);
+    this.onAddEdge(newEdge);
   }
 
   onRightClick(event: MouseEvent, nodeId?: string) {

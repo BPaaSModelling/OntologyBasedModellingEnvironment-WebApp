@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModellingAreaBpmnComponent } from './modelling-area-bpmn.component';
+import { ModellingAreaBPMNComponent  } from './modelling-area-bpmn.component';
 
 describe('ModellingAreaBpmnComponent', () => {
-  let component: ModellingAreaBpmnComponent;
-  let fixture: ComponentFixture<ModellingAreaBpmnComponent>;
+  let component: ModellingAreaBPMNComponent ;
+  let fixture: ComponentFixture<ModellingAreaBPMNComponent >;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ModellingAreaBpmnComponent ]
+      declarations: [ ModellingAreaBPMNComponent  ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ModellingAreaBpmnComponent);
+    fixture = TestBed.createComponent(ModellingAreaBPMNComponent );
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

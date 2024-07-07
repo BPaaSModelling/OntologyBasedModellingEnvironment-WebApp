@@ -2,7 +2,6 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import { ContextMenuComponent } from '@perfectmemory/ngx-contextmenu';
 import { Node, Edge, Connection, addEdge, MarkerType } from 'reactflow';
-import { PaletteElementModel } from 'src/app/shared/models/PaletteElement.model';
 import {take} from 'rxjs/operators';
 @Component({
   selector: 'app-palette-area-bpmn',
@@ -14,7 +13,7 @@ export class PaletteAreaBPMNComponent implements OnInit {
   @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent<any>;
   // Optional
   @Input() contextMenu: ContextMenuComponent<any>;
-  @Input() contextMenuSubject: PaletteElementModel;
+  //@Input() contextMenuSubject: PaletteElementModel;
 
   @Output() sendElementFromPalette = new EventEmitter();
 
@@ -33,8 +32,8 @@ export class PaletteAreaBPMNComponent implements OnInit {
 
   languages = ['BPMN 2.0', 'Other Language'];
   views = ['Process Modeling View', 'Other View'];
-  elements:PaletteElementModel[] = [];
-  hoveredElement: PaletteElementModel| null = null;
+  //elements:PaletteElementModel[] = [];
+ // hoveredElement: PaletteElementModel| null = null;
   selectedView: string = '';
   selectedLanguage: string = '';
   id: string = '';

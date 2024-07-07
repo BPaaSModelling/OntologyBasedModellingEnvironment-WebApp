@@ -1,7 +1,6 @@
-
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import MouseEvent, { Node, Edge } from 'reactflow';
-import { MatDialog } from "@angular/material/dialog";
+import { Node, Edge, Connection } from 'reactflow';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-modelling-environment',
@@ -9,15 +8,10 @@ import { MatDialog } from "@angular/material/dialog";
   styleUrls: ['./modelling-environment.component.css']
 })
 export class ModellingEnvironmentComponent implements OnInit {
-  nodes: Node[] = [];
-  //node: Node[] = [];
-  edges: Edge[] = [];
-  editingNodeId: string | null = null;
-  newNodeLabel: string | null = null;
-  showProp: boolean = false;
-  constructor(public dialog: MatDialog) {}
+  @Input() nodes: Node[] = [];
+  @Input() edges: Edge[] = [];
 
-  ngOnInit(): void {}
+  constructor(public dialog: MatDialog) {}
 
   onAddNode(node: Node) {
     this.nodes = [...this.nodes, node];
@@ -29,26 +23,18 @@ export class ModellingEnvironmentComponent implements OnInit {
     this.edges = [...this.edges, edge];
   }
 
-  onNodesChange(nodes: Node[]) {
-    this.nodes = nodes;
+  onConnect(event: Event) {
+    const connection = event as unknown as Connection;
+    const newEdge: Edge = {
+      id: `edge-${connection.source}-${connection.target}`,
+      source: connection.source || '',
+      target: connection.target || '',
+      type: 'default',
+    };
+    this.onAddEdge(newEdge);
   }
 
-  onEdgesChange(edges: Edge[]) {
-    this.edges = edges;
-  }
-
-  handleNodeDoubleClick(event: { event: MouseEvent; node: Node }) {
-    console.log('Node double-clicked:');
-    this.editingNodeId = event.node.id;
-    const node = this.nodes.find(n => n.id === this.editingNodeId);
-    if (node) {
-      this.newNodeLabel = node.data.label as string;
-    }
-  }
-
-  toggleInstancePropertiesModal(event: any) {
-    console.log('Show element property modal:', event);
-  }
+  ngOnInit(): void {}
 }
 
 /*import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
