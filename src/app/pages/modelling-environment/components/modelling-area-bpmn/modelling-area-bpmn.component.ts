@@ -1,4 +1,181 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Node, Edge, MarkerType } from 'reactflow';
+import { UUID } from 'angular2-uuid';
+import { InstantiationTargetType } from 'src/app/shared/model/InstantiationTargetType.model';
+
+@Component({
+  selector: 'app-modelling-area-bpmn',
+  templateUrl: './modelling-area-bpmn.component.html',
+  styleUrls: ['./modelling-area-bpmn.component.css']
+})
+export class ModellingAreaBPMNComponent {
+  @Input() nodes: Node[] = [];
+  @Input() edges: Edge[] = [];
+  @Output() nodesChange = new EventEmitter<Node[]>();
+  @Output() edgesChange = new EventEmitter<Edge[]>();
+  @Output() connect = new EventEmitter<Edge>();
+  @Output() rightClick = new EventEmitter<{ event: MouseEvent, nodeId: string }>();
+  @Output() selectedNodeIdChange = new EventEmitter<string | null>();
+  @Output() onNodeDoubleClick = new EventEmitter<[MouseEvent, Node]>();
+  @Input() new_element: Node;
+  @Output() sendEdgeFromPalette = new EventEmitter<Edge>();
+  contextMenuVisible = false;
+  contextMenuPosition = { x: 0, y: 0 };
+  selectedNodeId: string | null = null;
+
+  selectedInstantiationType: InstantiationTargetType = InstantiationTargetType.INSTANCE;
+
+  constructor() {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes && changes['new_element'] && changes['new_element'].currentValue) {
+      this.createElement(changes['new_element'].currentValue);
+    }
+  }
+
+  createElement(currentValue: Node) {
+    const newNode: Node = {
+      id: `node-${this.nodes.length + 1}`,
+      data: currentValue.data,
+      position: { x: Math.random() * 400, y: Math.random() * 400 },
+      type: currentValue.type || 'default'
+    };
+    this.nodes = [...this.nodes, newNode];
+    this.nodesChange.emit(this.nodes);
+  }
+
+  getInstantiationTypes(): InstantiationTargetType[] {
+    return Object.values(InstantiationTargetType);
+  }
+
+  validateSHACL() {
+    console.log("Validating SHACL for model: ");
+  }
+
+
+  onEdgeStyleChange(event: { edgeId: string, style: any }) {
+    this.edges = this.edges.map(edge => edge.id === event.edgeId ? { ...edge, style: event.style } : edge);
+    this.edgesChange.emit(this.edges);
+  }
+
+}
+
+/**mport { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import _ from 'lodash';
+import { Node, Edge, Connection, MarkerType } from 'reactflow';
+import { InstantiationTargetType } from 'src/app/shared/model/InstantiationTargetType.model';
+
+@Component({
+  selector: 'app-modelling-area-bpmn',
+  templateUrl: './modelling-area-bpmn.component.html',
+  styleUrls: ['./modelling-area-bpmn.component.css']
+})
+export class ModellingAreaBPMNComponent {
+  @Input() nodes: Node[] = [];
+  @Input() edges: Edge[] = [];
+  @Output() nodesChange = new EventEmitter<Node[]>();
+  @Output() edgesChange = new EventEmitter<Edge[]>();
+  @Output() connect = new EventEmitter<Connection>();
+  @Output() rightClick = new EventEmitter<{ event: MouseEvent, nodeId: string }>();
+  @Output() edgeStyleChange = new EventEmitter<{ edgeId: string, style: any }>();
+  @Output() selectedNodeIdChange = new EventEmitter<string | null>();
+  @Output() onNodeDoubleClick = new EventEmitter<[MouseEvent, Node]>();
+  @Input() new_element: Node;
+  contextMenuVisible = false;
+  contextMenuPosition = { x: 0, y: 0 };
+  selectedNodeId: string | null = null;
+
+  selectedInstantiationType: InstantiationTargetType = InstantiationTargetType.INSTANCE;
+
+  constructor() {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes && changes['new_element'] && changes['new_element'].currentValue) {
+      this.createElement(changes['new_element'].currentValue);
+    }
+  }
+
+  createElement(currentValue: Node) {
+    const newNode: Node = {
+      id: `node-${this.nodes.length + 1}`,
+      data: currentValue.data,
+      position: { x: Math.random() * 400, y: Math.random() * 400 },
+      type: currentValue.type || 'default' // Assuming 'default' is a valid type
+    };
+    this.nodes = [...this.nodes, newNode];
+    this.nodesChange.emit(this.nodes);
+  }
+
+  onNodesChange(event: any) {
+    const updatedNodes = event.nodes;
+    this.nodesChange.emit(updatedNodes);
+  }
+
+  onEdgesChange(event: any) {
+    const updatedEdges = event.edges;
+    this.edgesChange.emit(updatedEdges);
+  }
+
+  onConnect(event: any) {
+    const newEdge: Edge = {
+      id: `e${event.source}-${event.target}`,
+      source: event.source,
+      target: event.target,
+      sourceHandle: event.sourceHandle || null,
+      targetHandle: event.targetHandle || null,
+      markerEnd: MarkerType.ArrowClosed,
+    };
+    this.edges.push(newEdge);
+    this.edgesChange.emit(this.edges);
+  }
+
+  onRightClick(event: MouseEvent, nodeId: string) {
+    event.preventDefault();
+    this.contextMenuVisible = true;
+    this.contextMenuPosition = { x: event.clientX, y: event.clientY };
+    this.selectedNodeId = nodeId;
+    this.selectedNodeIdChange.emit(nodeId);
+  }
+
+  onNodeContextMenu(event: any) {
+    const { event: mouseEvent, node } = event;
+    this.onRightClick(mouseEvent, node.id);
+  }
+
+  onDeleteNode() {
+    if (this.selectedNodeId) {
+      this.nodes = this.nodes.filter(node => node.id !== this.selectedNodeId);
+      this.edges = this.edges.filter(edge => edge.source !== this.selectedNodeId && edge.target !== this.selectedNodeId);
+      this.nodesChange.emit(this.nodes);
+      this.edgesChange.emit(this.edges);
+      this.contextMenuVisible = false;
+      this.selectedNodeId = null;
+      this.selectedNodeIdChange.emit(null);
+    }
+  }
+
+  onCancelContextMenu() {
+    this.contextMenuVisible = false;
+    this.selectedNodeId = null;
+    this.selectedNodeIdChange.emit(null);
+  }
+
+  onEdgeStyleChange(event: { edgeId: string, style: any }) {
+    this.edges = this.edges.map(edge => edge.id === event.edgeId ? { ...edge, style: event.style } : edge);
+    this.edgesChange.emit(this.edges);
+  }
+
+  getInstantiationTypes(): InstantiationTargetType[] {
+    return _.values(InstantiationTargetType);
+  }
+
+  validateSHACL() {
+    console.log("Validating SHACL for model: ");
+  }
+}
+
+
+/**import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Node, Edge, Connection, MarkerType } from 'reactflow'; // Adjust import as per your library
 
 @Component({
@@ -70,7 +247,7 @@ export class ModellingAreaBPMNComponent {
     this.contextMenuVisible = false;
     this.selectedNodeId = null;
   }
-}
+}*/
 
 
 

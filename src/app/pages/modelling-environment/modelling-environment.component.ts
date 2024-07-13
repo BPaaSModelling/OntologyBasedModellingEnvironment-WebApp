@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+/*import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Node, Edge, Connection } from 'reactflow';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -35,7 +35,7 @@ export class ModellingEnvironmentComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-}
+}*/
 
 /*import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Node, Edge } from 'reactflow';
@@ -88,14 +88,9 @@ export class ModellingEnvironmentComponent implements OnInit {
     console.log('Show element property modal:', event);
   }
 }*/
-
-/*import { Node, Edge, Connection } from 'reactflow';
-
-import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from "@angular/material/dialog";
-import { PaletteElementModel } from 'src/app/shared/models/PaletteElement.model';
-
-
+import { Node, Edge, Connection } from 'reactflow';
 
 @Component({
   selector: 'app-modelling-environment',
@@ -103,58 +98,35 @@ import { PaletteElementModel } from 'src/app/shared/models/PaletteElement.model'
   styleUrls: ['./modelling-environment.component.css']
 })
 export class ModellingEnvironmentComponent implements OnInit {
-  nodes: Node[] = [];
-  edges: Edge[] = [];
-  @Output() nodeDoubleClick = new EventEmitter<{ event: MouseEvent, node: Node }>();
-  editingNodeId: any;
-  newNodeLabel: any;
+  @Input() nodes: Node[] = [];
+  @Input() edges: Edge[] = [];
 
+  @Output() nodeEmitter = new EventEmitter<Node>();
   propElement: Object;
-  new_element: PaletteElementModel;
+  new_element: Node;
   showProp: boolean;
 
   constructor(public dialog: MatDialog) {
     this.showProp = false;
   }
 
-
   ngOnInit(): void {}
 
-  sendElementToCanvas(new_element: PaletteElementModel) {
-    this.new_element = new_element;
-  }
-
-
-  onAddNode(node: Node) {
+  sendElementToCanvas(node: Node) {
     this.nodes = [...this.nodes, node];
+    this.new_element = node;
   }
 
-  onAddEdge(edge: Edge) {
-    this.edges = [...this.edges, edge];
-  }
-
-  onNodesChange(nodes: Node[]) {
-    this.nodes = nodes;
-  }
-
-  onEdgesChange(edges: Edge[]) {
-    this.edges = edges;
-  }
-
-
-  onDoubleClickNode(event: any) {
-    this.editingNodeId = event.node.id;
-    const node = this.nodes.find(n => n.id === this.editingNodeId);
-    if (node) {
-      this.newNodeLabel = node.data.label;
+  SendEdgeElementToCanvas(edge: Edge) {
+      // Replace existing edge if one with the same id exists
+      this.edges = this.edges.filter(e => e.id !== edge.id);
+      this.edges = [...this.edges, edge];
     }
-  }
+
   toggleInstancePropertiesModal(event: any) {
-    console.log('Show element property modal:', event);
+    console.log("Toggling instance properties modal with event: ", event);
   }
-
-}*/
-
+}
 
 
 /**import {Component, EventEmitter, Output, OnInit} from '@angular/core';

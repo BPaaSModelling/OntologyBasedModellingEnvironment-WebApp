@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PaletteAreaBpmnComponent } from './palette-area-bpmn.component';
+import { PaletteAreaBPMNComponent } from './palette-area-bpmn.component';
 
 describe('PaletteAreaBpmnComponent', () => {
-  let component: PaletteAreaBpmnComponent;
-  let fixture: ComponentFixture<PaletteAreaBpmnComponent>;
+  let component: PaletteAreaBPMNComponent;
+  let fixture: ComponentFixture<PaletteAreaBPMNComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PaletteAreaBpmnComponent ]
+      declarations: [ PaletteAreaBPMNComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PaletteAreaBpmnComponent);
+    fixture = TestBed.createComponent(PaletteAreaBPMNComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

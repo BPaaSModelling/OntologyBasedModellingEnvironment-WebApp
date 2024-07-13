@@ -6,7 +6,7 @@ import { HeaderComponent } from './header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {ModellingEnvironmentComponent} from "./pages/modelling-environment/modelling-environment.component";
-import {ModellingAreaComponent} from "./pages/modelling-environment/components/modelling-area/modelling-area.component";
+
 
 import {PaletteAreaComponent} from "./pages/modelling-environment/components/palette-area/palette-area.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -33,9 +33,6 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {ToastrModule} from "ngx-toastr";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {
-  ModellingAreaBPMNComponent
-} from "./pages/modelling-environment/components/modelling-area-bpmn/modelling-area-bpmn.component";
-import {
   PaletteAreaBPMNComponent
 } from "./pages/modelling-environment/components/palette-area-bpmn/palette-area-bpmn.component";
 import { ErrorPopupDialogComponent } from './error-popup-dialog/error-popup-dialog.component';
@@ -46,6 +43,9 @@ const appRoutes: Routes = [
 ];
 
 import { ContextMenuModule } from '@perfectmemory/ngx-contextmenu';
+import {FlexModule} from "@angular/flex-layout";
+import { ModellingAreaComponent } from './pages/modelling-environment/components/modelling-area/modelling-area.component';
+import { ModellingAreaBPMNComponent } from './pages/modelling-environment/components/modelling-area-bpmn/modelling-area-bpmn.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +97,7 @@ import { ContextMenuModule } from '@perfectmemory/ngx-contextmenu';
     ToastrModule.forRoot(),
     MatProgressSpinnerModule,
     ContextMenuModule,
+    FlexModule,
   ],
   providers: [
     MatSnackBar,

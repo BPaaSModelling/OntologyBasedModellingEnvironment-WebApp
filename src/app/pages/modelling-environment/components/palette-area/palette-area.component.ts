@@ -52,6 +52,7 @@ export class PaletteAreaComponent {
   @Output() addEdge = new EventEmitter<Edge>();
   @Output() nodesChange = new EventEmitter<Node[]>();
   @Output() edgesChange = new EventEmitter<Edge[]>();
+  @Output() connectorTypeChange = new EventEmitter<string>();
   errorMessage: string | null = null;
   nodes: Node[] = [];
   edges: Edge[] = [];
@@ -180,8 +181,8 @@ export class PaletteAreaComponent {
     if (!this.startEventPlaced) {
       return;
     }
-
     this.edges = this.edges.filter(edge => !edge.id.startsWith(`e${this.lastNodeId}-`));
+    this.connectorTypeChange.emit(connector.type);
     this.getEdgeStyleForConnector(connector);
     this.edges.forEach(edge => this.addEdge.emit(edge));
     this.edgesChange.emit(this.edges);

@@ -1,81 +1,25 @@
-//import { Component, EventEmitter, Output, OnInit, Input, ViewChild } from '@angular/core';
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import { ContextMenuComponent } from '@perfectmemory/ngx-contextmenu';
-import { Node, Edge, Connection, addEdge, MarkerType } from 'reactflow';
-import {take} from 'rxjs/operators';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {Edge, Node } from 'reactflow';
+
 @Component({
   selector: 'app-palette-area-bpmn',
   templateUrl: './palette-area-bpmn.component.html',
   styleUrls: ['./palette-area-bpmn.component.css']
 })
 export class PaletteAreaBPMNComponent implements OnInit {
-  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent<any>;
-  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent<any>;
-  // Optional
-  @Input() contextMenu: ContextMenuComponent<any>;
-  //@Input() contextMenuSubject: PaletteElementModel;
-
-  @Output() sendElementFromPalette = new EventEmitter();
-
-  @Input() nodes: Node[] = [];
+  @Output() sendElementFromPalette = new EventEmitter<Node>();
+  @Output() sendEdgeFromPalette = new EventEmitter<Edge>();
   @Input() edges: Edge[] = [];
-  @Output() addNode = new EventEmitter<Node>();
+  //@Output() addNode = new EventEmitter<Node>();
   @Output() addEdge = new EventEmitter<Edge>();
-  //@Output() connect = new EventEmitter<Connection>();
-  //@Output() edgesChange = new EventEmitter<Edge[]>();
-
-  //newNodeLabel: any;
-  //editingNodeId: string | undefined;
-
-  newNodeLabel: string;
-  constructor() {}
-
-  languages = ['BPMN 2.0', 'Other Language'];
-  views = ['Process Modeling View', 'Other View'];
-  //elements:PaletteElementModel[] = [];
- // hoveredElement: PaletteElementModel| null = null;
+  languages = ['ArchiMate', 'BPMN 2.0', 'BPMN4PP', 'BPaaS ModelingLanguage', 'SAP Scene', 'Control Element Modeling Language', 'Domain Specific Modeling Language for Patient Transferal Management'];
+  views = ['Process Modeling View'];
   selectedView: string = '';
   selectedLanguage: string = '';
-  id: string = '';
-  position:string = '';
 
+  constructor() {}
 
   ngOnInit() {}
-
-  // Example method that emits PaletteElementModel
-  /*emitElementToCanvas() {
-    const element: PaletteElementModel = {
-      id: '1',
-      uuid: 'uuid-1',
-      label: 'Element from Palette',
-      paletteCategory: 'someCategory',
-      categoryLabel: '',
-      parentElement: '',
-      parentLanguageClass: '',
-      hiddenFromPalette: false,
-      childElements: [],
-      representedLanguageClass: '',
-      representedDomainClass: [],
-      //languageSubclasses: [],
-      languagePrefix: '',
-      comment: '',
-      shape: '',
-      backgroundColor: '',
-      height: 0,
-      width: 0,
-      labelPosition: '',
-      iconURL: '',
-      iconPosition: '',
-      usesImages: false,
-      imageURL: '',
-      thumbnailURL: '',
-      toArrow: '',
-      fromArrow: '',
-      arrowStroke: '',
-      type: ''
-    };
-    this.sendElementFromPalette.emit(element);
-  }*/
 
   onLanguageChange(event: any) {
     this.selectedLanguage = event.value;
@@ -87,54 +31,66 @@ export class PaletteAreaBPMNComponent implements OnInit {
     console.log('Selected View:', this.selectedView);
   }
 
-  addNodeToModel(node: Node) {
-    this.addNode.emit(node);
+  protected addNodeToModel(node: Node) {
+    this.sendElementFromPalette.emit(node);
   }
- /* addNodeToModel(event: any) {
-    const nodeType: string = event?.type || ''; // Handle undefined or null
-    const position: any = event?.position || { x: 0, y: 0 }; // Example default position
+  protected onAddEdgeToModel(edge: Edge) {
+    this.sendEdgeFromPalette.emit(edge);
+  }
+}
 
-    const newNodeData: Node<any, string> = {
-      id: this.generateUniqueId(),
-      type: nodeType,
-      position: position,
-      data: {},
-    };
+/*import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import { ContextMenuComponent } from '@perfectmemory/ngx-contextmenu';
+import { Node, Edge } from 'reactflow';
 
-    this.addNode.emit(newNodeData);
-    this.newNodeLabel = '';
-  }*/
+import {UUID} from 'angular2-uuid';
+import { PaletteElementModel } from 'src/app/shared/model/PaletteElement.model';
+@Component({
+  selector: 'app-palette-area-bpmn',
+  templateUrl: './palette-area-bpmn.component.html',
+  styleUrls: ['./palette-area-bpmn.component.css']
+})
+export class PaletteAreaBPMNComponent implements OnInit {
+ // @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent<any>;
+  //@ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent<any>;
+  //@Input() contextMenu: ContextMenuComponent<any>;
+  @Output() sendElementFromPalette = new EventEmitter();
+  @Input() nodes: Node[] = [];
+  @Input() edges: Edge[] = [];
+  //@Output() addNode = new EventEmitter<Node>();
+  @Output() addEdge = new EventEmitter<Edge>();
 
- /* generateUniqueId(): string {
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-  }*/
+  //newNodeLabel: string;
+  constructor() {}
 
+  languages = ['ArchiMate','BPMN 2.0','BPMN4PP','BPaaS ModelingLanguage','SAP Scene','Control Element Modeling Language','Domain Specific Modeling Language for Patient Transferal Management' ];
+  views = ['Process Modeling View',];
+  selectedView: string = '';
+  selectedLanguage: string = '';
+  id: string = '';
+  position:string = '';
+
+
+  ngOnInit() {}
+
+  onLanguageChange(event: any) {
+    this.selectedLanguage = event.value;
+    console.log('Selected Language:', this.selectedLanguage);
+  }
+
+  onViewChange(event: any) {
+    this.selectedView = event.value;
+    console.log('Selected View:', this.selectedView);
+  }
+
+  protected addNodeToModel(node: Node) {
+    this.sendElementFromPalette.emit(node);
+  }
   onAddEdge(edge: Edge) {
     this.addEdge.emit(edge);
   }
 
-  /*onConnect(event: any) {
-    const params: Connection = {
-      source: event.source,
-      sourceHandle: event.sourceHandle,
-      target: event.target,
-      targetHandle: event.targetHandle
-    };
-    const newEdge: Edge = {
-      id: `e${event.source}-${event.target}`,
-      source: event.source,
-      target: event.target,
-      sourceHandle: event.sourceHandle,
-      targetHandle: event.targetHandle,
-      markerEnd: {
-        type: MarkerType.ArrowClosed,
-      },
-    };
-    this.edges = addEdge(newEdge, this.edges);
-    this.edgesChange.emit(this.edges);
-  }*/
-
-}
+}*/
 /**
 mport { Component, EventEmitter, Output, OnInit, Input } from '@angular/core';
 import { Node, Edge, Connection, addEdge, MarkerType } from 'reactflow';

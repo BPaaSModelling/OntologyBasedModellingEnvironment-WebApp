@@ -56,17 +56,16 @@
     </div>
   </div>
 </div>-->
-<div style="display: flex; flex-direction: column;">
-  <div style="display: flex; flex-direction: row;">
-    <!-- Your top section with mat-form-field and buttons if needed -->
-    <div style="display: flex; flex-direction: row;">
-      <mat-form-field appearance="fill">
-        <mat-select placeholder="Instantiation as" class="mat-select">
-          <mat-option value="instance">Instance</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <button mat-button>Validate SHACL</button>
-    </div>
+<div style="display: flex; flex-direction: column">
+  <div style="display: flex; flex-direction: row">
+    <mat-form-field>
+      <mat-select
+        placeholder="Instantiation as"
+        [(ngModel)]="selectedInstantiationType">
+        <mat-option *ngFor="let instantiationType of getInstantiationTypes()" [value]="instantiationType">{{instantiationType}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-button (click)="validateSHACL()">Validate SHACL</button>
   </div>
 
   <div style="display: flex; flex-direction: row;">
@@ -74,22 +73,9 @@
       <ngx-reactflow
         [nodes]="nodes"
         [edges]="edges"
-        (nodesChange)="onNodesChange($event)"
-        (edgesChange)="onEdgesChange($event)"
-        (connect)="onConnect($event)"
-        (nodeContextMenu)="onNodeContextMenu($event)"
         [fitView]="true"
         style="width: 100%; height: 100%;">
-        <ng-template #nodeTemplate let-node>
-          <div (contextmenu)="onRightClick($event, node.id)">
-            {{ node.data.label }}
-          </div>
-        </ng-template>
       </ngx-reactflow>
-    </div>
-    <div *ngIf="contextMenuVisible" [ngStyle]="{'top.px': contextMenuPosition.y, 'left.px': contextMenuPosition.x}" class="context-menu">
-      <button (click)="onDeleteNode()">Delete Node</button>
-      <button (click)="onCancelContextMenu()">Cancel</button>
     </div>
   </div>
 </div>

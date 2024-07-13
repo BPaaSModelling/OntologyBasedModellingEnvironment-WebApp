@@ -44,7 +44,7 @@
   </div>
 </div>--->
 
-<div fxLayout="row" class="flex-container" style="flex-direction: row; box-sizing: border-box; display: flex;">
+<!--works<div fxLayout="row" class="flex-container" style="flex-direction: row; box-sizing: border-box; display: flex;">
   <div _ngcontent-mgi-c147="" class="palette-area">
     <app-palette-area-bpmn
       (addNode)="onAddNode($event)"
@@ -57,25 +57,23 @@
       [edges]="edges">
     </app-modelling-area-bpmn>
   </div>
-</div>
-
-<!--<
-<div fxLayout="row" class="flex-container" style="flex-direction: row; box-sizing: border-box; display: flex;">
-<div class="flex-container" fxLayout="row">
- <div class="palette-area">
-   <app-palette-area-bpmn (sendElementFromPalette)="sendElementToCanvas($event)"></app-palette-area-bpmn>
- </div>
-
- <div class="modelling-area">
-   <app-modelling-area-bpmn
-     [nodes]="nodes"
-     [edges]="edges"
-     (nodeDoubleClick)="toggleInstancePropertiesModal($event)">
-   </app-modelling-area-bpmn>
- </div>
-</div>
 </div>-->
 
+<div class="flex-container" fxLayout="row">
+  <div class="palette-area">
+    <app-palette-area-bpmn (sendElementFromPalette)="sendElementToCanvas($event)"
+                           (sendEdgeFromPalette)="SendEdgeElementToCanvas($event)">
+
+    </app-palette-area-bpmn>
+  </div>
+  <div class="modelling-area">
+    <app-modelling-area-bpmn
+      [nodes]="nodes"
+      [edges]="edges"
+      (showElementPropertyModal)="toggleInstancePropertiesModal($event)">
+  </app-modelling-area-bpmn>
+  </div>
+</div>
 
 
 

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ModellingAreaBPMNComponent  } from './modelling-area-bpmn.component';
 
-describe('ModellingAreaBpmnComponent', () => {
+describe('ModellingAreaBPMNComponent', () => {
   let component: ModellingAreaBPMNComponent ;
   let fixture: ComponentFixture<ModellingAreaBPMNComponent >;
 

@@ -51,7 +51,7 @@
   <div *ngIf="selectedView === 'Process Modeling View'">
     <app-palette-area
       (addNode)="addNodeToModel($event)"
-      (addEdge)="onAddEdge($event)">
+    (addEdge)="onAddEdgeToModel($event)">
     </app-palette-area>
   </div>
 </div>
@@ -72,8 +72,8 @@
 </div>
   <div *ngIf="selectedView === 'Process Modeling View'">
     <app-palette-area
-      (addNode)="onAddNode($event)"
-      (addEdge)="onAddEdge($event)"
+      (addNode)="addNodeToModel($event)"
+       (addEdge)="onAddEdgeToModel($event)"
       (connect)="onConnect($event)">
     </app-palette-area>
   </div>
@@ -137,16 +137,4 @@
     </div>
   </div>
 </div>
-</div>--->
-
-
-
-
-
-
-
-
-
-
-
-
+</div>-->
