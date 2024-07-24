@@ -21,6 +21,7 @@ export class HttpInterceptorService implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.loadingService.setLoading(true);
+    console.log(`HTTP request: ${req.url}, method: ${req.method}, JSON body:\n`, req.body);
     return next.handle(req).pipe(
       finalize(() => this.loadingService.setLoading(false))
     );
