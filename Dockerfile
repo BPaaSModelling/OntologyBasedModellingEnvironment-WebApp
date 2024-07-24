@@ -14,4 +14,4 @@ RUN ng build
 # Expose the port the app runs on
 EXPOSE 4200
 # Command to run the application
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
