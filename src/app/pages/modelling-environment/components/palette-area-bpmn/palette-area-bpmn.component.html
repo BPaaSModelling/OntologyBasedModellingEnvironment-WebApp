@@ -48,13 +48,14 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div *ngIf="selectedView === 'Process Modeling View'">
+  <div *ngIf="selectedView === 'Process Modeling View' && selectedLanguage === 'BPMN 2.0'">
     <app-palette-area
       (addNode)="addNodeToModel($event)"
-    (addEdge)="onAddEdgeToModel($event)">
+      (addEdge)="onAddEdgeToModel($event)">
     </app-palette-area>
   </div>
 </div>
+
 
 
 <!--<div class="palette-container">

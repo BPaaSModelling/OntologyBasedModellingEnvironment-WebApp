@@ -7,6 +7,7 @@
 
 .palette-item {
   margin-bottom: 30px;
+  text-align: center; /* Center the content horizontally */
 }
 
 .dropdown {
@@ -23,6 +24,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto; /* Center the button horizontally */
 }
 
 .dropbtn {
@@ -31,6 +33,7 @@
   border-radius: 50%;
   width: 60px;
   height: 60px;
+  background-size: cover;
 }
 
 .dropbtn-task {
@@ -40,6 +43,7 @@
   width: 100px;
   height: 60px;
   position: relative;
+  background-size: cover;
 }
 
 .dropbtn-task img {
@@ -48,6 +52,7 @@
   left: 5px;
   width: 30px;
   height: 30px;
+  background-size: cover;
 }
 
 .dropdown-content {
@@ -111,13 +116,12 @@
   font-size: 1em;
   font-weight: bold;
   padding: 0.5em 0;
-  border-top: 1px solid #838485;
-  border-bottom: 1px solid #012318;
-  background-color: #007bff; /* Blue background color */
+  background-color: rgb(81, 77, 255); /* Blue background color */
   color: white; /* White text color */
   text-align: center; /* Center the text */
   margin-bottom: 20px; /* Adjust margin bottom for spacing */
 }
+
 .react-flow__handle[data-handlepos="top"] {
   display: none !important;
 }
@@ -126,6 +130,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  justify-content: center; /* Center the connectors */
 }
 
 .connector-item img {
@@ -213,4 +218,35 @@
   border: 1px solid #e63946;
   padding: 10px;
   margin-bottom: 10px;
+}
+
+/* Style for element names below buttons */
+.element-name {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+}
+.context-menu {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.context-menu button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.context-menu button:hover {
+  background: #f0f0f0;
 }

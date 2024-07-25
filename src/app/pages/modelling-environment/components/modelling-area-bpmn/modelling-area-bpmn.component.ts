@@ -1,6 +1,5 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
-import { Node, Edge, MarkerType } from 'reactflow';
-import { UUID } from 'angular2-uuid';
+import { Component, Input } from '@angular/core';
+import { Node, Edge } from 'reactflow';
 import { InstantiationTargetType } from 'src/app/shared/model/InstantiationTargetType.model';
 
 @Component({
@@ -11,38 +10,10 @@ import { InstantiationTargetType } from 'src/app/shared/model/InstantiationTarge
 export class ModellingAreaBPMNComponent {
   @Input() nodes: Node[] = [];
   @Input() edges: Edge[] = [];
-  @Output() nodesChange = new EventEmitter<Node[]>();
-  @Output() edgesChange = new EventEmitter<Edge[]>();
-  @Output() connect = new EventEmitter<Edge>();
-  @Output() rightClick = new EventEmitter<{ event: MouseEvent, nodeId: string }>();
-  @Output() selectedNodeIdChange = new EventEmitter<string | null>();
-  @Output() onNodeDoubleClick = new EventEmitter<[MouseEvent, Node]>();
-  @Input() new_element: Node;
-  @Output() sendEdgeFromPalette = new EventEmitter<Edge>();
-  contextMenuVisible = false;
-  contextMenuPosition = { x: 0, y: 0 };
-  selectedNodeId: string | null = null;
 
   selectedInstantiationType: InstantiationTargetType = InstantiationTargetType.INSTANCE;
 
   constructor() {}
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes && changes['new_element'] && changes['new_element'].currentValue) {
-      this.createElement(changes['new_element'].currentValue);
-    }
-  }
-
-  createElement(currentValue: Node) {
-    const newNode: Node = {
-      id: `node-${this.nodes.length + 1}`,
-      data: currentValue.data,
-      position: { x: Math.random() * 400, y: Math.random() * 400 },
-      type: currentValue.type || 'default'
-    };
-    this.nodes = [...this.nodes, newNode];
-    this.nodesChange.emit(this.nodes);
-  }
 
   getInstantiationTypes(): InstantiationTargetType[] {
     return Object.values(InstantiationTargetType);
@@ -50,12 +21,6 @@ export class ModellingAreaBPMNComponent {
 
   validateSHACL() {
     console.log("Validating SHACL for model: ");
-  }
-
-
-  onEdgeStyleChange(event: { edgeId: string, style: any }) {
-    this.edges = this.edges.map(edge => edge.id === event.edgeId ? { ...edge, style: event.style } : edge);
-    this.edgesChange.emit(this.edges);
   }
 
 }

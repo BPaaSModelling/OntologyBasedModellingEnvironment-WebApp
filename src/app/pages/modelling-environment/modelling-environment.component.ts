@@ -118,7 +118,6 @@ export class ModellingEnvironmentComponent implements OnInit {
   }
 
   SendEdgeElementToCanvas(edge: Edge) {
-      // Replace existing edge if one with the same id exists
       this.edges = this.edges.filter(e => e.id !== edge.id);
       this.edges = [...this.edges, edge];
     }

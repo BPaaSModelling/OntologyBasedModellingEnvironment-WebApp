@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {Edge, Node } from 'reactflow';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Edge, Node } from 'reactflow';
 
 @Component({
   selector: 'app-palette-area-bpmn',
@@ -9,9 +9,6 @@ import {Edge, Node } from 'reactflow';
 export class PaletteAreaBPMNComponent implements OnInit {
   @Output() sendElementFromPalette = new EventEmitter<Node>();
   @Output() sendEdgeFromPalette = new EventEmitter<Edge>();
-  @Input() edges: Edge[] = [];
-  //@Output() addNode = new EventEmitter<Node>();
-  @Output() addEdge = new EventEmitter<Edge>();
   languages = ['ArchiMate', 'BPMN 2.0', 'BPMN4PP', 'BPaaS ModelingLanguage', 'SAP Scene', 'Control Element Modeling Language', 'Domain Specific Modeling Language for Patient Transferal Management'];
   views = ['Process Modeling View'];
   selectedView: string = '';
@@ -34,10 +31,12 @@ export class PaletteAreaBPMNComponent implements OnInit {
   protected addNodeToModel(node: Node) {
     this.sendElementFromPalette.emit(node);
   }
+
   protected onAddEdgeToModel(edge: Edge) {
     this.sendEdgeFromPalette.emit(edge);
   }
 }
+
 
 /*import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import { ContextMenuComponent } from '@perfectmemory/ngx-contextmenu';
