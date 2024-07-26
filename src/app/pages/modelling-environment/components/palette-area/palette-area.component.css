@@ -28,8 +28,8 @@
 }
 
 .dropbtn {
-  background-color: #044c45;
-  border-color: #056e60;
+  background-color: rgba(122, 228, 163, 0.88);
+  border-color: #49ec57;
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -37,8 +37,8 @@
 }
 
 .dropbtn-task {
-  background-color: #d89636;
-  border-color: #fbbb67;
+  background-color: #f1c27c;
+  border-color: #fdb36a;
   border-radius: 10px;
   width: 100px;
   height: 60px;
@@ -82,8 +82,8 @@
   height: 48px;
   border-radius: 50%;
   margin: 0px;
-  border: 2px solid #056e60;
-  background-color: #056e60;
+  border: 2px solid #00fd6c;
+  background-color: #76fda9;
 }
 
 .dropdown-content .start-event {
@@ -105,18 +105,18 @@
 }
 
 .dropdown:hover .dropbtn {
-  background-color: #038a77;
+  background-color: #82fb98;
 }
 
 .dropdown:hover .dropbtn-task {
-  background-color: #f69f34;
+  background-color: #f1c27c;
 }
 
 .section-title {
   font-size: 1em;
   font-weight: bold;
   padding: 0.5em 0;
-  background-color: rgb(81, 77, 255); /* Blue background color */
+  background-color: rgba(34, 50, 96, 0.85); /* Blue background color */
   color: white; /* White text color */
   text-align: center; /* Center the text */
   margin-bottom: 20px; /* Adjust margin bottom for spacing */

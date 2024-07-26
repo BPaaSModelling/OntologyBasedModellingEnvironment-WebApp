@@ -7,7 +7,7 @@
         <br>
         <div class="dropdown" (contextmenu)="onContextMenu($event, element)">
           <button class="dropbtn-task" (mouseover)="onHoverOverTask()"></button>
-          <p class="element-name">{{ element.name }}</p> <!-- Name outside the button -->
+          <p class="element-name">{{ element.name }}</p>
           <div class="dropdown-content">
             <div class="task-item" *ngIf="showTaskOptions" (click)="onOptionClick(element, 'manualTask')">
               <img src="assets/Manual_Task.png" alt="Manual Task" />
@@ -28,7 +28,8 @@
         <p class="section-title">Events</p>
         <br>
         <div class="dropdown" (contextmenu)="onContextMenu($event, element)">
-          <button class="dropbtn" (mouseover)="onHoverOverNonEvent()" [ngStyle]="{'background-image': 'url(' + element.src + ')'}"></button>
+          <button class="dropbtn" (mouseover)="onHoverOverNonEvent()" ></button>
+          <!--<button class="dropbtn" (mouseover)="onHoverOverNonEvent()" [ngStyle]="{'background-image': 'url(' + element.src + ')'}"></button>-->
           <p class="element-name">{{ element.name }}</p> <!-- Name outside the button -->
           <div class="dropdown-content">
             <div class="dropdown-item" *ngIf="showStartNode" (click)="onOptionClick(element, 'startEvent')">
@@ -53,6 +54,13 @@
       </div>
     </div>
   </div>
+  <svg width="0" height="0">
+    <defs>
+      <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="black" />
+      </marker>
+    </defs>
+  </svg>
 
   <!-- Context Menu -->
   <div *ngIf="contextMenuVisible" class="context-menu" [ngStyle]="{'left.px': contextMenuPosition.x, 'top.px': contextMenuPosition.y}">
