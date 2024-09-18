@@ -17,6 +17,8 @@ import {take} from 'rxjs/operators';
 import {ModalInsertShaclPropertyComponent} from '../modal-insert-shacl-property/modal-insert-shacl-property.component';
 import {ShaclConstraintModel} from '../../models/ShaclConstraint.model';
 import {of} from 'rxjs/internal/observable/of';
+import {AddIoTDeviceModel} from "../../models/AddIoTDevice.model";
+import {ModalAddIoT} from "../modal-add-IoT/modal-add-IoT";
 
 @Component({
   selector: 'app-modal-edit-palette-element',
@@ -62,6 +64,7 @@ export class ModalEditPaletteElementComponent implements OnInit {
   public bridgingConnectors: ObjectPropertyModel[] = [];
   public semanticMappings: ObjectPropertyModel[] = [];
   public shaclConstraints: ShaclConstraintModel[] = [];
+  public addIoTDevice: AddIoTDeviceModel[] = [];
 
   public config1: any;
   public VariablesSettings: any;
@@ -349,6 +352,34 @@ export class ModalEditPaletteElementComponent implements OnInit {
     });
   }
 
+  addDobotMagician(element: PaletteElementModel) {
+    const dialogRef1 = this.dialog.open(ModalAddIoT, {
+      data: {paletteElement: element},
+      height: '80%',
+      width: '800px',
+      disableClose: false,
+    });
+/*
+    const sub = dialogRef1.componentInstance.newIoTDeviceAdded.subscribe(() => {
+      this.mService.queryIoTdevice(this.domainName).subscribe(
+        (response) => {
+          this.addIoTDevice = response;
+          dialogRef1.close('Cancel');
+        }
+      );
+    });
+
+
+ */
+    dialogRef1.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }
+  saveIoT(): void {
+    this.mService.queryIoTdevice(this.data);
+    this.dialogRef.close();
+  }
+
   openInsertNewBridgingConnector(element: PaletteElementModel) {
 
     const dialogRef1 = this.dialog.open(ModalInsertLangobjectPropertyComponent, {
@@ -447,4 +478,5 @@ export class ModalEditPaletteElementComponent implements OnInit {
       }
     );
   }
+
 }

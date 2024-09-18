@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {isElementScrolledOutsideView} from "@angular/cdk/overlay/position/scroll-clip";
 
 export interface Config {
   webserviceEndpoint: string
@@ -37,8 +38,14 @@ export class EndpointSettings {
   private static EDITOBJECTPROPERTY       : string = '/ModEnv/editObjectProperty';
   private static DELETEDATATYPEPROPERTY     : string = '/ModEnv/deleteDatatypeProperty';
   private static DELETEOBJECTPROPERTY     : string = '/ModEnv/deleteObjectProperty';
-
   private static GETDOMAINCONCEPTS          : string = '/ModEnv/getDomainConcepts';
+
+  private static GETIOTDEVICE               : string = '/ModEnv/addIoTdevice';
+  private static MOVEDOBOT                  : string = 'http://10.0.6.60:8080/dobot/api/operation';
+  private static TURNONSUCTIONCUP           : string = 'http://10.0.6.60:8080/dobot/api/operation/turnOnSuctionCup';
+  private static TURNOFFSUCTIONCUP          : string = 'http://10.0.6.60:8080/dobot/api/operation/turnOffSuctionCup';
+  private static CALIBRATEDOBOT             : string = 'http://10.0.6.60:8080/dobot/api/operation/moveToHomePosition';
+  private static GETPOSITIONDOBOT           : string = 'http://10.0.6.60:8080/dobot/api/operation/getPosition';
 
   private static MODELS : string = '/ModEnv/model';
   private static ARROWS : string = '/ModEnv/arrow-structures';
@@ -164,6 +171,30 @@ export class EndpointSettings {
 
   public getSemanticMappingEndpoint(domainName): string {
     return this.webserviceEndpoint + EndpointSettings.GETSEMANTICMAPPINGS + '/' + domainName;
+  }
+
+  public getIoTdeviceEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.GETIOTDEVICE;
+  }
+
+  public getMoveDobotEndpoint(): string {
+    return EndpointSettings.MOVEDOBOT;
+  }
+
+  public getPositionDobotEndpoint(): string {
+    return EndpointSettings.GETPOSITIONDOBOT;
+  }
+
+  public getTurnOnSuctionCupEndpoint(): string {
+    return EndpointSettings.TURNONSUCTIONCUP;
+  }
+
+  public getTurnOffSuctionCupEndpoint(): string {
+    return EndpointSettings.TURNOFFSUCTIONCUP;
+  }
+
+  public getCalibrateDobotEndpoint(): string {
+    return EndpointSettings.CALIBRATEDOBOT;
   }
 
   getAllPropertiesEndpoint(domainName) {

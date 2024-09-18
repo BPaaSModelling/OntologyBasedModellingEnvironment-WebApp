@@ -1,0 +1,49 @@
+<mat-toolbar>
+  <div class="mat-toolbar-tools">
+    <h2>Edit action</h2>
+  </div>
+</mat-toolbar>
+
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Select Action</mat-label>
+    <mat-select [(value)]="selectedAction" [disabled]="isActionSelected">
+      <mat-option value="move">Move</mat-option>
+      <mat-option value="suction">Suction cup</mat-option>
+      <mat-option value="calibrate">Calibrate</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-button *ngIf="isActionSelected" class="clear-selection-button" (click)="delete()">Clear Selection</button>
+
+  <div *ngIf="selectedAction === 'move'" class="move-fields">
+    <h2 class="mat-display-2">Provide Coordinates</h2>
+    <mat-form-field>
+      <input matInput placeholder="X" [(ngModel)]="data.elementDetail.xCoorDobotMagician"/>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Y" [(ngModel)]="data.elementDetail.yCoorDobotMagician"/>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Z" [(ngModel)]="data.elementDetail.zCoorDobotMagician"/>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="selectedAction === 'suction'" class="move-fields">
+    <h2 class="mat-display-2">Suction Cup</h2>
+    <button mat-raised-button [ngClass]="{'active': isSuctionOn}" (click)="suctionCupOn()">On</button>
+    <button mat-raised-button [ngClass]="{'active': isSuctionOff}" (click)="suctionCupOff()">Off</button>
+  </div>
+
+  <div *ngIf="selectedAction === 'calibrate'" class="move-fields">
+    <h2 class="mat-display-2">Calibrate Dobot Magician</h2>
+    <button mat-raised-button [ngClass]="{'active': isCalibrated}" (click)="calibrateArm()">Calibrate</button>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="save()">Save</button>
+  <button mat-button (click)="delete()">Delete</button>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+</mat-dialog-actions>
+

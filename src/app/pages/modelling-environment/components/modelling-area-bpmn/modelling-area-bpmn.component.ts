@@ -24,6 +24,7 @@ import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {filter, switchMap, take, takeUntil, timeout} from 'rxjs/operators';
 import {Subject} from 'rxjs/internal/Subject';
 import {of} from 'rxjs/internal/observable/of';
+import {AddIoTDeviceModel} from '../../../../shared/models/AddIoTDevice.model';
 
 import {DrawCommandHandlerClass} from '../../gojs/draw-command-handler.class';
 import {LaneResizingTool} from '../../gojs/bpmn-classes/lane-resizing-tool.class';
@@ -40,6 +41,7 @@ import {AdditionalCreateOptions} from '../../models/additional-create-options.in
 import {ModalInstantiationTypeComponent} from '../../../../shared/modals/modal-instantiation-type/modal-instantiation-type.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { ToastrService } from 'ngx-toastr';
+import {ModalEditAction} from '../../../../shared/modals/modal-edit-action/modal-edit-action';
 
 const $ = go.GraphObject.make;
 
@@ -51,7 +53,7 @@ const $ = go.GraphObject.make;
 })
 export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line:max-line-length
-  public constructor(public mService: ModellerService, public matDialog: MatDialog, private activatedRoute: ActivatedRoute, private router: Router, private bpmnTemplateService: BpmnTemplateService, private snackBar:MatSnackBar, private toastr: ToastrService) {
+  public constructor(public mService: ModellerService, public matDialog: MatDialog, private activatedRoute: ActivatedRoute, private router: Router, private bpmnTemplateService: BpmnTemplateService, private snackBar: MatSnackBar, private toastr: ToastrService) {
     console.log('Constructor of graph');
     (go as any).licenseKey = '54ff43e7b11c28c702d95d76423d38f919a52e63998449a35a0412f6be086d1d239cef7157d78cc687f84cfb487fc2898fc1697d964f073cb539d08942e786aab63770b3400c40dea71136c5ceaa2ea1fa2b24a5c5b775a2dc718cf3bea1c59808eff4d54fcd5cb92b280735562bac49e7fc8973f950cf4e6b3d9ba3fffbbf4faf3c7184ccb4569aff5a70deb6f2a3417f';
 
@@ -1074,7 +1076,7 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
               portId: '', fromLinkable: true, toLinkable: true, cursor: 'pointer',
               fromSpot: go.Spot.NotLeftSide, toSpot: go.Spot.NotRightSide
             },
-            //new go.Binding('desiredSize', 'size').makeTwoWay(go.Size.stringify)  // end main shape
+            // new go.Binding('desiredSize', 'size').makeTwoWay(go.Size.stringify)  // end main shape
           ),
           $(go.Shape, 'NotAllowed',
             {
@@ -2016,6 +2018,73 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
           }
         }
       ),
+      $('ContextMenuButton',
+        $(go.TextBlock, 'Edit Action'),
+        {
+          click: (e, obj) => {
+            const node = obj.part.adornedPart;
+            if (node != null) {
+              const element = node.data.element;
+
+              const addIoTDeviceModel = new AddIoTDeviceModel();
+              addIoTDeviceModel.modelId = this.selectedModel.id;
+              addIoTDeviceModel.elementDetail = element;
+
+              this.dialog.open(ModalEditAction, {
+                data: addIoTDeviceModel
+              });
+            }
+          }
+        }
+      ),
+      $('ContextMenuButton',
+        $(go.Panel, 'Auto',
+          $(go.Shape, { fill: 'green', stroke: null}), // Set background shape color to green
+          $(go.TextBlock, 'Run', { margin: new go.Margin(4, 78, 3, 78), stroke: 'white' }) // Set text color
+        ),
+        {
+          click: (e, obj) => {
+            const node = obj.part.adornedPart;
+            if (node != null) {
+              const element = node.data.element;
+
+              const addIoTDeviceModel = new AddIoTDeviceModel();
+              addIoTDeviceModel.modelId = this.selectedModel.id;
+              addIoTDeviceModel.elementDetail = element;
+
+              if (addIoTDeviceModel.elementDetail.xCoorDobotMagician != null || addIoTDeviceModel.elementDetail.xCoorDobotMagician !== '' ||
+                addIoTDeviceModel.elementDetail.yCoorDobotMagician != null || addIoTDeviceModel.elementDetail.yCoorDobotMagician !== '' ||
+                addIoTDeviceModel.elementDetail.zCoorDobotMagician != null || addIoTDeviceModel.elementDetail.zCoorDobotMagician !== '') {
+                this.mService.moveDobotMagician(addIoTDeviceModel.elementDetail.xCoorDobotMagician,
+                  addIoTDeviceModel.elementDetail.yCoorDobotMagician, addIoTDeviceModel.elementDetail.zCoorDobotMagician).subscribe({
+                  next: (response) => console.log('Move Arm Success:', response),
+                  error: (error) => console.error('Move Arm Error:', error),
+                });
+              }
+
+              if (addIoTDeviceModel.elementDetail.sucCupOnDobotMagician) {
+                this.mService.suctionCupOnDobotMagician().subscribe({
+                  next: (response) => console.log('Suction Cup Success:', response),
+                  error: (error) => console.error('Suction Cup Error:', error),
+                });
+              } if (addIoTDeviceModel.elementDetail.sucCupOffDobotMagician) {
+                this.mService.suctionCupOffDobotMagician().subscribe({
+                  next: (response) => console.log('Suction Cup Off Success:', response),
+                  error: (error) => console.error('Suction Cup Off Error:', error),
+                });
+              }
+
+              if (addIoTDeviceModel.elementDetail.calDobotMagician) {
+                this.mService.calibrateDobotMagician().subscribe({
+                  next: (response) => console.log('Calibrate Success:', response),
+                  error: (error) => console.error('Calibrate Error:', error),
+                });
+              }
+            }
+          }
+        },
+        new go.Binding('visible', '', self.updateNodeDataVisibility)
+      ),
       // TODO add this back when backend also changes the instatiation type in the PUT request
       // $('ContextMenuButton',
       //   $(go.TextBlock, 'Change instantion type'),
@@ -2060,6 +2129,18 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
     linkTemplateMap.iteratorValues.each(n => n.contextMenu = contextMenu);
     groupTemplateMap.iterator.each((n) => n.value.contextMenu = contextMenu);
   }
+
+  private updateNodeDataVisibility(nodeData) {
+    return (
+      nodeData.element.xCoorDobotMagician != null && nodeData.element.xCoorDobotMagician !== '' ||
+      nodeData.element.yCoorDobotMagician != null && nodeData.element.yCoorDobotMagician !== '' ||
+      nodeData.element.zCoorDobotMagician != null && nodeData.element.zCoorDobotMagician !== '' ||
+      nodeData.element.sucCupOnDobotMagician ||
+      nodeData.element.sucCupOffDobotMagician ||
+      nodeData.element.calDobotMagician
+    );
+  }
+
 
   private isLaneMenuVisible(m) {
     return m?.element?.modellingLanguageConstruct === 'Pool';
@@ -2109,20 +2190,20 @@ export class ModellingAreaBPMNComponent implements OnInit, OnDestroy {
   }
 
   validateSHACL() {
-    console.log("Validating SHACL for model: " + this.selectedModel.id + " with name: " + this.selectedModel.label);
+    console.log('Validating SHACL for model: ' + this.selectedModel.id + ' with name: ' + this.selectedModel.label);
     this.mService.validateShacl(this.selectedModel.id).subscribe(
       (response: any[]) => {
         console.log(response);
         let message: string;
         if (response.length === 0) {
-          //message = 'Validation successful';
+          // message = 'Validation successful';
           this.toastr.success(message, 'Validation Success', {positionClass: 'toast-bottom-center', timeOut: 5000, tapToDismiss: true});
         } else {
-          message= response.map(obj => `FocusNode: ${obj.FocusNode}<br>Message: ${obj.Message}<br>Path: ${obj.Path}<br>Severity: ${obj.Severity}<br>`).join('<br>');
+          message = response.map(obj => `FocusNode: ${obj.FocusNode}<br>Message: ${obj.Message}<br>Path: ${obj.Path}<br>Severity: ${obj.Severity}<br>`).join('<br>');
           this.toastr.warning(message, 'Validation Results', {enableHtml: true, disableTimeOut: true, positionClass: 'toast-bottom-full-width', tapToDismiss: true, closeButton: true});
         }
       }
-    )
+    );
 
   }
 }
