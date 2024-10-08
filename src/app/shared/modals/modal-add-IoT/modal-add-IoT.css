@@ -1,0 +1,21 @@
+.button-container {
+  margin-bottom: 20px;
+  text-align: left;
+  margin-top: 40px;
+}
+
+.button-container button {
+  font-size: 16px;
+  padding: 10px 20px;
+
+}
+
+h2 {
+  font-size: 16px;
+  margin-bottom: 1px;
+}
+.small-text {
+  margin-top: 40px;
+  font-size: 16px; /* Adjust the size as needed */
+  color: #666; /* Optional: Adjust the color if needed */
+}

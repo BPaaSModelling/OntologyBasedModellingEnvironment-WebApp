@@ -10,6 +10,11 @@ import * as go from 'gojs';
 import {take} from 'rxjs/operators';
 import {UUID} from 'angular2-uuid';
 import {ModalEditPaletteElementComponent} from '../modal-edit-palette-element/modal-edit-palette-element.component';
+import {
+  ModalInsertLangobjectPropertyComponent
+} from "../modal-insert-langobject-property/modal-insert-langobject-property.component";
+import {AddIoTDeviceModel} from "../../models/AddIoTDevice.model";
+import {ModalAddIoT} from "../modal-add-IoT/modal-add-IoT";
 
 @Component({
   selector: 'app-modal-extend-palette-element',
@@ -59,6 +64,7 @@ public VariablesSettings: any;
 
 public arrowHeads: string[] = [];
 public arrowStrokes: string[] = [];
+public addIoTDevice: AddIoTDeviceModel[] = [];
 
 public uploadedList: any;
 public imageList: string[] = [];
@@ -257,6 +263,24 @@ public imageRoot: string = VariablesSettings.IMG_ROOT;
       console.log(`Dialog closed: ${result}`);
       //this.dialogResult = result;
     });
+  }
+
+  addDobotMagician(element: PaletteElementModel) {
+    const dialogRef1 = this.dialog.open(ModalAddIoT, {
+      data: {paletteElement: element},
+      height:'80%',
+      width: '800px',
+      disableClose: false,
+    });
+
+    dialogRef1.afterClosed().subscribe(result => {
+      console.log('The dialog was closed : ' + result);
+    });
+  }
+
+  saveIoT(): void {
+    this.mService.queryIoTdevice(this.data);
+    this.dialogRef.close();
   }
 
   /*openCreateDomainElementModalFromExtend(element: PaletteElementModel) {

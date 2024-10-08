@@ -22,4 +22,10 @@ export class ModelElementDetail {
   containedShapes: string[]
   modelElementType: string
   otherVisualisationsOfSameLanguageConstruct: string[]
+  xCoorDobotMagician: string
+  yCoorDobotMagician: string
+  zCoorDobotMagician: string
+  sucCupOnDobotMagician: boolean
+  sucCupOffDobotMagician: boolean
+  calDobotMagician: boolean
 }

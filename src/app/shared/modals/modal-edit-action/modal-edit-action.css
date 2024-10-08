@@ -1,0 +1,62 @@
+h2 {
+  font-size: 16px;
+  margin-bottom: 1px;
+}
+
+.move-fields {
+  margin-top: 20px;
+}
+.active {
+  background-color: #1976d2;
+  color: white;
+}
+
+.button-container {
+  margin-bottom: 20px;
+  text-align: left;
+  margin-top: 40px;
+}
+
+.button-container button {
+  font-size: 16px;
+  padding: 10px 20px;
+
+}
+
+.run-button-container {
+  text-align: right;
+}
+
+.run-button {
+  background-color: #ff4081; /* Customize your color here */
+  color: white;
+}
+
+.run-button:hover {
+  background-color: #e00074; /* Darker shade for hover effect */
+}
+
+.move-fields {
+  margin-bottom: 20px;
+}
+
+.mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.clear-selection-button {
+  background-color: #ff4081; /* pink color */
+  color: white;
+  font-weight: bold;
+  border-radius: 4px;
+  padding: 8px 16px;
+  margin-top: 16px;
+  transition: background-color 0.3s;
+}
+
+.clear-selection-button:hover {
+  background-color: #e91e63; /* darker pink */
+}
+

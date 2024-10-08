@@ -318,6 +318,20 @@
         </mat-card>
       </mat-tab>
 
+      <mat-tab label="Add IoT Device">
+        <h3>Select IoT Device</h3>
+        <mat-dialog-actions layout="row">
+          <div layout="row" layout-align="start center">
+            <button mat-raised-button color="accent" (click)="addDobotMagician(data.paletteElement)">Add Dobot Magician</button>
+          </div>
+        </mat-dialog-actions>
+        <mat-card>
+          <div layout="row">
+            <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
+            <button mat-button (click)="saveIoT()">Save</button>
+          </div>
+        </mat-card>
+      </mat-tab>
     </mat-tab-group>
   </mat-dialog-content>
 

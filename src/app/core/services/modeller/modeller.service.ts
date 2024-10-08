@@ -30,6 +30,7 @@ import {ModalModelMultipleExport} from '../../../shared/modals/modal-model-multi
 import {promise} from 'protractor';
 import * as go from 'gojs';
 import {ShaclConstraintModel} from '../../../shared/models/ShaclConstraint.model';
+import {AddIoTDeviceModel} from "../../../shared/models/AddIoTDevice.model";
 
 
 @Injectable()
@@ -286,6 +287,98 @@ export class ModellerService {
   querySemanticMappings(domainName) {
     return this.httpClient.get<ObjectPropertyModel[]>(this.endpointSettings.getSemanticMappingEndpoint(domainName));
   }
+  /*
+
+      TODO: Dobot Magician
+
+     */
+  queryIoTdevice(addIoTDeviceModel: AddIoTDeviceModel) {
+    const querySuccess: Boolean = false;
+    console.log(addIoTDeviceModel);
+    const params = new URLSearchParams();
+    params.append('device', JSON.stringify(addIoTDeviceModel)); // passing multiple parameters in POST
+
+    //url encoding headers added
+    const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
+    return this.httpClient.post(this.endpointSettings.getIoTdeviceEndpoint(), params.toString(), {headers: headers})
+      .toPromise()
+      .then(response => console.log(response));
+  }
+  getPositionDobotMagician() {
+    const url = this.endpointSettings.getPositionDobotEndpoint();
+    console.log(`Sending POST request to URL: ${url}`);
+
+    const headers = new HttpHeaders({
+      'accept': 'application/json',
+    });
+
+    return this.httpClient.post(url, null, { headers }).pipe(
+      tap(response => {
+        console.log('Response from server:', response);
+      })
+    );
+  }
+  moveDobotMagician(xCOR: string, yCOR: string, zCOR: string) {
+    const url = `${this.endpointSettings.getMoveDobotEndpoint()}/moveToPosition?x=${xCOR}&y=${yCOR}&z=${zCOR}`;
+    console.log(`Sending POST request to URL: ${url}`);
+
+    const headers = new HttpHeaders({
+      'accept': 'application/json',
+    });
+
+    return this.httpClient.post(url, null, { headers }).pipe(
+      tap(response => {
+        console.log('Response:', response);
+      })
+    );
+  }
+  suctionCupOnDobotMagician(): Observable<any> {
+    const url = this.endpointSettings.getTurnOnSuctionCupEndpoint();
+    console.log(`Sending POST request to URL: ${url}`);
+
+    const headers = new HttpHeaders({
+      'accept': 'application/json',
+    });
+
+    return this.httpClient.post(url, null, { headers }).pipe(
+      tap(response => {
+        console.log('Response:', response);
+      })
+    );
+  }
+  suctionCupOffDobotMagician(): Observable<any> {
+    const url = this.endpointSettings.getTurnOffSuctionCupEndpoint();
+    console.log(`Sending POST request to URL: ${url}`);
+
+    const headers = new HttpHeaders({
+      'accept': 'application/json',
+    });
+
+    return this.httpClient.post(url, null, { headers }).pipe(
+      tap(response => {
+        console.log('Response:', response);
+      })
+    );
+  }
+  calibrateDobotMagician(): Observable<any> {
+    const url = this.endpointSettings.getCalibrateDobotEndpoint();
+    console.log(`Sending POST request to URL: ${url}`);
+
+    const headers = new HttpHeaders({
+      'accept': 'application/json',
+    });
+
+    return this.httpClient.post(url, null, { headers }).pipe(
+      tap(response => {
+        console.log('Response:', response);
+      })
+    );
+  }
+  /*
+
+    TODO: Dobot Magician
+
+   */
 
   queryShaclConstraints(domainName) {
     console.log("Querying shacl constraints. DomainName: " + domainName+ " Endpoint: " + this.endpointSettings.getShaclConstraintEndpoint(domainName));

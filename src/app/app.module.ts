@@ -84,6 +84,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {ToastrModule} from 'ngx-toastr';
 import {HttpInterceptorService} from './core/services/auth/http-interceptor.service';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {ModalEditAction} from "./shared/modals/modal-edit-action/modal-edit-action";
+import {ModalAddIoT} from "./shared/modals/modal-add-IoT/modal-add-IoT";
 
 import {AuthGuard, AuthHttpInterceptor, AuthModule} from '@auth0/auth0-angular';
 import {environment as env} from '../environments/environment';
@@ -144,6 +146,8 @@ export function appInit(endpointSettings: EndpointSettings) {
     DiagramManagementComponent,
     ModellingAreaBPMNComponent,
     ModalInsertShaclPropertyComponent,
+    ModalEditAction,
+    ModalAddIoT
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
@@ -170,7 +174,8 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModalModelExport,
     ModalModelMultipleExport,
     ModalModelMultipleImport,
-    ModalInstantiationTypeComponent
+    ModalInstantiationTypeComponent,
+    ModalEditAction
   ],
   imports: [
     BrowserModule,
