@@ -3,4 +3,5 @@ export class DomainElementModel {
   label: string;
   parentElement: string;
   isRoot: boolean;
+  modelingView: any;
 }

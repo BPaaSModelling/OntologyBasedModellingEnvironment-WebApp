@@ -35,10 +35,17 @@
 <!--             (change)="processImageUpload(imageInput2, 'thumbnail')">-->
 <!--    </label>-->
 <!--    <div style="height: fit-content; align-self: center">{{ canvasTextBoxText }}</div>-->
-
-
+    <!-- MENU CONTESTUALE -->
+    <context-menu #contextMenu>
+      <ng-template contextMenuItem (execute)="openWizard($event)">➕ Create New Element</ng-template>
+    </context-menu>
   </div>
+
   <div style="display: flex; flex-direction: row">
-    <div id="myDiagramDiv" style="flex-grow: 1; height: 700px; "></div>
+    <!-- CANVAS con menu associato -->
+    <div id="myDiagramDiv"
+         style="flex-grow: 1; height: 700px;"
+         [contextMenu]="contextMenu">
+    </div>
   </div>
 </div>

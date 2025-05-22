@@ -67,6 +67,10 @@ export class ModellerService {
 
   public selectedModelingLanguage;
   private models: Model[];
+  arrowHeads: string[] = [];
+  arrowStrokes: string[] = [];
+
+
 
   constructor(private httpClient: HttpClient, private endpointSettings: EndpointSettings) {
     this.models = [];

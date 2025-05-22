@@ -90,6 +90,7 @@ import {ModalAddIoT} from "./shared/modals/modal-add-IoT/modal-add-IoT";
 import {AuthGuard, AuthHttpInterceptor, AuthModule} from '@auth0/auth0-angular';
 import {environment as env} from '../environments/environment';
 import {LoadingService} from './core/services/loading/loading.service';
+import {MatRadioModule} from "@angular/material/radio";
 
 
 const appRoutes: Routes = [
@@ -229,6 +230,7 @@ export function appInit(endpointSettings: EndpointSettings) {
     MatButtonToggleModule,
     ToastrModule.forRoot(),
     MatProgressSpinnerModule,
+    MatRadioModule,
   ],
   providers: [
     ModellerService,

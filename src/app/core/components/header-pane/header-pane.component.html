@@ -1,7 +1,13 @@
 <mat-toolbar color="primary" class="mat-elevation-z8" *ngIf="!showModellerHeader">
   <span><a mat-button routerLink="/home"><img width="350" src="assets/images/AOAME_crop.png"></a></span>
 
-  <mat-spinner *ngIf="isLoading" class="custom-spinner" [diameter]="35" [strokeWidth]="3"></mat-spinner>
+  <mat-spinner
+    *ngIf="isLoading$ | async"
+    class="custom-spinner"
+    [diameter]="35"
+    [strokeWidth]="3">
+  </mat-spinner>
+
   <div class="spacer"></div>
 
   <div class="spacer"></div>

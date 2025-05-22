@@ -29,6 +29,9 @@ export class PaletteElementModel {
   usesImages: boolean;
   imageURL: string;
   thumbnailURL: string;
+  x: number;
+  y: number;
+  modelingView: string;
 
   toArrow: string;
   fromArrow: string;
