@@ -16,6 +16,7 @@
     <mat-radio-button value="defineRelationship">Define Relationship</mat-radio-button>
     <mat-radio-button value="instanceRelationship">Instance Relationship</mat-radio-button>
     <mat-radio-button value="defineAttribute">Define Attribute</mat-radio-button>
+    <mat-radio-button value="instanceAttribute">Instance Attribute</mat-radio-button>
   </mat-radio-group>
 
   <!-- ========== CATEGORY ========== -->
@@ -182,7 +183,7 @@
     <mat-dialog-content>
       <mat-card>
         <mat-form-field class="full-width mb-3">
-          <mat-select placeholder="Select Relationship" name="relation" [(ngModel)]="selectedProperty" (selectionChange)="onSelectProperty($event.value)" required>
+          <mat-select placeholder="Select Relationship" name="relation" [(ngModel)]="selectedProperty" (selectionChange)="onSelectObjectProperty($event.value)" required>
             <mat-option *ngFor="let r of objectProperties" [value]="r">{{ r.label }}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -237,6 +238,38 @@
       </mat-card>
     </mat-dialog-content>
   </ng-container>
+
+  <!-- ========== INSTANCE AN ATTRIBUTE (DATATYPE PROPERTY) ========== -->
+  <ng-container *ngIf="creationKind==='instanceAttribute'">
+    <mat-dialog-content>
+      <mat-card>
+        <mat-form-field class="full-width mb-3">
+          <mat-select
+            placeholder="Select Datatype Property"
+            name="attr_property"
+            [(ngModel)]="selectedDatatypeProperty"
+            (selectionChange)="onSelectDatatypeProperty($event.value)"
+            required>
+            <mat-option *ngFor="let p of datatypeProperties" [value]="p">
+              {{ p.label }} <span *ngIf="p.range">({{ p.range }})</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width mb-3">
+          <mat-select placeholder="Select Domain Class Instance" name="attr_domain_instance" [(ngModel)]="selectedDomainInstance" required>
+            <mat-option *ngFor="let di of domainInstances" [value]="di">{{ di.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width mb-3">
+          <input matInput placeholder="Value" name="attr_value" [(ngModel)]="literalValueInserted" required>
+        </mat-form-field>
+
+      </mat-card>
+    </mat-dialog-content>
+  </ng-container>
+
 
   <mat-dialog-actions align="end" class="mt-3 px-3">
     <button mat-raised-button color="warn" (click)="onCloseCancel()">Cancel</button>

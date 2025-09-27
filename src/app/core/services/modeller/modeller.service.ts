@@ -207,6 +207,10 @@ export class ModellerService {
     return this.httpClient.post(this.endpointSettings.getInstanceRelationship(), oImg, {responseType: 'text'});
   }
 
+  instanceDatatypeProperty(payload: { propertyUri: string; domainInstanceUri: any; value: any; datatypeUri: string; lang: string }) {
+    return this.httpClient.post(this.endpointSettings.getInstanceDatatypeProperty(), payload, { responseType: 'text' });
+  }
+
   deletePaletteElement(oImg) {
     // console.log(JSON.stringify(oImg));
     const querySuccess: Boolean = false;
@@ -366,8 +370,8 @@ export class ModellerService {
         error => console.log('Could not query All Properties'));
   }
 
-  queryDatatypeProperties(domainName) {
-    return this.httpClient.get<DatatypePropertyModel[]>(this.endpointSettings.getDatatypePropertyEndpoint(domainName));
+  queryDatatypeProperties() {
+    return this.httpClient.get<DatatypePropertyModel[]>(this.endpointSettings.getDatatypePropertyEndpoint());
   }
 
   queryBridgingConnectors(domainName) {
@@ -715,5 +719,6 @@ export class ModellerService {
   uploadFromDesktop(sTtlFromDesktop: string) {
       this.httpClient.post(this.endpointSettings.uploadTtlFromDesktop(), sTtlFromDesktop).subscribe(data => {}, error => console.log(error));
   }
+
 
 }

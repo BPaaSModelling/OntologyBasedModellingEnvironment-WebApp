@@ -11,6 +11,7 @@ import {Observable} from 'rxjs/internal/Observable';
 import {DomainInstance} from '../../models/DomainInstanca.model';
 import {OntologyRelationInfo} from '../../models/OntologyRelationInfo';
 import {InstanceInfo} from '../../models/InstanceInfo';
+import {DatatypePropertyModel} from '../../models/DatatypeProperty.model';
 
 @Component({
     selector: 'app-modal-create-domain-elements',
@@ -19,7 +20,7 @@ import {InstanceInfo} from '../../models/InstanceInfo';
 })
 export class ModalCreateDomainElementsComponent implements OnInit {
     creationKind: 'category' | 'defineRelationship' | 'defineAttribute' | 'rule' | 'modelElement' | 'connector' |
-      'concept' | 'individual' | 'instanceRelationship' |'attribute' = 'category';
+      'concept' | 'individual' | 'instanceRelationship' |'instanceAttribute'  = 'category';
 
   public readonly OWL_THING = 'http://www.w3.org/2002/07/owl#Thing';
   public RESERVED_PREFIXES = new Set(['owl:', 'rdf:', 'rdfs:', 'xsd:']);
@@ -27,6 +28,7 @@ export class ModalCreateDomainElementsComponent implements OnInit {
   objectProperties: OntologyRelationInfo[] = [];
   domainInstances: InstanceInfo[] = [];
   rangeInstances: InstanceInfo[] = [];
+
 
   public domainElement = new DomainElementModel();
     public relationship = { label: '', domain: '', range: '' };
@@ -70,6 +72,10 @@ export class ModalCreateDomainElementsComponent implements OnInit {
       value : ''
     };
 
+    public attribute = {
+      selectedProperty: ''
+    };
+
     public currentPaletteElement: PaletteElementModel = new PaletteElementModel();
     arrowHeads: string[] = [];
     arrowStrokes: string[] = [];
@@ -98,12 +104,14 @@ export class ModalCreateDomainElementsComponent implements OnInit {
 
     namespaceMap: Record<string, string> = {};
     private DO = 'http://fhnw.ch/modelingEnvironment/DomainOntology#';
-    private DO_ROOT = this.DO + 'DomainOntologyConcept';
-    private DO_PREFIX = 'do:';
     instances: { uri: string; label: string; typeUri: string }[] = [];
     selectedProperty: any;
     selectedDomainInstance: any;
     selectedRangeInstance: any;
+
+    datatypeProperties: DatatypePropertyModel[] = [];
+    selectedDatatypeProperty?: DatatypePropertyModel;
+    literalValueInserted: any;
 
 
   constructor(
@@ -135,6 +143,15 @@ export class ModalCreateDomainElementsComponent implements OnInit {
 
         this.loadObjectProperties();
 
+
+      this.mService.queryDatatypeProperties().subscribe({
+        next: (res) => {
+          console.log('Datatype properties:', res);
+          this.datatypeProperties = res;
+        },
+        error: (err) => console.error('Errore nel fetch delle datatype properties', err)
+      });
+
         this.mService.queryDomainClasses();
         this.mService.queryModelingElementClasses();
         this.mService.queryAllProperties(this.domainName);
@@ -149,7 +166,7 @@ export class ModalCreateDomainElementsComponent implements OnInit {
             this.arrowStrokes = value.strokes;
         });
 
-      if (this.creationKind !== 'attribute' && pe) {
+      if (this.creationKind !== 'defineAttribute' && pe) {
         this.currentPaletteElement.paletteCategory     = pe.paletteCategory;
         this.currentPaletteElement.parentElement       = pe.id;
         this.currentPaletteElement.parentLanguageClass = pe.representedLanguageClass;
@@ -311,41 +328,18 @@ export class ModalCreateDomainElementsComponent implements OnInit {
         });
       }
 
-      if (this.creationKind === 'attribute') {
-        const label = (this.newDataProperty.label || '').trim();
-        if (!label) {
-          alert('Relationship Label is required.');
-          return;
-        }
-
-        const localName = label.replace(/[^\p{L}\p{N}_-]+/gu, '');
-
-        const payload: any = {
-          label: localName,
-          DomainClassURI: this.newDataProperty.selectedDomainClass,
-          selectedInstance: this.newDataProperty.selectedInstance,
-          range: this.newDataProperty.range,
-          value: this.newDataProperty.value
-        };
-
-        this.mService.createNewAttribute(payload).subscribe({
-          next: () => this.onSaveSuccess(),
-          error: (err) => this.onSaveError(err)
-        });
-        return;
-      }
 
       if (this.creationKind === 'defineAttribute') {
         const label = (this.relationship.label || '').trim();
         const domainClassUri = this.relationship.domain;
-        const xsdRange       = this.relationship.range; // può essere "xsd:string", "rdf:HTML", ecc.
+        const xsdRange = this.relationship.range;
 
         if (!label || !domainClassUri || !xsdRange) {
           alert('Compila label, domain e datatype.');
           return;
         }
 
-        const payload = { label, domainClassUri, xsdRange };
+        const payload = {label, domainClassUri, xsdRange};
 
         this.mService.createDatatypeProperty(payload).subscribe({
           next: () => this.onSaveSuccess(),
@@ -355,15 +349,15 @@ export class ModalCreateDomainElementsComponent implements OnInit {
       }
 
       if (this.creationKind === 'instanceRelationship') {
-        if (!this.selectedDomainInstance || !this.selectedRangeInstance || !this.selectedProperty){
+        if (!this.selectedDomainInstance || !this.selectedRangeInstance || !this.selectedProperty) {
           alert('Select all the fields.');
           return;
         }
 
         const payload = {
-          propertyLabel : this.selectedProperty.label,
-          domainInstance : this.selectedDomainInstance.iri,
-          rangeInstance : this.selectedRangeInstance.iri
+          propertyLabel: this.selectedProperty.label,
+          domainInstance: this.selectedDomainInstance.iri,
+          rangeInstance: this.selectedRangeInstance.iri
         };
 
         this.mService.instanceConceptRelationship(payload).subscribe({
@@ -373,11 +367,32 @@ export class ModalCreateDomainElementsComponent implements OnInit {
         return;
 
       }
+
+      if (this.creationKind === 'instanceAttribute') {
+
+        const payload = {
+          propertyUri: this.selectedDatatypeProperty.id,
+          domainInstanceUri: this.selectedDomainInstance.iri,
+          value: this.literalValueInserted,
+          datatypeUri: this.expandIfPrefixed(this.selectedDatatypeProperty.range),
+          lang: ''
+        };
+
+        this.mService.instanceDatatypeProperty(payload).subscribe({
+          next: () => this.onSaveSuccess(),
+          error: (err) => this.onSaveError(err)
+        });
+        return;
+      }
     }
 
-  private expandFromPrefix(prefix: string): string | null {
-    return this.namespaceMap[prefix] || null;
-  }
+    private expandIfPrefixed(val: string): string {
+      if (!val) return val;
+      if (val.startsWith('http')) return val;
+      const [pref, local] = val.split(':');
+      const base = this.namespaceMap?.[pref];
+      return base ? `${base}${local}` : val;
+    }
 
   private onSaveSuccess(): void {
     this.mService.queryPaletteElements().subscribe();
@@ -418,7 +433,7 @@ export class ModalCreateDomainElementsComponent implements OnInit {
         reader.readAsDataURL(file);
     }
 
-  onSelectProperty(prop: OntologyRelationInfo): void {
+  onSelectObjectProperty(prop: OntologyRelationInfo): void {
     if (!prop) return;
 
     if (prop.domain) {
@@ -446,4 +461,19 @@ export class ModalCreateDomainElementsComponent implements OnInit {
       }
     });
   }
+
+  onSelectDatatypeProperty(prop: DatatypePropertyModel): void {
+    if (!prop) return;
+    this.selectedDatatypeProperty = prop; // <— assicurati di salvarla
+
+    const domainUri = (prop as any).domainName || (prop as any).domain || prop.id;
+    if (domainUri) {
+      const expanded = this.expandIfPrefixed(domainUri);
+      this.mService.queryAllInstancesByClass(expanded)
+        .subscribe((insts: InstanceInfo[]) => this.domainInstances = insts);
+    } else {
+      this.domainInstances = [];
+    }
+  }
+
 }

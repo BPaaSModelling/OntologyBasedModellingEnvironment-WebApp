@@ -22,7 +22,6 @@ export class EndpointSettings {
   private static CREATEBRIDGECONNECTOR       : string = '/ModEnv/createBridgingConnector';
   private static CREATESEMANTICMAPPING       : string = '/ModEnv/createSemanticMapping';
   private static CREATESHACLCONSTRAINT       : string = '/ModEnv/createShaclConstraint';
-  private static GETDATATYPEPROPERTIES      : string = '/ModEnv/getDatatypeProperties';
   private static GETBRIDGECONNECTORS      : string = '/ModEnv/getBridgeConnectors';
   private static GETSEMANTICMAPPINGS      : string = '/ModEnv/getSemanticMappings';
   private static GETALLPROPERTIES      : string = '/ModEnv/getAllProperties';
@@ -51,6 +50,8 @@ export class EndpointSettings {
   private static GETINSTANCESBYCLASSENDPOINT: string = '/ModEnv/getAllInstancesByClass';
   private static GETALLOBJECTPROPERTIES: string = '/ModEnv/queryAllObjectProperties';
   private static GETINSTANCERELATIONSHIPCREATIONENDPOINT: string = '/ModEnv/createObjectRelationship';
+  private static GETDATATYPEPROPERTIES      : string = '/ModEnv/getDatatypeProperties';
+  private static GETINSTANCEDATATYPEPROPERTYENDPOINT : string = '/ModEnv/createDatatypeAssertion';
 
   private static GETIOTDEVICE               : string = '/ModEnv/addIoTdevice';
   private static MOVEDOBOT                  : string = 'http://10.0.6.60:8080/dobot/api/operation';
@@ -173,8 +174,8 @@ export class EndpointSettings {
     return this.webserviceEndpoint + EndpointSettings.VALIDATESHACL+ '/' + modelId;
   }
 
-  public getDatatypePropertyEndpoint(domainName): string {
-    return this.webserviceEndpoint + EndpointSettings.GETDATATYPEPROPERTIES + '/' + domainName;
+  public getDatatypePropertyEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.GETDATATYPEPROPERTIES;
   }
 
   public getBridgeConnectorEndpoint(domainName): string {
@@ -347,5 +348,9 @@ export class EndpointSettings {
 
   getInstanceRelationship() {
     return this.webserviceEndpoint + EndpointSettings.GETINSTANCERELATIONSHIPCREATIONENDPOINT;
+  }
+
+  getInstanceDatatypeProperty() {
+    return this.webserviceEndpoint +  EndpointSettings.GETINSTANCEDATATYPEPROPERTYENDPOINT;
   }
 }
