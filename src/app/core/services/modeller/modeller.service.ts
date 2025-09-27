@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {EndpointSettings} from '../../../_settings/endpoint.settings';
-//import {ModalModelMultipleExport} from './modal-model-multiple-export';
+// import {ModalModelMultipleExport} from './modal-model-multiple-export';
 import {Observable} from 'rxjs';
 import {map, takeUntil, tap} from 'rxjs/operators';
 import {of} from 'rxjs';
@@ -21,16 +21,19 @@ import {ArrowStructures} from '../../../shared/models/ArrowStructures.model';
 import {InstantiationTargetType} from '../../../shared/models/InstantiationTargetType.model';
 import {RelationOptions} from '../../../shared/models/RelationOptions.model';
 import ModellingLanguageConstructInstance from '../../../shared/models/ModellingLanguageConstructInstance.model';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {ModelingViewModel} from '../../../shared/models/ModelingView.model';
-//import { saveAs } from  'file-saver';
+// import { saveAs } from  'file-saver';
 import * as fileSaver from 'file-saver';
 import {saveAs} from 'file-saver';
 import {ModalModelMultipleExport} from '../../../shared/modals/modal-model-multiple-export/modal-model-multiple-export.component';
 import {promise} from 'protractor';
 import * as go from 'gojs';
 import {ShaclConstraintModel} from '../../../shared/models/ShaclConstraint.model';
-import {AddIoTDeviceModel} from "../../../shared/models/AddIoTDevice.model";
+import {AddIoTDeviceModel} from '../../../shared/models/AddIoTDevice.model';
+import {DomainInstance} from '../../../shared/models/DomainInstanca.model';
+import {OntologyRelationInfo} from '../../../shared/models/OntologyRelationInfo';
+import {InstanceInfo} from '../../../shared/models/InstanceInfo';
 
 
 @Injectable()
@@ -53,6 +56,7 @@ export class ModellerService {
   public modelAndLanguage: string;
   public modelAndLanguageAdvanced$: Observable<string> = of();
   public modelAndLanguageAdvanced: string;
+  public actualModelingView: string;
 
   public prefixAdvanced$: Observable<string> = of();
   public prefixAdvanced: string;
@@ -67,10 +71,9 @@ export class ModellerService {
 
   public selectedModelingLanguage;
   private models: Model[];
-  arrowHeads: string[] = [];
-  arrowStrokes: string[] = [];
 
-
+  public domainSubclassesInstance$: Observable<string> = of();
+  public domainSubclassesInstances: string;
 
   constructor(private httpClient: HttpClient, private endpointSettings: EndpointSettings) {
     this.models = [];
@@ -119,6 +122,89 @@ export class ModellerService {
     let returnStr: string;
     console.log(oImg);
     return this.httpClient.post(this.endpointSettings.getCreateElementEndpoint(), oImg);
+  }
+
+  createPaletteCategory(oImg) {
+    const querySuccess: Boolean = false;
+    console.log(oImg);
+    return this.httpClient.post(this.endpointSettings.getCreateCategoryEndpoint(), oImg, { responseType: 'text' });
+  }
+
+  createNewIndividual(oImg) {
+    const querySuccess: Boolean = false;
+    console.log(oImg);
+    return this.httpClient.post(this.endpointSettings.getCreateNewIndividualEndpoint(), oImg, {responseType: 'text'});
+  }
+
+  createConnector(oImg) {
+    const querySuccess: Boolean = false;
+    console.log(oImg);
+    return this.httpClient.post(this.endpointSettings.getCreateNewConnectorEndpoint(), oImg, {responseType: 'text'});
+  }
+
+  createNewRelationship(oImg) {
+    const querySuccess: Boolean = false;
+    console.log(oImg);
+    return this.httpClient.post(this.endpointSettings.getCreateOntologyRelationEndpoint(), oImg, {responseType: 'text'});
+  }
+
+  createNewModelingElement(oImg) {
+    const querySuccess: Boolean = false;
+    console.log(oImg);
+    return this.httpClient.post(this.endpointSettings.getCreateNewModelingElementEndpoint(), oImg, {responseType: 'text'});
+  }
+
+  setActualModelingView(view) {
+    this.actualModelingView = view;
+  }
+
+  getActualModelingView() {
+    return this.actualModelingView;
+  }
+
+  createNewAttribute(oImg) {
+    return this.httpClient.post(this.endpointSettings.getCreateNewAttributeEndpoint(), oImg, {responseType: 'text'});
+  }
+
+  getDomainInstancesByClassTree(classUri: string, lang = 'it', limit = 0, offset = 0) {
+    let params = new HttpParams().set('classUri', classUri).set('lang', lang);
+    if (limit > 0) {  params = params.set('limit', String(limit)); }
+    if (offset > 0) { params = params.set('offset', String(offset)); }
+    return this.httpClient.get<DomainInstance[]>(this.endpointSettings.getDomainOntologyInstancesEndpoint(), { params });
+  }
+
+  createDatatypeProperty(oImg) {
+    return this.httpClient.post(this.endpointSettings.getCreateNewPropertyEndpoint(), oImg, {responseType: 'text'});
+  }
+
+  queryAllObjectProperty(): Observable<OntologyRelationInfo[]> {
+    const url = this.endpointSettings.getQueryAllObjectPropertiesEndpoint();
+    console.log('[OBJ-PROPS] URL =', url);
+
+    return this.httpClient
+      .post<OntologyRelationInfo[]>(url, {}) // POST con body vuoto
+      .pipe(
+        map(rows => (rows ?? []).map(r => ({
+          iri: r.iri,
+          label: (r.label && r.label.trim().length > 0)
+            ? r.label
+            : r.iri.split('#').pop()!.replace(/_/g, ' '),
+          domain: r.domain ?? '',
+          range:  r.range  ?? ''
+        })))
+      );
+  }
+
+  queryAllInstancesByClass(classUri: string) {
+    const body = { classUri };
+    return this.httpClient.post<InstanceInfo[]>(
+      this.endpointSettings.getQueryInstancesByClassEndpoint(),
+      body
+    );
+  }
+
+  instanceConceptRelationship(oImg) {
+    return this.httpClient.post(this.endpointSettings.getInstanceRelationship(), oImg, {responseType: 'text'});
   }
 
   deletePaletteElement(oImg) {
@@ -196,10 +282,10 @@ export class ModellerService {
     params.append('element', JSON.stringify(element));
     params.append('modifiedElement', JSON.stringify(modifiedElement)); // passing multiple parameters in POST
 
-    //url encoding headers added
+    // url encoding headers added
     const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
 
-    return this.httpClient.post(this.endpointSettings.getModifyElementEndpoint(), params.toString(), {headers: headers})
+    return this.httpClient.post(this.endpointSettings.getModifyElementEndpoint(), params.toString(), {headers: headers});
 
     }
 
@@ -211,10 +297,10 @@ export class ModellerService {
     params.append('editedProperty', JSON.stringify(editedProperty)); // passing multiple parameters in POST
 
 
-    //url encoding headers added
+    // url encoding headers added
     const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
 
-    return this.httpClient.post(this.endpointSettings.getModifyElementEndpoint(), params.toString(), {headers: headers})
+    return this.httpClient.post(this.endpointSettings.getModifyElementEndpoint(), params.toString(), {headers: headers});
   }
 
   editObjectProperty(property: ObjectPropertyModel, editedProperty: ObjectPropertyModel) {
@@ -226,7 +312,7 @@ export class ModellerService {
 
 
     const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
-    return this.httpClient.post(this.endpointSettings.getModifyElementEndpoint(), params.toString(), {headers: headers})
+    return this.httpClient.post(this.endpointSettings.getModifyElementEndpoint(), params.toString(), {headers: headers});
   }
 
   deleteDatatypeProperty(property: DatatypePropertyModel) {
@@ -245,7 +331,7 @@ export class ModellerService {
     // console.log(JSON.stringify(oImg));
     const querySuccess: Boolean = false;
     console.log(oImg);
-    return this.httpClient.post(this.endpointSettings.getCreateLanguageSubclassesEndpoint(), oImg);
+    return this.httpClient.post(this.endpointSettings.getCreateLanguageSubclassesEndpoint(), oImg, { responseType: 'text' });
   }
 
   queryDomainClasses(): void {
@@ -275,7 +361,7 @@ export class ModellerService {
           // console.log('PaletteElements received: ' + JSON.stringify(data));
           this.allProperties$ = of(data);
           this.allProperties = data;
-          console.log("Properties were pulled "+this.allProperties);
+          console.log('Properties were pulled ' + this.allProperties);
         },
         error => console.log('Could not query All Properties'));
   }
@@ -302,7 +388,7 @@ export class ModellerService {
     const params = new URLSearchParams();
     params.append('device', JSON.stringify(addIoTDeviceModel)); // passing multiple parameters in POST
 
-    //url encoding headers added
+    // url encoding headers added
     const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
     return this.httpClient.post(this.endpointSettings.getIoTdeviceEndpoint(), params.toString(), {headers: headers})
       .toPromise()
@@ -385,7 +471,7 @@ export class ModellerService {
    */
 
   queryShaclConstraints(domainName) {
-    console.log("Querying shacl constraints. DomainName: " + domainName+ " Endpoint: " + this.endpointSettings.getShaclConstraintEndpoint(domainName));
+    console.log('Querying shacl constraints. DomainName: ' + domainName + ' Endpoint: ' + this.endpointSettings.getShaclConstraintEndpoint(domainName));
     return this.httpClient.get<ShaclConstraintModel[]>(this.endpointSettings.getShaclConstraintEndpoint(domainName));
   }
 
@@ -398,6 +484,11 @@ export class ModellerService {
           this.namespacePrefixes = data;
         }, error => console.log('Could not query Namespace prefixes'));
   }
+
+  getNamespaceMap() {
+    return this.httpClient.get<Array<{prefix: string; uri: string}>>(this.endpointSettings.getGetAllNamespacePrefixesEndpoint());
+  }
+
 
   queryNamespaceMap(): Observable<Map<string, string>> {
     return this.httpClient.get<Map<string, string>>(this.endpointSettings.getNamespaceMapEndpoint());
@@ -529,7 +620,7 @@ export class ModellerService {
 
     formData.append('prefix', prefix);
     formData.append('fileName', fileName);
-    //Make sure that the other fields are populated first.
+    // Make sure that the other fields are populated first.
     formData.append('image', image);
 
     this.httpClient.post('/upload', formData).toPromise().then(response => console.log(response));
@@ -539,16 +630,16 @@ export class ModellerService {
     return await this.httpClient.get('/images').toPromise();
   }
 
-//Full export : get all data from fuseki and download
+// Full export : get all data from fuseki and download
   queryModelsAndLanguage(): void {
     this.httpClient.get<string>(this.endpointSettings.getModelAndLanguageFromFuseki()).subscribe(
       data => {
         this.modelAndLanguage$ = of(data);
         this.modelAndLanguage = data;
         console.log(this.modelAndLanguage);
-        //var FileSaver = require('file-saver');
+        // var FileSaver = require('file-saver');
         const filename = 'Export.ttl';
-        var myblob = new Blob([this.modelAndLanguage], {
+        let myblob = new Blob([this.modelAndLanguage], {
           type: 'text/trig'
         });
         saveAs(myblob, filename);
@@ -557,17 +648,17 @@ export class ModellerService {
     );
   }
 
-//Not used: Old function to retrieve only one data from one prefix
+// Not used: Old function to retrieve only one data from one prefix
   queryModelsAndLanguageADVANCEDwithDistinction(sPrefix: string) {
     this.httpClient.post<string>(this.endpointSettings.getModelAndLanguageFromFusekiAdvancedwithDistinction(), sPrefix).subscribe(
       data => {
         this.modelAndLanguageAdvanced$ = of(data);
         this.modelAndLanguageAdvanced = data;
         console.log(this.modelAndLanguageAdvanced);
-        //var FileSaver = require('file-saver');
-        //const filename = "cmmnadvancedwithDistinction.ttl";
+        // var FileSaver = require('file-saver');
+        // const filename = "cmmnadvancedwithDistinction.ttl";
         const filename = 'AOAME_' + sPrefix + '.ttl';
-        var myblob = new Blob([this.modelAndLanguageAdvanced], {
+        let myblob = new Blob([this.modelAndLanguageAdvanced], {
           type: 'text/trig'
         });
         saveAs(myblob, filename);
@@ -577,7 +668,7 @@ export class ModellerService {
 
   }
 
-  //Get data from fuseki based on the prefix provided in the dropdownlist and then download as a .ttl
+  // Get data from fuseki based on the prefix provided in the dropdownlist and then download as a .ttl
   queryModelsAndLanguageADVANCEDwithDistinctionMultipleSelection(sPrefix: string []) {
     this.httpClient.post<string>(this.endpointSettings.getModelAndLanguageFromFusekiAdvancedwithDistinction2(), sPrefix).subscribe(
       data => {
@@ -586,7 +677,7 @@ export class ModellerService {
         console.log(this.modelAndLanguageAdvanced);
 
         const filename = 'AOAME_.ttl';
-        var myblob = new Blob([this.modelAndLanguageAdvanced], {
+        let myblob = new Blob([this.modelAndLanguageAdvanced], {
           type: 'text/trig'
         });
         saveAs(myblob, filename);
@@ -602,13 +693,13 @@ export class ModellerService {
 
 
 
-  //Get prefixes from fuseki
+  // Get prefixes from fuseki
   async queryLanguagesFromFuseki(): Promise<void> {
     this.httpClient.get<string>(this.endpointSettings.getPrefixFromFuseki()).subscribe(
       data => {
         this.prefixAdvanced$ = of(data);
         this.prefixAdvanced = data;
-        console.log("Fetched Prefixes from Fuseki", data)
+        console.log('Fetched Prefixes from Fuseki', data);
       }, error => console.log(error)
     );
   }
@@ -621,12 +712,8 @@ export class ModellerService {
     ));
   }
 
-  uploadFromDesktop(sTtlFromDesktop: string){
-      this.httpClient.post(this.endpointSettings.uploadTtlFromDesktop(), sTtlFromDesktop).subscribe(data=>{},error => console.log(error));
+  uploadFromDesktop(sTtlFromDesktop: string) {
+      this.httpClient.post(this.endpointSettings.uploadTtlFromDesktop(), sTtlFromDesktop).subscribe(data => {}, error => console.log(error));
   }
-
-
-
-
 
 }

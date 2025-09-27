@@ -40,19 +40,34 @@ export class EndpointSettings {
   private static DELETEOBJECTPROPERTY     : string = '/ModEnv/deleteObjectProperty';
   private static GETDOMAINCONCEPTS          : string = '/ModEnv/getDomainConcepts';
 
+  private static CREATECATEGORY              : string = '/ModEnv/createPaletteCategory';
+  private static CREATEINDIVIDUAL             : string = '/ModEnv/createNewIndividual';
+  private static CREATECONNECTOR            : string = '/ModEnv/createNewConnector';
+  private static CREATEONTOLOGYRELATION      : string = '/ModEnv/createOntologyRelation';
+  private static CREATENEWMODELLINGELEMENT   : string = '/ModEnv/createNewModelingElementInModel';
+  private static CREATENEWATTRIBUTE         : string = '/ModEnv/createNewAttribute';
+  private static GETDOMAINONTOLOGINSTANCES : string = '/ModEnv/getDomainInstancesByClassTree';
+  private static GETNEWPROPERTYENDPOINT: string = '/ModEnv/createNewProperty';
+  private static GETINSTANCESBYCLASSENDPOINT: string = '/ModEnv/getAllInstancesByClass';
+  private static GETALLOBJECTPROPERTIES: string = '/ModEnv/queryAllObjectProperties';
+  private static GETINSTANCERELATIONSHIPCREATIONENDPOINT: string = '/ModEnv/createObjectRelationship';
+
   private static GETIOTDEVICE               : string = '/ModEnv/addIoTdevice';
   private static MOVEDOBOT                  : string = 'http://10.0.6.60:8080/dobot/api/operation';
   private static TURNONSUCTIONCUP           : string = 'http://10.0.6.60:8080/dobot/api/operation/turnOnSuctionCup';
   private static TURNOFFSUCTIONCUP          : string = 'http://10.0.6.60:8080/dobot/api/operation/turnOffSuctionCup';
+
   private static CALIBRATEDOBOT             : string = 'http://10.0.6.60:8080/dobot/api/operation/moveToHomePosition';
   private static GETPOSITIONDOBOT           : string = 'http://10.0.6.60:8080/dobot/api/operation/getPosition';
 
   private static MODELS : string = '/ModEnv/model';
   private static ARROWS : string = '/ModEnv/arrow-structures';
-
   // The URL of the webservice. This gets read on the server side from the environment variable WEBSERVICE_ENDPOINT.
   // http://localhost:8080 is use if this environment variable does not exist.
   private webserviceEndpoint: string = undefined;
+
+
+
 
   constructor(private http: HttpClient) {
   }
@@ -195,7 +210,7 @@ export class EndpointSettings {
   }
 
   getAllPropertiesEndpoint(domainName) {
-    return this.webserviceEndpoint + EndpointSettings.GETALLPROPERTIES + '/' + domainName;
+    return this.webserviceEndpoint + EndpointSettings.GETALLPROPERTIES + '/' + encodeURIComponent(domainName);
   }
   public getShaclConstraintEndpoint(domainName): string {
     return this.webserviceEndpoint + EndpointSettings.GETSHACLCONSTRAINTS + '/' + domainName;
@@ -288,5 +303,49 @@ export class EndpointSettings {
 
   public getAuth() :string {
     return this.webserviceEndpoint + "/ModEnv/auth";
+  }
+
+  public getCreateCategoryEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATECATEGORY;
+  }
+
+  public getCreateNewConnectorEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATECONNECTOR;
+  }
+
+  public getCreateOntologyRelationEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATEONTOLOGYRELATION;
+  }
+
+  public getCreateNewModelingElementEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATENEWMODELLINGELEMENT;
+  }
+
+  public getCreateNewIndividualEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATEINDIVIDUAL;
+  }
+
+  getCreateNewAttributeEndpoint() {
+    return this.webserviceEndpoint + EndpointSettings.CREATENEWATTRIBUTE;
+  }
+
+  getDomainOntologyInstancesEndpoint(){
+    return this.webserviceEndpoint + EndpointSettings.GETDOMAINONTOLOGINSTANCES;
+  }
+
+  getCreateNewPropertyEndpoint() {
+    return this.webserviceEndpoint + EndpointSettings.GETNEWPROPERTYENDPOINT;
+  }
+
+  getQueryAllObjectPropertiesEndpoint() {
+    return this.webserviceEndpoint + EndpointSettings.GETALLOBJECTPROPERTIES;
+  }
+
+  getQueryInstancesByClassEndpoint() {
+    return this.webserviceEndpoint + EndpointSettings.GETINSTANCESBYCLASSENDPOINT;
+  }
+
+  getInstanceRelationship() {
+    return this.webserviceEndpoint + EndpointSettings.GETINSTANCERELATIONSHIPCREATIONENDPOINT;
   }
 }

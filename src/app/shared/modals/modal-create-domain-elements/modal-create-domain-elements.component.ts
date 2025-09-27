@@ -5,6 +5,12 @@ import { DomainElementModel } from '../../models/DomainElement.model';
 import { UUID } from 'angular2-uuid';
 import { PaletteElementModel } from '../../models/PaletteElement.model';
 import { ModalEditPaletteElementComponent } from '../modal-edit-palette-element/modal-edit-palette-element.component';
+import {PaletteCategoryModel} from '../../models/PaletteCategory.model';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs/internal/Observable';
+import {DomainInstance} from '../../models/DomainInstanca.model';
+import {OntologyRelationInfo} from '../../models/OntologyRelationInfo';
+import {InstanceInfo} from '../../models/InstanceInfo';
 
 @Component({
     selector: 'app-modal-create-domain-elements',
@@ -12,25 +18,56 @@ import { ModalEditPaletteElementComponent } from '../modal-edit-palette-element/
     styleUrls: ['./modal-create-domain-elements.component.css']
 })
 export class ModalCreateDomainElementsComponent implements OnInit {
-    creationKind: 'category' | 'relationship' | 'rule' | 'modelElement' | 'connector' = 'category';
+    creationKind: 'category' | 'defineRelationship' | 'defineAttribute' | 'rule' | 'modelElement' | 'connector' |
+      'concept' | 'individual' | 'instanceRelationship' |'attribute' = 'category';
 
-    public domainElement = new DomainElementModel();
+  public readonly OWL_THING = 'http://www.w3.org/2002/07/owl#Thing';
+  public RESERVED_PREFIXES = new Set(['owl:', 'rdf:', 'rdfs:', 'xsd:']);
+
+  objectProperties: OntologyRelationInfo[] = [];
+  domainInstances: InstanceInfo[] = [];
+  rangeInstances: InstanceInfo[] = [];
+
+  public domainElement = new DomainElementModel();
     public relationship = { label: '', domain: '', range: '' };
-    modelElement = {
-        label: '',
-        classUri: '',
-        languagePrefix: '',
-        comment: '',
-        categoryLabel: '',
-        thumbnailURL: '',
-        imageURL: ''
+    public modelElement = {
+      label: '',
+      associateCategory : '' as string,
+      languagePrefix: '',
+      comment: '',
+      categoryLabel: '',
+      thumbnailURL: '',
+      imageURL: ''
     };
 
-    connector = {
-        label: '',
-        fromArrow: '',
-        toArrow: '',
-        arrowStroke: ''
+    public connector = {
+      label: '',
+      fromArrow: '',
+      toArrow: '',
+      arrowStroke: '',
+      associateCategory : '' as string,
+      imageURL: '',
+      thumbnailURL: ''
+    };
+
+    public concept = {
+      label: '',                   // es: 'Human'
+      parentLanguageClass: this.OWL_THING, // default
+      comment: '',
+      equivalentsRaw: ''           // CSV → array al submit
+    };
+
+    public individual = {
+      classConcept: '',
+      label: ''
+    };
+
+    public newDataProperty = {
+      label: '',
+      selectedDomainClass : '',
+      selectedInstance : '',
+      range : '',
+      value : ''
     };
 
     public currentPaletteElement: PaletteElementModel = new PaletteElementModel();
@@ -45,31 +82,59 @@ export class ModalCreateDomainElementsComponent implements OnInit {
     @Output() createElement = new EventEmitter<void>();
 
 
-    public imageRoot: string = '/assets/images/';
+    public imageRoot: string = '/assets/images';
+    public arrowBasePath: string = 'Arrows';
+    arrowFiles: string[] = [];
+
     public config: any;
     public config1: any;
     public domainName: string;
-    viewUri: string;
+    public viewUri: string;
     categoryUri: string;
     parentId: string;
     position: { x: number; y: number };
 
-    constructor(
+    categories: PaletteCategoryModel[] = [];
+
+    namespaceMap: Record<string, string> = {};
+    private DO = 'http://fhnw.ch/modelingEnvironment/DomainOntology#';
+    private DO_ROOT = this.DO + 'DomainOntologyConcept';
+    private DO_PREFIX = 'do:';
+    instances: { uri: string; label: string; typeUri: string }[] = [];
+    selectedProperty: any;
+    selectedDomainInstance: any;
+    selectedRangeInstance: any;
+
+
+  constructor(
         public dialogRef: MatDialogRef<ModalCreateDomainElementsComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public mService: ModellerService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private http: HttpClient
     ) {
-        this.viewUri = data.viewUri;
+        this.viewUri = data.currentLanguageView;
         this.categoryUri = data.categoryUri;
         this.parentId = data.parentElementId;
         this.position = data.position;
+        this.categories = data.categories;
     }
 
     async ngOnInit() {
         this.domainName = this.data.paletteElement?.representedLanguageClass || '';
-
+        this.domainElement.modelingView = this.viewUri;
+        const pe = this.data?.paletteElement;
         this.mService.queryNamespacePrefixes();
+        this.mService.getNamespaceMap().subscribe(list => {
+          this.namespaceMap = (list || []).reduce((acc, x) => {
+            acc[x.prefix] = x.uri;
+            return acc;
+          }, {} as Record<string, string>);
+
+        });
+
+        this.loadObjectProperties();
+
         this.mService.queryDomainClasses();
         this.mService.queryModelingElementClasses();
         this.mService.queryAllProperties(this.domainName);
@@ -84,9 +149,16 @@ export class ModalCreateDomainElementsComponent implements OnInit {
             this.arrowStrokes = value.strokes;
         });
 
-        this.currentPaletteElement.paletteCategory = this.data.paletteElement.paletteCategory;
-        this.currentPaletteElement.parentElement = this.data.paletteElement.id;
-        this.currentPaletteElement.parentLanguageClass = this.data.paletteElement.representedLanguageClass;
+      if (this.creationKind !== 'attribute' && pe) {
+        this.currentPaletteElement.paletteCategory     = pe.paletteCategory;
+        this.currentPaletteElement.parentElement       = pe.id;
+        this.currentPaletteElement.parentLanguageClass = pe.representedLanguageClass;
+      } else {
+        // fallback sensati per Attribute
+        this.currentPaletteElement.paletteCategory     = this.categoryUri ?? '';
+        this.currentPaletteElement.parentElement       = null;
+        this.currentPaletteElement.parentLanguageClass = this.OWL_THING;
+      }
 
         this.config = {
             displayKey: 'label',
@@ -110,112 +182,215 @@ export class ModalCreateDomainElementsComponent implements OnInit {
             searchPlaceholder: 'Search'
         };
 
-        await this.loadImages();
+
+
+      this.http.get<string[]>(`${this.imageRoot}/${this.arrowBasePath}/images.manifest.json`)
+        .subscribe(files => this.arrowFiles = files ?? []);
+
+      // this.existingConcepts = this.mService.queryAllLanguageOntologyConcepts();
+       // await this.loadImages();
     }
 
     save() {
-        if (this.creationKind === 'category') {
-            if (!this.domainElement.label) {
-                alert('Category label is required.');
-                return;
-            }
-            const payload = { type: 'Category', label: this.domainElement.label };
-            this.mService.createElementInOntology(payload).subscribe(() => {
-                this.mService.queryPaletteElements().subscribe();
-                this.onCloseCancel();
+      if (this.creationKind === 'category') {
+        if (!this.domainElement.label) {
+          alert('Category label is required.');
+          return;
+        }
+        const idSuffix = this.domainElement.label.replace(/\s+/g, '');
+        console.log(this.domainElement);
+        const payload = {
+          id: `http://fhnw.ch/modelingEnvironment/PaletteOntology#${idSuffix}`,
+          idSuffix: idSuffix,
+          label: this.domainElement.label,
+          orderNumber: 1,
+          hiddenFromPalette: false,
+          modelingView: this.mService.getActualModelingView()
+        };
+        this.mService.createPaletteCategory(payload).subscribe({
+          next: () => this.onSaveSuccess(),
+          error: (err) => this.onSaveError(err)
+
+        });
+        return;
+      }
+
+      if (this.creationKind === 'modelElement') {
+
+        if (!this.modelElement.label || !this.modelElement.languagePrefix) {
+          alert('Model element label and prefix are required.');
+          return;
+        }
+        const labelClean = this.modelElement.label.replace(/ /g, '');
+
+        this.currentPaletteElement.label = this.modelElement.label;
+        this.currentPaletteElement.representedLanguageClass = `${this.modelElement.languagePrefix}${labelClean}`;
+        this.currentPaletteElement.thumbnailURL = this.modelElement.thumbnailURL || 'CustomThumb.svg';
+        this.currentPaletteElement.imageURL = this.modelElement.imageURL || 'CustomImage.svg';
+        this.currentPaletteElement.width = 150;
+        this.currentPaletteElement.height = 80;
+        this.currentPaletteElement.x = this.position?.x || 250;
+        this.currentPaletteElement.y = this.position?.y || 120;
+        this.currentPaletteElement.hiddenFromPalette = false;
+        this.currentPaletteElement.modelingView = this.mService.getActualModelingView();
+        this.mService.createNewModelingElement(this.currentPaletteElement).subscribe({
+          next: () => {
+            this.dialog.open(ModalEditPaletteElementComponent, {
+              data: {paletteElement: this.currentPaletteElement},
+              height: '80%',
+              width: '800px',
+              disableClose: false
             });
-            return;
+            this.onSaveSuccess();
+          },
+          error: (err) => this.onSaveError(err)
+        });
+
+        return;
+      }
+      if (this.creationKind === 'concept') {
+
+        const label = (this.concept.label || '').trim();
+        if (!label) {
+          alert('Class Label is required.');
+          return;
+        }
+        const localName = label.replace(/[^\p{L}\p{N}_-]+/gu, '');
+
+        const iri = this.DO + localName;
+        const payload: any = {
+          uuid: UUID.UUID(),
+          parentLanguageClass: 'do:DomainOntologyConcept',
+          label: label,
+          representedLanguageClass: iri,
+          comment: (this.concept.comment || '').trim() || null
+        };
+
+        this.mService.createLanguageSubclasses(payload).subscribe({
+          next: () => this.onSaveSuccess(),
+          error: (err) => this.onSaveError(err)
+        });
+
+        return;
+      }
+      if (this.creationKind === 'individual') {
+
+        const label = (this.individual.label || '').trim();
+        if (!label) {
+          alert('Class Label is required.');
+          return;
+        }
+        const localName = label.replace(/[^\p{L}\p{N}_-]+/gu, '');
+
+        const payload: any = {
+          classConcept: this.individual.classConcept,
+          label: localName
+        };
+
+        this.mService.createNewIndividual(payload).subscribe({
+          next: () => this.onSaveSuccess(),
+          error: (err) => this.onSaveError(err)
+        });
+
+        return;
+      }
+
+      if (this.creationKind === 'defineRelationship') {
+        if (!this.relationship.label || !this.relationship.domain || !this.relationship.range) {
+          alert('Relationship label, domain and range are required.');
+          return;
+        }
+        const OntologyRelationshipPayload = {
+          label: this.relationship.label,
+          domain: this.relationship.domain,
+          range: this.relationship.range
+        };
+        this.mService.createNewRelationship(OntologyRelationshipPayload).subscribe({
+          next: () => this.onSaveSuccess(),
+          error: (err) => this.onSaveError(err)
+        });
+      }
+
+      if (this.creationKind === 'attribute') {
+        const label = (this.newDataProperty.label || '').trim();
+        if (!label) {
+          alert('Relationship Label is required.');
+          return;
         }
 
-        if (this.creationKind === 'relationship') {
-            if (!this.relationship.label || !this.relationship.domain || !this.relationship.range) {
-                alert('Relationship label, domain and range are required.');
-                return;
-            }
-            const payload = { type: 'Relationship', ...this.relationship };
-            this.mService.createElementInOntology(payload).subscribe(() => {
-                this.mService.queryPaletteElements().subscribe();
-                this.onCloseCancel();
-            });
-            return;
+        const localName = label.replace(/[^\p{L}\p{N}_-]+/gu, '');
+
+        const payload: any = {
+          label: localName,
+          DomainClassURI: this.newDataProperty.selectedDomainClass,
+          selectedInstance: this.newDataProperty.selectedInstance,
+          range: this.newDataProperty.range,
+          value: this.newDataProperty.value
+        };
+
+        this.mService.createNewAttribute(payload).subscribe({
+          next: () => this.onSaveSuccess(),
+          error: (err) => this.onSaveError(err)
+        });
+        return;
+      }
+
+      if (this.creationKind === 'defineAttribute') {
+        const label = (this.relationship.label || '').trim();
+        const domainClassUri = this.relationship.domain;
+        const xsdRange       = this.relationship.range; // può essere "xsd:string", "rdf:HTML", ecc.
+
+        if (!label || !domainClassUri || !xsdRange) {
+          alert('Compila label, domain e datatype.');
+          return;
         }
 
-        if (this.creationKind === 'modelElement') {
-            if (!this.modelElement.label || !this.modelElement.classUri || !this.modelElement.languagePrefix) {
-                alert('Model element label, URI and prefix are required.');
-                return;
-            }
+        const payload = { label, domainClassUri, xsdRange };
 
-            const uuid = UUID.UUID();
-            const labelClean = this.modelElement.label.replace(/ /g, '');
-            this.currentPaletteElement.uuid = uuid;
-            this.currentPaletteElement.label = this.modelElement.label;
-            this.currentPaletteElement.representedLanguageClass = `${this.modelElement.languagePrefix}${labelClean}`;
-            this.currentPaletteElement.thumbnailURL = this.modelElement.thumbnailURL || 'CustomThumb.png';
-            this.currentPaletteElement.imageURL = this.modelElement.imageURL || 'CustomImage.png';
-            this.currentPaletteElement.width = 120;
-            this.currentPaletteElement.height = 70;
-            this.currentPaletteElement.x = this.position?.x || 200;
-            this.currentPaletteElement.y = this.position?.y || 150;
-            this.currentPaletteElement.hiddenFromPalette = false;
-            this.currentPaletteElement.modelingView = this.viewUri;
+        this.mService.createDatatypeProperty(payload).subscribe({
+          next: () => this.onSaveSuccess(),
+          error: (err) => this.onSaveError(err)
+        });
+        return;
+      }
 
-            this.mService.createElementInOntology(this.currentPaletteElement).subscribe(() => {
-                this.dialog.open(ModalEditPaletteElementComponent, {
-                    data: { paletteElement: this.currentPaletteElement },
-                    height: '80%',
-                    width: '800px',
-                    disableClose: false
-                });
-                this.mService.queryPaletteElements().subscribe();
-                this.onCloseCancel();
-            });
-            return;
+      if (this.creationKind === 'instanceRelationship') {
+        if (!this.selectedDomainInstance || !this.selectedRangeInstance || !this.selectedProperty){
+          alert('Select all the fields.');
+          return;
         }
 
-        if (this.creationKind === 'connector') {
-            if (!this.connector.label || !this.connector.fromArrow || !this.connector.toArrow || !this.connector.arrowStroke) {
-                alert('All connector fields are required.');
-                return;
-            }
+        const payload = {
+          propertyLabel : this.selectedProperty.label,
+          domainInstance : this.selectedDomainInstance.iri,
+          rangeInstance : this.selectedRangeInstance.iri
+        };
 
-            const uuid = UUID.UUID();
-            const labelClean = this.connector.label.replace(/ /g, '');
+        this.mService.instanceConceptRelationship(payload).subscribe({
+          next: () => this.onSaveSuccess(),
+          error: (err) => this.onSaveError(err)
+        });
+        return;
 
-            const connectorPayload = {
-                uuid: uuid,
-                id: '',
-                label: this.connector.label,
-                type: 'PaletteConnector',
-                hiddenFromPalette: false,
-                usesImages: false,
-                elementUsesImage: true,
-                arrowBaseUsesImage: true,
-                fromArrow: this.connector.fromArrow,
-                toArrow: this.connector.toArrow,
-                arrowStroke: this.connector.arrowStroke,
-                width: 100,
-                height: 70,
-                x: this.position?.x || 200,
-                y: this.position?.y || 150,
-                modelingView: this.viewUri,
-                paletteCategory: this.categoryUri,
-                parentElement: this.parentId,
-                representedLanguageClass: labelClean,
-                imageURL: 'MyCustomConnector.png',
-                thumbnailURL: 'Thumbnail_MyCustomConnector.png'
-            };
-
-            this.mService.createElementInOntology(connectorPayload).subscribe(() => {
-                this.mService.queryPaletteElements().subscribe();
-                this.onCloseCancel();
-            });
-            return;
-        }
+      }
     }
 
-    onCloseCancel(): void {
-        this.dialogRef.close('Cancel');
+  private expandFromPrefix(prefix: string): string | null {
+    return this.namespaceMap[prefix] || null;
+  }
+
+  private onSaveSuccess(): void {
+    this.mService.queryPaletteElements().subscribe();
+    this.mService.queryDomainClasses();
+    this.dialogRef.close('created'); // 👈 segnala al padre che deve ricaricare
+  }
+
+  private onSaveError(err: any): void {
+    console.error('Errore durante la creazione:', err);
+  }
+
+  onCloseCancel(): void {
+        this.dialogRef.close('cancel');
     }
 
     selectionChanged(event: any): void {
@@ -242,4 +417,33 @@ export class ModalCreateDomainElementsComponent implements OnInit {
         });
         reader.readAsDataURL(file);
     }
+
+  onSelectProperty(prop: OntologyRelationInfo): void {
+    if (!prop) return;
+
+    if (prop.domain) {
+      this.mService.queryAllInstancesByClass(prop.domain).subscribe((insts: InstanceInfo[]) => {
+        this.domainInstances = insts;
+      });
+    }
+
+    if (prop.range) {
+      this.mService.queryAllInstancesByClass(prop.range).subscribe((insts: InstanceInfo[]) => {
+        this.rangeInstances = insts;
+      });
+    }
+  }
+
+  private loadObjectProperties(): void {
+    console.log('[OBJ-PROPS] calling service…');
+    this.mService.queryAllObjectProperty().subscribe({
+      next: res => {
+        console.log('[OBJ-PROPS] OK len =', res?.length ?? 0);
+        this.objectProperties = res ?? [];
+      },
+      error: err => {
+        console.error('[OBJ-PROPS] ERROR', err);
+      }
+    });
+  }
 }

@@ -43,6 +43,8 @@ export class PaletteAreaComponent implements OnInit {
   public paletteCategories: PaletteCategoryModel[] = [];
   public imageRoot: string = "";
 
+  public currentLanguageView: string | null = null;
+
   constructor(private mService: ModellerService, public dialog: MatDialog) {
     // Heroku difference
     //this.mService.queryModelingLanguages()
@@ -50,6 +52,7 @@ export class PaletteAreaComponent implements OnInit {
       (response) => {
         console.log("Modeling Languages: ", response);
         this.modelingLanguages = response;
+        console.log('REBUILD TEST', new Date().toISOString());
       }
     );
     //this.mService.queryPaletteCategories();
@@ -189,8 +192,12 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
   }
 
   selectView($event: any) {
-    console.log('Modeling View selected');
-    console.log($event.value);
+    // console.log('Modeling View selected');
+    // console.log($event.value);
+    this.currentLanguageView = $event.value as string;
+    console.log('Actual selected view');
+    console.log(this.currentLanguageView);
+    // setCurrentView($event.value)
     this.paletteCategories = [];
     this.mService.queryPaletteCategories($event.value).subscribe(
       (response) => {
