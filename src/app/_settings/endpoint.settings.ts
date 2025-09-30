@@ -1,54 +1,57 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {isElementScrolledOutsideView} from "@angular/cdk/overlay/position/scroll-clip";
+import {isElementScrolledOutsideView} from '@angular/cdk/overlay/position/scroll-clip';
 
 export interface Config {
-  webserviceEndpoint: string
+  webserviceEndpoint: string;
 }
 
 @Injectable()
 export class EndpointSettings {
 
-  private static GETMODELINGLANGUAGES       : string = '/ModEnv/getModelingLanguages';
-  private static GETMODELINGVIEWS           : string = '/ModEnv/getModelingViews';
-  private static PALETTEELEMENTS            : string = '/ModEnv/getPaletteElements';
-  private static PALETTECATEGORIES          : string = '/ModEnv/getPaletteCategories';
-  private static CREATEELEMENT              : string = '/ModEnv/createPalletteElement';
-  private static CREATEINSTANCE             : string = '/ModEnv/createCanvasInstance';
-  private static CREATEDOMAINELEMENT        : string = '/ModEnv/createDomainElement';
-  private static GETDOMAINCLASSES           : string = '/ModEnv/getDomainOntologyClasses';
-  private static GETMODELINGLANGUAGELASSES  : string = '/ModEnv/getModelingLanguageOntologyElements';
-  private static CREATEDATATYPEPROPERTY     : string = '/ModEnv/createDatatypeProperty';
-  private static CREATEBRIDGECONNECTOR       : string = '/ModEnv/createBridgingConnector';
-  private static CREATESEMANTICMAPPING       : string = '/ModEnv/createSemanticMapping';
-  private static CREATESHACLCONSTRAINT       : string = '/ModEnv/createShaclConstraint';
-  private static GETDATATYPEPROPERTIES      : string = '/ModEnv/getDatatypeProperties';
-  private static GETBRIDGECONNECTORS      : string = '/ModEnv/getBridgeConnectors';
-  private static GETSEMANTICMAPPINGS      : string = '/ModEnv/getSemanticMappings';
-  private static GETALLPROPERTIES      : string = '/ModEnv/getAllProperties';
-  private static GETSHACLCONSTRAINTS      : string = '/ModEnv/getShaclConstraints';
-  private static VALIDATESHACL            : string = '/ModEnv/validateShacl';
-  private static DELETEPALETTEELEMENT       : string = '/ModEnv/deletePaletteElement';
-  private static HIDEPALETTEELEMENT         : string = '/ModEnv/hidePaletteElement';
-  private static CREATELANGUAGESUBCLASSES   : string = '/ModEnv/createModelingLanguageSubclasses';
-  private static GETALLNAMESPACEPREFIXES    : string = '/ModEnv/getAllNamespacePrefixes';
-  private static GETNAMESPACEMAP            : string = '/ModEnv/getNamespaceMap';
-  private static MODIFYELEMENT              : string = '/ModEnv/modifyElement';
-  private static EDITDATATYPEPROPERTY       : string = '/ModEnv/editDatatypeProperty';
-  private static EDITOBJECTPROPERTY       : string = '/ModEnv/editObjectProperty';
-  private static DELETEDATATYPEPROPERTY     : string = '/ModEnv/deleteDatatypeProperty';
-  private static DELETEOBJECTPROPERTY     : string = '/ModEnv/deleteObjectProperty';
-  private static GETDOMAINCONCEPTS          : string = '/ModEnv/getDomainConcepts';
+  private static GETMODELINGLANGUAGES: string = '/ModEnv/getModelingLanguages';
+  private static GETMODELINGVIEWS: string = '/ModEnv/getModelingViews';
+  private static PALETTEELEMENTS: string = '/ModEnv/getPaletteElements';
+  private static PALETTECATEGORIES: string = '/ModEnv/getPaletteCategories';
+  private static CREATEELEMENT: string = '/ModEnv/createPalletteElement';
+  private static CREATEINSTANCE: string = '/ModEnv/createCanvasInstance';
+  private static CREATEDOMAINELEMENT: string = '/ModEnv/createDomainElement';
+  private static GETDOMAINCLASSES: string = '/ModEnv/getDomainOntologyClasses';
+  private static GETMODELINGLANGUAGELASSES: string = '/ModEnv/getModelingLanguageOntologyElements';
+  private static CREATEDATATYPEPROPERTY: string = '/ModEnv/createDatatypeProperty';
+  private static CREATEBRIDGECONNECTOR: string = '/ModEnv/createBridgingConnector';
+  private static CREATESEMANTICMAPPING: string = '/ModEnv/createSemanticMapping';
+  private static CREATESHACLCONSTRAINT: string = '/ModEnv/createShaclConstraint';
+  private static GETDATATYPEPROPERTIES: string = '/ModEnv/getDatatypeProperties';
+  private static GETBRIDGECONNECTORS: string = '/ModEnv/getBridgeConnectors';
+  private static GETSEMANTICMAPPINGS: string = '/ModEnv/getSemanticMappings';
+  private static GETALLPROPERTIES: string = '/ModEnv/getAllProperties';
+  private static GETSHACLCONSTRAINTS: string = '/ModEnv/getShaclConstraints';
+  private static VALIDATESHACL: string = '/ModEnv/validateShacl';
+  private static DELETEPALETTEELEMENT: string = '/ModEnv/deletePaletteElement';
+  private static HIDEPALETTEELEMENT: string = '/ModEnv/hidePaletteElement';
+  private static CREATELANGUAGESUBCLASSES: string = '/ModEnv/createModelingLanguageSubclasses';
+  private static GETALLNAMESPACEPREFIXES: string = '/ModEnv/getAllNamespacePrefixes';
+  private static GETNAMESPACEMAP: string = '/ModEnv/getNamespaceMap';
+  private static MODIFYELEMENT: string = '/ModEnv/modifyElement';
+  private static EDITDATATYPEPROPERTY: string = '/ModEnv/editDatatypeProperty';
+  private static EDITOBJECTPROPERTY: string = '/ModEnv/editObjectProperty';
+  private static DELETEDATATYPEPROPERTY: string = '/ModEnv/deleteDatatypeProperty';
+  private static DELETEOBJECTPROPERTY: string = '/ModEnv/deleteObjectProperty';
+  private static GETDOMAINCONCEPTS: string = '/ModEnv/getDomainConcepts';
 
-  private static GETIOTDEVICE               : string = '/ModEnv/addIoTdevice';
-  private static MOVEDOBOT                  : string = 'http://10.0.6.60:8080/dobot/api/operation';
-  private static TURNONSUCTIONCUP           : string = 'http://10.0.6.60:8080/dobot/api/operation/turnOnSuctionCup';
-  private static TURNOFFSUCTIONCUP          : string = 'http://10.0.6.60:8080/dobot/api/operation/turnOffSuctionCup';
-  private static CALIBRATEDOBOT             : string = 'http://10.0.6.60:8080/dobot/api/operation/moveToHomePosition';
-  private static GETPOSITIONDOBOT           : string = 'http://10.0.6.60:8080/dobot/api/operation/getPosition';
+  private static GETIOTDEVICE: string = '/ModEnv/addIoTdevice';
+  private static MOVEDOBOT: string = 'http://10.0.6.60:8080/dobot/api/operation';
+  private static TURNONSUCTIONCUP: string = 'http://10.0.6.60:8080/dobot/api/operation/turnOnSuctionCup';
+  private static TURNOFFSUCTIONCUP: string = 'http://10.0.6.60:8080/dobot/api/operation/turnOffSuctionCup';
+  private static CALIBRATEDOBOT: string = 'http://10.0.6.60:8080/dobot/api/operation/moveToHomePosition';
+  private static GETPOSITIONDOBOT: string = 'http://10.0.6.60:8080/dobot/api/operation/getPosition';
 
-  private static MODELS : string = '/ModEnv/model';
-  private static ARROWS : string = '/ModEnv/arrow-structures';
+  private static MODELS: string = '/ModEnv/model';
+  private static ARROWS: string = '/ModEnv/arrow-structures';
+
+  private static SWRL: string = '/OntologyAndSWRL';
+
 
   // The URL of the webservice. This gets read on the server side from the environment variable WEBSERVICE_ENDPOINT.
   // http://localhost:8080 is use if this environment variable does not exist.
@@ -57,23 +60,23 @@ export class EndpointSettings {
   constructor(private http: HttpClient) {
   }
 
-  public load(): Promise<any>{
+  public load(): Promise<any> {
 
     //Use localhost as a default endpoint.
     const defaultEndpoint = 'http://localhost:8080';
 
     // Make a request to the server to retrieve an URL that points to the webservice.
-    return this.http.get<Config>('/api').toPromise().then((data:Config) =>{
-      if(data.webserviceEndpoint){
+    return this.http.get<Config>('/api').toPromise().then((data: Config) => {
+      if (data.webserviceEndpoint) {
         console.log('Received webservice endpoint: ' + data.webserviceEndpoint);
         this.webserviceEndpoint = data.webserviceEndpoint;
-      }else{
+      } else {
         console.log('Using default endpoint of ' + defaultEndpoint);
         this.webserviceEndpoint = defaultEndpoint;
       }
-      }).catch(error =>{
-        console.log('Using default endpoint of ' + defaultEndpoint);
-        this.webserviceEndpoint = defaultEndpoint;
+    }).catch(error => {
+      console.log('Using default endpoint of ' + defaultEndpoint);
+      this.webserviceEndpoint = defaultEndpoint;
     });
 
   }
@@ -155,7 +158,7 @@ export class EndpointSettings {
   }
 
   public getValidateShaclEndpoint(modelId): string {
-    return this.webserviceEndpoint + EndpointSettings.VALIDATESHACL+ '/' + modelId;
+    return this.webserviceEndpoint + EndpointSettings.VALIDATESHACL + '/' + modelId;
   }
 
   public getDatatypePropertyEndpoint(domainName): string {
@@ -197,6 +200,7 @@ export class EndpointSettings {
   getAllPropertiesEndpoint(domainName) {
     return this.webserviceEndpoint + EndpointSettings.GETALLPROPERTIES + '/' + domainName;
   }
+
   public getShaclConstraintEndpoint(domainName): string {
     return this.webserviceEndpoint + EndpointSettings.GETSHACLCONSTRAINTS + '/' + domainName;
   }
@@ -209,7 +213,7 @@ export class EndpointSettings {
     return this.webserviceEndpoint + EndpointSettings.HIDEPALETTEELEMENT;
   }
 
-    public getCreateLanguageSubclassesEndpoint(): string {
+  public getCreateLanguageSubclassesEndpoint(): string {
     return this.webserviceEndpoint + EndpointSettings.CREATELANGUAGESUBCLASSES;
   }
 
@@ -246,47 +250,69 @@ export class EndpointSettings {
   }
 
   public getRelationOptionsEndpoint(relationid: string) {
-    return this.webserviceEndpoint + "/ModEnv/relations/" + relationid + "/options";
+    return this.webserviceEndpoint + '/ModEnv/relations/' + relationid + '/options';
   }
 
   public getConceptualElementInstances() {
-    return this.webserviceEndpoint + "/ModEnv/model-elements/search";
+    return this.webserviceEndpoint + '/ModEnv/model-elements/search';
   }
-  public getModelAndLanguageFromFuseki(){
-    return this.webserviceEndpoint + "/ModEnv/getTTL"   ;
+
+  public getModelAndLanguageFromFuseki() {
+    return this.webserviceEndpoint + '/ModEnv/getTTL';
 
   }
+
   //not used method
-  public getModelAndLanguageFromFusekiAdvanced(){
-    return this.webserviceEndpoint + "/ModEnv/getTTLAd"   ;
+  public getModelAndLanguageFromFusekiAdvanced() {
+    return this.webserviceEndpoint + '/ModEnv/getTTLAd';
   }
+
 //old endpoint not used anymore
-  public getModelAndLanguageFromFusekiAdvancedwithDistinction(){
-    return this.webserviceEndpoint + "/ModEnv/getTTLAdwithDistinction"   ;
+  public getModelAndLanguageFromFusekiAdvancedwithDistinction() {
+    return this.webserviceEndpoint + '/ModEnv/getTTLAdwithDistinction';
   }
 
-  public getModelAndLanguageFromFusekiAdvancedwithDistinction2(){
-    return this.webserviceEndpoint + "/ModEnv/getTTLAdwithDistinction2"   ;
+  public getModelAndLanguageFromFusekiAdvancedwithDistinction2() {
+    return this.webserviceEndpoint + '/ModEnv/getTTLAdwithDistinction2';
   }
 
-  public postLanguagesToFuseki(){
-    return this.webserviceEndpoint + "/ModEnv/postLanguagesSelectedtoFuseki"   ;
+  public postLanguagesToFuseki() {
+    return this.webserviceEndpoint + '/ModEnv/postLanguagesSelectedtoFuseki';
   }
 
 
-  public getPrefixFromFuseki(){
-    return this.webserviceEndpoint + "/ModEnv/getPrefixesFromFuseki2"   ;
+  public getPrefixFromFuseki() {
+    return this.webserviceEndpoint + '/ModEnv/getPrefixesFromFuseki2';
   }
 
-  public getPrefixFromGithub(){
-    return this.webserviceEndpoint + "/ModEnv/getLanguagesFromGithub"   ;
+  public getPrefixFromGithub() {
+    return this.webserviceEndpoint + '/ModEnv/getLanguagesFromGithub';
   }
 
-  public uploadTtlFromDesktop(){
-    return this.webserviceEndpoint + "/ModEnv/postTtlFromDesktop"   ;
+  public uploadTtlFromDesktop() {
+    return this.webserviceEndpoint + '/ModEnv/postTtlFromDesktop';
   }
 
-  public getAuth() :string {
-    return this.webserviceEndpoint + "/ModEnv/auth";
+  public getAuth(): string {
+    return this.webserviceEndpoint + '/ModEnv/auth';
   }
+
+  public getOntologyGlossary() {
+    return this.webserviceEndpoint + EndpointSettings.SWRL + '/glossary';
+  }
+
+  public getRelations() {
+    return this.webserviceEndpoint + EndpointSettings.SWRL + '/relations';
+  }
+
+  public applySWRLRule() {
+    return this.webserviceEndpoint + EndpointSettings.SWRL + '/applySWRLRule';
+  }
+
+  public askOllama() {
+    return this.webserviceEndpoint + EndpointSettings.SWRL + '/ai/ask-ollama';
+  }
+
+
+
 }

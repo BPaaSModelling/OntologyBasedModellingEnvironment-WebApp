@@ -5,3 +5,7 @@
 body {
   margin: 0;
 }
+
+:root {
+  --panel-min-height: 280px; /* available app-wide */
+}

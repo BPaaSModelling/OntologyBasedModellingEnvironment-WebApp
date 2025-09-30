@@ -84,12 +84,14 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {ToastrModule} from 'ngx-toastr';
 import {HttpInterceptorService} from './core/services/auth/http-interceptor.service';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {ModalEditAction} from "./shared/modals/modal-edit-action/modal-edit-action";
-import {ModalAddIoT} from "./shared/modals/modal-add-IoT/modal-add-IoT";
+import {ModalEditAction} from './shared/modals/modal-edit-action/modal-edit-action';
+import {ModalAddIoT} from './shared/modals/modal-add-IoT/modal-add-IoT';
 
 import {AuthGuard, AuthHttpInterceptor, AuthModule} from '@auth0/auth0-angular';
 import {environment as env} from '../environments/environment';
 import {LoadingService} from './core/services/loading/loading.service';
+import {SwrlEnvironmentComponent} from './pages/swrl-environment/swrl-environment.component';
+import { GraphVisualizationComponent } from './pages/swrl-environment/graph-visualization/graph-visualization.component';
 
 
 const appRoutes: Routes = [
@@ -97,6 +99,7 @@ const appRoutes: Routes = [
   {path: 'modeller', component: ModellingEnvironmentComponent},
   {path: 'importExport', component: ImportExportEnvironmentComponent},
   {path: 'home', component: HomeComponent},
+  {path: 'swrl', component: SwrlEnvironmentComponent},
   {path: '', component: HomeComponent},
 ];
 
@@ -147,7 +150,9 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModellingAreaBPMNComponent,
     ModalInsertShaclPropertyComponent,
     ModalEditAction,
-    ModalAddIoT
+    ModalAddIoT,
+    SwrlEnvironmentComponent,
+    GraphVisualizationComponent
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,

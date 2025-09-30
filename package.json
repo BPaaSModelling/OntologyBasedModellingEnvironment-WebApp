@@ -28,6 +28,7 @@
     "@angular/router": "^10.2.5",
     "@auth0/auth0-angular": "^1.10.1",
     "angular2-uuid": "^1.1.1",
+    "cytoscape": "^3.33.1",
     "express": "^4.17.1",
     "file-saver": "^2.0.5",
     "gojs": "^1.8.21",
