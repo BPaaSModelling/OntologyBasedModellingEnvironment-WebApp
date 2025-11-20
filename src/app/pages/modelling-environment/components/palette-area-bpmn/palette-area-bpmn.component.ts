@@ -31,8 +31,8 @@ const $ = go.GraphObject.make;
 })
 export class PaletteAreaBPMNComponent implements OnInit {
 
-  @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent;
-  @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, {static: true}) public elementRightClickMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, {static: true}) public paletteRightClickMenu: ContextMenuComponent;
   // Optional
   @Input() contextMenu: ContextMenuComponent
   @Input() contextMenuSubject: PaletteElementModel;
@@ -47,6 +47,7 @@ export class PaletteAreaBPMNComponent implements OnInit {
   public imageRoot: string = "";
   private selectedLang: string;
   private selectedView: string;
+  public currentLanguageView: string | null = null;
 
   constructor(private mService: ModellerService, public dialog: MatDialog, private bpmnTemplateService: BpmnTemplateService, private cdRef: ChangeDetectorRef) {
     // Heroku difference
@@ -61,7 +62,7 @@ export class PaletteAreaBPMNComponent implements OnInit {
     //this.mService.queryPaletteCategories();
 
 
-this.imageRoot = VariablesSettings.IMG_ROOT;
+    this.imageRoot = VariablesSettings.IMG_ROOT;
 //console.log('Palette categories');
 //console.log(this.mService.paletteCategories);
 
@@ -98,8 +99,8 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
   toggleExtendPaletteElementModal(element: PaletteElementModel) {
     //console.log(element)
     let dialogRef = this.dialog.open(ModalExtendPaletteElementComponent, {
-      data: { paletteElement: element},
-      height:'80%',
+      data: {paletteElement: element},
+      height: '80%',
       width: '800px',
       disableClose: false,
     });
@@ -109,10 +110,10 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     });
   }
 
-  toggleEditPaletteElementModal(element: PaletteElementModel){
+  toggleEditPaletteElementModal(element: PaletteElementModel) {
     let dialogRef = this.dialog.open(ModalEditPaletteElementComponent, {
-      data: { paletteElement: element},
-      height:'80%',
+      data: {paletteElement: element},
+      height: '80%',
       width: '800px',
       disableClose: false,
     });
@@ -132,8 +133,8 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
 
   toggleCreateDomainElementModalFromExtend(element: PaletteElementModel) {
     let dialogRef = this.dialog.open(ModalCreateDomainElementsComponent, {
-      data: {paletteElement: element },
-      height:'80%',
+      data: {paletteElement: element},
+      height: '80%',
       width: '800px',
       disableClose: false,
     });
@@ -143,8 +144,8 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
 
   toggleActivityElementPropertyModal(element: PaletteElementModel) {
     let dialogRef = this.dialog.open(ModalPaletteElementPropertiesComponent, {
-      data: {paletteElement: element },
-      height:'80%',
+      data: {paletteElement: element},
+      height: '80%',
       width: '800px',
       disableClose: false,
     });
@@ -170,26 +171,29 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     this.modelingViews = [];
     this.paletteCategories = [];
     this.mService.queryModelingViews($event.value).subscribe(
-    (response) => {
+      (response) => {
         console.log(response);
         this.modelingViews = response;
         this.selectedLang = $event.value;
-    }
+      }
     );
   }
 
-  selectView($event: any) {
-    console.log('Modeling View selected');
-    console.log($event.value);
+  selectView(input: any) {
+    const viewId = input && input.value ? input.value : input;
+
+    this.mService.setActualModelingView(viewId);
+    console.log('Actual selected view');
+    console.log(this.mService.getActualModelingView());
     this.paletteCategories = [];
-    this.mService.queryPaletteCategories($event.value).subscribe(
+    this.mService.queryPaletteCategories(viewId).subscribe(
       (response) => {
         console.log(response);
         this.paletteCategories = response;
         this.mService.queryPaletteElements().pipe(take(1)).subscribe(() => {
           console.log('Palette elements:');
           console.log(this.mService.paletteElements);
-          this.selectedView = $event.value;
+          this.selectedView = viewId;
           this.cdRef.detectChanges();
           setTimeout(() => {
             this.loadPaletteGoJSElements();
@@ -202,7 +206,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
   }
 
   showInstantiatedElements(element: PaletteElementModel) {
-    this.dialog.open(ModalShowLanguageInstances, {data:element});
+    this.dialog.open(ModalShowLanguageInstances, {data: element});
   }
 
   isElementMappedToBPMNMappers(element: PaletteElementModel): boolean {
@@ -237,7 +241,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
         new go.Binding("fill", "color")),
 
       $(go.TextBlock,
-        { margin: 3 },  // some room around the text
+        {margin: 3},  // some room around the text
         // TextBlock.text is bound to Node.data.key
         new go.Binding("text", "key")),
       new go.Binding('location', 'location', go.Point.parse),
@@ -323,7 +327,7 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
     }
     // @ts-ignore
     element.text = element.label.split(' ').join('\n');
-    const otherObj = { };
+    const otherObj = {};
     // @ts-ignore
     otherObj.text = 'should be hidden';
     // @ts-ignore
@@ -354,12 +358,18 @@ this.imageRoot = VariablesSettings.IMG_ROOT;
 
   toggleCreateDomainElementModal(element: PaletteElementModel) {
     let dialogRef = this.dialog.open(ModalCreateDomainElementsComponent, {
-      data: {paletteElement: element },
-      height:'80%',
+      data: {paletteElement: element, categories: this.paletteCategories},
+      height: '80%',
       width: '800px',
       disableClose: false,
     });
 
-    this.handleDialogClose(dialogRef);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'created') {
+        this.selectView(this.mService.getActualModelingView()); // refresh page
+      }
+    });
   }
+
+
 }

@@ -1,40 +1,278 @@
 <form>
+  <!-- TITLE -->
   <mat-toolbar>
     <div class="mat-toolbar-tools">
-      <!-- <h2>Extend {{data.paletteElement.label}}</h2>-->
-      <h2>Create New Domain Ontology Element</h2>
+      <h2>Create New</h2>
     </div>
   </mat-toolbar>
-  <mat-dialog-content style="max-width:800px;max-height:810px; ">
-    <mat-card>
-      <form class="form">
 
 
-        <div layout="row">
-          <mat-checkbox name="rootElement" [(ngModel)]="domainElement.isRoot">Root element</mat-checkbox>
+  <!-- CHOOSING WHICH ELEMENT TO CREATE -->
+  <mat-radio-group name="creationKind" [(ngModel)]="creationKind" class="radio-row px-2 py-2 mb-3">
+    <mat-radio-button value="category">New Category</mat-radio-button>
+    <mat-radio-button value="connector">New Connector</mat-radio-button>
+    <mat-radio-button value="concept">New Concept</mat-radio-button>
+    <mat-radio-button value="individual">New Individual</mat-radio-button>
+    <mat-radio-button value="defineRelationship">Define Relationship</mat-radio-button>
+    <mat-radio-button value="instanceRelationship">Instance Relationship</mat-radio-button>
+    <mat-radio-button value="defineAttribute">Define Attribute</mat-radio-button>
+    <mat-radio-button value="instanceAttribute">Instance Attribute</mat-radio-button>
+  </mat-radio-group>
 
-        <!--<mat-form-field class="full-width">
-          <mat-select placeholder="Parent Class" name="input_domainOntology" [(ngModel)]="domainElement.parentElement" >
-            <mat-option *ngFor="let class of mService.domainClasses" [value]="class.id">{{class.label}}</mat-option>
-          </mat-select>
-        </mat-form-field>-->
-          <ngx-select-dropdown name="select_domainOntology" (change)="selectionChanged($event)" [multiple]="false" [(ngModel)]="domainElement.parentElement" [config]="config" [options]="mService.domainClasses">
+  <!-- ========== CATEGORY ========== -->
+  <ng-container *ngIf="creationKind==='category'">
+    <mat-dialog-content>
+      <mat-card>
+        <div class="mb-2"><strong>Create a new Palette Category</strong></div>
 
-          </ngx-select-dropdown>
-
-        <mat-form-field class="full-width">
-          <input matInput placeholder="New Domain Element" name="input_label" [(ngModel)]="domainElement.label" required>
+        <mat-form-field class="full-width mb-3">
+          <input matInput placeholder="Category Label" name="input_label" [(ngModel)]="domainElement.label" required>
         </mat-form-field>
+      </mat-card>
+    </mat-dialog-content>
+  </ng-container>
 
+  <!-- ========== CONNECTOR ========== -->
+  <ng-container *ngIf="creationKind==='connector'">
+    <mat-dialog-content>
+      <mat-card>
+        <div class="mb-2"><strong>Create a new Graphical Connector</strong></div>
+
+        <mat-form-field class="full-width mb-3">
+          <input matInput placeholder="Connector Label " name="conn_label" [(ngModel)]="connector.label" required>
+        </mat-form-field>
+        <mat-form-field class="full-width mb-3">
+          <mat-select placeholder="Category "
+                      name="conn_category"
+                      [(ngModel)]="connector.associateCategory"
+                      required>
+            <mat-option *ngFor="let c of categories" [value]="c.id">
+              {{ c.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="full-width mb-3">
+          <mat-select placeholder="From Arrow " name="fromArrow" [(ngModel)]="connector.fromArrow" required>
+            <mat-option value="Standard">Standard</mat-option>
+            <mat-option value="Triangle">Triangle</mat-option>
+            <mat-option value="None">None</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="full-width mb-3">
+          <mat-select placeholder="To Arrow" name="toArrow" [(ngModel)]="connector.toArrow" required>
+            <mat-option value="Standard">Standard</mat-option>
+            <mat-option value="Triangle">Triangle</mat-option>
+            <mat-option value="None">None</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="full-width mb-3">
+          <mat-select placeholder="Arrow Stroke" name="arrowStroke" [(ngModel)]="connector.arrowStroke" required>
+            <mat-option value="Single">Single</mat-option>
+            <mat-option value="Double">Double</mat-option>
+            <mat-option value="Dash">Dash</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="full-width mb-3">
+          <mat-select placeholder="Arrow image"
+                      name="conn_image"
+                      [(ngModel)]="connector.imageURL"
+                      [ngModelOptions]="{ standalone: true }">
+            <mat-option *ngFor="let f of arrowFiles" [value]="arrowBasePath + '/' + f">
+              {{ f }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="full-width mb-3">
+          <mat-select placeholder="Arrow thumbnail"
+                      name="conn_thumb"
+                      [(ngModel)]="connector.thumbnailURL"
+                      [ngModelOptions]="{ standalone: true }">
+            <mat-option *ngFor="let f of arrowFiles" [value]="arrowBasePath + '/' + f">
+              {{ f }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="mt-2">
+          <strong>Preview:</strong>
+          <img *ngIf="connector.thumbnailURL" [src]="imageRoot + connector.thumbnailURL"
+               width="72" height="72" style="object-fit:contain;border:1px solid #ddd;margin-right:8px" />
+          <img *ngIf="connector.imageURL" [src]="imageRoot + connector.imageURL"
+               width="120" height="72" style="object-fit:contain;border:1px solid #ddd" />
         </div>
 
+      </mat-card>
+    </mat-dialog-content>
+  </ng-container>
 
-      </form>
-    </mat-card>
 
-  </mat-dialog-content>
+  <!-- ========== NEW CONCEPT/CLASS ========== -->
+  <ng-container *ngIf="creationKind==='concept'">
+    <mat-dialog-content>
+      <mat-card>
+
+        <div class="mb-2"><strong>Create a new Concept (OWL Class)</strong></div>
+
+        <!-- Label -->
+        <div class="row">
+          <mat-form-field class="full-width mb-3">
+            <input matInput placeholder="Class Label"
+            name="concept_label"
+            [(ngModel)]="concept.label"
+            required>
+          </mat-form-field>
+        </div>
+
+        <!-- Comment -->
+        <mat-form-field class="full-width mb-3">
+          <textarea matInput placeholder="rdfs:comment (optional)"
+          name="concept_comment"
+          rows="2"
+          [(ngModel)]="concept.comment"></textarea>
+        </mat-form-field>
+
+      </mat-card>
+    </mat-dialog-content>
+  </ng-container>
+
+  <!-- ========== NEW INDIVIDUAL/INSTANCE ========== -->
+  <ng-container *ngIf="creationKind==='individual'">
+    <mat-dialog-content>
+      <mat-card>
+        <div class="mb-2"><strong>Create a new Instance of a Concept</strong></div>
+
+        <mat-form-field class="full-width mb-3">
+          <mat-label>Class Concept</mat-label>
+          <mat-select name="ind_class" [(ngModel)]="individual.classConcept"  required>
+            <mat-option *ngFor="let c of mService.domainClasses" [value]="c.id">{{ c.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width mb-1">
+          <input matInput placeholder="Individual Label"
+          name="ind_label" [(ngModel)]="individual.label" required>
+        </mat-form-field>
+      </mat-card>
+    </mat-dialog-content>
+  </ng-container>
+
+  <!-- ========== ONTOLOGY CONCEPT RELATIONSHIP ========== -->
+  <ng-container *ngIf="creationKind==='defineRelationship'">
+    <mat-dialog-content>
+      <mat-card>
+        <div class="mb-2"><strong>Create a new Relationship between Concepts</strong></div>
+
+        <mat-form-field class="full-width mb-3">
+          <input matInput placeholder="Relationship Label" name="rel_label" [(ngModel)]="relationship.label" required>
+        </mat-form-field>
+        <mat-form-field class="full-width mb-3">
+          <mat-select placeholder="Domain Class" name="rel_domain" [(ngModel)]="relationship.domain" required>
+            <mat-option *ngFor="let c of mService.domainClasses" [value]="c.id">{{ c.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="full-width mb-3">
+          <mat-select placeholder="Range Class" name="rel_range" [(ngModel)]="relationship.range" required>
+            <mat-option *ngFor="let c of mService.domainClasses" [value]="c.id">{{ c.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-card>
+    </mat-dialog-content>
+  </ng-container>
+
+  <!-- ========== INSTANCE A NEW CONCEPT RELATIONSHIP ========== -->
+  <ng-container *ngIf="creationKind==='instanceRelationship'">
+    <mat-dialog-content>
+      <mat-card>
+        <mat-form-field class="full-width mb-3">
+          <mat-select placeholder="Select Relationship" name="relation" [(ngModel)]="selectedProperty" (selectionChange)="onSelectObjectProperty($event.value)" required>
+            <mat-option *ngFor="let r of objectProperties" [value]="r">{{ r.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width mb-3">
+          <mat-select placeholder="Select Domain Class Instance" name="domain_instance" [(ngModel)]="selectedDomainInstance" required>
+            <mat-option *ngFor="let di of domainInstances" [value]="di">{{ di.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width mb-3">
+          <mat-select placeholder="Select Range Class Instance" name="range_instance" [(ngModel)]="selectedRangeInstance" required>
+            <mat-option *ngFor="let ri of rangeInstances" [value]="ri">{{ ri.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </mat-card>
+    </mat-dialog-content>
+  </ng-container>
+
+  <!-- ========== NEW DATATYPE PROPERTY ========== -->
+  <ng-container *ngIf="creationKind==='defineAttribute'">
+    <mat-dialog-content>
+      <mat-card>
+        <div class="mb-2"><strong>Create a new Datatype property</strong></div>
+
+        <mat-form-field class="full-width mb-3">
+          <input matInput placeholder="Relationship Label" name="attr_label" [(ngModel)]="relationship.label" required>
+        </mat-form-field>
+
+
+        <mat-form-field class="full-width mb-3">
+          <mat-select placeholder="Domain Class" name="attr_domain" [(ngModel)]="relationship.domain">
+            <mat-option *ngFor="let c of mService.domainClasses" [value]="c.id">{{ c.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Type of value"
+                      name="attr_range"
+                      [(ngModel)]="relationship.range"
+                      [ngModelOptions]="{standalone:true}" required>required>
+            <mat-option value="xsd:boolean">Boolean</mat-option>
+            <mat-option value="xsd:date">Date</mat-option>
+            <mat-option value="xsd:dateTime">DateTime</mat-option>
+            <mat-option value="xsd:decimal">Decimal</mat-option>
+            <mat-option value="xsd:integer">Integer</mat-option>
+            <mat-option value="xsd:string">String</mat-option>
+            <mat-option value="rdf:HTML">HTML</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-card>
+    </mat-dialog-content>
+  </ng-container>
+
+  <!-- ========== INSTANCE AN ATTRIBUTE (DATATYPE PROPERTY) ========== -->
+  <ng-container *ngIf="creationKind==='instanceAttribute'">
+    <mat-dialog-content>
+      <mat-card>
+        <mat-form-field class="full-width mb-3">
+          <mat-select
+            placeholder="Select Datatype Property"
+            name="attr_property"
+            [(ngModel)]="selectedDatatypeProperty"
+            (selectionChange)="onSelectDatatypeProperty($event.value)"
+            required>
+            <mat-option *ngFor="let p of datatypeProperties" [value]="p">
+              {{ p.label }} <span *ngIf="p.range">({{ p.range }})</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width mb-3">
+          <mat-select placeholder="Select Domain Class Instance" name="attr_domain_instance" [(ngModel)]="selectedDomainInstance" required>
+            <mat-option *ngFor="let di of domainInstances" [value]="di">{{ di.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width mb-3">
+          <input matInput placeholder="Value" name="attr_value" [(ngModel)]="literalValueInserted" required>
+        </mat-form-field>
+
+      </mat-card>
+    </mat-dialog-content>
+  </ng-container>
+
+
+  <mat-dialog-actions align="end" class="mt-3 px-3">
+    <button mat-raised-button color="warn" (click)="onCloseCancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="save()">OK</button>
+  </mat-dialog-actions>
 </form>
-<mat-dialog-actions layout="row">
-  <button mat-raised-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" mat-autofocus (click)="onCloseCancel()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="createDomainElementInOntology()" style="margin-right:20px;" >OK</button>
-</mat-dialog-actions>

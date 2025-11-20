@@ -9,43 +9,57 @@ export interface Config {
 @Injectable()
 export class EndpointSettings {
 
-  private static GETMODELINGLANGUAGES: string = '/ModEnv/getModelingLanguages';
-  private static GETMODELINGVIEWS: string = '/ModEnv/getModelingViews';
-  private static PALETTEELEMENTS: string = '/ModEnv/getPaletteElements';
-  private static PALETTECATEGORIES: string = '/ModEnv/getPaletteCategories';
-  private static CREATEELEMENT: string = '/ModEnv/createPalletteElement';
-  private static CREATEINSTANCE: string = '/ModEnv/createCanvasInstance';
-  private static CREATEDOMAINELEMENT: string = '/ModEnv/createDomainElement';
-  private static GETDOMAINCLASSES: string = '/ModEnv/getDomainOntologyClasses';
-  private static GETMODELINGLANGUAGELASSES: string = '/ModEnv/getModelingLanguageOntologyElements';
-  private static CREATEDATATYPEPROPERTY: string = '/ModEnv/createDatatypeProperty';
-  private static CREATEBRIDGECONNECTOR: string = '/ModEnv/createBridgingConnector';
-  private static CREATESEMANTICMAPPING: string = '/ModEnv/createSemanticMapping';
-  private static CREATESHACLCONSTRAINT: string = '/ModEnv/createShaclConstraint';
-  private static GETDATATYPEPROPERTIES: string = '/ModEnv/getDatatypeProperties';
-  private static GETBRIDGECONNECTORS: string = '/ModEnv/getBridgeConnectors';
-  private static GETSEMANTICMAPPINGS: string = '/ModEnv/getSemanticMappings';
-  private static GETALLPROPERTIES: string = '/ModEnv/getAllProperties';
-  private static GETSHACLCONSTRAINTS: string = '/ModEnv/getShaclConstraints';
-  private static VALIDATESHACL: string = '/ModEnv/validateShacl';
-  private static DELETEPALETTEELEMENT: string = '/ModEnv/deletePaletteElement';
-  private static HIDEPALETTEELEMENT: string = '/ModEnv/hidePaletteElement';
-  private static CREATELANGUAGESUBCLASSES: string = '/ModEnv/createModelingLanguageSubclasses';
-  private static GETALLNAMESPACEPREFIXES: string = '/ModEnv/getAllNamespacePrefixes';
-  private static GETNAMESPACEMAP: string = '/ModEnv/getNamespaceMap';
-  private static MODIFYELEMENT: string = '/ModEnv/modifyElement';
-  private static EDITDATATYPEPROPERTY: string = '/ModEnv/editDatatypeProperty';
-  private static EDITOBJECTPROPERTY: string = '/ModEnv/editObjectProperty';
-  private static DELETEDATATYPEPROPERTY: string = '/ModEnv/deleteDatatypeProperty';
-  private static DELETEOBJECTPROPERTY: string = '/ModEnv/deleteObjectProperty';
-  private static GETDOMAINCONCEPTS: string = '/ModEnv/getDomainConcepts';
+  private static GETMODELINGLANGUAGES       : string = '/ModEnv/getModelingLanguages';
+  private static GETMODELINGVIEWS           : string = '/ModEnv/getModelingViews';
+  private static PALETTEELEMENTS            : string = '/ModEnv/getPaletteElements';
+  private static PALETTECATEGORIES          : string = '/ModEnv/getPaletteCategories';
+  private static CREATEELEMENT              : string = '/ModEnv/createPalletteElement';
+  private static CREATEINSTANCE             : string = '/ModEnv/createCanvasInstance';
+  private static CREATEDOMAINELEMENT        : string = '/ModEnv/createDomainElement';
+  private static GETDOMAINCLASSES           : string = '/ModEnv/getDomainOntologyClasses';
+  private static GETMODELINGLANGUAGELASSES  : string = '/ModEnv/getModelingLanguageOntologyElements';
+  private static CREATEDATATYPEPROPERTY     : string = '/ModEnv/createDatatypeProperty';
+  private static CREATEBRIDGECONNECTOR       : string = '/ModEnv/createBridgingConnector';
+  private static CREATESEMANTICMAPPING       : string = '/ModEnv/createSemanticMapping';
+  private static CREATESHACLCONSTRAINT       : string = '/ModEnv/createShaclConstraint';
+  private static GETBRIDGECONNECTORS      : string = '/ModEnv/getBridgeConnectors';
+  private static GETSEMANTICMAPPINGS      : string = '/ModEnv/getSemanticMappings';
+  private static GETALLPROPERTIES      : string = '/ModEnv/getAllProperties';
+  private static GETSHACLCONSTRAINTS      : string = '/ModEnv/getShaclConstraints';
+  private static VALIDATESHACL            : string = '/ModEnv/validateShacl';
+  private static DELETEPALETTEELEMENT       : string = '/ModEnv/deletePaletteElement';
+  private static HIDEPALETTEELEMENT         : string = '/ModEnv/hidePaletteElement';
+  private static CREATELANGUAGESUBCLASSES   : string = '/ModEnv/createModelingLanguageSubclasses';
+  private static GETALLNAMESPACEPREFIXES    : string = '/ModEnv/getAllNamespacePrefixes';
+  private static GETNAMESPACEMAP            : string = '/ModEnv/getNamespaceMap';
+  private static MODIFYELEMENT              : string = '/ModEnv/modifyElement';
+  private static EDITDATATYPEPROPERTY       : string = '/ModEnv/editDatatypeProperty';
+  private static EDITOBJECTPROPERTY       : string = '/ModEnv/editObjectProperty';
+  private static DELETEDATATYPEPROPERTY     : string = '/ModEnv/deleteDatatypeProperty';
+  private static DELETEOBJECTPROPERTY     : string = '/ModEnv/deleteObjectProperty';
+  private static GETDOMAINCONCEPTS          : string = '/ModEnv/getDomainConcepts';
 
-  private static GETIOTDEVICE: string = '/ModEnv/addIoTdevice';
-  private static MOVEDOBOT: string = 'http://10.0.6.60:8080/dobot/api/operation';
-  private static TURNONSUCTIONCUP: string = 'http://10.0.6.60:8080/dobot/api/operation/turnOnSuctionCup';
-  private static TURNOFFSUCTIONCUP: string = 'http://10.0.6.60:8080/dobot/api/operation/turnOffSuctionCup';
-  private static CALIBRATEDOBOT: string = 'http://10.0.6.60:8080/dobot/api/operation/moveToHomePosition';
-  private static GETPOSITIONDOBOT: string = 'http://10.0.6.60:8080/dobot/api/operation/getPosition';
+  private static CREATECATEGORY              : string = '/ModEnv/createPaletteCategory';
+  private static CREATEINDIVIDUAL             : string = '/ModEnv/createNewIndividual';
+  private static CREATECONNECTOR            : string = '/ModEnv/createNewConnector';
+  private static CREATEONTOLOGYRELATION      : string = '/ModEnv/createOntologyRelation';
+  private static CREATENEWMODELLINGELEMENT   : string = '/ModEnv/createNewModelingElementInModel';
+  private static CREATENEWATTRIBUTE         : string = '/ModEnv/createNewAttribute';
+  private static GETDOMAINONTOLOGINSTANCES : string = '/ModEnv/getDomainInstancesByClassTree';
+  private static GETNEWPROPERTYENDPOINT: string = '/ModEnv/createNewProperty';
+  private static GETINSTANCESBYCLASSENDPOINT: string = '/ModEnv/getAllInstancesByClass';
+  private static GETALLOBJECTPROPERTIES: string = '/ModEnv/queryAllObjectProperties';
+  private static GETINSTANCERELATIONSHIPCREATIONENDPOINT: string = '/ModEnv/createObjectRelationship';
+  private static GETDATATYPEPROPERTIES      : string = '/ModEnv/getDatatypeProperties';
+  private static GETINSTANCEDATATYPEPROPERTYENDPOINT : string = '/ModEnv/createDatatypeAssertion';
+
+  private static GETIOTDEVICE               : string = '/ModEnv/addIoTdevice';
+  private static MOVEDOBOT                  : string = 'http://10.0.6.60:8080/dobot/api/operation';
+  private static TURNONSUCTIONCUP           : string = 'http://10.0.6.60:8080/dobot/api/operation/turnOnSuctionCup';
+  private static TURNOFFSUCTIONCUP          : string = 'http://10.0.6.60:8080/dobot/api/operation/turnOffSuctionCup';
+
+  private static CALIBRATEDOBOT             : string = 'http://10.0.6.60:8080/dobot/api/operation/moveToHomePosition';
+  private static GETPOSITIONDOBOT           : string = 'http://10.0.6.60:8080/dobot/api/operation/getPosition';
 
   private static MODELS: string = '/ModEnv/model';
   private static ARROWS: string = '/ModEnv/arrow-structures';
@@ -161,8 +175,8 @@ export class EndpointSettings {
     return this.webserviceEndpoint + EndpointSettings.VALIDATESHACL + '/' + modelId;
   }
 
-  public getDatatypePropertyEndpoint(domainName): string {
-    return this.webserviceEndpoint + EndpointSettings.GETDATATYPEPROPERTIES + '/' + domainName;
+  public getDatatypePropertyEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.GETDATATYPEPROPERTIES;
   }
 
   public getBridgeConnectorEndpoint(domainName): string {
@@ -198,7 +212,7 @@ export class EndpointSettings {
   }
 
   getAllPropertiesEndpoint(domainName) {
-    return this.webserviceEndpoint + EndpointSettings.GETALLPROPERTIES + '/' + domainName;
+    return this.webserviceEndpoint + EndpointSettings.GETALLPROPERTIES + '/' + encodeURIComponent(domainName);
   }
 
   public getShaclConstraintEndpoint(domainName): string {
@@ -307,6 +321,54 @@ export class EndpointSettings {
 
   public applySWRLRule() {
     return this.webserviceEndpoint + EndpointSettings.SWRL + '/applySWRLRule';
+  }
+
+  public getCreateCategoryEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATECATEGORY;
+  }
+
+  public getCreateNewConnectorEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATECONNECTOR;
+  }
+
+  public getCreateOntologyRelationEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATEONTOLOGYRELATION;
+  }
+
+  public getCreateNewModelingElementEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATENEWMODELLINGELEMENT;
+  }
+
+  public getCreateNewIndividualEndpoint(): string {
+    return this.webserviceEndpoint + EndpointSettings.CREATEINDIVIDUAL;
+  }
+
+  getCreateNewAttributeEndpoint() {
+    return this.webserviceEndpoint + EndpointSettings.CREATENEWATTRIBUTE;
+  }
+
+  getDomainOntologyInstancesEndpoint(){
+    return this.webserviceEndpoint + EndpointSettings.GETDOMAINONTOLOGINSTANCES;
+  }
+
+  getCreateNewPropertyEndpoint() {
+    return this.webserviceEndpoint + EndpointSettings.GETNEWPROPERTYENDPOINT;
+  }
+
+  getQueryAllObjectPropertiesEndpoint() {
+    return this.webserviceEndpoint + EndpointSettings.GETALLOBJECTPROPERTIES;
+  }
+
+  getQueryInstancesByClassEndpoint() {
+    return this.webserviceEndpoint + EndpointSettings.GETINSTANCESBYCLASSENDPOINT;
+  }
+
+  getInstanceRelationship() {
+    return this.webserviceEndpoint + EndpointSettings.GETINSTANCERELATIONSHIPCREATIONENDPOINT;
+  }
+
+  getInstanceDatatypeProperty() {
+    return this.webserviceEndpoint +  EndpointSettings.GETINSTANCEDATATYPEPROPERTYENDPOINT;
   }
 
   public askOllama() {

@@ -24,6 +24,12 @@ import {filter, switchMap, take, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs/internal/Subject';
 import {of} from 'rxjs/internal/observable/of';
 import {ModelElementDetailAndModel} from '../../../../shared/models/ModelElementDetailAndModel';
+import { ContextMenuService } from 'ngx-contextmenu';
+import { ModalCreateDomainElementsComponent } from '../../../../shared/modals/modal-create-domain-elements/modal-create-domain-elements.component';
+
+import {
+  ModalExtendPaletteElementComponent
+} from "../../../../shared/modals/modal-extend-palette-element/modal-extend-palette-element.component";
 
 let $: any;
 
@@ -41,11 +47,12 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
 
     this.dialog = matDialog;
   }
+  @ViewChild(ContextMenuComponent, { static: true }) public contextMenu: ContextMenuComponent;
 
   @ViewChild(ContextMenuComponent, { static: true }) public elementRightClickMenu: ContextMenuComponent;
   @ViewChild(ContextMenuComponent, { static: true }) public paletteRightClickMenu: ContextMenuComponent;
 
-  @Input() contextMenu: ContextMenuComponent;
+
   @Input() contextMenuSubject: PaletteElementModel;
 
   @Input() public elements: any;
@@ -55,6 +62,9 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
   @Input() new_element: PaletteElementModel;
 
   private myDiagram: any;
+  public viewUri: string = 'http://fhnw.ch/modelingEnvironment/LanguageOntology#NewEmptyOntologyView';
+  public paletteCategoryUri: string = 'http://fhnw.ch/modelingEnvironment/PaletteOntology#ElementCategory';
+  public selectedElement: any = null;
 
   public models: Model[] = [];
   public selectedModel: Model;
@@ -82,11 +92,37 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.mService.queryPaletteElements().pipe(take(1)).subscribe();
-    this.loadModels();
-    this.prepareModel();
-    this.prepareCustomRelations();
+    window.addEventListener('openCreateModellingElement', () => {
+      this.createNewElement();
+    });
+
+    window.addEventListener('openCreateConnector', (e: any) => {
+      this.createNewConnector(e.detail.label);
+    });
   }
+
+  createNewElement(): void {
+    this.dialog.open(ModalExtendPaletteElementComponent, {
+      width: '800px',
+      disableClose: false,
+      data: { isRoot: true }
+    });
+  }
+
+  createNewConnector(label: string): void {
+    const newConnector = {
+      label: label || 'New Connector',
+      type: 'PaletteConnector',
+      paletteCategory: 'http://example.org#CategoryConnectors'
+    };
+
+    this.dialog.open(ModalExtendPaletteElementComponent, {
+      width: '800px',
+      disableClose: false,
+      data: { paletteElement: newConnector }
+    });
+  }
+
 
   private prepareCustomRelations() {
     // https://gojs.net/latest/samples/relationships.html
@@ -1114,6 +1150,24 @@ export class ModellingAreaComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  openWizard(event: any): void {
+    const clickPosition = { x: event?.clientX || 150, y: event?.clientY || 150 };
+
+
+    this.dialog.open(ModalCreateDomainElementsComponent, {
+      width: '800px',
+      data: {
+        viewUri: this.viewUri,
+        categoryUri: this.paletteCategoryUri,
+        parentElementId: this.selectedElement?.id || 'http://fhnw.ch/modelingEnvironment/PaletteOntology#Element',
+        position: clickPosition,
+        paletteElement: this.selectedElement
+      }
+    }).afterClosed().subscribe(() => {
+      this.mService.queryPaletteElements().subscribe(); // aggiorna palette
+    });
   }
 
   private loadModels() {
