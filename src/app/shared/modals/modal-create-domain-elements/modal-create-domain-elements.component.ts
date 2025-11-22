@@ -144,7 +144,7 @@ export class ModalCreateDomainElementsComponent implements OnInit {
         this.loadObjectProperties();
 
 
-      this.mService.queryDatatypeProperties().subscribe({
+      this.mService.queryDatatypeProperties(this.domainName).subscribe({
         next: (res) => {
           console.log('Datatype properties:', res);
           this.datatypeProperties = res;

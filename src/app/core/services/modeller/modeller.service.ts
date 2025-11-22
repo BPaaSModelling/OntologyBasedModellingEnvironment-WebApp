@@ -370,7 +370,7 @@ export class ModellerService {
         error => console.log('Could not query All Properties'));
   }
 
-  queryDatatypeProperties() {
+  queryDatatypeProperties(domainName) {
     return this.httpClient.get<DatatypePropertyModel[]>(this.endpointSettings.getDatatypePropertyEndpoint());
   }
 

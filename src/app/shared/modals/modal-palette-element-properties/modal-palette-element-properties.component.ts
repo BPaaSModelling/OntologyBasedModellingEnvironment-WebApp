@@ -34,7 +34,7 @@ export class ModalPaletteElementPropertiesComponent implements OnInit {
     );
 
     // Heroku difference
-    //this.mService.queryDatatypeProperties(this.domainName);
+    // this.mService.queryDatatypeProperties(this.domainName);
     this.mService.queryDatatypeProperties(this.domainName).subscribe(
       (data) => {
         this.datatypeProperties = data;

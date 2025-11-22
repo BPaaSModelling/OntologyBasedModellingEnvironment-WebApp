@@ -1,0 +1,129 @@
+<!-- Upload Button -->
+<div class="upload-wrapper">
+  <button mat-raised-button color="primary" (click)="fileInput.click()">
+    Upload TTL File
+  </button>
+  <input type="file" #fileInput accept=".ttl" (change)="onFileSelected($event)" hidden>
+</div>
+
+<!-- Main UI - Visible after file upload -->
+<div *ngIf="isFileUploaded">
+
+  <!-- Uploaded file name centered under the upload button -->
+  <div class="centered-narrow-wrapper">
+    <strong>UPLOADED FILE:</strong>&nbsp;{{ fileName }}
+  </div>
+
+  <div class="main-layout" fxLayout="column" fxLayoutGap="20px">
+
+    <!-- ROW 1: SWRL Editor | AI Helper -->
+    <div fxLayout="row" fxLayoutGap="20px">
+      <div fxFlex="50">
+        <!-- SWRL Editor -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>SWRL Editor</mat-label>
+          <textarea matInput rows="4" [(ngModel)]="swrlRule"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="50">
+        <!-- SWRL AI Helper -->
+        <div class="swrl-helper-box full-width">
+          <label class="swrl-helper-label">SWRL AI Helper</label>
+          <div #scrollContainer class="swrl-helper-content" [innerHTML]="chatHistory"></div>
+        </div>
+
+        <!-- Input + Send -->
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px" style="margin-top:10px;">
+          <mat-form-field appearance="outline" fxFlex>
+            <mat-label>Ask the AI about SWRL</mat-label>
+            <input matInput [(ngModel)]="chatInput" (keyup.enter)="sendToAi()" [disabled]="isLoadingAi">
+          </mat-form-field>
+
+          <button mat-raised-button color="primary"
+                  (click)="sendToAi()"
+                  [disabled]="isLoadingAi || !chatInput?.trim()">
+            Send
+          </button>
+
+          <mat-spinner *ngIf="isLoadingAi" diameter="24"></mat-spinner>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 2: Glossary | Ontology Schema -->
+    <div fxLayout="row" fxLayoutGap="20px">
+      <div fxFlex="50">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Glossary</mat-label>
+          <textarea matInput rows="4" readonly [value]="glossaryText"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="50">
+        <div class="graph-image-placeholder full-width schema-bg">
+          <div class="coming-soon-overlay">ONTOLOGY Schema Coming Soon</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 3: Relations | Instance Graph -->
+    <div fxLayout="row" fxLayoutGap="20px">
+      <div fxFlex="50">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Relations</mat-label>
+          <textarea matInput rows="4" readonly [value]="relationsText"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="50">
+        <div class="graph-image-placeholder full-width instance-bg">
+          <div class="coming-soon-overlay">KG INSTANCES: Coming Soon</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 4: Validation Report | Error Handling -->
+    <div fxLayout="row" fxLayoutGap="20px">
+      <div fxFlex="50">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Validation Report</mat-label>
+          <textarea matInput rows="4" readonly [value]="validationReportText"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="50">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Error Handling</mat-label>
+          <textarea matInput rows="4" readonly [value]="errorHandlingText"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom-centered buttons -->
+  <div class="centered button-row">
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!swrlRule || swrlRule.trim().length === 0"
+      (click)="onExecuteRule()">
+      Execute
+    </button>
+
+    <!--<button
+      mat-raised-button
+      color="primary"
+      (click)="onApplyResults()">
+      Apply Results
+    </button>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onExportResults()">
+      Export Results
+    </button>-->
+  </div>
+</div>

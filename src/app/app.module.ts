@@ -91,8 +91,8 @@ import {AuthGuard, AuthHttpInterceptor, AuthModule} from '@auth0/auth0-angular';
 import {environment as env} from '../environments/environment';
 import {LoadingService} from './core/services/loading/loading.service';
 import {SwrlEnvironmentComponent} from './pages/swrl-environment/swrl-environment.component';
-import { GraphVisualizationComponent } from './pages/swrl-environment/graph-visualization/graph-visualization.component';
-import {MatRadioModule} from "@angular/material/radio";
+//import { GraphVisualizationComponent } from './pages/swrl-environment/graph-visualization/graph-visualization.component';
+import {MatRadioModule} from '@angular/material/radio';
 
 
 const appRoutes: Routes = [
@@ -153,7 +153,7 @@ export function appInit(endpointSettings: EndpointSettings) {
     ModalEditAction,
     ModalAddIoT,
     SwrlEnvironmentComponent,
-    GraphVisualizationComponent
+    //GraphVisualizationComponent
   ],
   entryComponents: [
     ModalInstancePropertiesComponent,
